@@ -1,0 +1,12 @@
+﻿Build started 14-2-2013 16:36:48.
+     1>Project "D:\Users\Robin\Documents\Github\MiDeRP\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder_robin_erwin.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt pathfinder.cpp
+         pathfinder.cpp
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.cpp(58): error C2059: syntax error : '{'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.cpp(58): error C2143: syntax error : missing ';' before '{'
+     1>Done Building Project "D:\Users\Robin\Documents\Github\MiDeRP\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder_robin_erwin.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.37
