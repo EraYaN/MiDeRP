@@ -21,8 +21,8 @@ node *newNode (int x, int y)
 {
 	node *n		= (node*)safeMalloc(sizeof (node));
 
-	n->x	= x;
-	n->y	= y;
+	n->x = x;
+	n->y = y;
 	n->visited = 0;
 	n->previous		= NULL;
 	n->distance = inf;

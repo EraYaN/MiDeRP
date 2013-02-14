@@ -11,8 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{3C1CEF5B-2626-4DD6-B162-7A9B076CD3FF}</ProjectGuid>
-    <RootNamespace>pathfinder_robin_erwin</RootNamespace>
+    <ProjectGuid>{24898935-E001-4A75-9BD0-825AD142D3C6}</ProjectGuid>
+    <RootNamespace>pf_re</RootNamespace>
+    <ProjectName>pf_re</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
