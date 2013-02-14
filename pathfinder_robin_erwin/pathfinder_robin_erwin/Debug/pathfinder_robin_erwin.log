@@ -1,12 +1,29 @@
-﻿Build started 14-2-2013 16:36:48.
+﻿Build started 14-2-2013 17:16:47.
      1>Project "D:\Users\Robin\Documents\Github\MiDeRP\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder_robin_erwin.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt pathfinder.cpp
-         pathfinder.cpp
-     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.cpp(58): error C2059: syntax error : '{'
-     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.cpp(58): error C2143: syntax error : missing ';' before '{'
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt pathfinder.c
+         pathfinder.c
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\util.h(19): error C2143: syntax error : missing '{' before '*'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\util.h(20): error C2143: syntax error : missing '{' before '*'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\util.h(21): error C2143: syntax error : missing '{' before '*'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(18): error C2143: syntax error : missing '{' before '*'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(19): error C2143: syntax error : missing '{' before '*'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(32): error C2065: 'node' : undeclared identifier
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(32): error C2059: syntax error : ')'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(33): error C2065: 'vertex' : undeclared identifier
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(33): error C2059: syntax error : ')'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(45): error C2065: 'node' : undeclared identifier
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(45): warning C4047: '=' : 'int' differs in levels of indirection from 'int *'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(45): error C2106: '=' : left operand must be l-value
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(46): error C2065: 'node' : undeclared identifier
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(46): warning C4047: '=' : 'int *' differs in levels of indirection from 'int'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(51): error C2065: 'vertex' : undeclared identifier
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(51): warning C4047: '=' : 'int' differs in levels of indirection from 'int *'
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(51): error C2106: '=' : left operand must be l-value
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(52): error C2065: 'vertex' : undeclared identifier
+     1>d:\users\robin\documents\github\miderp\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder.c(52): warning C4047: '=' : 'int *' differs in levels of indirection from 'int'
      1>Done Building Project "D:\Users\Robin\Documents\Github\MiDeRP\pathfinder_robin_erwin\pathfinder_robin_erwin\pathfinder_robin_erwin.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:00.37
+Time Elapsed 00:00:00.25
