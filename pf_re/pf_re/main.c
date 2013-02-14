@@ -3,18 +3,8 @@
 #include <string.h>
 
 #include "util.h"
-
-const int	m = 5,
-			n = 5;
-
-int	numNodes,
-	numVerticesH,
-	numVerticesV,
-	numVertices,
-	numControlPosts;
-
-node **nodes;
-vertex **vertices;
+#include "node.h"
+#include "line.h"
 
 void getNode();
 void createGrid();
@@ -22,13 +12,13 @@ void createGrid();
 int main()
 {
 	numNodes =	m*n;
-	numVerticesH = n*(m-1);
-	numVerticesV = m*(n-1);
-	numVertices = numVerticesH + numVerticesV;
+	numLinesH = n*(m-1);
+	numLinesV = m*(n-1);
+	numLines = numLinesH + numLinesV;
 	numControlPosts = 2*(m-2) + 2*(n-2);
 
-	*nodes = (node*)malloc(sizeof(node)*numNodes);
-	*vertices = (vertex*)malloc(sizeof(vertex)*numVertices);
+	*nodes = (Node*)malloc(sizeof(Node)*numNodes);
+	*lines = (Line*)malloc(sizeof(Line)*numLines);
 
 	createGrid();
 	return 0;
@@ -40,13 +30,13 @@ void createGrid()
 
 	for(i=0; i<numNodes; i++)
 	{
-		node *node = newNode(i % n, i % m);
+		Node *node = newNode(i % n, i % m);
 		nodes[i] = node;
 	}
 
-	for(i=0; i<numVerticesH; i++)
+	for(i=0; i<numLinesH; i++)
 	{
-		vertex *vertex = newVertexH(i);
-		vertices[i] = vertex;
+		Line *line = newLineH(i);
+		lines[i] = line;
 	}
 }

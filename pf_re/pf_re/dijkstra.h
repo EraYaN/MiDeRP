@@ -1,5 +1,13 @@
+#ifndef _DIJKSTRA_H_
+#define _DIJKSTRA_H_
+
+
 #include "util.h"
-node *getNodeFromControlPost(int controlPost);
-vertex *getVertex(int origin, int destination);
-int *getNodeIndex(node *node);
-node *getNode(int x, int y);
+#include "node.h"
+#include "line.h"
+
+Node *getNode(int x, int y);
+Node *getNodeFromControlPost(int controlPost);
+Line *getLine(Node *origin, Node *destination);
+
+#endif

@@ -1,21 +1,28 @@
-//Struct initialisations
-struct node {
-	const int x, y; //For debugging
+#pragma once
+#ifndef _UTIL_H_
+#define _UTIL_H_
 
-	int visited,
-		previous,
-		distance;
-};
+#include <stdlib.h>
 
-struct vertex {
-	struct node *origin;
-	struct node *destination;
-	
-	int mine;
-};
+#include "node.h"
+#include "line.h"
+
+#define inf 999;
 
 //Function prototypes
-void *safe_malloc (size_t size);
-node *newNode (int x, int y);
-vertex *newVertexH (int i);
-vertex *newVertexV (int i);
+void *safeMalloc (size_t size);
+
+//Common variables
+const int	m = 5,
+			n = 5;
+
+int	numNodes,
+	numLinesH,
+	numLinesV,
+	numLines,
+	numControlPosts;
+
+Node **nodes;
+Line **lines;
+
+#endif

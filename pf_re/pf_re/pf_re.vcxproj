@@ -64,11 +64,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dijkstra.c" />
+    <ClCompile Include="line.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="node.c" />
     <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dijkstra.h" />
+    <ClInclude Include="line.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
