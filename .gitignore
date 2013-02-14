@@ -20,6 +20,13 @@ build/
 [Bb]in/
 [Oo]bj/
 
+#Our Projects
+*[Dd]ebug/
+*[Rr]elease/
+*[Bb]in/
+*x64/
+*[Oo]bj/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -183,4 +190,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-/pathfinder_robin_erwin/pathfinder_robin_erwin/Debug
+
