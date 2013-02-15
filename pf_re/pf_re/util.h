@@ -12,7 +12,7 @@
 void *safeMalloc (size_t size);
 
 //Common variables
-const int	m, n;
+const int m, n;
 
 int	numNodes,
 	numLinesH,
