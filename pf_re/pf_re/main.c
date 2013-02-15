@@ -22,8 +22,8 @@ int main()
 	numLines = numLinesH + numLinesV;
 	numControlPosts = 2*(m-2) + 2*(n-2);
 
-	*nodes = (Node*)malloc(sizeof(Node)*numNodes);
-	*lines = (Line*)malloc(sizeof(Line)*numLines);
+	nodes = (Node**)safeMalloc(sizeof(Node*)*numNodes);
+	lines = (Line**)safeMalloc(sizeof(Line*)*numLines);
 
 	createGrid();
 	return 0;

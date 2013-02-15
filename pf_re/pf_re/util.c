@@ -3,17 +3,13 @@
 
 #include "util.h"
 
-static void *checkPointer (void *p)
+void *safeMalloc (size_t size)
 {
+	void* p = malloc(size);
 	if (p == NULL)
 	{
 		printf ("Error: out of memory!\n");
 		exit (1);
 	}
 	return p;
-}
-
-void *safeMalloc (size_t size)
-{
-	return checkPointer (malloc(size));
 }
