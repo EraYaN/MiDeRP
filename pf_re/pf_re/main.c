@@ -6,7 +6,6 @@
 #include "node.h"
 #include "line.h"
 
-void getNode();
 void createGrid();
 
 int main()
@@ -26,6 +25,8 @@ int main()
 	lines = (Line**)safeMalloc(sizeof(Line*)*numLines);
 
 	createGrid();
+
+	system("Pause");
 	return 0;
 }
 

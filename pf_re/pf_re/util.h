@@ -10,6 +10,9 @@
 
 //Function prototypes
 void *safeMalloc (size_t size);
+Node *getNode(int x, int y);
+Node *getNodeFromControlPost(int controlPost);
+Line *getLine(Node *origin, Node *destination);
 
 //Common variables
 const int m, n;

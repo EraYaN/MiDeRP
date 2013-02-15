@@ -8,7 +8,7 @@ typedef struct line Line;
 struct line {
 	Node *origin;
 	Node *destination;
-	
+
 	int mine;
 };
 
