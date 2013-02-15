@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include "line.h"
 
 Line *newLineH (int i)

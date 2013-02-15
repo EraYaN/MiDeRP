@@ -1,5 +1,5 @@
-#ifndef _LINE_H_
-#define _LINE_H_
+#ifndef LINE_H
+#define LINE_H
 
 typedef struct line Line;
 

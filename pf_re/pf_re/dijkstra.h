@@ -1,5 +1,5 @@
-#ifndef _DIJKSTRA_H_
-#define _DIJKSTRA_H_
+#ifndef DIJKSTRA_H
+#define DIJKSTRA_H
 
 
 #include "util.h"

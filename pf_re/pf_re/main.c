@@ -11,6 +11,11 @@ void createGrid();
 
 int main()
 {
+	printf("Enter grid width: \n");
+	scanf("%d", &m);
+	printf("Enter grid height: \n");
+	scanf("%d", &n);
+
 	numNodes =	m*n;
 	numLinesH = n*(m-1);
 	numLinesV = m*(n-1);

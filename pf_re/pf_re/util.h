@@ -1,6 +1,5 @@
-#pragma once
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <stdlib.h>
 
@@ -13,8 +12,7 @@
 void *safeMalloc (size_t size);
 
 //Common variables
-const int	m = 5,
-			n = 5;
+const int	m, n;
 
 int	numNodes,
 	numLinesH,
