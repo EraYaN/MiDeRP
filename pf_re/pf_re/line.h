@@ -4,6 +4,7 @@
 typedef struct line Line;
 
 #include "node.h"
+#include "util.h"
 
 struct line {
 	Node *origin;
@@ -14,5 +15,6 @@ struct line {
 
 Line *newLineH (int i);
 Line *newLineV (int i);
+Line *getLine(Node *origin, Node *destination);
 
 #endif

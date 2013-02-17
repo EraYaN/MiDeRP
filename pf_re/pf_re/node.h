@@ -12,5 +12,10 @@ struct node {
 };
 
 Node *newNode (int x, int y);
+Node *getNode(int x, int y);
+Node *getNodeFromControlPost(int controlPost);
+int getNodeX(int index);
+int getNodeY(int index);
+
 
 #endif
