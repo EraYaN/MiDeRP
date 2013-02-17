@@ -16,5 +16,9 @@ struct line {
 Line *newLineH (int i);
 Line *newLineV (int i);
 Line *getLine(Node *origin, Node *destination);
+Line *getLineFilter(Node *origin, Node *destination, int filter);
+
+int placeMine(Node *origin, Node *destination);
+int removeMine(Node *origin, Node *destination);
 
 #endif

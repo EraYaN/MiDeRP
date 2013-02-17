@@ -3,7 +3,7 @@
 
 #include "util.h"
 
-const int m = 20 /* x */, n = 20 /* y */, maxConn = 4 /* We use it in a grid */;
+const int m = 5 /* x */, n = 5 /* y */, maxConn = 4 /* We use it in a grid */;
 
 
 
@@ -25,10 +25,10 @@ void printField(){
 	char ph = 205;*/
 	char v = 179;
 	char h = 196;
-	char mine = 'x';
+	char mc = 'x';
 	Node *tmp;
 	Line *tmpline;
-	char* spacing = "    ";
+	char* spacing = "  ";
 	int x;
 	int y;
 	//int i;
@@ -36,12 +36,12 @@ void printField(){
 	for(y = n-1;y>=0;y--){
 		for(x = 0;x<m;x++){
 			tmp = getNode(x,y);
-			printf("(%x,%d;%03d)", tmp->x, tmp->y,tmp->value);
+			printf("(%03d)", tmp->value);
 			if(x<m-1){
 				//node to the left exists
-				tmpline = getLine(tmp,getNode(x+1,y));
+				tmpline = getLineFilter(tmp,getNode(x+1,y),0);
 				if(tmpline->mine){
-					printf("%c",mine);
+					printf("%c",mc);
 				} else {
 					printf("%c",h);
 				}
@@ -53,10 +53,10 @@ void printField(){
 			
 			printf("\n");
 			for(x = 0;x<m;x++){
-				tmpline = getLine(getNode(x,y),getNode(x,y-1));
+				tmpline = getLineFilter(getNode(x,y),getNode(x,y-1),0);
 				printf("%s",spacing);
-				if(tmpline->mine){
-					printf("%c",mine);
+				if(tmpline->mine == 1){
+					printf("%c",mc);
 				} else {
 					printf("%c",v);
 				}

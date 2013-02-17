@@ -27,10 +27,32 @@ Line *newLineV (int i)
 	return line;
 }
 Line *getLine(Node *origin, Node *destination){
+	return getLineFilter(origin, destination, 1);
+}
+Line *getLineFilter(Node *origin, Node *destination, int filter){
 	int i;
 	for(i=0; i<numLines; i++){
-		if((lines[i]->origin == origin && lines[i]->destination == destination) || (lines[i]->origin == destination && lines[i]->destination == origin) && lines[i]->mine == 0)
+		if((lines[i]->origin == origin && lines[i]->destination == destination) || (lines[i]->origin == destination && lines[i]->destination == origin) && (lines[i]->mine == 0||!filter))
 			return lines[i];
 	}
 	return NULL;
+}
+
+
+int placeMine(Node *origin, Node *destination){
+	Line *line = getLine(origin,destination);
+	if(line){
+		line->mine = 1;
+		return 1;
+	}
+	return 0;
+}
+
+int removeMine(Node *origin, Node *destination){
+	Line *line = getLine(origin,destination);
+	if(line){
+		line->mine = 0;
+		return 1;
+	}
+	return 0;
 }
