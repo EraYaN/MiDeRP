@@ -29,7 +29,7 @@ Line *newLineV (int i)
 Line *getLine(Node *origin, Node *destination){
 	int i;
 	for(i=0; i<numLines; i++){
-		if(lines[i]->origin == origin && lines[i]->destination == destination && lines[i]->mine == 0)
+		if((lines[i]->origin == origin && lines[i]->destination == destination) || (lines[i]->origin == destination && lines[i]->destination == origin) && lines[i]->mine == 0)
 			return lines[i];
 	}
 	return NULL;

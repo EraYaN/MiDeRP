@@ -6,24 +6,29 @@
 #include "util.h"
 #include "node.h"
 #include "line.h"
+#include "path.h"
 
 void createGrid();
 
 int main()
 {
-	int i;
+	int i,j;
+	int count;
+	Node **path;
 	numNodes =	m*n;
 	numLinesH = m*(n-1);
 	numLinesV = n*(m-1);
 	numLines = numLinesH + numLinesV;
 	numControlPosts = 2*(m-2) + 2*(n-2);
-
+	
 	nodes = (Node**)safeMalloc(sizeof(Node*)*numNodes);
+	
 	lines = (Line**)safeMalloc(sizeof(Line*)*numLines);
 
 	createGrid();
-	
-	for(i=0; i<numNodes; i++)
+	//printField();
+	//Grid check
+	/*for(i=0; i<numNodes; i++)
 	{
 		printf("Node %3.0d = (x,y) => (%d,%d)\n", i, nodes[i]->x,nodes[i]->y);
 	}
@@ -36,12 +41,22 @@ int main()
 	for(i=0; i<numLines; i++)
 	{
 		Line *line = lines[i];
-		printf("Line %3.0d = origin at (x,y) => (%d,%d); destination at (x,y) => (%d,%d)\n", i, line->origin->x, line->origin->y,line->destination->x, line->destination->y);
+		printf("Line %3.0d = orig at (x,y) => (%d,%d); dest at (x,y) => (%d,%d)\n", i, line->origin->x, line->origin->y,line->destination->x, line->destination->y);
+	}*/
+	// End grid checks	
+	for(j=2;j<=numControlPosts;j++){
+		path = findShortestRoute(getNodeFromControlPost(1),getNodeFromControlPost(j),&count);
+		printf("Path length: %d\n",count);	
+		for(i=0;i<count;i++){
+			printf("\tPath node #%d at (x,y) => (%d,%d)\n",i,path[i]->x,path[i]->y);
+		}
+		free(path);
 	}
-	system("Pause");
+	//printField();
+	printf("Hit enter to exit\n");
+	getchar();
 	return 0;
 }
-
 void createGrid()
 {
 	int i;

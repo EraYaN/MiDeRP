@@ -30,6 +30,7 @@
     <ClInclude Include="path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -40,5 +41,8 @@
       <UniqueIdentifier>{d134d968-2d23-44b7-bba5-70956e72a793}</UniqueIdentifier>
       <Extensions>*.c</Extensions>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pf_re.rc" />
   </ItemGroup>
 </Project>
