@@ -2,18 +2,28 @@
 #define UTIL_H
 
 #include <stdlib.h>
+#include <time.h>
 
 #include "node.h"
 #include "line.h"
 
 #define inf 999;
 
+size_t memusage;
+
+
 //Function prototypes
 void *safeMalloc (size_t size);
+void safeFree (void *ptr);
+void startStopwatch();
+double stopStopwatch();
+void printMemSize();
 void printField();
+void emptySTDIN();
 
 //Common variables
-const long m, n, maxConn;
+long m, n;
+const long maxConn;
 
 long	numNodes,
 	numLinesH,

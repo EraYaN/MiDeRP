@@ -55,14 +55,14 @@ Node **findShortestRoute(Node *start, Node *end, long *count){
 				num++;			
 			}
 		}
-		free(linestoneighbours);
+		safeFree(linestoneighbours);
 		for(j=0;j<num;j++){		
 			if(neighbours[j]->value==current->value-1){
 				path[(*count)++]=neighbours[j];
 				current = neighbours[j];
 			}
 		}
-		free(neighbours);
+		safeFree(neighbours);
 	}
 	
 	//return the path
@@ -84,7 +84,7 @@ long setValuesofField(Node *start, Node *goal){
 	start->value = currentNumber;
 	while(!done){
 		inCurrentWave = 0;
-		wave = (Node**)safeMalloc(sizeof(Node*)*numNodes);
+		wave = (Node**)safeMalloc(sizeof(Node*)*numNodes/4);
 		for(i=0;i<numNodes;i++){
 			if(nodes[i]->value == currentNumber){
 				wave[inCurrentWave++] = nodes[i];
@@ -106,7 +106,7 @@ long setValuesofField(Node *start, Node *goal){
 					num++;			
 				}
 			}
-			free(linestoneighbours);
+			safeFree(linestoneighbours);
 			for(j=0;j<num;j++){		
 				if(neighbours[j]->value > currentNumber){
 					neighbours[j]->value = currentNumber+1;
@@ -116,9 +116,9 @@ long setValuesofField(Node *start, Node *goal){
 					break;
 				}
 			}
-			free(neighbours);
+			safeFree(neighbours);
 		}
-		free(wave);
+		safeFree(wave);
 		currentNumber++;
 		//printField();
 		//done with wave

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 //#include <iostream>
 
 #include "util.h"
@@ -12,63 +13,109 @@ void createGrid();
 
 long main()
 {
-	long i,j;
+	long i,j = 0;
 	long count;
+	long start = 1, end = 1;
+	char nodataerror = 1;
 	Node **path;
-	numNodes =	m*n;
-	numLinesH = m*(n-1);
-	numLinesV = n*(m-1);
-	numLines = numLinesH + numLinesV;
-	numControlPosts = 2*(m-2) + 2*(n-2);
-	
-	nodes = (Node**)safeMalloc(sizeof(Node*)*numNodes);
-	
-	lines = (Line**)safeMalloc(sizeof(Line*)*numLines);
-
-	createGrid();
-	placeMine(getNode(1,3),getNode(1,4));
-	placeMine(getNode(2,3),getNode(2,4));
-	placeMine(getNode(3,3),getNode(3,4));
-	placeMine(getNode(4,3),getNode(4,4));
-	placeMine(getNode(1,2),getNode(1,3));
-	placeMine(getNode(1,3),getNode(1,4));
-	placeMine(getNode(3,0),getNode(3,1));
-	placeMine(getNode(3,1),getNode(3,2));
-	placeMine(getNode(3,2),getNode(3,3));
-	placeMine(getNode(3,3),getNode(3,4));
-	placeMine(getNode(2,3),getNode(3,3));
-	placeMine(getNode(1,3),getNode(2,3));
-	//Grid check
-	/*for(i=0; i<numNodes; i++)
-	{
-		printf("Node %3.0d = (x,y) => (%d,%d)\n", i, nodes[i]->x,nodes[i]->y);
+	#ifdef _DEBUG
+	printf("ULONG_MAX: %ld (%d), UINT_MAX: %d (%d),\nUSHRT_MAX: %d (%d), UCHAR_MAX: %d (%d)\n\n",ULONG_MAX,sizeof(unsigned long),UINT_MAX,sizeof(unsigned int),USHRT_MAX,sizeof(unsigned short),UCHAR_MAX,sizeof(unsigned char));
+	printMemSize();
+	#endif
+	printf("Enter m and n (number of nodes on the x-axis and y-axis,\n\tthe width and height of the grid)\n\tlike so:\n\t\"x\ty\" (without the quotes)\n");
+	scanf("%ld%ld",&m,&n);
+	if(m<3){
+		printf("ERROR: 3 is the minimun for m, your value of: %ld doesn't qualify.\n",m);
+		nodataerror = 0;
 	}
-	
-	for(i=1; i<=numControlPosts; i++)
-	{
-		Node *node = getNodeFromControlPost(i);
-		printf("CoPo %3.0d = node at (x,y) => (%d,%d)\n", i, node->x,node->y);
+	if(n<3){
+		printf("ERROR: 3 is the minimun for n, your value of: %ld doesn't qualify.\n",n);
+		nodataerror = 0;
 	}
-	for(i=0; i<numLines; i++)
-	{
-		Line *line = lines[i];
-		printf("Line %3.0d = orig at (x,y) => (%d,%d); dest at (x,y) => (%d,%d)\n", i, line->origin->x, line->origin->y,line->destination->x, line->destination->y);
-	}*/
-	// End grid checks	
-	//for(j=2;j<=numControlPosts;j++){
-	j=6;
-		printf("CPs: %d and %d\n",1,j);	
-		path = findShortestRoute(getNodeFromControlPost(1),getNodeFromControlPost(j),&count);
-		printf("Path length: %d\n",count);	
-		for(i=0;i<count;i++){
-			printf("\tPath node #%d at (x,y) => (%d,%d)\n",i,path[i]->x,path[i]->y);
+	#ifdef _DEBUG	
+	printMemSize();
+	#endif
+	if(nodataerror){
+		numNodes =	m*n;
+		numLinesH = m*(n-1);
+		numLinesV = n*(m-1);
+		numLines = numLinesH + numLinesV;
+		numControlPosts = 2*(m-2) + 2*(n-2);
+		printf("Enter start and end controlpost (starting from the bottom left numbered CCW)\n\tlike so:\n\"start\tend\" (without the quotes)\n");
+		scanf("%ld%ld",&start,&end);
+		if(start>numControlPosts||start<1){
+			printf("ERROR: Start point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1,numControlPosts);
+			nodataerror = 0;
 		}
-		free(path);
-	//}
-	//printField();
-	printField();
+		if(end>numControlPosts||end<1){
+			printf("ERROR: End point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1,numControlPosts);
+			nodataerror = 0;
+		}
+		if(start==end){
+			printf("ERROR: Start point is the same as endpoint you won't be needing any navigation.\n",n);
+			nodataerror = 0;
+		}
+		#ifdef _DEBUG	
+		printMemSize();
+		#endif
+		if(nodataerror){
+			nodes = (Node**)safeMalloc(sizeof(Node*)*numNodes);
+			#ifdef _DEBUG	
+			printMemSize();
+			#endif
+			lines = (Line**)safeMalloc(sizeof(Line*)*numLines);
+			#ifdef _DEBUG	
+			printMemSize();
+			#endif
+			createGrid();
+			#ifdef _DEBUG	
+			printMemSize();
+			#endif
+			//create mines
+			placeMine(getNode(1,3),getNode(1,4));
+			placeMine(getNode(2,3),getNode(2,4));
+			placeMine(getNode(3,3),getNode(3,4));
+			placeMine(getNode(4,3),getNode(4,4));
+			placeMine(getNode(1,2),getNode(1,3));
+			placeMine(getNode(1,3),getNode(1,4));
+			placeMine(getNode(3,0),getNode(3,1));
+			placeMine(getNode(3,1),getNode(3,2));
+			placeMine(getNode(3,2),getNode(3,3));
+			placeMine(getNode(3,3),getNode(3,4));
+			placeMine(getNode(2,3),getNode(3,3));
+			placeMine(getNode(1,3),getNode(2,3));	
+			//testing fpor mem leaks, done -> none
+			//for(j=0;j<1000000;j++){
+				printf("#%ld; CPs: %d and %d\n",j,start,end);
+				startStopwatch();
+				//get actual path.
+				path = findShortestRoute(getNodeFromControlPost(start),getNodeFromControlPost(end),&count);
+				printf("Finding the path took %0.4lf seconds.\n",stopStopwatch());
+				printf("Path length: %d\n",count);	
+				for(i=0;i<count;i++){
+					printf("\tPath node #%d at (x,y) => (%d,%d)\n",i,path[i]->x,path[i]->y);
+				}
+				#ifdef _DEBUG	
+				printMemSize();
+				#endif
+				safeFree(path);
+				
+			//}
+			#ifdef _DEBUG
+				printField();
+			#endif
+		} else {
+			printf("There were errors, can not proceed.\n");
+		}
+	}
+	#ifdef _DEBUG	
+	printMemSize();
+	#endif
 	printf("Hit enter to exit\n");
-	getchar();
+	//empty stdin and wait
+	emptySTDIN();
+	getchar();	
+	//
 	return 0;
 }
 void createGrid()
