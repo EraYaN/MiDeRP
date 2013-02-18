@@ -10,10 +10,10 @@
 
 void createGrid();
 
-int main()
+long main()
 {
-	int i,j;
-	int count;
+	long i,j;
+	long count;
 	Node **path;
 	numNodes =	m*n;
 	numLinesH = m*(n-1);
@@ -73,7 +73,7 @@ int main()
 }
 void createGrid()
 {
-	int i;
+	long i;
 
 	for(i=0; i<numNodes; i++)
 	{

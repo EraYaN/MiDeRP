@@ -3,7 +3,7 @@
 
 #include "util.h"
 
-const int m = 5 /* x */, n = 5 /* y */, maxConn = 4 /* We use it in a grid */;
+const long m = 5 /* x */, n = 5 /* y */, maxConn = 4 /* We use it in a grid */;
 
 
 
@@ -29,9 +29,9 @@ void printField(){
 	Node *tmp;
 	Line *tmpline;
 	char* spacing = "  ";
-	int x;
-	int y;
-	//int i;
+	long x;
+	long y;
+	//long i;
 	printf("\n\n");	
 	for(y = n-1;y>=0;y--){
 		for(x = 0;x<m;x++){

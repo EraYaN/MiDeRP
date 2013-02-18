@@ -3,7 +3,7 @@
 #include "util.h"
 #include <stdio.h>
 
-Node *newNode (int x, int y)
+Node *newNode (long x, long y)
 {
 	Node *node	= (Node*)safeMalloc (sizeof (Node));
 
@@ -17,28 +17,28 @@ Node *newNode (int x, int y)
 	return node;
 }
 
-Node *getNode(int x, int y)
+Node *getNode(long x, long y)
 {
 	Node *selected = nodes[y*m+x];
 	return selected;
 }
 
-int getNodeX(int index)
+long getNodeX(long index)
 {
 	return index % m;
 }
 
-int getNodeY(int index)
+long getNodeY(long index)
 {
 	return (index/m) % n;
 }
 
-Node *getNodeFromControlPost(int controlPost)
+Node *getNodeFromControlPost(long controlPost)
 {
 	//TODO
-	//int i;
-	const int hori = m-2; //controlPosts per horizontale zijde van het veld
-	const int vert = n-2; //controlPosts per verticale zijde van het veld
+	//long i;
+	const long hori = m-2; //controlPosts per horizontale zijde van het veld
+	const long vert = n-2; //controlPosts per verticale zijde van het veld
 	if(controlPost > numControlPosts||controlPost<1){
 		//bestaat niet!
 		return NULL;
@@ -62,9 +62,9 @@ Node *getNodeFromControlPost(int controlPost)
 	return NULL;
 }
 
-Line **getNodeConnections(Node *node, int *count)
+Line **getNodeConnections(Node *node, long *count)
 {	
-	int i;	
+	long i;	
 	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);	
 	*count = 0;
 	for(i = 0; i<numLines; i++){
@@ -82,9 +82,9 @@ Line **getNodeConnections(Node *node, int *count)
 	}	
 	return connected;
 }
-Line **getNodeConnectionsBackTrack(Node *node, int *count)
+Line **getNodeConnectionsBackTrack(Node *node, long *count)
 {	
-	int i;	
+	long i;	
 	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);	
 	*count = 0;
 	for(i = 0; i<numLines; i++){

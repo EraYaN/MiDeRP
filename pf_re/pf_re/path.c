@@ -14,18 +14,18 @@
 ///     | m
 
 void resetAllNodes(){
-	int i;
+	long i;
 	for(i=0; i<numNodes; i++)
 	{
 		nodes[i]->value = inf;
 	}
 }
-Node **findShortestRoute(Node *start, Node *end, int *count){
-	int j;	
-	int length, wavenum; 
-	int index = 0;
+Node **findShortestRoute(Node *start, Node *end, long *count){
+	long j;	
+	long length, wavenum; 
+	long index = 0;
 	Node *current;
-	int num, conns;
+	long num, conns;
 	Node **neighbours;
 	Line **linestoneighbours;
 	Node **path = (Node**)safeMalloc(sizeof(Node*)*numNodes);	
@@ -68,16 +68,16 @@ Node **findShortestRoute(Node *start, Node *end, int *count){
 	//return the path
 	return path;
 }
-int setValuesofField(Node *start, Node *goal){
-	int conns;
-	int num = 0;
-	int i,j;
-	//int max;
-	int currentNumber = 0;
-	int done = 0;
+long setValuesofField(Node *start, Node *goal){
+	long conns;
+	long num = 0;
+	long i,j;
+	//long max;
+	long currentNumber = 0;
+	long done = 0;
 	Node *current = start;
 	Node **wave;
-	int inCurrentWave;
+	long inCurrentWave;
 	Node **neighbours;
 	Line **linestoneighbours;
 	
@@ -128,8 +128,8 @@ int setValuesofField(Node *start, Node *goal){
 	return currentNumber;
 }
 
-int containsNode(Node* node, Node** collection, int count){
-	int i;
+long containsNode(Node* node, Node** collection, long count){
+	long i;
 	for(i = 0;i<count;i++){
 		if(collection[i]==node){
 			return i;

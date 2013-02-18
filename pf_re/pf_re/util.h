@@ -13,9 +13,9 @@ void *safeMalloc (size_t size);
 void printField();
 
 //Common variables
-const int m, n, maxConn;
+const long m, n, maxConn;
 
-int	numNodes,
+long	numNodes,
 	numLinesH,
 	numLinesV,
 	numLines,

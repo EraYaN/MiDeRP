@@ -4,7 +4,7 @@
 typedef struct node Node;
 #include "line.h"
 struct node {
-	int x,
+	long x,
 		y,
 		/*visited,*/ //Dijkstra
 		/*previous,*/ //Dijkstra
@@ -12,13 +12,13 @@ struct node {
 		value; //Lee
 };
 
-Node *newNode (int x, int y);
-Node *getNode(int x, int y);
-Node *getNodeFromControlPost(int controlPost);
-Line **getNodeConnections(Node *node, int *count);
-Line **getNodeConnectionsBackTrack(Node *node, int *count);
-int getNodeX(int index);
-int getNodeY(int index);
+Node *newNode (long x, long y);
+Node *getNode(long x, long y);
+Node *getNodeFromControlPost(long controlPost);
+Line **getNodeConnections(Node *node, long *count);
+Line **getNodeConnectionsBackTrack(Node *node, long *count);
+long getNodeX(long index);
+long getNodeY(long index);
 
 
 

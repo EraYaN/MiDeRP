@@ -10,15 +10,15 @@ struct line {
 	Node *origin;
 	Node *destination;
 
-	int mine;
+	long mine;
 };
 
-Line *newLineH (int i);
-Line *newLineV (int i);
+Line *newLineH (long i);
+Line *newLineV (long i);
 Line *getLine(Node *origin, Node *destination);
-Line *getLineFilter(Node *origin, Node *destination, int filter);
+Line *getLineFilter(Node *origin, Node *destination, long filter);
 
-int placeMine(Node *origin, Node *destination);
-int removeMine(Node *origin, Node *destination);
+long placeMine(Node *origin, Node *destination);
+long removeMine(Node *origin, Node *destination);
 
 #endif

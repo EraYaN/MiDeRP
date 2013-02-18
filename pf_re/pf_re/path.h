@@ -6,9 +6,9 @@
 #include "line.h"
 
 void resetAllNodes();
-Node **findShortestRoute(Node *start, Node *end, int *count);
-Node **setValuesofNeighbours(Node* node, int *num);
-int setValuesofField(Node *node, Node *goal);
-int containsNode(Node* node, Node** collection, int count);
+Node **findShortestRoute(Node *start, Node *end, long *count);
+Node **setValuesofNeighbours(Node* node, long *num);
+long setValuesofField(Node *node, Node *goal);
+long containsNode(Node* node, Node** collection, long count);
 
 #endif
