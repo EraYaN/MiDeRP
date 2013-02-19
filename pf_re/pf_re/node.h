@@ -4,12 +4,11 @@
 typedef struct node Node;
 #include "line.h"
 struct node {
-	long x,
-		y,
+	long x, y;
 		/*visited,*/ //Dijkstra
 		/*previous,*/ //Dijkstra
 		/*distance*/ //Dijkstra
-		value; //Lee
+    long value; //Lee
 };
 
 Node *newNode (long x, long y);

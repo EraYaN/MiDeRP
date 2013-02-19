@@ -10,7 +10,7 @@ struct line {
 	Node *origin;
 	Node *destination;
 
-	long mine;
+	char mine;
 };
 
 Line *newLineH (long i);

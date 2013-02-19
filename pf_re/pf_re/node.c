@@ -19,7 +19,7 @@ Node *newNode (long x, long y)
 
 Node *getNode(long x, long y)
 {
-	if(x>=m||y>=n||x<0||y<0) return NULL;	
+	if(x>=m||y>=n||x<0||y<0) return NULL;
 	return nodes[y*m+x];
 }
 
@@ -58,34 +58,32 @@ Node *getNodeFromControlPost(long controlPost)
 	} else {
 		//bestaat niet!
 		return NULL;
-	}	
+	}
 	return NULL;
 }
 
 Line **getNodeConnections(Node *node, long *count)
-{	
-	long i;	
-	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);	
+{
+	long i;
+	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);
 	*count = 0;
 	for(i = 0; i<numLines; i++){
 		if(lines[i]->mine) continue; //there is a mine on this line don't include it.
-		if(lines[i]->destination==node && lines[i]->origin->value > node->value){ //filter out marked nodes
+		if(lines[i]->destination==node /*&& lines[i]->origin->value > node->value*/){ //filter out marked nodes
 			//printf("Values: %d and %d",lines[i]->origin->value,node->value);
-			connected[*count]=lines[i];
-			(*count)++;
+			connected[(*count)++]=lines[i];
 		}
-		if(lines[i]->origin==node && lines[i]->destination->value > node->value){ //filter out marked nodes
+		if(lines[i]->origin==node/* && lines[i]->destination->value > node->value*/){ //filter out marked nodes
 			//printf("Values: %d and %d",lines[i]->destination->value,node->value);
-			connected[*count]=lines[i];
-			(*count)++;
+			connected[(*count)++]=lines[i];
 		}
-	}	
+	}
 	return connected;
 }
 Line **getNodeConnectionsBackTrack(Node *node, long *count)
-{	
-	long i;	
-	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);	
+{
+	long i;
+	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);
 	*count = 0;
 	for(i = 0; i<numLines; i++){
 		if(lines[i]->mine) continue; //there is a mine on this line don't include it.
@@ -99,6 +97,6 @@ Line **getNodeConnectionsBackTrack(Node *node, long *count)
 			connected[*count]=lines[i];
 			(*count)++;
 		}
-	}	
+	}
 	return connected;
 }
