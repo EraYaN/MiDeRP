@@ -10,7 +10,7 @@ clock_t begin = 0, end = 0;
 
 void *safeMalloc (size_t size)
 {
-	size_t* p;	
+	size_t* p;
 	#ifdef _DEBUG
 	if(size>100) printf ("safeMalloc: Allocating %ld bytes... ", size);
 	#endif
@@ -32,19 +32,19 @@ void *safeMalloc (size_t size)
 size_t report_size(void *ptr) {
     return * (((size_t *) ptr) - 1);
 }
-void printMemSize() {	
-	if(memusage>(8*1024)){		
-		printf("~~~~~Mem Size: %ld kiB~~~~~\n",memusage/(1024));
-	} else if(memusage>(8*1024*1024)){		
-		printf("~~~~~Mem Size: %ld MiB~~~~~\n",memusage/(1024*1024));
-	} else if(memusage>(2UL*1024UL*1024UL*1024UL)){		
+void printMemSize() {
+	if(memusage>(8UL*1024UL)){
+		printf("~~~~~Mem Size: %ld kiB~~~~~\n",memusage/(1024UL));
+	} else if(memusage>(8UL*1024UL*1024UL)){
+		printf("~~~~~Mem Size: %ld MiB~~~~~\n",memusage/(1024UL*1024UL));
+	} else if(memusage>(2UL*1024UL*1024UL*1024UL)){
 		printf("~~~~~Mem Size: %ld GiB~~~~~\n",memusage/(1024UL*1024UL*1024UL));
 	} else {
-		printf("~~~~~Mem Size: %ld B~~~~~\n",memusage);
-	}    
+		printf("~~~~~Mem Size: %ld B~~~~~\n",(long)memusage);
+	}
 }
 void startStopwatch(){
-	begin = clock(); 
+	begin = clock();
 }
 double stopStopwatch(){
 	end = clock();
@@ -55,13 +55,13 @@ void safeFree (void *ptr){
 	#ifdef _DEBUG
 	if(size>100) printf ("safeFree: Freeing %ld bytes at %x... ", size, ptr);
 	#endif
-	if(ptr){		
+	if(ptr){
 		free(((size_t*)ptr)-1);
 		memusage -= size;
 	} else {
 		printf("ERROR: Tried to free something not allocated.\n");
 	}
-	#ifdef _DEBUG	
+	#ifdef _DEBUG
 	if(size>100) printf ("Done\n");
 	#endif
 	return;
@@ -69,7 +69,7 @@ void safeFree (void *ptr){
 
 void printField(){
 	//line chars
-	
+
 	/*char pv = 186;
 	char ph = 205;*/
 	char v = 179;
@@ -81,11 +81,11 @@ void printField(){
 	long x;
 	long y;
 	//long i;
-	printf("\n\n");	
+	printf("\n\n");
 	for(y = n-1;y>=0;y--){
 		for(x = 0;x<m;x++){
 			tmp = getNode(x,y);
-			printf("(%03d)", tmp->value);
+			printf("(%03ld)", tmp->value);
 			if(x<m-1){
 				//node to the left exists
 				tmpline = getLineFilter(tmp,getNode(x+1,y),0);
@@ -96,10 +96,10 @@ void printField(){
 				}
 			}
 			//printf("(%x,%d;%03d)", tmp->x, tmp->y,tmp->value);
-		}		
+		}
 		if(y>0){
 			//there is a row under this one.
-			
+
 			printf("\n");
 			for(x = 0;x<m;x++){
 				tmpline = getLineFilter(getNode(x,y),getNode(x,y-1),0);
@@ -112,7 +112,7 @@ void printField(){
 				printf("%s",spacing);
 				printf(" ");
 			}
-			printf("\n",spacing);
+			printf("\n");
 		}
 	}
 	printf("\n\n");

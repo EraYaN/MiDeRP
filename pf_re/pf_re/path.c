@@ -21,15 +21,15 @@ void resetAllNodes(){
 	}
 }
 Node **findShortestRoute(Node *start, Node *end, long *count){
-	long j;	
-	long length, wavenum; 
-	long index = 0;
+	long j;
+	long length, wavenum;
+	//long index = 0;
 	Node *current;
 	long num, conns;
 	Node **neighbours;
 	Line **linestoneighbours;
-	Node **path = (Node**)safeMalloc(sizeof(Node*)*numNodes);	
-	//Node **neigbours = (Node**)safeMalloc(sizeof(Node*)*numNodes);	
+	Node **path = (Node**)safeMalloc(sizeof(Node*)*numNodes);
+	//Node **neigbours = (Node**)safeMalloc(sizeof(Node*)*numNodes);
 	*count = 0; //current index in path
 	//reset all values
 	resetAllNodes();
@@ -46,17 +46,17 @@ Node **findShortestRoute(Node *start, Node *end, long *count){
 		conns = 0;
 		linestoneighbours = getNodeConnectionsBackTrack(current,&conns);
 		neighbours = (Node**)safeMalloc(sizeof(Node*)*conns);
-		for(j=0;j<conns;j++){		
-			if(linestoneighbours[j]->origin==current){
-				neighbours[num] = linestoneighbours[j]->destination;			
+		for(j=0;j<conns;j++){
+			if(linestoneighbours[j]->destination==current){
+				neighbours[num] = linestoneighbours[j]->origin;
 				num++;
-			} else if(linestoneighbours[j]->destination==current){			
-				neighbours[num] = linestoneighbours[j]->origin;			
-				num++;			
+			} else if(linestoneighbours[j]->origin==current){
+				neighbours[num] = linestoneighbours[j]->destination;
+				num++;
 			}
 		}
 		safeFree(linestoneighbours);
-		for(j=0;j<num;j++){		
+		for(j=0;j<num;j++){
 			if(neighbours[j]->value==current->value-1){
 				path[(*count)++]=neighbours[j];
 				current = neighbours[j];
@@ -64,7 +64,7 @@ Node **findShortestRoute(Node *start, Node *end, long *count){
 		}
 		safeFree(neighbours);
 	}
-	
+
 	//return the path
 	return path;
 }
@@ -80,7 +80,7 @@ long setValuesofField(Node *start, Node *goal){
 	long inCurrentWave;
 	Node **neighbours;
 	Line **linestoneighbours;
-	
+
 	start->value = currentNumber;
 	while(!done){
 		inCurrentWave = 0;
@@ -91,23 +91,23 @@ long setValuesofField(Node *start, Node *goal){
 			}
 		}
 		for(i=0;i<inCurrentWave&&!done;i++){
-			
+
 			current = wave[i];
 			num = 0;
 			conns = 0;
 			linestoneighbours = getNodeConnections(current,&conns);
 			neighbours = (Node**)safeMalloc(sizeof(Node*)*conns);
-			for(j=0;j<conns;j++){		
+			for(j=0;j<conns;j++){
 				if(linestoneighbours[j]->origin==current){
-					neighbours[num] = linestoneighbours[j]->destination;			
+					neighbours[num] = linestoneighbours[j]->destination;
 					num++;
-				} else if(linestoneighbours[j]->destination==current){			
-					neighbours[num] = linestoneighbours[j]->origin;			
-					num++;			
+				} else if(linestoneighbours[j]->destination==current){
+					neighbours[num] = linestoneighbours[j]->origin;
+					num++;
 				}
 			}
 			safeFree(linestoneighbours);
-			for(j=0;j<num;j++){		
+			for(j=0;j<num;j++){
 				if(neighbours[j]->value > currentNumber){
 					neighbours[j]->value = currentNumber+1;
 				}

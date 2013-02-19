@@ -1,6 +1,6 @@
 #ifndef UTIL_H
 #define UTIL_H
-
+#define _DEBUG
 #include <stdlib.h>
 #include <time.h>
 

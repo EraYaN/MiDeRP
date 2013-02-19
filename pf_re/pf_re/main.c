@@ -3,7 +3,6 @@
 #include <string.h>
 #include <limits.h>
 //#include <iostream>
-
 #include "util.h"
 #include "node.h"
 #include "line.h"
@@ -11,7 +10,7 @@
 
 void createGrid();
 
-long main()
+int main()
 {
 	long i,j = 0;
 	long count;
@@ -32,7 +31,7 @@ long main()
 		printf("ERROR: 3 is the minimun for n, your value of: %ld doesn't qualify.\n",n);
 		nodataerror = 0;
 	}
-	#ifdef _DEBUG	
+	#ifdef _DEBUG
 	printMemSize();
 	#endif
 	if(nodataerror){
@@ -44,62 +43,55 @@ long main()
 		printf("Enter start and end controlpost (starting from the bottom left numbered CCW)\n\tlike so:\n\"start\tend\" (without the quotes)\n");
 		scanf("%ld%ld",&start,&end);
 		if(start>numControlPosts||start<1){
-			printf("ERROR: Start point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1,numControlPosts);
+			printf("ERROR: Start point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1L,numControlPosts);
 			nodataerror = 0;
 		}
 		if(end>numControlPosts||end<1){
-			printf("ERROR: End point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1,numControlPosts);
+			printf("ERROR: End point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1L,numControlPosts);
 			nodataerror = 0;
 		}
 		if(start==end){
-			printf("ERROR: Start point is the same as endpoint you won't be needing any navigation.\n",n);
+			printf("ERROR: Start point is the same as endpoint you won't be needing any navigation.\n");
 			nodataerror = 0;
 		}
-		#ifdef _DEBUG	
+		#ifdef _DEBUG
 		printMemSize();
 		#endif
 		if(nodataerror){
 			nodes = (Node**)safeMalloc(sizeof(Node*)*numNodes);
-			#ifdef _DEBUG	
+			#ifdef _DEBUG
 			printMemSize();
 			#endif
 			lines = (Line**)safeMalloc(sizeof(Line*)*numLines);
-			#ifdef _DEBUG	
+			#ifdef _DEBUG
 			printMemSize();
 			#endif
 			createGrid();
-			#ifdef _DEBUG	
+			#ifdef _DEBUG
 			printMemSize();
 			#endif
 			//create mines
-			placeMine(getNode(1,3),getNode(1,4));
-			placeMine(getNode(2,3),getNode(2,4));
-			placeMine(getNode(3,3),getNode(3,4));
-			placeMine(getNode(4,3),getNode(4,4));
-			placeMine(getNode(1,2),getNode(1,3));
-			placeMine(getNode(1,3),getNode(1,4));
-			placeMine(getNode(3,0),getNode(3,1));
-			placeMine(getNode(3,1),getNode(3,2));
-			placeMine(getNode(3,2),getNode(3,3));
-			placeMine(getNode(3,3),getNode(3,4));
+			/*placeMine(getNode(2,0),getNode(3,0));
+			placeMine(getNode(2,1),getNode(3,1));
+			placeMine(getNode(2,2),getNode(3,2));
 			placeMine(getNode(2,3),getNode(3,3));
-			placeMine(getNode(1,3),getNode(2,3));	
+			placeMine(getNode(2,4),getNode(3,4));*/
 			//testing fpor mem leaks, done -> none
 			//for(j=0;j<1000000;j++){
-				printf("#%ld; CPs: %d and %d\n",j,start,end);
+				printf("#%ld; CPs: %ld and %ld\n",j,start,end);
 				startStopwatch();
 				//get actual path.
 				path = findShortestRoute(getNodeFromControlPost(start),getNodeFromControlPost(end),&count);
 				printf("Finding the path took %0.4lf seconds.\n",stopStopwatch());
-				printf("Path length: %d\n",count);	
+				printf("Path length: %ld\n",count);
 				for(i=0;i<count;i++){
-					printf("\tPath node #%d at (x,y) => (%d,%d)\n",i,path[i]->x,path[i]->y);
+					printf("\tPath node #%ld at (x,y) => (%ld,%ld)\n",i,path[i]->x,path[i]->y);
 				}
-				#ifdef _DEBUG	
+				#ifdef _DEBUG
 				printMemSize();
 				#endif
 				safeFree(path);
-				
+
 			//}
 			#ifdef _DEBUG
 				printField();
@@ -108,13 +100,13 @@ long main()
 			printf("There were errors, can not proceed.\n");
 		}
 	}
-	#ifdef _DEBUG	
+	#ifdef _DEBUG
 	printMemSize();
 	#endif
 	printf("Hit enter to exit\n");
 	//empty stdin and wait
 	emptySTDIN();
-	getchar();	
+	getchar();
 	//
 	return 0;
 }
@@ -130,12 +122,12 @@ void createGrid()
 
 	for(i=0; i<numLinesH; i++)
 	{
-		Line *line = newLineH(i);		
+		Line *line = newLineH(i);
 		lines[i] = line;
 	}
 	for(i=0; i<numLinesV; i++)
 	{
-		Line *line = newLineV(i);		
+		Line *line = newLineV(i);
 		lines[i+numLinesH] = line;
 	}
 }

@@ -10,7 +10,7 @@ Line *newLineH (long i)
 	long x_dest = x_orig+1;
 	line->origin = getNode(x_orig,y);
 	line->destination = getNode(x_dest, y);
-	line->mine = 0;	
+	line->mine = 0;
 
 	return line;
 }
@@ -22,7 +22,7 @@ Line *newLineV (long i)
 	long y_dest = y_orig+1;
 	line->origin = getNode(x,y_orig);
 	line->destination = getNode(x, y_dest);
-	line->mine = 0;	
+	line->mine = 0;
 
 	return line;
 }
@@ -32,7 +32,7 @@ Line *getLine(Node *origin, Node *destination){
 Line *getLineFilter(Node *origin, Node *destination, long filter){
 	long i;
 	for(i=0; i<numLines; i++){
-		if((lines[i]->origin == origin && lines[i]->destination == destination) || (lines[i]->origin == destination && lines[i]->destination == origin) && (lines[i]->mine == 0||!filter))
+		if((lines[i]->origin == origin && lines[i]->destination == destination) || ((lines[i]->origin == destination && lines[i]->destination == origin) && (lines[i]->mine == 0||!filter)))
 			return lines[i];
 	}
 	return NULL;
