@@ -6,31 +6,26 @@
 
 const long maxConn = 4 /* We use it in a grid */;
 clock_t begin = 0, end = 0;
-
+long numberAlloc = 0;
 
 void *safeMalloc (size_t size)
 {
-	size_t* p;
+	void* p;
 	#ifdef _DEBUG
-	if(size>100) printf ("safeMalloc: Allocating %ld bytes... ", size);
+	if(size>100) printf ("(%05ld/%05ld) safeMalloc: Allocating %ld bytes... ", numberAlloc,5*m*n,size);
+	numberAlloc++;
 	#endif
-	p = (size_t*)malloc(size+sizeof(size_t *));
+	p = malloc(size);
 	if (p == NULL)
 	{
 		printf ("ERROR: Out of memory!\n");
 		exit (1);
 	}
-	p = p;
-	p[0] = size;
-	p = p+1;
 	memusage += size;
 	#ifdef _DEBUG
 	if(size>100) printf ("Done at %x\n",p);
 	#endif
-	return (void*)p;
-}
-size_t report_size(void *ptr) {
-    return * (((size_t *) ptr) - 1);
+	return p;
 }
 void printMemSize() {
 	if(memusage>(8UL*1024UL)){
@@ -51,18 +46,17 @@ double stopStopwatch(){
 	return ((double)end - (double)begin) / CLOCKS_PER_SEC;
 }
 void safeFree (void *ptr){
-	size_t size = report_size(ptr);
+
 	#ifdef _DEBUG
-	if(size>100) printf ("safeFree: Freeing %ld bytes at %x... ", size, ptr);
+	//printf ("safeFree: Freeing at %x... ", ptr);
 	#endif
 	if(ptr){
-		free(((size_t*)ptr)-1);
-		memusage -= size;
+		free(ptr);
 	} else {
 		printf("ERROR: Tried to free something not allocated.\n");
 	}
 	#ifdef _DEBUG
-	if(size>100) printf ("Done\n");
+	//printf ("Done\n");
 	#endif
 	return;
 }
@@ -104,7 +98,7 @@ void printField(){
 			for(x = 0;x<m;x++){
 				tmpline = getLineFilter(getNode(x,y),getNode(x,y-1),0);
 				printf("%s",spacing);
-				if(tmpline->mine == 1){
+				if(tmpline&&tmpline->mine == 1){
 					printf("%c",mc);
 				} else {
 					printf("%c",v);

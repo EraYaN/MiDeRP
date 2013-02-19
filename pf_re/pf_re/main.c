@@ -94,7 +94,9 @@ int main()
 
 			//}
 			#ifdef _DEBUG
+			if(m<=20){
 				printField();
+			}
 			#endif
 		} else {
 			printf("There were errors, can not proceed.\n");

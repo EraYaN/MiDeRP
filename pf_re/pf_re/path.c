@@ -77,26 +77,41 @@ long setValuesofField(Node *start, Node *goal){
 	long done = 0;
 	Node *current = start;
 	Node **wave;
+	Node **buwave;
 	long inCurrentWave;
+	long inPrevWave;
 	Node **neighbours;
 	Line **linestoneighbours;
 
 	start->value = currentNumber;
+	neighbours = (Node**)safeMalloc(sizeof(Node*));
+	neighbours[0] = start;
+	num = 1;
 	while(!done){
-		inCurrentWave = 0;
-		wave = (Node**)safeMalloc(sizeof(Node*)*numNodes/4);
-		for(i=0;i<numNodes;i++){
-			if(nodes[i]->value == currentNumber){
-				wave[inCurrentWave++] = nodes[i];
-			}
+	    printField();
+	    inPrevWave = inCurrentWave;
+		inCurrentWave = num;
+		buwave = wave;
+		if(!neighbours) {
+            done = 1;
+            break;
 		}
+		//safeFree(buwave);
+		wave = neighbours;//(Node**)safeMalloc(sizeof(Node*)*((num*3)+1));
+		/*for(i=0;i<num;i++){
+			if(neighbours[i]->value == currentNumber){
+				wave[inCurrentWave++] = getNode(neighbours[i]->x,neighbours[i]->y);
+			}
+		}*/
+
+        neighbours = (Node**)safeMalloc(sizeof(Node*)*conns);
+        num = 0;
 		for(i=0;i<inCurrentWave&&!done;i++){
 
 			current = wave[i];
-			num = 0;
 			conns = 0;
 			linestoneighbours = getNodeConnections(current,&conns);
-			neighbours = (Node**)safeMalloc(sizeof(Node*)*conns);
+
 			for(j=0;j<conns;j++){
 				if(linestoneighbours[j]->origin==current){
 					neighbours[num] = linestoneighbours[j]->destination;
@@ -107,27 +122,28 @@ long setValuesofField(Node *start, Node *goal){
 				}
 			}
 			safeFree(linestoneighbours);
-			for(j=0;j<num;j++){
-				if(neighbours[j]->value > currentNumber){
-					neighbours[j]->value = currentNumber+1;
-				}
-				if(neighbours[j] == goal){
-					done = 1;
-					break;
-				}
-			}
-			safeFree(neighbours);
+
+			//safeFree(neighbours);
 		}
-		safeFree(wave);
+		for(j=0;j<num;j++){
+            if(neighbours[j]->value > currentNumber){
+                neighbours[j]->value = currentNumber+1;
+            }
+            if(neighbours[j] == goal){
+                done = 1;
+                break;
+            }
+        }
+		//safeFree(wave);
 		currentNumber++;
 		//printField();
 		//done with wave
 
 	}
 	//linestoneighbours = getNodeConnections(node,&conns);
+	free(wave);
 	return currentNumber;
 }
-
 long containsNode(Node* node, Node** collection, long count){
 	long i;
 	for(i = 0;i<count;i++){

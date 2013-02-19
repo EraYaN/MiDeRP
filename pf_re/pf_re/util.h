@@ -22,7 +22,7 @@ void printField();
 void emptySTDIN();
 
 //Common variables
-long m, n;
+long m, n, numberAlloc;
 const long maxConn;
 
 long	numNodes,
