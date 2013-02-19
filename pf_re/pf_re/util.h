@@ -21,6 +21,7 @@ void startStopwatch();
 double stopStopwatch();
 void printMemSize();
 void printField();
+void saveField(char* filename);
 void emptySTDIN();
 
 //Common variables

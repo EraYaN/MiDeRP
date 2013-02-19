@@ -111,6 +111,61 @@ void printField(){
 	}
 	printf("\n\n");
 }
+void saveField(char* filename){
+	//line chars
+	FILE *hf=fopen(filename,"wt");
+	/*char pv = 186;
+	char ph = 205;*/
+	char v = '|';
+	char h = '-';
+	char mc = 'x';
+	Node *tmp;
+	Line *tmpline;
+	char* spacing = "  ";
+	long x;
+	long y;
+	//long i;
+	fprintf(hf,"Header\n\n");
+	for(y = n-1;y>=0;y--){
+		for(x = 0;x<m;x++){
+			tmp = getNode(x,y);
+			fprintf(hf,"%ld;%ld;%ld;", tmp->x,tmp->y,tmp->value);
+			if(x<m-1){
+				//node to the left exists
+				tmpline = getLineFilter(tmp,getNode(x+1,y),0);
+				if(tmpline){
+					if(tmpline->mine==1){
+						fprintf(hf,"%c;",mc);
+					} else {
+						fprintf(hf,"%c;",h);
+					}
+				}
+			}
+			//printf("(%d,%d;%03d)", tmp->x, tmp->y,tmp->value);
+		}
+		if(y>0){
+			//there is a row under this one.
+
+			fprintf(hf,"\n");
+			for(x = 0;x<m;x++){
+				tmpline = getLineFilter(getNode(x,y),getNode(x,y-1),0);
+				//fprintf(hf,"%s",spacing);
+				if(tmpline){
+					if(tmpline->mine == 1){
+						fprintf(hf,"%c;",mc);
+					} else {
+						fprintf(hf,"%c;",v);
+					}
+				}
+				//fprintf(hf,"%s",spacing);
+				//fprintf(hf," ");
+			}
+			fprintf(hf,"\n");
+		}
+	}
+	fprintf(hf,"\n\n");
+	fclose(hf);
+}
 void emptySTDIN(){
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);

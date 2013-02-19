@@ -110,9 +110,21 @@ long setValuesofField(Node *start, Node *goal){
 			}
 		}*/
 		//safeFree(neighbours);
-		printf("Making new wave (#%ld) of %ld elements, last wave: %ld items.\n",currentNumber,inCurrentWave*3+1, inCurrentWave);
+		if(currentNumber%1==0){
+			printf("Making new wave (#%ld) of %ld elements, last wave: %ld items.\n",currentNumber,inCurrentWave+4, inCurrentWave);
+		}
+		if(currentNumber>995){
+			printf("Going to fail?. (Hit enter once or twice)\n");
+			saveField("iterationfile.txt");
+			getchar();
+			getchar();
+		}
+		if(inCurrentWave==0){
+			done = 1;
+			break;
+		}
 		//printf("Making new wave of ");
-        neighbours = (Node**)safeMalloc(sizeof(Node*)*(inCurrentWave*3+1));
+        neighbours = (Node**)safeMalloc(sizeof(Node*)*(inCurrentWave+4));
         num = 0;
 		for(i=0;i<inCurrentWave&&!done;i++){
 

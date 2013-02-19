@@ -16,7 +16,7 @@ int main()
 	long count;
 	long start = 1, end = 1;
 	char nodataerror = 1;
-	Node **path;
+	Node **path;	
 	#ifdef _DEBUG
 	printf("ULONG_MAX: %ld (%d), UINT_MAX: %d (%d),\nUSHRT_MAX: %d (%d), UCHAR_MAX: %d (%d)\n\n",ULONG_MAX,sizeof(unsigned long),UINT_MAX,sizeof(unsigned int),USHRT_MAX,sizeof(unsigned short),UCHAR_MAX,sizeof(unsigned char));
 	printMemSize();
@@ -101,6 +101,7 @@ int main()
 				printField();
 			}
 			#endif
+			saveField("final_field.txt");
 		} else {
 			printf("There were errors, can not proceed.\n");
 		}
