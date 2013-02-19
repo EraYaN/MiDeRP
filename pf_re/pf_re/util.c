@@ -23,7 +23,7 @@ void *safeMalloc (size_t size)
 	}
 	memusage += size;
 	#ifdef _DEBUG
-	if(size>100) printf ("Done at %x\n",p);
+	if(size>100) printf ("Done at %p\n",p);
 	#endif
 	return p;
 }
@@ -48,7 +48,7 @@ double stopStopwatch(){
 void safeFree (void *ptr){
 
 	#ifdef _DEBUG
-	//printf ("safeFree: Freeing at %x... ", ptr);
+	//printf ("safeFree: Freeing at %p... ", ptr);
 	#endif
 	if(ptr){
 		free(ptr);
@@ -89,7 +89,7 @@ void printField(){
 					printf("%c",h);
 				}
 			}
-			//printf("(%x,%d;%03d)", tmp->x, tmp->y,tmp->value);
+			//printf("(%d,%d;%03d)", tmp->x, tmp->y,tmp->value);
 		}
 		if(y>0){
 			//there is a row under this one.

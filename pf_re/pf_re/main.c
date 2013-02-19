@@ -58,6 +58,7 @@ int main()
 		printMemSize();
 		#endif
 		if(nodataerror){
+			printf("Input accepted...\n");
 			nodes = (Node**)safeMalloc(sizeof(Node*)*numNodes);
 			#ifdef _DEBUG
 			printMemSize();
@@ -66,7 +67,9 @@ int main()
 			#ifdef _DEBUG
 			printMemSize();
 			#endif
+			printf("Creating grid...");
 			createGrid();
+			printf("Done\n");
 			#ifdef _DEBUG
 			printMemSize();
 			#endif
