@@ -19,8 +19,8 @@ Node *newNode (long x, long y)
 
 Node *getNode(long x, long y)
 {
-	Node *selected = nodes[y*m+x];
-	return selected;
+	if(x>=m||y>=n||x<0||y<0) return NULL;	
+	return nodes[y*m+x];
 }
 
 long getNodeX(long index)

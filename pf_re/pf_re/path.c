@@ -76,20 +76,22 @@ long setValuesofField(Node *start, Node *goal){
 	long currentNumber = 0;
 	long done = 0;
 	Node *current = start;
-	Node **wave;
+	Node **wave, **buwave;
 	long inCurrentWave;
+	long inPrevWave;
 	Node **neighbours;
 	Line **linestoneighbours;
-	
+	inCurrentWave = 1;
 	start->value = currentNumber;
+	wave = (Node**)safeMalloc(sizeof(Node*)*2);
+	wave[0] = start;
 	while(!done){
+		inPrevWave = inCurrentWave;
 		inCurrentWave = 0;
-		wave = (Node**)safeMalloc(sizeof(Node*)*numNodes/4);
-		for(i=0;i<numNodes;i++){
-			if(nodes[i]->value == currentNumber){
-				wave[inCurrentWave++] = nodes[i];
-			}
-		}
+		buwave = wave;
+		wave = (Node**)safeMalloc(sizeof(Node*)*inPrevWave*3);
+		getNextWave(buwave,wave,inPrevWave,&inCurrentWave);
+		safeFree(buwave);
 		for(i=0;i<inCurrentWave&&!done;i++){
 			
 			current = wave[i];
@@ -118,7 +120,7 @@ long setValuesofField(Node *start, Node *goal){
 			}
 			safeFree(neighbours);
 		}
-		safeFree(wave);
+		//safeFree(wave);
 		currentNumber++;
 		//printField();
 		//done with wave
@@ -127,7 +129,72 @@ long setValuesofField(Node *start, Node *goal){
 	//linestoneighbours = getNodeConnections(node,&conns);
 	return currentNumber;
 }
-
+void markNeighbours(Node* node){
+	long x = node->x, y = node->y;
+	long value = node->value;
+	Node *left = getNode(x-1,y);
+	Node *right = getNode(x+1,y);
+	Node *up = getNode(x,y+1);
+	Node *down = getNode(x,y-1);
+	if(left){
+		if(left->value > value){
+			left->value = value+1;
+		}
+	}
+	if(right){
+		if(right->value > value){
+			right->value = value+1;
+		}
+	}
+	if(up){
+		if(up->value > value){
+			up->value = value+1;
+		}
+	}
+	if(down){
+		if(down->value > value){
+			down->value = value+1;
+		}
+	}
+}
+void getNextWave(Node** wave, Node** newwave, long length, long *count){
+	long i;
+	long x, y;
+	long value;
+	Node *left;
+	Node *right;
+	Node *up;
+	Node *down;
+	*count = 0;
+	for(i=0;i<length;i++){
+		x = wave[i]->x, y = wave[i]->y;
+		value = wave[i]->value;
+		left = getNode(x-1,y);
+		right = getNode(x+1,y);
+		up = getNode(x,y+1);
+		down = getNode(x,y-1);
+		if(left){
+			if(left->value > value){
+				newwave[(*count)++] = left;
+			}
+		}
+		if(right){
+			if(right->value > value){
+				newwave[(*count)++] = right;
+			}
+		}
+		if(up){
+			if(up->value > value){
+				newwave[(*count)++] = up;
+			}
+		}
+		if(down){
+			if(down->value > value){
+				newwave[(*count)++] = down;
+			}
+		}
+	}
+}
 long containsNode(Node* node, Node** collection, long count){
 	long i;
 	for(i = 0;i<count;i++){

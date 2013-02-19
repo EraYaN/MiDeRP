@@ -15,7 +15,7 @@ long main()
 {
 	long i,j = 0;
 	long count;
-	long start = 1, end = 1;
+	long startcp = 1, endcp = 1;
 	char nodataerror = 1;
 	Node **path;
 	#ifdef _DEBUG
@@ -42,16 +42,16 @@ long main()
 		numLines = numLinesH + numLinesV;
 		numControlPosts = 2*(m-2) + 2*(n-2);
 		printf("Enter start and end controlpost (starting from the bottom left numbered CCW)\n\tlike so:\n\"start\tend\" (without the quotes)\n");
-		scanf("%ld%ld",&start,&end);
-		if(start>numControlPosts||start<1){
+		scanf("%ld%ld",&startcp,&endcp);
+		if(startcp>numControlPosts||startcp<1){
 			printf("ERROR: Start point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1,numControlPosts);
 			nodataerror = 0;
 		}
-		if(end>numControlPosts||end<1){
+		if(endcp>numControlPosts||endcp<1){
 			printf("ERROR: End point not on the grid, for these dimensions (%ldx%ld)\n\tthe control posts on the grid are numbered %ld through %ld.\n",m,n,1,numControlPosts);
 			nodataerror = 0;
 		}
-		if(start==end){
+		if(startcp==endcp){
 			printf("ERROR: Start point is the same as endpoint you won't be needing any navigation.\n",n);
 			nodataerror = 0;
 		}
@@ -72,7 +72,7 @@ long main()
 			printMemSize();
 			#endif
 			//create mines
-			placeMine(getNode(1,3),getNode(1,4));
+			/*placeMine(getNode(1,3),getNode(1,4));
 			placeMine(getNode(2,3),getNode(2,4));
 			placeMine(getNode(3,3),getNode(3,4));
 			placeMine(getNode(4,3),getNode(4,4));
@@ -83,13 +83,13 @@ long main()
 			placeMine(getNode(3,2),getNode(3,3));
 			placeMine(getNode(3,3),getNode(3,4));
 			placeMine(getNode(2,3),getNode(3,3));
-			placeMine(getNode(1,3),getNode(2,3));	
+			placeMine(getNode(1,3),getNode(2,3));	*/
 			//testing fpor mem leaks, done -> none
 			//for(j=0;j<1000000;j++){
-				printf("#%ld; CPs: %d and %d\n",j,start,end);
+				printf("#%ld; CPs: %d and %d\n",j,startcp,endcp);
 				startStopwatch();
 				//get actual path.
-				path = findShortestRoute(getNodeFromControlPost(start),getNodeFromControlPost(end),&count);
+				path = findShortestRoute(getNodeFromControlPost(startcp),getNodeFromControlPost(endcp),&count);
 				printf("Finding the path took %0.4lf seconds.\n",stopStopwatch());
 				printf("Path length: %d\n",count);	
 				for(i=0;i<count;i++){
