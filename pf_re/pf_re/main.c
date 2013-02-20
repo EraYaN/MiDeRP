@@ -96,8 +96,9 @@ int main()
 			if(m<=20){
 				printField();
 			}
-			#endif
 			saveField("final_field.txt");
+			#endif
+			
 		} else {
 			printf("There were errors, can not proceed.\n");
 		}

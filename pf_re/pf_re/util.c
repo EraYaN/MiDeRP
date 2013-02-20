@@ -27,7 +27,7 @@ void *safeMalloc (size_t size)
 	#endif
 	return p;
 }
-void printMemSize() {
+void printMemSize(void) {
 	if(memusage>(8UL*1024UL)){
 		printf("~~~~~Mem Size: %ld kiB~~~~~\n",memusage/(1024UL));
 	} else if(memusage>(8UL*1024UL*1024UL)){
@@ -38,10 +38,10 @@ void printMemSize() {
 		printf("~~~~~Mem Size: %ld B~~~~~\n",(long)memusage);
 	}
 }
-void startStopwatch(){
+void startStopwatch(void){
 	begin = clock();
 }
-double stopStopwatch(){
+double stopStopwatch(void){
 	end = clock();
 	return ((double)end - (double)begin) / CLOCKS_PER_SEC;
 }
@@ -61,7 +61,7 @@ void safeFree (void *ptr){
 	return;
 }
 
-void printField(){
+void printField(void){
 	//line chars
 
 	/*char pv = 186;
@@ -178,7 +178,7 @@ void saveField(char* filename){
 	fprintf(hf,"\n\n");
 	fclose(hf);
 }
-void emptySTDIN(){
+void emptySTDIN(void){
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
 }

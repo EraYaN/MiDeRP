@@ -13,7 +13,7 @@
 ///  -------
 ///     | m
 
-void resetAllNodes(){
+void resetAllNodes(void){
 	long i;
 	for(i=0; i<numNodes; i++)
 	{

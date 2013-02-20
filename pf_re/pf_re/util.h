@@ -18,12 +18,12 @@ size_t memusage;
 //Function prototypes
 void *safeMalloc (size_t size);
 void safeFree (void *ptr);
-void startStopwatch();
-double stopStopwatch();
-void printMemSize();
-void printField();
+void startStopwatch(void);
+double stopStopwatch(void);
+void printMemSize(void);
+void printField(void);
 void saveField(char* filename);
-void emptySTDIN();
+void emptySTDIN(void);
 
 //Common variables
 long m, n, numberAlloc;

@@ -7,10 +7,9 @@ typedef struct line Line;
 #include "util.h"
 
 struct line {
-	Node *origin;
-	Node *destination;
-
 	char mine;
+	Node *origin;
+	Node *destination;	
 };
 
 Line *newLineH (long i);
