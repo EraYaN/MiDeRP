@@ -5,9 +5,6 @@ typedef struct node Node;
 #include "line.h"
 struct node {
 	long x, y;
-		/*visited,*/ //Dijkstra
-		/*previous,*/ //Dijkstra
-		/*distance*/ //Dijkstra
     long value; //Lee
 };
 

@@ -19,7 +19,9 @@ Node *newNode (long x, long y)
 
 Node *getNode(long x, long y)
 {
-	if(x>=m||y>=n||x<0||y<0) return NULL;
+	if(y<0||x<0||y>=n||x>=m||y*m+x<0||y*m+x>=numNodes){
+		return NULL;
+	}
 	return nodes[y*m+x];
 }
 
@@ -83,7 +85,6 @@ Node *getNodeFromControlPost(long controlPost)
 }*/
 Line **getNodeConnections(Node *node, long *count)
 {
-	long i;
 	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);
 	Node *l = getNode(node->x-1,node->y);
 	Node *r = getNode(node->x+1,node->y);
@@ -111,7 +112,6 @@ Line **getNodeConnections(Node *node, long *count)
 }
 Line **getNodeConnectionsBackTrack(Node *node, long *count)
 {
-	long i;
 	Line **connected = (Line**)safeMalloc(sizeof(Line*)*maxConn);
 	Node *l = getNode(node->x-1,node->y);
 	Node *r = getNode(node->x+1,node->y);

@@ -110,15 +110,15 @@ long setValuesofField(Node *start, Node *goal){
 			}
 		}*/
 		//safeFree(neighbours);
-		if(currentNumber%1==0){
+		if(currentNumber%((n+m)/200)==0){
 			printf("Making new wave (#%ld) of %ld elements, last wave: %ld items.\n",currentNumber,inCurrentWave+4, inCurrentWave);
 		}
-		if(currentNumber>995){
+		/*if(currentNumber>995){
 			printf("Going to fail?. (Hit enter once or twice)\n");
 			saveField("iterationfile.txt");
 			getchar();
 			getchar();
-		}
+		}*/
 		if(inCurrentWave==0){
 			done = 1;
 			break;

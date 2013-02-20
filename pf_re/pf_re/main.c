@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-//#include <iostream>
 #include "util.h"
 #include "node.h"
 #include "line.h"
@@ -12,11 +11,11 @@ void createGrid();
 
 int main()
 {
-	long i,j = 0;
+	long i;
 	long count;
 	long start = 1, end = 1;
 	char nodataerror = 1;
-	Node **path;	
+	Node **path;
 	#ifdef _DEBUG
 	printf("ULONG_MAX: %ld (%d), UINT_MAX: %d (%d),\nUSHRT_MAX: %d (%d), UCHAR_MAX: %d (%d)\n\n",ULONG_MAX,sizeof(unsigned long),UINT_MAX,sizeof(unsigned int),USHRT_MAX,sizeof(unsigned short),UCHAR_MAX,sizeof(unsigned char));
 	printMemSize();
@@ -36,8 +35,8 @@ int main()
 	#endif
 	if(nodataerror){
 		numNodes =	m*n;
-		numLinesH = m*(n-1);
-		numLinesV = n*(m-1);
+		numLinesH = n*(m-1);
+		numLinesV = m*(n-1);
 		numLines = numLinesH + numLinesV;
 		numControlPosts = 2*(m-2) + 2*(n-2);
 		printf("Enter start and end controlpost (starting from the bottom left numbered CCW)\n\tlike so:\n\"start\tend\" (without the quotes)\n");
@@ -79,11 +78,8 @@ int main()
 			placeMine(getNode(2,2),getNode(3,2));
 			placeMine(getNode(2,3),getNode(3,3));
 			placeMine(getNode(2,4),getNode(3,4));*/
-			//testing fpor mem leaks, done -> none
-			//for(j=0;j<1000000;j++){
-				printf("#%ld; CPs: %ld and %ld\n",j,start,end);
+				printf("Finding Path... CPs: %ld and %ld\n",start,end);
 				startStopwatch();
-				//get actual path.
 				path = findShortestRoute(getNodeFromControlPost(start),getNodeFromControlPost(end),&count);
 				printf("Finding the path took %0.4lf seconds.\n",stopStopwatch());
 				printf("Path length: %ld\n",count);
@@ -95,7 +91,7 @@ int main()
 				#endif
 				safeFree(path);
 
-			//}
+
 			#ifdef _DEBUG
 			if(m<=20){
 				printField();

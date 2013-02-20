@@ -12,7 +12,7 @@ void *safeMalloc (size_t size)
 {
 	void* p;
 	#ifdef _DEBUG
-	if(size>100) printf ("(%05ld/%05ld) safeMalloc: Allocating %ld bytes... ", numberAlloc,5*m*n,size);
+	printf ("(%05ld/%05ld) safeMalloc: Allocating %ld bytes... ", numberAlloc,5*m*n,size);
 	numberAlloc++;
 	#endif
 	p = malloc(size);
@@ -23,7 +23,7 @@ void *safeMalloc (size_t size)
 	}
 	memusage += size;
 	#ifdef _DEBUG
-	if(size>100) printf ("Done at %p\n",p);
+	printf ("Done at %p\n",p);
 	#endif
 	return p;
 }
@@ -48,7 +48,7 @@ double stopStopwatch(){
 void safeFree (void *ptr){
 
 	#ifdef _DEBUG
-	//printf ("safeFree: Freeing at %p... ", ptr);
+	printf ("safeFree: Freeing at %p... ", ptr);
 	#endif
 	if(ptr){
 		free(ptr);
@@ -56,7 +56,7 @@ void safeFree (void *ptr){
 		printf("ERROR: Tried to free something not allocated.\n");
 	}
 	#ifdef _DEBUG
-	//printf ("Done\n");
+	printf ("Done\n");
 	#endif
 	return;
 }
@@ -69,6 +69,7 @@ void printField(){
 	char v = 179;
 	char h = 196;
 	char mc = 'x';
+
 	Node *tmp;
 	Line *tmpline;
 	char* spacing = "  ";
@@ -79,14 +80,18 @@ void printField(){
 	for(y = n-1;y>=0;y--){
 		for(x = 0;x<m;x++){
 			tmp = getNode(x,y);
-			printf("(%03ld)", tmp->value);
+			printf("(%04ld)", tmp->value);
 			if(x<m-1){
 				//node to the left exists
 				tmpline = getLineFilter(tmp,getNode(x+1,y),0);
-				if(tmpline->mine){
-					printf("%c",mc);
+				if(tmpline){
+					if(tmpline->mine){
+						printf("%c",mc);
+					} else {
+						printf("%c",h);
+					}
 				} else {
-					printf("%c",h);
+					printf(" ");
 				}
 			}
 			//printf("(%d,%d;%03d)", tmp->x, tmp->y,tmp->value);
@@ -98,10 +103,14 @@ void printField(){
 			for(x = 0;x<m;x++){
 				tmpline = getLineFilter(getNode(x,y),getNode(x,y-1),0);
 				printf("%s",spacing);
-				if(tmpline&&tmpline->mine == 1){
-					printf("%c",mc);
+				if(tmpline){
+					if(tmpline->mine == 1){
+						printf("%c",mc);
+					} else {
+						printf("%c",v);
+					}
 				} else {
-					printf("%c",v);
+					printf(" ");
 				}
 				printf("%s",spacing);
 				printf(" ");
@@ -121,7 +130,6 @@ void saveField(char* filename){
 	char mc = 'x';
 	Node *tmp;
 	Line *tmpline;
-	char* spacing = "  ";
 	long x;
 	long y;
 	//long i;
@@ -129,7 +137,7 @@ void saveField(char* filename){
 	for(y = n-1;y>=0;y--){
 		for(x = 0;x<m;x++){
 			tmp = getNode(x,y);
-			fprintf(hf,"%ld;%ld;%ld;", tmp->x,tmp->y,tmp->value);
+			fprintf(hf,"%4ld;%4ld;%4ld;", tmp->x,tmp->y,tmp->value);
 			if(x<m-1){
 				//node to the left exists
 				tmpline = getLineFilter(tmp,getNode(x+1,y),0);
@@ -139,6 +147,8 @@ void saveField(char* filename){
 					} else {
 						fprintf(hf,"%c;",h);
 					}
+				} else {
+					fprintf(hf,"0;");
 				}
 			}
 			//printf("(%d,%d;%03d)", tmp->x, tmp->y,tmp->value);
@@ -156,6 +166,8 @@ void saveField(char* filename){
 					} else {
 						fprintf(hf,"%c;",v);
 					}
+				} else {
+					fprintf(hf,"0;");
 				}
 				//fprintf(hf,"%s",spacing);
 				//fprintf(hf," ");

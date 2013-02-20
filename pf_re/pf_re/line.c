@@ -35,8 +35,7 @@ Line *getLineFilter(Node *origin, Node *destination, int filter){
 	//horizontal lines were created first. up to index numLinesH-1;
 	if(!origin || !destination || origin==destination) return NULL;
 	if(origin->x==destination->x&&origin->y==destination->y){
-		//same
-		index;
+		//same	
 		return NULL;
 	}else if(origin->x==destination->x){
 		//Y is different, vertical lines
@@ -64,13 +63,13 @@ Line *getLineFilter(Node *origin, Node *destination, int filter){
 		return NULL;
 	}
 	if(checkLine(origin, destination, lines[index])){
-		if(!lines[index]->mine&&filter){
+		if(lines[index]->mine==0||filter==0){
 			return lines[index];
 		}
 	} else {
 		return getLineFilterFB(origin, destination,filter);
 	}
-	
+	return NULL; //all else failed
 }
 //old fallback
 Line *getLineFB(Node *origin, Node *destination){

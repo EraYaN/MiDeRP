@@ -1,15 +1,16 @@
 #ifndef UTIL_H
 #define UTIL_H
 /*#ifndef _DEBUG
-//#define _DEBUG
+//#define _DEBUG //define if you want verbose output
 #endif*/
 #include <stdlib.h>
+#include <limits.h>
 #include <time.h>
 
 #include "node.h"
 #include "line.h"
 
-#define inf 999;
+#define inf LONG_MAX;
 
 size_t memusage;
 
