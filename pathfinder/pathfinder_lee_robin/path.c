@@ -16,12 +16,16 @@ void findPath ()
 
 	//Wave expansion
 	print(1, 1, "Pathfinder initialized, starting wave expansion...\n");
+	startStopwatch ();
 	expand (&entryNode, 1); //use wave expansion
+	expansionTime = stopStopwatch ();
 	displayGrid (); //print results
 
 	//Backtrace
 	print(1, 1, "Tracing back path...\n\n");
+	startStopwatch ();
 	backTrace ();
+	backTraceTime = stopStopwatch ();
 	displayPath (); //print results
 
 }

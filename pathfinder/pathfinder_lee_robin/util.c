@@ -1,8 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "util.h"
 #include "node.h"
+
+clock_t begin = 0, end = 0;
 
 void *safeMalloc (size_t size)
 {
@@ -30,6 +33,15 @@ void print (char toconsole, char tofile, char *format, ...)
 	va_end (args);
 }
 
+void startStopwatch(void){
+	begin = clock();
+}
+
+double stopStopwatch(void){
+	end = clock();
+	return ((double)end - (double)begin) / CLOCKS_PER_SEC;
+}
+
 void createGrid()
 {
 	//Init
@@ -50,11 +62,11 @@ void displayGrid ()
 
 	if (m > 20 || n > 20)
 	{
-		print (1, 1, "Wave expansion done, grid is too big to print\n");
+		print (1, 1, "Wave expansion done (took %.4lfs), grid is too big to print\n", expansionTime);
 		return;
 	}
 
-	print (1, 1, "Wave expansion done, displaying results!\n\n");
+	print (1, 1, "Wave expansion done (took %.4lfs), displaying results!\n\n", expansionTime);
 
 	//Loop through nodes top->down, left->right
 	for (i=2*n-2; i!=-1; i--)
@@ -127,7 +139,7 @@ void displayPath ()
 {
 	int i;
 
-	print (1, 1, "Found a path from node %d to node %d, with length %d!\n", entryNode->id, exitNode->id, exitNode->label);
+	print (1, 1, "Found a path from node %d to node %d, with length %d (took %.4lfs)!\n", entryNode->id, exitNode->id, exitNode->label, backTraceTime);
 
 	if (exitNode->label > 250)
 	{

@@ -50,8 +50,10 @@ int main()
 	print(1, 1, "Init successful, creating grid...\n");
 
 	//Create the grid
-	createGrid();
-	print(1, 1, "Grid created successfully, ready to calculate paths!\n");
+	startStopwatch ();
+	createGrid ();
+	gridTime = stopStopwatch();
+	print(1, 1, "Grid created successfully (took %.4lfs), ready to calculate paths!\n", gridTime);
 
 	//Get entryNode and exitNode nodes
 	while (!entryNode)
@@ -83,6 +85,8 @@ int main()
 	findPath ();
 
 	//Exit program
+	totalTime = gridTime + expansionTime + backTraceTime;
+	print (1, 1, "\nDone! Total calculation time is %.4lfs\n", totalTime);
 	print (0, 1, "All done!\n##########################################\n\n");
 	fclose (file);
 
