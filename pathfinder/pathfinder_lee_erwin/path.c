@@ -110,7 +110,7 @@ long setValuesofField(Node *start, Node *goal){
 			}
 		}*/
 		//safeFree(neighbours);
-		if(currentNumber%((n+m)/200)==0){
+		if(currentNumber%max((n+m)/200,1)==0){
 			printf("Making new wave (#%ld) of %ld elements, last wave: %ld items.\n",currentNumber,inCurrentWave+4, inCurrentWave);
 		}
 		/*if(currentNumber>995){
