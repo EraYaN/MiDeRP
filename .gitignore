@@ -191,3 +191,8 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+#MikTeX, pdfLaTeX
+.aux
+.synctex.gz
+.log
+
