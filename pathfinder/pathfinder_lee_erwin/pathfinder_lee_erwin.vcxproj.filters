@@ -43,6 +43,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="pf_re.rc" />
+    <ResourceCompile Include="pathfinder_lee_erwin.rc" />
   </ItemGroup>
 </Project>
