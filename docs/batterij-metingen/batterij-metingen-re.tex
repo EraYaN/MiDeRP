@@ -1,0 +1,25 @@
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+\title{Waarnemingen}
+\author{Erwin de Haan en Robin Hes}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Waarnemingen}
+
+\begin{itemize}
+	\item Spanning $V_{open} = 8.33 \textrm{V}$
+	\item De nauwkeurigheid van de Fluke 177 is $\pm0.09\%$, dit resulteert in een afwijking van $\pm0.0009\cdot8.33=\pm0.007497 \approx \pm0.008 \textrm{mV}$
+	\item Spanning $V_{loaded} = 8.30 \textrm{V}$. Daarnaast geldt dat $R_{load} = 50.6 \Omega$
+	\item Hier volgt uit dat $I = \frac{V_{loaded}}{R_{load}} = \frac{8.30}{50.6} = 0.164 \textrm{A}$
+	\item Dus $R_{intern} = \frac{V_{open}-V_{loaded}}{I} = \frac{8.33-8.30}{0.164} = 0.183 \Omega$
+\end{itemize}
+
+\end{document}
