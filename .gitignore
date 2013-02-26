@@ -192,7 +192,7 @@ pip-log.txt
 .mr.developer.cfg
 
 #MikTeX, pdfLaTeX
-.aux
-.synctex.gz
-.log
+*.aux
+*.synctex.gz
+*.log
 

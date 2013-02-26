@@ -1,0 +1,17 @@
+\documentclass[a4paper,dutch]{article}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{mathenv}
+\usepackage{babel} 
+\usepackage{verbatim}
+
+\begin{document}
+\section{Theorie}
+
+Om een onbekende afstand op een traject te meten kan men gebruikmaken van de EPO-2 robot. Dit wordt gedaan om door middel van de snelheid van de robot en de verstreken tijd, de afgelegde weg te meten. Wanneer de robot dit traject tussen twee punten aflegt is de afstand tussen de twee punten te bepalen.
+
+Bij dit type metingen zijn dus twee variabelen aanwezig die bepaald moeten worden: de tijd die het duurt om het traject af te leggen en de gemiddelde snelheid van de robot. De verstreken tijd wordt gemeten door de FPGA-chip op de robot gedurende de meting. Deze wordt real-time weergegeven op een display op de robot in acht decimalen nauwkeurig.
+
+De snelheid is lastiger te bepalen. De manier die wij hebben toegepast is het bepalen van de gemiddelde snelheid aan de hand van meerdere metingen over een bekende afstand. Aangezien de afstand die wordt afgelegd al bekend is kan men de snelheid bepalen aan de hand van de tijd die het duurt om van het ene naar het andere punt te rijden. Om eventuele verstoringen uit een enkele meting te filteren meten wij meerdere malen en berekenen hieruit de gemiddelde snelheid.
+
+\end{document}
