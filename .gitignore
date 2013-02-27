@@ -195,4 +195,9 @@ pip-log.txt
 *.aux
 *.synctex.gz
 *.log
+*.bcf
+*.run.xml
+*.bbl
+*.blg
+*blx.bib
 
