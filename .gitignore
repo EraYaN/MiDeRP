@@ -200,4 +200,8 @@ pip-log.txt
 *.bbl
 *.blg
 *blx.bib
-
+*.mtc*
+*.min*
+*.maf
+*.cld
+*.toc

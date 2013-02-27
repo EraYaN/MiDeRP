@@ -1,0 +1,89 @@
+\begin{Minutes}{Notulen.}
+%%\subtitle{}
+%%\moderation{}
+%%\minutetaker{}
+\participant{list of participants}
+\missing[with excuse]{no excuse}
+%%\missingExcused{}
+%%\missingNoExcuse{}
+\guest{guests}
+\minutesdate{24. December 2000}
+%%\starttime{}
+%%\endtime{}
+\location{Esslingen}
+%%\cc{}
+\maketitle
+
+\topic{Topic one}%<-- insert title of topic
+\subtopic{Sub Topic to Topic one}
+Text for the topic.
+
+\topic{Dates}
+\schedule{2000/12/24}{Christmas eve}
+\schedule{2000/12/24}[20:00]{distribution of presents}
+\schedule*{2000/12/25}{Christmas day (without entry in calendar)}
+
+\topic{Tasks}
+\task{Who}{Action}
+\task*{Somebody has to do it}
+\task*[today]{Somebody do it}
+\task[done]{responsible}[yesterday]{Somebody did it}
+
+
+\newcols[][1]%because of a Bug
+\begin{Secret}
+\topic{Secret Topic}
+This topic is secret and is printed with the option
+\texttt{Secret}.
+\end{Secret}
+\subtopic{After secret topic}
+\secret{small secret}
+If this section is printed outside the section "secret", some
+secret stuff is not printed. Check the option \texttt{Secret}.
+\newcols
+
+\addtopic{Additional Topic}
+\subtopic{subtopic}
+
+\topic{Attachments}
+\attachment{Attachment with two pages}{2}
+
+\topic{Decisions and votes}
+\subtopic{Opinions and Argumentations}
+\opinion{Herder}{Different Opinion}
+
+A discussion to the theme:
+\begin{Opinions}
+\item[Goethe] One opinion
+\item[Schiller] Another opinion
+\end{Opinions}
+
+Arguments can be discussed with pro and contra
+\begin{Argumentation}
+\pro reason for it
+\Pro important reason for it
+\contra reason against it
+\Contra important reason against it
+\item a comment
+\result result
+\end{Argumentation}
+
+\subtopic{A single vote}
+\vote{Short voting}{1}{2}{3}
+
+And a single vote with decision:\par
+\vote{Short voting}{1}{2}{3}[Decision]
+
+\subtopic{A couple of votes}
+\begin{Vote}
+\vote{Vote one}{1}{2}{3}
+\vote{Vote two}{1}{2}{3}[decision]
+
+\vote{Vote three}{1}{2}{3}
+\end{Vote}
+
+\subtopic{Decisions}
+\decisiontheme{Theme}{Theme for a decision}
+\decision{Theme}{Decision}
+\decision*{Decision without theme}[Long text for the decision]
+\end{Minutes}
