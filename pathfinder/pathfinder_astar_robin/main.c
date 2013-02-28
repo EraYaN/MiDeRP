@@ -3,7 +3,7 @@
 int main()
 {
 	//Init
-	int entry_id, exit_id;
+	unsigned int entry_id, exit_id;
 
 	file = fopen ("log.txt", "a");
 	print (0, 1, "##########################################\nProgram started\n\n");
@@ -38,31 +38,44 @@ int main()
 	print(1, 1, "\nInitializing variables...\n");
 	numNodes =	m*n;
 
-	//Get entryNode and exitNode nodes
-	print(1, 1, "Init successful, ready for path variables\n\n");
+	print(1, 1, "Init successful, creating grid...\n");
+
+	//Create the grid
+	createGrid();
+	print(1, 1, "Grid created successfully, ready to calculate paths!\n");
+
+	///Get entryNode and exitNode id
 	while (!entryNode)
 	{
-		print(1, 0, "Enter entry node id: \n");
+		print(1, 0, "\nEnter entry node id: \n");
 		scanf("%d", &entry_id);
-		if (!nodeExists(entry_id))
+		if (entry_id < 0 || entry_id > numNodes)
 			print(1, 1, "Error: tried to use non-existing node!\n");
 		else
-			entryNode = entry_id;
+		{
+			print (1, 1, "Entry node is %d\n", entry_id);
+			break;
+		}
 	}
-	print (1, 1, "Entry node is %d\n", entryNode);
-
+	
 	while (!exitNode)
 	{
 		print(1, 0, "Enter exit node id: \n");
 		scanf("%d", &exit_id);
 		if (exit_id == entry_id)
 			print(1, 1, "Error: entry node cannot be same as exit node!\n");
-		else if (!nodeExists(exit_id))
+		else if (exit_id < 0 || exit_id > numNodes)
 			print(1, 1, "Error: tried to use non-existing node!\n");
 		else
-			exitNode = exit_id;
+		{
+			print (1, 1, "Exit node is %d\n", exit_id);
+			break;
+		}
 	}
-	print (1, 1, "Exit node is %d\n", exitNode);
+
+	//Actually create entryNode and exitNode
+	entryNode = newNode (NULL, entry_id);
+	exitNode = newNode (NULL, exit_id);
 
 	//Find path!
 	print(1, 1, "\nPoints OK! Starting pathfinder...\n\n");

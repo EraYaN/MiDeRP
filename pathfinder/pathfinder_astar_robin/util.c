@@ -27,3 +27,8 @@ void print (char toconsole, char tofile, char *format, ...)
 		vfprintf (file, format, args);
 	va_end (args);
 }
+
+void createGrid ()
+{
+	nodes = (Node**) safeMalloc (sizeof (Node*) * numNodes);
+}
