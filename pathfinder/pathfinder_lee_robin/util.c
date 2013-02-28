@@ -86,14 +86,14 @@ void displayGrid ()
 						if (current->label == -1)
 							print(1, 1, "# - ");
 						else
-							print(1, 1, "%d - ", current->label);
+							print(1, 1, "%02d - ", current->label);
 					}
 					else
 					{
 						if (current->label == -1)
 							print(1, 1, "# X ");
 						else
-							print(1, 1, "%d X ", current->label);
+							print(1, 1, "%02d X ", current->label);
 					}
 				}
 				else
@@ -101,7 +101,7 @@ void displayGrid ()
 					if (current->label == -1)
 						print(1, 1, "#");
 					else
-						print(1, 1, "%d", current->label);
+						print(1, 1, "%02d", current->label);
 				}
 			}
 			else
@@ -115,9 +115,9 @@ void displayGrid ()
 					{
 						//Check for mine
 						if (!isMine (current, next))
-							print(1, 1, "|   ");
+							print(1, 1, "|    ");
 						else
-							print(1, 1, "X   ");
+							print(1, 1, "X    ");
 					}
 					else 
 					{

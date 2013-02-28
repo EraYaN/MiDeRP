@@ -12,6 +12,10 @@
 *.fsproj merge=union
 *.dbproj merge=union
 
+# LaTex/pdfLaTeX/MikTeX/BiBTeX
+*.tex diff=tex
+*.bib diff=bibtex
+
 # Standard to msysgit
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain

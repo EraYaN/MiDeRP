@@ -1,0 +1,33 @@
+\documentclass{report}
+%\usepackage{fullpage}
+\usepackage[english,dutch,german]{babel}
+\usepackage{minutes}
+\title{Alle Notulen}
+\author{Projectgroep D-2}
+\minutesstyle{
+% columns = {1},
+header = {list}, %or {table},
+vote = {list}, %or {table},
+contents = {true}, %or {false}
+}
+\begin{document}
+\selectlanguage{dutch}
+\maketitle
+\tableofcontents
+
+%voeg hieronder je notulen bestand toe.
+\inputminutes{notulen3.3} %notulen bestand
+
+%%-----------------
+ \appendix
+ \selectlanguage{dutch}
+ \chapter{Appendix}
+ \section{Besluiten}\listofdecisions
+ \section{Taken}\listoftasks
+ \section{Bijlages}\listofattachments
+ %%\section{Calendar}
+ %%\prepareCal
+%%\begin{eventlist}{}{Sample}
+%%1 dec 2000 to 31 dec 2000
+%%\end{eventlist}
+\end{document}

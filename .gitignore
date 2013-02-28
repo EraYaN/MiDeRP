@@ -191,3 +191,17 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+#MikTeX, pdfLaTeX
+*.aux
+*.synctex.gz
+*.log
+*.bcf
+*.run.xml
+*.bbl
+*.blg
+*blx.bib
+*.mtc*
+*.min*
+*.maf
+*.cld
+*.toc

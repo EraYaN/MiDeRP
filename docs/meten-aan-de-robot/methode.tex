@@ -1,0 +1,14 @@
+\chapter{Methode}
+\section{Benodigdheden}
+De benodigdheden zijn als volgt:
+\begin{itemize}
+\item EPO-2 robot met de juiste programmatuur in de ROM van het FPGA bord
+\item Papier met kalibratielijnen en lijnen op onbekende afstand van elkaar
+\item Liniaal
+\end{itemize}
+\section{Handelswijze}
+Eerst laat men de robot de kalibratieafstand vijf keer meten. Dit wordt gedaan door de robot voor de eerste lijn op het kalibratiepapier te zetten en dan op de startknop te drukken. Het is het beste om hierbij de voorkant van de robot tegen de grond te houden, anders komt de reflectiesensor te ver omhoog om de grond nog waar te kunnen nemen. De robot stopt vanzelf als hij de overkant heeft bereikt en geeft dan de verstreken tijd weer tussen het doorkruisen van de start- en eindlijn. Het aflezen gaat in 2 stappen; de robot weergeeft eerst de eerste vier cijfers en dan de laatste vier cijfers, op deze manier: $XX.XXYYYY$. Of de robot de eerste set of tweede set cijfers weergeeft is te zien aan het al dan niet ontbreken van een decimale punt. 
+
+De robot die wij hebben gebruikt had een afwijking naar links. Hij maakte een cirkel met een straal tussen de 0.8 en 1 meter, als de afstand die gemeten moet worden vrij lang is moet de robot dus op zodanige wijze voor de eerste lijn gepositioneerd worden dat hij goed uit komt op de tweede.
+
+Na de kalibratie, waaruit de gemiddelde snelheid van de robot kan worden bepaald middels $v=\frac{s}{t}$, kunnen de overige metingen met onbekende afstanden worden uitgevoerd zoals beschreven in de handleiding. Aan de hand van die resultaten kunnen de onbekende afstanden bepaald worden met $s=vt$. Elke meting zou zo'n vijf maal gedaan kunnen worden voor een nauwkeuriger eindresultaat.
