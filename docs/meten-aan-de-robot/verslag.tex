@@ -1,12 +1,15 @@
 \documentclass{thema}
 \input{../library/preamble}
 \usepackage{standalone}
+\usepackage{import}
 
 \title{Meetrapport: Meten aan de robot}
 \author{EPO-2 D2}
 \begin{document}
 \maketitle
 \tableofcontents
-\input{./inleiding&theorie/inleiding&theorie}
-\input{./methode/methode}
+\subimport{inleiding&theorie/}{inleiding&theorie.tex}
+\subimport{methode/}{methode.tex}
+\subimport{meetresultaten/}{meetresultaten.tex}
+
 \end{document}
