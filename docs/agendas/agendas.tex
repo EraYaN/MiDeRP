@@ -1,0 +1,23 @@
+\documentclass{report}
+\input{../library/preamble}
+
+\usepackage{import}
+\usepackage{standalone}
+
+\title{Alle Agenda's}
+\author{Projectgroep D-2}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Week 3.1}
+\subimport{agenda3.1/}{agenda3.1.tex}
+\chapter{Week 3.2}
+\subimport{agenda3.2/}{agenda3.2.tex}
+\chapter{Week 3.3}
+\subimport{agenda3.3/}{agenda3.3.tex}
+\chapter{Week 3.4}
+\subimport{agenda3.4/}{agenda3.4.tex}
+
+\end{document}

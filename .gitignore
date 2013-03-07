@@ -194,6 +194,7 @@ pip-log.txt
 #MikTeX, pdfLaTeX
 *.aux
 *.synctex.gz
+*.synctec.gz(busy)
 *.log
 *.bcf
 *.run.xml
@@ -205,6 +206,10 @@ pip-log.txt
 *.maf
 *.cld
 *.toc
+<<<<<<< HEAD
 
 # Ignore Robin's pathfinder logs
 log.txt
+=======
+*.run.xml
+>>>>>>> e71b7076d5a97c74da21825629e76056c0bed01e

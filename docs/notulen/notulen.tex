@@ -1,0 +1,23 @@
+\documentclass{report}
+\input{../library/preamble}
+
+\usepackage{import}
+\usepackage{standalone}
+
+\title{Alle Notulen}
+\author{Projectgroep D-2}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Week 3.1}
+\subimport{notulen3.1/}{notulen3.1.tex}
+\chapter{Week 3.2}
+\subimport{notulen3.2/}{notulen3.2.tex}
+\chapter{Week 3.3}
+\subimport{notulen3.3/}{notulen3.3.tex}
+\chapter{Week 3.4}
+\subimport{notulen3.4/}{notulen3.4.tex}
+
+\end{document}
