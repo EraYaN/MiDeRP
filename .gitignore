@@ -205,3 +205,6 @@ pip-log.txt
 *.maf
 *.cld
 *.toc
+
+# Ignore Robin's pathfinder logs
+log.txt

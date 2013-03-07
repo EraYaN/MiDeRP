@@ -1,4 +1,4 @@
-\documentclass{thema}
+\documentclass{report}
 \input{../../library/preamble}
 
 \begin{document}
@@ -7,11 +7,20 @@
 \section{Abstract}
 In dit verslag zetten wij onze meetresultaten uiteen van de metingen die we verricht hebben bij het onderdeel "De robot-afstandsmeter". Er komt aan bod hoe we gemeten hebben, welke principes we gebruiken bij het verwerken van de resultaten en natuurlijk de resultaten en de verwerking daarvan zelf.
 \section{Theorie}
-Om een onbekende afstand op een traject te meten kan men gebruikmaken van de EPO-2 robot. Dit wordt gedaan door uit de gemiddelde snelheid van de robot en de tijd die hij er over doet om het traject af te leggen middels $s = vt$.
+Om een onbekende afstand op een traject te meten kan men gebruikmaken van de EPO-2 robot. Dit wordt gedaan door uit de gemiddelde snelheid van de robot en de tijd 
+die hij er over doet om het traject af te leggen middels onderstaande vergelijking:
+
+\begin{equation}
+s = vt
+\end{equation}
 
 Bij dit type metingen zijn dus twee variabelen aanwezig die bepaald moeten worden: de tijd die het duurt om het traject af te leggen en de gemiddelde snelheid van de robot. 
 De verstreken tijd wordt gemeten door de FPGA-chip op de robot gedurende de meting. Deze wordt real-time weergegeven op een display op de robot in acht cijfers nauwkeurig.
-De snelheid is lastiger te bepalen. In dit geval wordt deze bepaald aan de hand van meerdere metingen over een bekende afstand. Aangezien de afstand die wordt afgelegd al bekend is kan men de snelheid bepalen aan de hand van de tijd die het duurt om van het ene naar het andere punt te rijden middels $v=\frac{s}{t}$. 
+De snelheid is lastiger te bepalen. In dit geval wordt deze bepaald aan de hand van meerdere metingen over een bekende afstand. Aangezien de afstand die wordt afgelegd al bekend is kan men de snelheid bepalen aan de hand van de tijd die het duurt om van het ene naar het andere punt te rijden middels onderstaande vergelijking:
+
+\begin{equation}
+v=\frac{s}{t}
+\end{equation}
 
 Om de invloed van eventuele toevallige meetfouten te minimaliseren kan meerdere malen gemeten worden waarna een nauwkeurig gemiddelde wordt bepaald. Ook is het interessant om te weten te komen in welke mate de prestaties van de robot lineair zijn; duurt het daadwerkelijk vijf keer zo lang om een vijf keer zo lange afstand af te leggen? Deze lineairiteit kan bepaald worden door een aantal metingen over verschillende afstanden te doen en deze uit te zetten in een plot.
 \end{document}
