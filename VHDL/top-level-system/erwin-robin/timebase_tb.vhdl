@@ -24,8 +24,8 @@ begin
 	clk		<=	'1' after 0 ns,
 				'0' after 10 ns when clk /= '0' else '1' after 10 ns;
 	reset	<=	'0' after 40 ns,
-				'1' after 20000000 ns,
-				'0' after 20000040 ns;
+				'1' after 27574768 ns,
+				'0' after 27574808 ns;
 
 l1:	counter port map (
 					clk		=>	clk,

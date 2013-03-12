@@ -211,4 +211,8 @@ pip-log.txt
 #Ignore Robin's pathfinder logs
 log.txt
 
+#Modelsim shit
+work/
+*.wlf
+
 

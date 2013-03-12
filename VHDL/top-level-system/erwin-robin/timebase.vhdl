@@ -19,7 +19,7 @@ begin
 	process (clk)
 	begin
 		if (rising_edge (clk)) then
-			if (reset = '1') then
+			if (reset = '1' or count >= 999999) then
 				count	<= (others => '0');	-- zet op 0 bij reset
 			else
 				count	<= new_count;
