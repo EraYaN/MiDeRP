@@ -1,22 +1,27 @@
 \documentclass{report}
 \input{../../library/preamble}
-\usepackage{graphicx}
-
+\input{../../library/style}
 \title{Resultaten}
 \author{J.F.J. Blom}
 \date{\today}
 \begin{document}
 \chapter{Resultaten en Discussie}
 Er zijn vier verschillende metingen verricht, kalibratiemeting, onbekende afstandsmeting en de lineariteitsmeting. In dit hoofstuk zijn alle meetresultaten weergeven en geanalyseerd.Van alle meetresultaten is het gemiddelde genomen, doormiddel van deze formule:
-$$\frac{\sum_{i=1}^{n}x_i}{n}$$
+\begin{equation}
+\frac{\sum_{i=1}^{n}x_i}{n}
+\end{equation}
+
 Hier is $x_i$ een meetresultaat en n is het aantal metingen. 
 Daarnaast is de onzekerheid van de metingen berekend. Daarbij is gebruik gemaakt van de volgende formule:
-$$\sqrt{\frac{\sum_{i=1}^{n}( x_i-x_a)^2}{n(n-1)}}$$
+\begin{equation}
+\sqrt{\frac{\sum_{i=1}^{n}( x_i-x_a)^2}{n(n-1)}}
+\end{equation}
 $x_a$ is hier het gemiddelde van de meting.
 \subsection*{Kalibratie}
 Hieronder zijn de meetresultaten van de kalibratiemeting te zien. De meetresultaten zijn vrij constant, en dus is de onzekerheid vrij laag. De onzekerheid van de tijdsmeting is vastgesteld op 0.003 seconden, waaruit blijkt dat de meting erg accuraat is. De onzekerheid van de snelheid wordt dan 0.025 cm/s. De gemiddelde snelheid is ongeveer 9.6 cm/s.
 
-\begin{center}
+\begin{table}
+ \centering
 \begin{tabular}{| l| c|}
 \hline
     & Kalibratie 10 cm \\
@@ -40,14 +45,19 @@ Hieronder zijn de meetresultaten van de kalibratiemeting te zien. De meetresulta
    Onzekerheid snelheid (cm/s) & 0.025 \\
 \hline
 \end{tabular}
-\end{center}
-\begin{center}
+\caption{TODO caption}
+\end{table}
+\begin{figure}[H]
+ \centering
 \includegraphics[width=150mm] {grafiekmeetresultaten.jpg}
-\end{center}
+\caption{TODO Caption}
+\end{figure}
 Hierboven zijn de meetresultaten van de kalibratiemeting in een diagram gezet. Hier zijn goed de verschillen tussen de metingen te zien. De metingen liggen redelijk dicht bij elkaar, en dus is de kwaliteit van deze meting erg hoog.
 \section{Onbekende afstand}
 Hieronder zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de snelheid te kunnen bepalen moet er een afstand bekend zijn. Deze afstand is gemeten en deze is 23.4 cm. De onzekerheid van de tijdsmeting is vastgesteld op 0.005 seconden, en dus is de meting erg nauwkeurig. Deze meting is zoals verwacht vanwege de langere afstand iets minder accuraat als de kalibratiemeting. De onzekerheid van de snelheid is vastgesteld op 0.007 cm/s, en dus is ook deze waarde erg nauwkeurig. De snelheid is zoals verwacht ongeveer gelijk als bij de kalibratiemeting.
-\begin{center}
+
+\begin{table}
+ \centering
 \begin{tabular}{| l| c|}
 \hline
     & Onbekende afstand 23.4 cm\\
@@ -71,11 +81,14 @@ Hieronder zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de 
    Onzekerheid snelheid (cm/s) & 0.007 \\
 \hline
  \end{tabular}
-\end{center}
+\caption{TODO caption}
+\end{table}
 
 \section{Lineariteit}
 Hieronder zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel van de meetresultaten en de afstand is de gemiddelde snelheid uitgerekend. Zoals in de tabel te zien is blijft de gemiddelde snelheid redelijk constant. Dit betekend dat de afstandsmeter van de robot redelijk lineair is. De snelheid is ook ongeveer gelijk als bij de kalibratiemeting. Onder de tabel en op de volgende pagina zijn deze gegevens in diagrammen gezet, waardoor de afwijkingen in lineariteit nog beter te zien zijn. 
-\begin{center}
+
+\begin{table}
+ \centering
 \begin{tabular}{| l| c| c| c| c| c|}
 \hline
    & 5 cm & 10 cm & 15 cm & 20 cm & 25 cm\\
@@ -99,14 +112,19 @@ Hieronder zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel v
    Onzekerheid snelheid (cm/s) & 0.055 & 0.018 & 0.019 & 0.10 & 0.005 \\
 \hline
  \end{tabular}
-\end{center}
-\begin{center}
+\caption{TODO caption}
+\end{table}
+\begin{figure}[H]
+ \centering
 \includegraphics[width=150mm] {afstand-tellerstand.jpg}
-\end{center}
+\caption{TODO Caption}
+\end{figure}
 In de bovenstaande grafiek is de afstand afgezet tegen de tellerstand van de robot. De lijn is bijna recht, dus de afstandsmeter van de robot is ook bijna lineair, en dus is de snelheid onafhankelijk van de afstand.  Op de volgende pagina zet ik de afstand af tegen de snelheid, waardoor de afwijkingen in lineariteit beter te zien zijn. 
-\begin{center}
+\begin{figure}[H]
+ \centering
 \includegraphics[width=150mm] {afstand-snelheid.jpg}
-\end{center}
+\caption{TODO Caption}
+\end{figure}
 In de bovenstaande grafiek is de afstand afgezet tegen de snelheid. Hier zijn goed de afwijkingen in lineariteit van de afstandsmeter te zien. De snelheid blijft tussen de 9.22 en de 8.99, dus de snelheid is vrij constant. De afstandsmeter van de robot is dus behoorlijk lineair. De kleine afwijkingen kunnen ook liggen aan de vele andere factoren die de meting be"invloeden. De robot rijd bijvoorbeeld in een bocht met een radius van 80 cm. Daarnaast is de robot misschien niet altijd loodrecht ten opzichte van de startlijn gestart, waardoor de meting wordt be"invloed.
 \newpage
 \chapter{Conclusie}
