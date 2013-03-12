@@ -31,14 +31,16 @@ begin
 		input(0)=>sensor_l_in,
 		input(1)=>sensor_m_in,
 		input(2)=>sensor_r_in,
-		output=>tussen,reset=>gnd
+		output=>tussen,
+		reset=>gnd
 	);
 	d2:threebitregister port map(
 		clk => clk,
 		output(0)=>sensor_l_out,
 		output(1)=>sensor_m_out,
 		output(2)=>sensor_r_out,
-		input=>tussen,reset=>gnd
+		input=>tussen,
+		reset=>gnd
 	);
 	
 end architecture struct;
