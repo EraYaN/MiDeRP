@@ -2,10 +2,10 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity testbench is
-end entity testbench;
+entity timebase_tb is
+end entity timebase_tb;
 
-architecture structural of testbench is
+architecture structural of timebase_tb is
 	
 	component counter is
 		port (	clk		: in	std_logic;
