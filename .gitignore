@@ -207,3 +207,8 @@ pip-log.txt
 *.cld
 *.toc
 *.run.xml
+
+#Ignore Robin's pathfinder logs
+log.txt
+
+
