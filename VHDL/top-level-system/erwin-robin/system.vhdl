@@ -55,13 +55,13 @@ architecture structural of system is
 			pwm		: out	std_logic
 		);
 	end component motorcontrol;
-	component timebase is
+	component counter is
 		port (	clk		: in	std_logic;
 			reset		: in	std_logic;
 
 			count_out	: out	std_logic_vector (19 downto 0)
 		);
-	end component timebase;
+	end component counter;
      --signals 
     signal count : std_logic_vector (19 downto 0);
 	signal sensors : std_logic_vector (2 downto 0); -- (left,middle,right)
@@ -90,7 +90,7 @@ architecture structural of system is
 		count_in => count,
 		pwm => pwm_motor_r
     );
-    TB: timebase port map(
+    TB: counter port map(
 		clk => clk,
 		reset => count_reset,
 		count_out => count
