@@ -11,8 +11,7 @@ entity timebase is
 end entity timebase;
 architecture behavioural of timebase is
 
-	signal	count, new_count	: unsigned (19 downto 0);
-	signal enable: std_logic := '1';
+	signal	count, new_count	: unsigned (19 downto 0);	
 begin
 	-- Dit process genereert het register
 	process (clk)
@@ -27,13 +26,9 @@ begin
 	end process;
 
 	-- Dit process berekent de nieuwe count-waarde
-	process (count, enable)
+	process (count)
 	begin
-		if (enable = '1') then
-			new_count	<= count + 1;		-- alleen optellen als enable = '1'
-		else
-			new_count	<= count;
-		end if;
+		new_count	<= count + 1;	
 	end process;
 
 	-- Met deze regel wordt de count-waarde naar buiten gebracht
