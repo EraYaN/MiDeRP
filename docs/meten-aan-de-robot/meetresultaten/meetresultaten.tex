@@ -1,6 +1,7 @@
 \documentclass{report}
 \input{../../library/preamble}
 \input{../../library/style}
+
 \title{Resultaten}
 \author{J.F.J. Blom}
 \date{\today}
@@ -18,7 +19,7 @@ u=\sqrt{\frac{\sum_{i=1}^{n}( x_i-x_a)^2}{n(n-1)}}
 \end{equation}
 $x_a$ is hier het gemiddelde van de meting.
 \subsection*{Kalibratie}
-Hieronder zijn de meetresultaten van de kalibratiemeting te zien. De meetresultaten zijn vrij constant, en dus is de onzekerheid vrij laag. De onzekerheid van de tijdsmeting is vastgesteld op 0.003 seconden, waaruit blijkt dat de meting erg accuraat is. De onzekerheid van de snelheid wordt dan 0.025 cm/s. De gemiddelde snelheid is ongeveer 9.6 cm/s.
+Hieronder zijn de meetresultaten van de kalibratiemeting te zien. Drie groepen hebben metingen verricht waarvan de groep van Robin en Erwin dezelfde robot heeft gebruikt als de groep van Tijmen en Luc.
 
 \begin{table}
  \centering
@@ -47,6 +48,14 @@ Hieronder zijn de meetresultaten van de kalibratiemeting te zien. De meetresulta
 \end{tabular}
 \caption{Tabel meetresultaten kalibratie Joris en Chy}
 \end{table}
+
+$$ t_{gem}=\frac{\sum_{i=1}^{n}t_i}{n} = 1.041 s$$
+
+$$ v_{gem} = \frac{s}{t_{gem}} = 9.602 cm/s$$
+
+$$ u(t) = \frac{s}{\sqrt{n}} = \sqrt{\frac{\sum_{i=1}^{n}( t_i-t_{gem})^2}{n(n-1)}} = 0.003 s$$ 
+
+%berekening voor onzekerheid moet nog geplaatst worden.
 
 \begin{table}
  \centering
@@ -87,14 +96,28 @@ Hieronder zijn de meetresultaten van de kalibratiemeting te zien. De meetresulta
 \caption{Tabel meetresultaten kalibratie Luc en Tijmen}
 \end{table}
 
+$$ t_{gem}=\frac{\sum_{i=1}^{n}t_i}{n} = 1.161 s$$
+
+$$ v_{gem} = \frac{s}{t_{gem}} = 8.614 cm/s$$
+
+$$ u = \frac{s}{\sqrt{n}} = \sqrt{\frac{\sum_{i=1}^{n}( t_i-t_{gem})^2}{n(n-1)}} = 1.208E-5 s$$
+
 \begin{figure}[H]
  \centering
 \includegraphics[width=150mm] {grafiekmeetresultaten.jpg}
 \caption{Grafiek meetresultaten kalibratie Joris en Chy}
 \end{figure}
 Hierboven zijn de meetresultaten van de kalibratiemeting in een diagram gezet. Hier zijn goed de verschillen tussen de metingen te zien. De metingen liggen redelijk dicht bij elkaar, en dus is de kwaliteit van deze meting erg hoog.
-\section{Onbekende afstand}
-Hieronder zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de snelheid te kunnen bepalen moet er een afstand bekend zijn. Deze afstand is gemeten en deze is 23.4 cm. De onzekerheid van de tijdsmeting is vastgesteld op 0.005 seconden, en dus is de meting erg nauwkeurig. Deze meting is zoals verwacht vanwege de langere afstand iets minder accuraat als de kalibratiemeting. De onzekerheid van de snelheid is vastgesteld op 0.007 cm/s, en dus is ook deze waarde erg nauwkeurig. De snelheid is zoals verwacht ongeveer gelijk als bij de kalibratiemeting.
+
+\section{Lineariteit}
+Hieronder zijn de meetresultaten te zien van de onbekende afstandsmeting. Het doel is om met behulp van de eerder berekende snelheid de afstand te meten. Om de afstand te berekenen wordt gebruik gemaakt van de formule
+
+\begin{equation}
+s = v \cdot t
+\end{equation}
+
+Ook hebben wij met behulp van een liniaal de werkelijke afstand bepaald. Deze bedroeg 23.4cm.
+\newline
 
 \begin{table}
  \centering
@@ -121,11 +144,13 @@ Hieronder zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de 
    Onzekerheid snelheid (cm/s) & 0.007 \\
 \hline
  \end{tabular}
-\caption{TODO caption}
+\caption{Tabel meetresultaten onbekende afstand Joris en Chy}
 \end{table}
 
-\section{Lineariteit}
-Hieronder zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel van de meetresultaten en de afstand is de gemiddelde snelheid uitgerekend. Zoals in de tabel te zien is blijft de gemiddelde snelheid redelijk constant. Dit betekend dat de afstandsmeter van de robot redelijk lineair is. De snelheid is ook ongeveer gelijk als bij de kalibratiemeting. Onder de tabel en op de volgende pagina zijn deze gegevens in diagrammen gezet, waardoor de afwijkingen in lineariteit nog beter te zien zijn. 
+Deze tijden kunnen we gebruiken in combinatie met de gemiddelde snelheid die we eerder hebben vastgesteld om de onbekende afstand te berekenen
+
+$$ s = v_{gem} \cdot t_{gem}$$
+$$ = 9.602 cm/s \cdot 2.523 s = 24.23 cm$$
 
 \begin{table}
  \centering
