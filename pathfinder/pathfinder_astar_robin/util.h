@@ -9,12 +9,16 @@
 #include "path.h"
 
 //Init variables
-unsigned int m, n, numNodes; 
-Node *entryNode, *exitNode, **nodes;
+unsigned int m, n, numNodes, length;
+double gridTime, findTime, totalTime;
+Node *entryNode, *exitNode, **nodes, **path;
 FILE *file;
 
 //Function prototypes
 void *safeMalloc (size_t size);
 void print (char toconsole, char tofile, char *format, ...);
+void startStopwatch(void);
+double stopStopwatch(void);
 void createGrid ();
+void displayPath ();
 #endif

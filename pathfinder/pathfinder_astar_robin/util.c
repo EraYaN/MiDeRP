@@ -1,4 +1,7 @@
 #include "util.h"
+#include <time.h>
+
+clock_t begin = 0, end = 0;
 
 //Safe allocation of memory
 void *safeMalloc (size_t size)
@@ -6,7 +9,8 @@ void *safeMalloc (size_t size)
 	void* p = malloc(size);
 	if (p == NULL)
 	{
-		print (1, 1, "Error: out of memory, terminating program!\n");
+		print (1, 1, "Error: out of memory (tried to allocate %d bytes), terminating program!\n", size);
+		fclose (file);
 		exit (0);
 	}
 	return p;
@@ -28,7 +32,50 @@ void print (char toconsole, char tofile, char *format, ...)
 	va_end (args);
 }
 
+void startStopwatch(void){
+	begin = clock();
+}
+
+double stopStopwatch(void){
+	end = clock();
+	return ((double)end - (double)begin) / CLOCKS_PER_SEC;
+}
+
 void createGrid ()
 {
-	nodes = (Node**) safeMalloc (sizeof (Node*) * numNodes);
+	unsigned int i;
+
+	nodes = (Node**) safeMalloc (sizeof (Node*) * (size_t)numNodes);
+	for (i=0; i<numNodes; i++)
+		nodes[i] = NULL;
+}
+
+void displayPath ()
+{
+	unsigned int i;
+
+	print (1, 1, "Found a path from node %d to node %d, with length %d (took %.4lfs)!\n", entryNode->id, exitNode->id, length, findTime);
+
+	if (length > 250)
+	{
+		print (1, 1, "Path length too high for display in console, will only print to logs\n\n");
+		print (0, 1, "Entry node is %d\n", entryNode->id);
+		for (i=1; i<length; i++)
+		{
+			print (0, 1, "Next node in path is node %d\n", path[i+1]->id);
+		}
+		print (0, 1, "Exit node (id: %d) reached!\n", exitNode->id);
+	}
+	else
+	{
+		print (1, 0, "Displaying result:\n\n");
+		print (1, 1, "Entry node is %d\n", entryNode->id);
+		for (i=1; i<length; i++)
+		{
+			print (1, 1, "Next node in path is node %d\n", path[i+1]->id);
+		}
+		print (1, 1, "Exit node (id: %d) reached!\n\n", exitNode->id);
+	}
+
+
 }

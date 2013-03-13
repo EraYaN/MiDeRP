@@ -41,8 +41,11 @@ int main()
 	print(1, 1, "Init successful, creating grid...\n");
 
 	//Create the grid
-	createGrid();
-	print(1, 1, "Grid created successfully, ready to calculate paths!\n");
+	startStopwatch ();
+	createGrid ();
+	printf("size of node = %d\n", sizeof (Node));
+	gridTime = stopStopwatch ();
+	print(1, 1, "Grid created successfully (took %.4lfs), ready to calculate paths!\n", gridTime);
 
 	///Get entryNode and exitNode id
 	while (!entryNode)
@@ -79,9 +82,14 @@ int main()
 
 	//Find path!
 	print(1, 1, "\nPoints OK! Starting pathfinder...\n\n");
+	startStopwatch();
 	findPath ();
+	findTime = stopStopwatch ();
+	displayPath ();
 
 	//Exit program
+	totalTime = gridTime + findTime;
+	print (1, 1, "\nDone! Total calculation time is %.4lfs\n", totalTime);
 	print (0, 1, "All done!\n##########################################\n\n");
 	fclose (file);
 
