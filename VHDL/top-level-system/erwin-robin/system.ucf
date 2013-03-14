@@ -72,8 +72,8 @@ NET "sensor<2>" LOC = "B5" ;
 
 NET "servo<0>" LOC = "A9" ; # servo left
 NET "servo<1>" LOC = "B9" ; # servo right
-#NET "rx" LOC = "A10" ; #xbee out (received data)
-#NET "tx" LOC = "C9" ; #xbee in (data to send)
+NET "rx" LOC = "A10" ; #xbee out (received data)
+NET "tx" LOC = "C9" ; #xbee in (data to send)
 
 #NET "JD<1>" LOC = "C12" ; 
 #NET "JD<2>" LOC = "A13" ; 

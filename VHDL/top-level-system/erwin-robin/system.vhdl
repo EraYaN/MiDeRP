@@ -9,16 +9,13 @@ entity system is
 		clk		: in	std_logic; --kristal;
 		reset		: in	std_logic; -- button;		
 		
-		sensor		: in	std_logic_vector (2 downto 0);
-		servo		: out	std_logic_vector (1 downto 0)
+		sensor		: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
+		servo		: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
 		
 		--uart
 		rx: in std_logic;
-		tx: in std_logic;
+		tx: in std_logic	
 		
-		---debug_m_speed_l : out signed (7 downto 0);
-		---debug_m_speed_r : out signed (7 downto 0);
-		---debug_count : out unsigned (19 downto 0)
 	);
 end entity system;
 
@@ -28,9 +25,7 @@ architecture structural of system is
 		port (	clk			: in	std_logic;
 			reset			: in	std_logic;
 
-			sensor_l		: in	std_logic;
-			sensor_m		: in	std_logic;
-			sensor_r		: in	std_logic;
+			sensor		: in	std_logic_vector(2 downto 0);	
 
 			count_in		: in	unsigned (19 downto 0);
 			count_reset		: out	std_logic;
@@ -45,14 +40,8 @@ architecture structural of system is
 	
 	component inputbuffer is
 		port (	clk		: in	std_logic;
-
-			sensor_l_in	: in	std_logic;
-			sensor_m_in	: in	std_logic;
-			sensor_r_in	: in	std_logic;
-
-			sensor_l_out	: out	std_logic;
-			sensor_m_out	: out	std_logic;
-			sensor_r_out	: out	std_logic
+			sensor_in	: in	std_logic_vector(2 downto 0);
+			sensor_out	: out	std_logic_vector(2 downto 0)
 		);
 	end component inputbuffer;
 	
@@ -91,7 +80,7 @@ architecture structural of system is
 	
      --signals 
     signal count : unsigned (19 downto 0);
-	signal bufferedsensors : std_logic_vector (2 downto 0); -- (left,middle,right)
+	signal bufferedsensor : std_logic_vector (2 downto 0); -- (left,middle,right)
     signal count_reset, m_reset_l, m_reset_r : std_logic := '0';  
 	signal side_l : side := left;
 	signal side_r : side := right;
@@ -99,12 +88,8 @@ architecture structural of system is
     begin
     IB: inputbuffer port map(
 		clk => clk,
-		sensor_l_in => sensor(0),
-		sensor_r_in => sensor(1),
-		sensor_m_in => sensor(2),
-		sensor_l_out => bufferedsensors(0),
-		sensor_r_out => bufferedsensors(1),
-		sensor_m_out => bufferedsensors(2)
+		sensor_in => sensor,
+		sensor_out => bufferedsensor
     );
     MCL: motorcontrol port map(
 		clk => clk,
@@ -132,9 +117,7 @@ architecture structural of system is
 		reset => reset,
 		count_in => count,		
 
-		sensor_l => bufferedsensors(0),
-		sensor_m => bufferedsensors(1),
-		sensor_r => bufferedsensors(2),
+		sensor => bufferedsensor,	
 		
 		count_reset => count_reset,
 
@@ -144,12 +127,7 @@ architecture structural of system is
 		motor_r_reset => m_reset_r,
 		motor_r_speed => m_speed_r
     );
-	UART: uart port map (
-		clk	=>	clk,
-		reset	=>	reset,
-		rx	=>	
-	);
-       ---debug_m_speed_l<=m_speed_l; 
+	---debug_m_speed_l<=m_speed_l; 
        ---debug_m_speed_r<=m_speed_r;
 	---debug_count<=count;	   
 end architecture structural;

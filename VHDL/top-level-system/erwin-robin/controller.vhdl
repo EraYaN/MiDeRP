@@ -8,9 +8,7 @@ entity controller is
 	port (	clk			: in	std_logic;
 		reset			: in	std_logic;
 
-		sensor_l		: in	std_logic;
-		sensor_m		: in	std_logic;
-		sensor_r		: in	std_logic;
+		sensor		: in	std_logic_vector(2 downto 0);		
 
 		count_in		: in	unsigned (19 downto 0);
 		count_reset		: out	std_logic;
@@ -25,15 +23,21 @@ end entity controller;
 architecture b of controller is
 
 	begin
-	process (clk,sensor_l,sensor_m,sensor_r)
+	process (clk,sensor)
 	begin
 		motor_l_speed <= "00000000";
-		motor_r_speed <= "00000000";		
-		if(sensor_l='1' or sensor_m='1' or sensor_r='1')then
-			motor_l_speed <= To_signed(100, 8);
-			motor_r_speed <= To_signed(100, 8);
-		
-		end if;
+		motor_r_speed <= "00000000";	
+		case sensor is
+          when "000" => motor_l_speed <= to_signed(30,8); motor_r_speed <= to_signed(30,8);
+          when "001" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(100,8);
+          --when "010" => motor_l_speed <= to_signed(,8); motor_r_speed <= to_signed(,8);
+          when "011" => motor_l_speed <= to_signed(-50,8); motor_r_speed <= to_signed(100,8);
+          when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(0,8);
+          when "101" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
+          when "110" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(-50,8);
+          when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
+          when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
+       end case;		
 	
 	end process;
 	motor_l_reset <= reset;

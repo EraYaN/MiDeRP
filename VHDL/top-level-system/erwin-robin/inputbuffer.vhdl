@@ -4,13 +4,9 @@ use IEEE.std_logic_1164.all;
 entity inputbuffer is
 	port (	clk		: in	std_logic;
 
-		sensor_l_in	: in	std_logic;
-		sensor_m_in	: in	std_logic;
-		sensor_r_in	: in	std_logic;
+		sensor_in	: in	std_logic_vector(2 downto 0);		
 
-		sensor_l_out	: out	std_logic;
-		sensor_m_out	: out	std_logic;
-		sensor_r_out	: out	std_logic
+		sensor_out	: out	std_logic_vector(2 downto 0)
 	);
 end entity inputbuffer;
 
@@ -28,17 +24,13 @@ architecture struct of inputbuffer is
 begin
 	d1:threebitregister port map(
 		clk => clk,
-		input(0)=>sensor_l_in,
-		input(1)=>sensor_m_in,
-		input(2)=>sensor_r_in,
+		input=>sensor_in,		
 		output=>tussen,
 		reset=>gnd
 	);
 	d2:threebitregister port map(
 		clk => clk,
-		output(0)=>sensor_l_out,
-		output(1)=>sensor_m_out,
-		output(2)=>sensor_r_out,
+		output=>sensor_out,		
 		input=>tussen,
 		reset=>gnd
 	);
