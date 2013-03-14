@@ -9,11 +9,8 @@ entity system is
 	   clk		: in	std_logic; --kristal;
 		reset		: in	std_logic; -- button;		
 		
-		sensor_l_in	: in	std_logic;
-		sensor_m_in	: in	std_logic;
-		sensor_r_in	: in	std_logic;
-		pwm_motor_l		: out	std_logic;
-		pwm_motor_r		: out	std_logic
+		sensor		: in	std_logic_vector (2 downto 0);
+		servo		: out	std_logic_vector (1 downto 0)
 		---debug_m_speed_l : out signed (7 downto 0);
 		---debug_m_speed_r : out signed (7 downto 0);
 		---debug_count : out unsigned (19 downto 0)
@@ -71,7 +68,7 @@ architecture structural of system is
 	end component counter;
      --signals 
     signal count : unsigned (19 downto 0);
-	signal sensors : std_logic_vector (2 downto 0); -- (left,middle,right)
+	signal bufferedsensors : std_logic_vector (2 downto 0); -- (left,middle,right)
     signal count_reset, m_reset_l, m_reset_r : std_logic := '0';  
 	signal side_l : side := left;
 	signal side_r : side := right;
@@ -79,19 +76,19 @@ architecture structural of system is
     begin
     IB: inputbuffer port map(
 		clk => clk,
-		sensor_l_in => sensor_l_in,
-		sensor_r_in => sensor_r_in,
-		sensor_m_in => sensor_m_in,
-		sensor_l_out => sensors(0),
-		sensor_r_out => sensors(1),
-		sensor_m_out => sensors(2)
+		sensor_l_in => sensor(0),
+		sensor_r_in => sensor(1),
+		sensor_m_in => sensor(2),
+		sensor_l_out => bufferedsensors(0),
+		sensor_r_out => bufferedsensors(1),
+		sensor_m_out => bufferedsensors(2)
     );
     MCL: motorcontrol port map(
 		clk => clk,
 		reset => m_reset_l,
 		speed => m_speed_l,
 		count_in => count,
-		pwm => pwm_motor_l,
+		pwm => servo(0),
 		motor => side_l
     );
     MCR: motorcontrol port map(
@@ -99,7 +96,7 @@ architecture structural of system is
 		reset => m_reset_r,
 		speed => m_speed_r,
 		count_in => count,
-		pwm => pwm_motor_r,
+		pwm => servo(1),
 		motor => side_r
     );
     TB: counter port map(
@@ -112,9 +109,9 @@ architecture structural of system is
 		reset => reset,
 		count_in => count,		
 
-		sensor_l => sensors(0),
-		sensor_m => sensors(1),
-		sensor_r => sensors(2),
+		sensor_l => bufferedsensors(0),
+		sensor_m => bufferedsensors(1),
+		sensor_r => bufferedsensors(2),
 		
 		count_reset => count_reset,
 
