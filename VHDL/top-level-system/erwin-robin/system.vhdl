@@ -13,7 +13,7 @@ entity system is
 		sensor_m_in	: in	std_logic;
 		sensor_r_in	: in	std_logic;
 		pwm_motor_l		: out	std_logic;
-		pwm_motor_r		: out	std_logic;
+		pwm_motor_r		: out	std_logic
 		---debug_m_speed_l : out signed (7 downto 0);
 		---debug_m_speed_r : out signed (7 downto 0);
 		---debug_count : out unsigned (19 downto 0)
@@ -124,7 +124,7 @@ architecture structural of system is
 		motor_r_reset => m_reset_r,
 		motor_r_speed => m_speed_r
     );    
-       debug_m_speed_l<=m_speed_l; 
-       debug_m_speed_r<=m_speed_r;
-	debug_count<=count;	   
+       ---debug_m_speed_l<=m_speed_l; 
+       ---debug_m_speed_r<=m_speed_r;
+	---debug_count<=count;	   
 end architecture structural;
