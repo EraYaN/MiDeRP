@@ -11,7 +11,7 @@ struct node {
 };
 
 //Function prototypes
-Node *newNode (Node *currentNode, unsigned int id);
+Node *newNode (Node *current, unsigned int id);
 Node *getNode (unsigned int id);
 Node **getNeighbors (Node *node);
 unsigned int getXY (Node *node, char axis);
