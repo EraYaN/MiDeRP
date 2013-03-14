@@ -6,15 +6,21 @@ use std.textio.all;
 
 entity system is
 	port (
-		clk		: in	std_logic; --kristal;
-		reset		: in	std_logic; -- button;		
+		clk: in	std_logic; --kristal;
+		reset: in std_logic; -- button;		
 		
-		sensor		: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
-		servo		: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
+		sensor: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
+		servo: out	std_logic_vector (1 downto 0) -- left = 0 right = 1
 		
 		--uart
 		rx: in std_logic;
-		tx: in std_logic	
+		tx: out std_logic;
+		sw: in std_logic_vector(7 downto 0);
+		led: out std_logic_vector(7 downto 0);
+		write_data: in std_logic;
+		read_data: in std_logic;
+		seg: out std_logic_vector(7 downto 0);
+		an: out std_logic_vector(3 downto 0)	
 		
 	);
 end entity system;
@@ -22,43 +28,47 @@ end entity system;
 architecture structural of system is
     --components
     component controller is
-		port (	clk			: in	std_logic;
-			reset			: in	std_logic;
+		port (	
+			clk	: in	std_logic;
+			reset	: in	std_logic;
 
-			sensor		: in	std_logic_vector(2 downto 0);	
+			sensor	: in	std_logic_vector(2 downto 0);	
 
-			count_in		: in	unsigned (19 downto 0);
-			count_reset		: out	std_logic;
+			count_in	: in	unsigned (19 downto 0);
+			count_reset	: out	std_logic;
 
-			motor_l_reset		: out	std_logic;
-			motor_l_speed		: out	signed (7 downto 0);
+			motor_l_reset	: out	std_logic;
+			motor_l_speed	: out	signed (7 downto 0);
 
-			motor_r_reset		: out	std_logic;
-			motor_r_speed		: out	signed (7 downto 0)
+			motor_r_reset	: out	std_logic;
+			motor_r_speed	: out	signed (7 downto 0)
 		);
 	end component controller;
 	
 	component inputbuffer is
-		port (	clk		: in	std_logic;
+		port (	
+			clk	: in	std_logic;
 			sensor_in	: in	std_logic_vector(2 downto 0);
 			sensor_out	: out	std_logic_vector(2 downto 0)
 		);
 	end component inputbuffer;
 	
 	component motorcontrol is
-		port (	clk		: in	std_logic;
-			reset		: in	std_logic;
-			speed		: in	signed (7 downto 0); -- van 100 tot -100
+		port (	
+			clk	: in	std_logic;
+			reset	: in	std_logic;
+			speed	: in	signed (7 downto 0); -- van 100 tot -100
 			count_in	: in	unsigned (19 downto 0);
-			motor		: in	side; --0=left 1=right
+			motor	: in	side; --0=left 1=right
 
-			pwm		: out	std_logic
+			pwm	: out	std_logic
 		);
 	end component motorcontrol;
 	
 	component counter is
-		port (	clk		: in	std_logic;
-			reset		: in	std_logic;
+		port (	
+			clk	: in	std_logic;
+			reset	: in	std_logic;
 
 			count_out	: out	unsigned (19 downto 0)
 		);
@@ -73,7 +83,7 @@ architecture structural of system is
 		led: out std_logic_vector(7 downto 0); --received byte
 		write_data: in std_logic; --write to transmitter buffer 
 		read_data: in std_logic; --read from receiver buffer 
-		sseg: out std_logic; --seven segment LED display
+		sseg: out std_logic_vector(7 downto 0); --seven segment LED display
 		an: out std_logic_vector(3 downto 0) --anodes of seven segment LED display 
 	);
 	end component uart;
@@ -85,7 +95,9 @@ architecture structural of system is
 	signal side_l : side := left;
 	signal side_r : side := right;
 	signal m_speed_r, m_speed_l : signed (7 downto 0) := "00000000";
-    begin
+	
+begin
+
     IB: inputbuffer port map(
 		clk => clk,
 		sensor_in => sensor,
@@ -127,7 +139,17 @@ architecture structural of system is
 		motor_r_reset => m_reset_r,
 		motor_r_speed => m_speed_r
     );
-	---debug_m_speed_l<=m_speed_l; 
-       ---debug_m_speed_r<=m_speed_r;
-	---debug_count<=count;	   
+	UARTL: uart port map (
+		clk	=>	clk,
+		reset	=>	reset,
+		rx	=>	rx,
+		tx	=>	tx,
+		sw	=>	sw,
+		led	=>	led,
+		write_data	=>	write_data,
+		read_data	=>	read_data,
+		sseg	=>	seg,
+		an	=>	an
+	);
+	
 end architecture structural;

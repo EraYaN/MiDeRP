@@ -10,7 +10,7 @@ entity uart is
 		led: out std_logic_vector(7 downto 0); --received byte
 		write_data: in std_logic; --write to transmitter buffer 
 		read_data: in std_logic; --read from receiver buffer 
-		sseg: out std_logic; --seven segment LED display
+		sseg: out std_logic_vector(7 downto 0); --seven segment LED display
 		an: out std_logic_vector(3 downto 0) --anodes of seven segment LED display 
 	);
 end uart;
@@ -33,7 +33,7 @@ architecture s of uart is
 		  clr_flag, set_flag: in std_logic; 
 		  din: in std_logic_vector(7 downto 0);
 		  dout: out std_logic_vector(7 downto 0);
-		  flag: out std_logic
+		  flag: out std_logic_vector(7 downto 0)
 	   );
 	end component buf_reg;
 	
@@ -58,12 +58,12 @@ architecture s of uart is
 	   );
 	end component uart_tx ;
 	
-	signal s_tick, rx_done_tick, tx_done_tick, tx_start : std_logic;
-	signal received, transmit : std_logic_vector(7 downto 0);
+	signal s_tick, rx_done_tick, tx_done_tick : std_logic;
+	signal received, transmit, tx_start : std_logic_vector(7 downto 0);
 	
 begin
 
-	an	<=	'1111';
+	an	<=	"1111";
 
 	l1: baud_gen port map (
 		clk	=>	clk,
@@ -99,7 +99,7 @@ begin
 	l5: uart_tx port map (
 		clk	=>	clk,
 		reset	=>	reset,
-		tx_start	=>	tx_start,
+		tx_start	=>	tx_start(0),
 		s_tick	=>	s_tick,
 		din	=>	transmit,
 		tx_done_tick	=>	tx_done_tick,

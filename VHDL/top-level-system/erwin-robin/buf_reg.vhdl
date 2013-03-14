@@ -9,7 +9,7 @@ entity buf_reg is
       clr_flag, set_flag: in std_logic; 
       din: in std_logic_vector(7 downto 0);
       dout: out std_logic_vector(7 downto 0);
-      flag: out std_logic
+      flag: out std_logic_vector(7 downto 0)
    );
 end buf_reg;
 
@@ -42,5 +42,5 @@ begin
    end process;
    -- output logic
    dout <= b_reg;
-   flag <= flag_reg;
+   flag(0) <= flag_reg;
 end arch;
