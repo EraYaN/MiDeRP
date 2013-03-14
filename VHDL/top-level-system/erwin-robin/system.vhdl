@@ -6,11 +6,16 @@ use std.textio.all;
 
 entity system is
 	port (
-	   clk		: in	std_logic; --kristal;
+		clk		: in	std_logic; --kristal;
 		reset		: in	std_logic; -- button;		
 		
 		sensor		: in	std_logic_vector (2 downto 0);
 		servo		: out	std_logic_vector (1 downto 0)
+		
+		--uart
+		rx: in std_logic;
+		tx: in std_logic;
+		
 		---debug_m_speed_l : out signed (7 downto 0);
 		---debug_m_speed_r : out signed (7 downto 0);
 		---debug_count : out unsigned (19 downto 0)
@@ -37,6 +42,7 @@ architecture structural of system is
 			motor_r_speed		: out	signed (7 downto 0)
 		);
 	end component controller;
+	
 	component inputbuffer is
 		port (	clk		: in	std_logic;
 
@@ -49,6 +55,7 @@ architecture structural of system is
 			sensor_r_out	: out	std_logic
 		);
 	end component inputbuffer;
+	
 	component motorcontrol is
 		port (	clk		: in	std_logic;
 			reset		: in	std_logic;
@@ -59,6 +66,7 @@ architecture structural of system is
 			pwm		: out	std_logic
 		);
 	end component motorcontrol;
+	
 	component counter is
 		port (	clk		: in	std_logic;
 			reset		: in	std_logic;
@@ -66,6 +74,21 @@ architecture structural of system is
 			count_out	: out	unsigned (19 downto 0)
 		);
 	end component counter;
+	
+	component uart is
+	port (
+		clk, reset: in std_logic;
+		rx: in std_logic; --input bit stream
+		tx: out std_logic; --output bit stream
+		sw: in std_logic_vector(7 downto 0); --byte to be sent
+		led: out std_logic_vector(7 downto 0); --received byte
+		write_data: in std_logic; --write to transmitter buffer 
+		read_data: in std_logic; --read from receiver buffer 
+		sseg: out std_logic; --seven segment LED display
+		an: out std_logic_vector(3 downto 0) --anodes of seven segment LED display 
+	);
+	end component uart;
+	
      --signals 
     signal count : unsigned (19 downto 0);
 	signal bufferedsensors : std_logic_vector (2 downto 0); -- (left,middle,right)
@@ -120,7 +143,12 @@ architecture structural of system is
 
 		motor_r_reset => m_reset_r,
 		motor_r_speed => m_speed_r
-    );    
+    );
+	UART: uart port map (
+		clk	=>	clk,
+		reset	=>	reset,
+		rx	=>	
+	);
        ---debug_m_speed_l<=m_speed_l; 
        ---debug_m_speed_r<=m_speed_r;
 	---debug_count<=count;	   
