@@ -63,6 +63,8 @@ architecture s of uart is
 	
 begin
 
+	an	<=	'1111';
+
 	l1: baud_gen port map (
 		clk	=>	clk,
 		reset	=>	reset,
