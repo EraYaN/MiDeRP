@@ -1,172 +1,232 @@
 \documentclass{report}
 \input{../../library/preamble}
 \input{../../library/style}
-\title{Resultaten}
-\author{J.F.J. Blom}
-\date{\today}
+
 \begin{document}
 \chapter{Resultaten en Discussie}
-Er zijn vier verschillende metingen verricht, kalibratiemeting, onbekende afstandsmeting en de lineariteitsmeting. In dit hoofstuk zijn alle meetresultaten weergeven en geanalyseerd.Van alle meetresultaten is het gemiddelde genomen, doormiddel van deze formule:
+Er zijn drie verschillende metingen verricht, kalibratiemeting, onbekende afstandsmeting en de lineariteitsmeting. Deze metingen zijn drie keer gedaan en dus zijn de meetresultaten ook drie keer weergeven en geanalyseerd.
+\section{Kalibratie}
+Hieronder zijn de meetresultaten van de eerste kalibratiemeting te zien. Bij deze meting is het de bedoeling dat deze 10 keer wordt uitgevoerd, maar bij 1 groepje is de opdracht verkeerd ge\"interpreteerd en is de meting maar vijf keer uitgevoerd.\\
+\small{De gemiddelde tijd die de robot over de kalibratie afstand doet.}
 \begin{equation}
-\bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}
+\label{eq:avgTime}
+t_{gem}=\frac{\sum_{i=1}^{n}t_i}{n}
+\end{equation}
+\small{De gemiddelde rijsnelheid van de robot.}
+\begin{equation}
+\label{eq:avgVel}
+v_{gem} = \frac{s}{t_{gem}}
+\end{equation}
+\small{De standaarddeviatie van de tijd.}
+\begin{equation}
+\label{eq:standaardDev}
+\sigma(t) = \sqrt{\frac{\sum_{i=1}^{n}( t_i-t_{gem})^2}{n-1}}
+\end{equation}
+\small{De absolute fout van de tijd.}
+\begin{equation}
+\label{eq:timeError}
+u(t) = \frac{s}{\sqrt{n}} = \sqrt{\frac{\sum_{i=1}^{n}( t_i-t_{gem})^2}{n(n-1)}}
+\end{equation}
+\small{De absolute fout van de snelheid.}
+\begin{equation}
+\label{eq:velError}
+u(v) = \sqrt{\left (\frac{\partial v }{\partial t }\right)^2 u(t)^2 + \left (\frac{\partial v }{\partial s }\right)^2 u(s)^2} = \sqrt{\left (\frac{s }{{t_{gem}}^2 }\right)^2 u(t)^2 + \left (\frac{1}{t_{gem} }\right)^2 u(s)^2}
 \end{equation}
 
-Hier is $x_i$ een meetresultaat en n is het aantal metingen. 
-Daarnaast is de onzekerheid van de metingen berekend. Daarbij is gebruik gemaakt van de volgende formule:
-\begin{equation}
-u=\sqrt{\frac{\sum_{i=1}^{n}( x_i-x_a)^2}{n(n-1)}}
-\end{equation}
-$x_a$ is hier het gemiddelde van de meting.
-\subsection*{Kalibratie}
-Hieronder zijn de meetresultaten van de kalibratiemeting te zien. De meetresultaten zijn vrij constant, en dus is de onzekerheid vrij laag. De onzekerheid van de tijdsmeting is vastgesteld op 0.003 seconden, waaruit blijkt dat de meting erg accuraat is. De onzekerheid van de snelheid wordt dan 0.025 cm/s. De gemiddelde snelheid is ongeveer 9.6 cm/s.
-
-\begin{table}
- \centering
-\begin{tabular}{| l| c|}
-\hline
-    & Kalibratie 10 cm \\
-\hline
-   Meting 1 (s) & 1.031 \\
-\hline
-   Meting 2 (s) & 1.042 \\
-\hline
-   Meting 3 (s) & 1.042 \\
-\hline
-   Meting 4 (s) & 1.046 \\
-\hline
-   Meting 5 (s) & 1.045 \\
-\hline
-   Gemiddelde (s) & 1.041 \\
-\hline
-   Gemiddelde snelheid (cm/s) & 9.602 \\
-\hline
-   Onzekerheid tijd (s) & 0.003 \\
-\hline
-   Onzekerheid snelheid (cm/s) & 0.025 \\
-\hline
-\end{tabular}
-\caption{Tabel meetresultaten kalibratie Joris en Chy}
-\end{table}
-
-\begin{table}
- \centering
-\begin{tabular}{| l| c|}
-\hline
-    & Kalibratie 10 cm \\
-\hline
-   Meting 1 (s) & 1,164 \\
-\hline
-   Meting 2 (s) & 1.170 \\
-\hline
-   Meting 3 (s) & 1.173 \\
-\hline
-   Meting 4 (s) & 1.142 \\
-\hline
-   Meting 5 (s) & 1.146 \\
-\hline
-   Meting 6 (s) & 1.167 \\
-\hline
-   Meting 7 (s) & 1.171 \\
-\hline
-   Meting 8 (s) & 1.167 \\
-\hline
-   Meting 9 (s) & 1.156 \\
-\hline
-   Meting 10 (s) & 1.152 \\
-\hline
-   Gemiddelde (s) & 1.161 \\
-\hline
-   Gemiddelde snelheid (cm/s) & 8.614 \\
-\hline
-   Onzekerheid tijd (s) & 1.208E-5
- \\
-\hline
-   Onzekerheid snelheid (cm/s) & 1.040E-4 \\
-\hline
-\end{tabular}
-\caption{Tabel meetresultaten kalibratie Luc en Tijmen}
-\end{table}
+Als we de functies \ref{eq:avgTime},  \ref{eq:avgVel},  \ref{eq:standaardDev},  \ref{eq:timeError} en  \ref{eq:velError} op de meetresultaten (Tabel \ref{tab:measurementsCalib}) loslaten krijgen we de waarden als in Tabel \ref{tab:resCali}.
 
 \begin{figure}[H]
- \centering
-\includegraphics[width=150mm] {grafiekmeetresultaten.jpg}
-\caption{Grafiek meetresultaten kalibratie Joris en Chy}
+\includegraphics[width=0.33\textwidth,page=2]{grafiekmeetresultaten1}
+\includegraphics[width=0.33\textwidth,page=1]{grafiekmeetresultaten2}
+\includegraphics[width=0.33\textwidth,page=3]{grafiekmeetresultaten3}
+\caption{De meetresultaten in grafieken, hieruit is duidelijk de speiding van de verschillende metingen te zien. \\ \small{ Van links naar rechts Robin en Erwin, Joris en Chy, Luc en Tijmen}}
+\label{fig:measureGraph}
 \end{figure}
-Hierboven zijn de meetresultaten van de kalibratiemeting in een diagram gezet. Hier zijn goed de verschillen tussen de metingen te zien. De metingen liggen redelijk dicht bij elkaar, en dus is de kwaliteit van deze meting erg hoog.
-\section{Onbekende afstand}
-Hieronder zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de snelheid te kunnen bepalen moet er een afstand bekend zijn. Deze afstand is gemeten en deze is 23.4 cm. De onzekerheid van de tijdsmeting is vastgesteld op 0.005 seconden, en dus is de meting erg nauwkeurig. Deze meting is zoals verwacht vanwege de langere afstand iets minder accuraat als de kalibratiemeting. De onzekerheid van de snelheid is vastgesteld op 0.007 cm/s, en dus is ook deze waarde erg nauwkeurig. De snelheid is zoals verwacht ongeveer gelijk als bij de kalibratiemeting.
 
 \begin{table}
- \centering
-\begin{tabular}{| l| c|}
+\centering
+\caption{Meetresulataten kalibratie}
+\label{tab:measurementsCalib}
+\subfloat[Robin en Erwin]{\begin{tabular}{| l| c|}
 \hline
-    & Onbekende afstand 23.4 cm\\
+   Meting \# & t (s) \\
 \hline
-   Meting 1 (s) & 2.526 \\
+   1& 1.031 \\
 \hline
-   Meting 2 (s) & 2.531 \\
+   2& 1.042 \\
 \hline
-   Meting 3 (s) & 2.515 \\
+   3& 1.042 \\
 \hline
-   Meting 4 (s) & 2.518 \\
+   4& 1.046 \\
 \hline
-   Meting 5 (s) & 2.522 \\
+   5& 1.045 \\
 \hline
-   Gemiddelde (s) & 2.523 \\
+\end{tabular}
+}
+\quad
+\subfloat[Joris en Chy]{\begin{tabular}{| l| c|}
 \hline
-   Gemiddelde snelheid (cm/s) & 9.276 \\
+   Meting \# & t (s) \\
 \hline
-   Onzekerheid tijd (s) & 0.005 \\
+   1& 1.128\\
 \hline
-   Onzekerheid snelheid (cm/s) & 0.007 \\
+   2& 1.127\\
+\hline
+   3& 1.137\\
+\hline
+  4& 1.142\\
+\hline
+   5& 1.130 \\
+\hline
+   6& 1.136\\
+\hline
+   7& 1.140\\
+\hline
+   8& 1.130\\
+\hline
+   9& 1.131\\
+\hline
+   10& 1.145 \\
+\hline
+\end{tabular}
+}
+\quad
+\subfloat[Luc en Tijmen]{\begin{tabular}{| l| c|}
+\hline
+   Meting \# & t(s) \\
+\hline
+   1& 1.170 \\
+\hline
+   2& 1.173 \\
+\hline
+   3& 1.142 \\
+\hline
+   4& 1.146 \\
+\hline
+   5& 1.164 \\
+\hline
+   6& 1.167 \\
+\hline
+   7& 1.171 \\
+\hline
+   8& 1.167\\
+\hline
+   9& 1.156\\
+\hline
+   10& 1.152\\
+\hline
+\end{tabular}
+}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Eigenschappen Robot}
+\label{tab:resCali}
+\subfloat[Robin en Erwin]{\begin{tabular}{| l| c|}
+\hline
+   Naam & Waarde \\
+\hline
+   $t_{gem}$ & 1.041 s \\
+\hline
+   $v_{gem}$ & 9.602 cm/s \\
+\hline
+   $\sigma(t)$ & 0.582 s \\
+\hline
+   $u(t_{gem})$ & 0.003 s  \\
+\hline
+   $u(v_{gem})$ & 0.054 cm/s \\
+\hline
+\end{tabular}
+}
+\quad
+\subfloat[Joris en Chy]{\begin{tabular}{| l| c|}
+\hline
+   Naam & Waarde \\
+\hline
+   $t_{gem}$ & 1.135 s \\
+\hline
+   $v_{gem}$ & 8.813 cm/s \\
+\hline
+   $\sigma(t)$ & 0.006 s \\
+\hline
+   $u(t_{gem})$ & 0.002 s  \\
+\hline
+   $u(v_{gem})$ & 0.047 cm/s \\
+\hline
+\end{tabular}
+}
+\quad
+\subfloat[Luc en Tijmen]{\begin{tabular}{| l| c|}
+\hline
+   Naam & Waarde \\
+\hline
+   $t_{gem}$ & 1.161 s \\
+\hline
+   $v_{gem}$ & 8.614 cm/s \\
+\hline
+   $\sigma(t)$ & 0.011 s \\
+\hline
+   $u(t_{gem})$ & 0.004 s  \\
+\hline
+   $u(v_{gem})$ & 0.050 cm/s \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+\section{Onbekende afstand}
+
+In Tabel \ref{tab:resExtra}a zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de snelheid te kunnen bepalen moet er een afstand bekend zijn. Deze afstand is gemeten en deze is 23.4 cm.
+
+\begin{table}
+\centering
+\caption{De resultaten van de onbekende afstandsmetingen en de lineairiteitsmetingen.}
+\label{tab:resExtra}
+\subfloat[Onbekende afstand]{\begin{tabular}{| l| c|}
+\hline
+  Meting \#  & t (s)\\
+\hline
+  R\&E & 2.526 \\
+\hline
+J\&C & 2.664 \\
+\hline
+L\&T & 2.741 \\
 \hline
  \end{tabular}
-\caption{TODO caption}
+}
+\quad
+\subfloat[Lineairiteit]{\begin{tabular}{| l| c| c| c| c| c|}
+\hline
+  Meting \# & $t_{5cm} (s)$ & $t_{10cm} (s)$ & $t_{15cm} (s)$ & $t_{20cm} (s)$ & $t_{25cm} (s)$\\
+\hline
+  R\&E & 0.542 & 1.092 & 1.638 & 2.218 & 2.728 \\
+\hline
+J\&C & 0.575 & 1.140 & 1.732 & 2.330 & 2.854 \\
+\hline
+L\&T & 0.584 & 1.177 & 1.789 & 2.375 & 2.955 \\
+\hline
+ \end{tabular}
+}
 \end{table}
 
 \section{Lineariteit}
-Hieronder zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel van de meetresultaten en de afstand is de gemiddelde snelheid uitgerekend. Zoals in de tabel te zien is blijft de gemiddelde snelheid redelijk constant. Dit betekend dat de afstandsmeter van de robot redelijk lineair is. De snelheid is ook ongeveer gelijk als bij de kalibratiemeting. Onder de tabel en op de volgende pagina zijn deze gegevens in diagrammen gezet, waardoor de afwijkingen in lineariteit nog beter te zien zijn. 
+\subsection*{Meting 1}
+In Tabel \ref{tab:resExtra}b zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel van de meetresultaten en de afstand is de gemiddelde snelheid uitgerekend. De grafieken in Figuur \ref{fig:measureGraph} geven een duidelijk beeld van de metingen.
 
-\begin{table}
- \centering
-\begin{tabular}{| l| c| c| c| c| c|}
-\hline
-   & 5 cm & 10 cm & 15 cm & 20 cm & 25 cm\\
-\hline
-   Meting 1 (s) & 0.542 & 1.092 & 1.638 & 2.218 & 2.728 \\
-\hline
-   Meting 2 (s) & 0.550 & 1.086 & 1.636 & 2.237 & 2.747 \\
-\hline
-   Meting 3 (s) & 0.547 & 1.089 & 1.627 & 2.210 & 2.728 \\
-\hline
-   Meting 4 (s) & 0.548 & 1.081 & 1.634 & 2.218 & 2.724 \\
-\hline
-   Meting 5 (s) & 0.542 & 1.081 & 1.658 & 2.233 & 2.733 \\
-\hline
-   Gemiddelde (s) & 0.546 & 1.086 & 1.638 & 2.223 & 2.732 \\
-\hline
-   Gemiddelde snelheid (cm/s) & 9.164 & 9.211 & 9.155 & 8.996 & 9.151 \\
-\hline
-   Onzekerheid tijd (s) & 0.002 & 0.002 & 0.005 & 0.005 & 0.004 \\
-\hline
-   Onzekerheid snelheid (cm/s) & 0.055 & 0.018 & 0.019 & 0.10 & 0.005 \\
-\hline
- \end{tabular}
-\caption{TODO caption}
-\end{table}
 \begin{figure}[H]
- \centering
-\includegraphics[width=150mm] {afstand-tellerstand.jpg}
-\caption{TODO Caption}
+\includegraphics[width=0.33\textwidth,page=2]{Lineariteitsmeting1}
+\includegraphics[width=0.33\textwidth,page=1]{Lineariteitsmeting2}
+\includegraphics[width=0.33\textwidth,page=3]{Lineariteitsmeting3}
+\caption{De lineairitijdsmetingen en de uitgerekende snelheid van de kalibratie in 1 grafiek. \\ \small{ Van links naar rechts Robin en Erwin, Joris en Chy, Luc en Tijmen}}
+\label{fig:measureGraph}
 \end{figure}
-In de bovenstaande grafiek is de afstand afgezet tegen de tellerstand van de robot. De lijn is bijna recht, dus de afstandsmeter van de robot is ook bijna lineair, en dus is de snelheid onafhankelijk van de afstand.  Op de volgende pagina zet ik de afstand af tegen de snelheid, waardoor de afwijkingen in lineariteit beter te zien zijn. 
-\begin{figure}[H]
- \centering
-\includegraphics[width=150mm] {afstand-snelheid.jpg}
-\caption{TODO Caption}
-\end{figure}
-In de bovenstaande grafiek is de afstand afgezet tegen de snelheid. Hier zijn goed de afwijkingen in lineariteit van de afstandsmeter te zien. De snelheid blijft tussen de 9.22 en de 8.99, dus de snelheid is vrij constant. De afstandsmeter van de robot is dus behoorlijk lineair. De kleine afwijkingen kunnen ook liggen aan de vele andere factoren die de meting be"invloeden. De robot rijd bijvoorbeeld in een bocht met een radius van 80 cm. Daarnaast is de robot misschien niet altijd loodrecht ten opzichte van de startlijn gestart, waardoor de meting wordt be"invloed.
+
 \newpage
 \chapter{Conclusie}
 Het meetresultaat van dit meetrapport is goed te gebruiken in de rest van ons project. Dit is mede te danken aan de hoge kwaliteit van de meetresultaten. De onzekerheid en de afwijkingen zijn erg klein bij alle metingen die zijn verricht. De gemiddelde snelheid van de robot is ongeveer 9,6 cm/s. Bij de lineariteitsmeting was de gemiddelde snelheid vrijwel onafhankelijk van de afstand, en dus is de afstandsmeter van de robot erg lineair. Tijdens het rijden maakt de robot een bocht met een radius van ongeveer 80 cm. Hiermee moet rekening gehouden worden bij het programmeren van de robot. Het feit dat de afstandsmeter van de robot erg lineair is, is een gunstige conclusie voor ons project.
+\end{document}
+
+
+
 \end{document}
