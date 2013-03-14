@@ -14,7 +14,7 @@ architecture s of motorcontrol_tb is
 			clk			: in	std_logic;
 			reset		: in	std_logic;
 
-			count_out	: out	std_logic_vector (19 downto 0)
+			count_out	: out	unsigned (19 downto 0)
 		);
 	end component counter;
 	
@@ -23,7 +23,7 @@ architecture s of motorcontrol_tb is
 			clk			: in	std_logic;
 			reset		: in	std_logic;
 			speed		: in	signed (7 downto 0); -- van 100 tot -100
-			count_in	: in	std_logic_vector (19 downto 0);
+			count_in	: in	unsigned (19 downto 0);
 			motor		: in	side;
 
 			pwm		: out	std_logic
@@ -31,7 +31,7 @@ architecture s of motorcontrol_tb is
 	end component motorcontrol;
 	
 	signal clk, reset, pwm : std_logic;
-	signal count : std_logic_vector (19 downto 0);
+	signal count : unsigned (19 downto 0);
 	signal motor : side;
 	signal speed : signed (7 downto 0);
 

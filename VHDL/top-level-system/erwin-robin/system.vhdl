@@ -1,5 +1,8 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+library std;
+use std.textio.all;
 
 entity system is
 	port (
@@ -10,7 +13,10 @@ entity system is
 		sensor_m_in	: in	std_logic;
 		sensor_r_in	: in	std_logic;
 		pwm_motor_l		: out	std_logic;
-		pwm_motor_r		: out	std_logic
+		pwm_motor_r		: out	std_logic;
+		---debug_m_speed_l : out signed (7 downto 0);
+		---debug_m_speed_r : out signed (7 downto 0);
+		---debug_count : out unsigned (19 downto 0)
 	);
 end entity system;
 
@@ -24,14 +30,14 @@ architecture structural of system is
 			sensor_m		: in	std_logic;
 			sensor_r		: in	std_logic;
 
-			count_in		: in	std_logic_vector (19 downto 0);
+			count_in		: in	unsigned (19 downto 0);
 			count_reset		: out	std_logic;
 
 			motor_l_reset		: out	std_logic;
-			motor_l_direction	: out	std_logic;
+			motor_l_speed		: out	signed (7 downto 0);
 
 			motor_r_reset		: out	std_logic;
-			motor_r_direction	: out	std_logic
+			motor_r_speed		: out	signed (7 downto 0)
 		);
 	end component controller;
 	component inputbuffer is
@@ -49,8 +55,9 @@ architecture structural of system is
 	component motorcontrol is
 		port (	clk		: in	std_logic;
 			reset		: in	std_logic;
-			direction	: in	std_logic;
-			count_in	: in	std_logic_vector (19 downto 0);
+			speed		: in	signed (7 downto 0); -- van 100 tot -100
+			count_in	: in	unsigned (19 downto 0);
+			motor		: in	side; --0=left 1=right
 
 			pwm		: out	std_logic
 		);
@@ -59,13 +66,16 @@ architecture structural of system is
 		port (	clk		: in	std_logic;
 			reset		: in	std_logic;
 
-			count_out	: out	std_logic_vector (19 downto 0)
+			count_out	: out	unsigned (19 downto 0)
 		);
 	end component counter;
      --signals 
-    signal count : std_logic_vector (19 downto 0);
+    signal count : unsigned (19 downto 0);
 	signal sensors : std_logic_vector (2 downto 0); -- (left,middle,right)
-    signal m_direction_l, m_direction_r, count_reset, m_reset_l, m_reset_r : std_logic;  
+    signal count_reset, m_reset_l, m_reset_r : std_logic := '0';  
+	signal side_l : side := left;
+	signal side_r : side := right;
+	signal m_speed_r, m_speed_l : signed (7 downto 0) := "00000000";
     begin
     IB: inputbuffer port map(
 		clk => clk,
@@ -79,16 +89,18 @@ architecture structural of system is
     MCL: motorcontrol port map(
 		clk => clk,
 		reset => m_reset_l,
-		direction => m_direction_l,
+		speed => m_speed_l,
 		count_in => count,
-		pwm => pwm_motor_l
+		pwm => pwm_motor_l,
+		motor => side_l
     );
     MCR: motorcontrol port map(
 		clk => clk,
 		reset => m_reset_r,
-		direction => m_direction_r,
+		speed => m_speed_r,
 		count_in => count,
-		pwm => pwm_motor_r
+		pwm => pwm_motor_r,
+		motor => side_r
     );
     TB: counter port map(
 		clk => clk,
@@ -107,11 +119,12 @@ architecture structural of system is
 		count_reset => count_reset,
 
 		motor_l_reset => m_reset_l,
-		motor_l_direction => m_direction_l,
+		motor_l_speed => m_speed_l,
 
 		motor_r_reset => m_reset_r,
-		motor_r_direction => m_direction_r
+		motor_r_speed => m_speed_r
     );    
-        
-        
+       debug_m_speed_l<=m_speed_l; 
+       debug_m_speed_r<=m_speed_r;
+	debug_count<=count;	   
 end architecture structural;

@@ -8,7 +8,7 @@ entity motorcontrol is
 	port (	clk		: in	std_logic;
 		reset		: in	std_logic;
 		speed		: in	signed (7 downto 0); -- van 100 tot -100
-		count_in	: in	std_logic_vector (19 downto 0);
+		count_in	: in	unsigned (19 downto 0);
 		motor		: in	side; --0=left 1=right
 
 		pwm		: out	std_logic
@@ -21,10 +21,10 @@ begin
 	process (clk, reset)
 		variable c, s, pulse : integer;
 	begin
-		c := To_integer (unsigned(count_in));
+		c := To_integer (count_in);
 		s := To_integer (speed);
 		
-		if (reset = '1' or s /= 0) then
+		if (reset = '1' or s = 0) then
 			pwm	<= '0';
 		else
 		
