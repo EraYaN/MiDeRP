@@ -7,15 +7,17 @@ typedef struct node Node;
 struct node {
 	unsigned int id, f, g;
 	char open;
-	Node *previous;
+	Node *previous, **neighbors;
 };
 
 //Function prototypes
 Node *newNode (Node *current, unsigned int id);
 Node *getNode (unsigned int id);
-Node **getNeighbors (Node *node);
+void setNeighbors (Node *node);
 unsigned int getXY (Node *node, char axis);
 void setScores (Node *node);
 unsigned int getH (Node *node);
+void addMine (unsigned int id1, unsigned int id2);
+char isMine (Node *node1, Node *node2);
 
 #endif

@@ -17,6 +17,7 @@ Node *newNode (Node *current, unsigned int id)
 	node->previous = current;
 	node->f = 0;
 	node->g = 0;
+	node->neighbors = (Node**) safeMalloc (sizeof (Node*) * 4);
 
 	nodes[id] = node;
 
@@ -35,7 +36,7 @@ Node *getNode (unsigned int id){
 }
 
 //Get node neighbours and create them if they do not exist
-Node **getNeighbors (Node *node)
+void setNeighbors (Node *node)
 {
 	Node **neighbors = (Node**) safeMalloc (sizeof (Node*) * 4);
 
@@ -81,7 +82,7 @@ Node **getNeighbors (Node *node)
 	else
 		neighbors[3] = NULL;
 
-	return neighbors;
+	node->neighbors = neighbors;
 }
 
 //Get node X or Y value
@@ -106,18 +107,84 @@ unsigned int getXY (Node *node, char axis)
 	}
 }
 
-//Set node F and G scores
-void setScores (Node *node)
-{
-	if (node->previous)
-	{
-		node->g = node->previous->g + 1;
-		node->f = node->g + getH (node);
-	}
-}
-
-//Get the heuristic cost to exitNod
+//Get an estimated heuristic cost to exitNode
 unsigned int getH (Node *node)
 {
 	return abs ((int)(getXY(node, 'X') - getXY(exitNode, 'X'))) + abs ((int)(getXY(node, 'Y') - getXY(exitNode, 'Y')));
+}
+
+void addMine (unsigned int id1, unsigned int id2)
+{
+	Node *node1, *node2;
+
+	if (!nodes[id1])
+		node1 = newNode (NULL, id1);
+	else
+		node1 = getNode (id1);
+	if (!nodes[id2])
+		node2 = newNode (NULL, id2);
+	else
+		node2 = getNode (id2);
+
+	setNeighbors (node1);
+
+	if (!mines)
+		mines = (char**) safeMalloc (sizeof (char) * (size_t) numNodes);
+
+	if (node2 == node1->neighbors[0])
+	{
+		//Node2 is left of node1
+		mines[node1->id][0] = 1;
+		mines[node2->id][1] = 1;
+	}
+	else if (node2 == node1->neighbors[1])
+	{
+		//Node2 is right of node1
+		mines[node1->id][1] = 1;
+		mines[node2->id][0] = 1;
+	}
+	else if (node2 == node1->neighbors[2])
+	{
+		//Node2 is above node1
+		mines[node1->id][2] = 1;
+		mines[node2->id][3] = 1;
+	}
+	else if (node2 == node1->neighbors[3])
+	{
+		//Node2 is under node1
+		mines[node1->id][3] = 1;
+		mines[node2->id][2] = 1;
+	}
+	else
+	{
+		print(1, 1, "Error: mines are not neighbours!\n");
+	}
+
+}
+
+char isMine (Node *node1, Node *node2)
+{
+	int i;
+
+	if (!node1 || !node2)
+	{
+		print(1, 1, "Error: tried to check for mines near non-existing mine!\n");
+		return 0;
+	}
+
+	setNeighbors (node1);
+
+	for (i=0; i<4; i++)
+	{
+		if (node2 == node1->neighbors[i])
+		{
+			if (mines[node1->id][i])
+				return 1;
+			else
+				return 0;
+		}
+	}
+
+	print(1, 1, "Error: mines are not neighbours!\n");
+	return 0;
 }

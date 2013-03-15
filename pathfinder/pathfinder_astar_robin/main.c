@@ -43,9 +43,19 @@ int main()
 	//Create the grid
 	startStopwatch ();
 	createGrid ();
-	printf("size of node = %d\n", sizeof (Node));
 	gridTime = stopStopwatch ();
 	print(1, 1, "Grid created successfully (took %.4lfs), ready to calculate paths!\n", gridTime);
+
+	addMine (12, 13);
+	addMine (12, 11);
+	addMine (12, 7);
+	addMine (12, 17);
+	addMine (10, 5);
+	addMine (1, 6);
+	addMine (15, 16);
+	addMine (8, 9);
+	addMine (22, 23);
+	addMine (19, 14);
 
 	///Get entryNode and exitNode id
 	while (!entryNode)

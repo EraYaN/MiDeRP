@@ -2,11 +2,12 @@
 
 void makePath ();
 
+//Find a path from startingNode to exitNode
 void findPath ()
 {
 	//Init
 	unsigned int i, pre_g;
-	Node **neighbors, **open, *neighbor, *current, *next;
+	Node **open, *neighbor, *current, *next;
 	current = next = entryNode; //The value of current actually matters, next just has to have a value
 
 	open = (Node**) safeMalloc (sizeof (Node*) * (size_t)numNodes);
@@ -22,26 +23,29 @@ void findPath ()
 
 		if (current == exitNode)
 		{
+			//Reached endpoint, trace back path
 			makePath ();
 			break;
 		}
 
 		current->open = 0;
 
-		neighbors = getNeighbors (current);
+		setNeighbors (current);
 		for (i=0; i<4; i++)
 		{
-			neighbor = neighbors[i];
+			neighbor = current->neighbors[i];
 			if (!neighbor)
 				continue; //neighbor does not exist
 
 			pre_g = current->g + 1;
 			if (!neighbor->open && pre_g >= neighbor->g)
 			{
+				//Neighbor is further from target than current node
 				continue;
 			}
 			else
 			{
+				//Neighbor might be part of the shortest path to target
 				neighbor->previous = current;
 				neighbor->g = pre_g;
 				neighbor->f = neighbor->g + getH (neighbor);
@@ -49,6 +53,7 @@ void findPath ()
 
 				if (!next || next->f >= neighbor->f)
 				{
+					//Last node will be picked as next node in path
 					next = neighbor;
 				}
 			}
@@ -56,16 +61,13 @@ void findPath ()
 	}
 }
 
+//Backtrace found path and save it to an array
 void makePath ()
 {
 	Node *current = exitNode;
 	unsigned int i;
 
-	if (!current->previous)
-	{
-		print (1, 1, "Failed to find a path, quitting...\n");
-	}
-	else
+	if (current->previous)
 	{
 		path = (Node**) safeMalloc (sizeof (Node*) * (size_t) length);
 

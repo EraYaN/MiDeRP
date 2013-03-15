@@ -1,12 +1,12 @@
 #include "util.h"
-#include <time.h>
 
 clock_t begin = 0, end = 0;
 
 //Safe allocation of memory
 void *safeMalloc (size_t size)
 {
-	void* p = malloc(size);
+	void *p = malloc(size);	
+
 	if (p == NULL)
 	{
 		print (1, 1, "Error: out of memory (tried to allocate %d bytes), terminating program!\n", size);
@@ -32,27 +32,38 @@ void print (char toconsole, char tofile, char *format, ...)
 	va_end (args);
 }
 
+//Mark the beginning of a time count
 void startStopwatch(void){
 	begin = clock();
 }
 
+//End time count and return duration
 double stopStopwatch(void){
 	end = clock();
 	return ((double)end - (double)begin) / CLOCKS_PER_SEC;
 }
 
+//Create grid
 void createGrid ()
 {
 	unsigned int i;
 
+	//Allocate memory and initialize every node to NULL
 	nodes = (Node**) safeMalloc (sizeof (Node*) * (size_t)numNodes);
 	for (i=0; i<numNodes; i++)
 		nodes[i] = NULL;
 }
 
+//Display found path
 void displayPath ()
 {
 	unsigned int i;
+
+	if (!path)
+	{
+		print (1, 1, "Failed to find a path, quitting...\n");
+		return;
+	}
 
 	print (1, 1, "Found a path from node %d to node %d, with length %d (took %.4lfs)!\n", entryNode->id, exitNode->id, length, findTime);
 
