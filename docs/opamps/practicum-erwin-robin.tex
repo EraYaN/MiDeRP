@@ -1,0 +1,63 @@
+\documentclass{report}
+\input{../library/preamble}
+\input{../library/style}
+
+\title{Meetrapport: Opamps}
+\author{EPO-2 D2}
+\begin{document}
+\maketitle
+\chapter{Practicum}
+\section{inverterende versterker}
+\begin{enumerate}
+\item Done
+\item $A=-\frac{R_a}{R_b}=-\frac{10000}{1000}=-10$
+\item Check
+\item $\phi = \pi$
+\item $V_{in,pp} = 220.0 \text{mV} \wedge V_{uit,pp} = 2.021 \text{V}$
+\item $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{2.021}{0.2200}=-9.186$
+\item $f_{-3dB}=137.80000 \text{kHz}$
+\item 
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$R_a$ & berekende A & gemeten A bij 100Hz & -3dB frequentie & GBW\\
+\hline
+%1\text{k\Omega}
+& 
+1 
+&
+ $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{0.1920}{0.2240}=-0.8571$ 
+& 
+1.1200000MHz
+&
+$960000$
+\\
+\hline
+%$10\text{k\Omega}$
+&10 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{2.021}{0.2200}=-9.186$ & 137.80000kHz&$1265\cdot10^3$\\
+\hline
+%$100\text{k\Omega}$
+ & 100 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{19.90}{0.2200}=-90.45$&14.600000kHz&$1321\cdot10^3$\\
+\hline
+\end{tabular}
+\item 9
+\item 10
+
+\end{enumerate}
+\section{Integrator}
+\begin{enumerate}
+\item 1
+\item 2
+\item Done.
+\item Zaagtand, $helling=\frac{V_{in,pp}}{f^-1}$
+\item $helling=\frac{V}{s}=\frac{0.600}{30\cdot10^{-6}}=20000$
+\item Lagere amplitude.
+\item Zonder generator is uitgangssignaal nul, zonder Rd extreme ruis.
+\item 100Hz, ongeveer. (thuis)
+\item Het uitgangssignaal gaat steeds meer lijken op het geinverteerde ingangssignaal.
+\end{enumerate}
+\section{Comparator}
+\begin{enumerate}
+
+\end{enumerate}
+\end{document}
