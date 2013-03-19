@@ -8,46 +8,42 @@
 \maketitle
 \chapter{Practicum}
 \section{inverterende versterker}
+LM741
 \begin{enumerate}
 \item Done
 \item $A=-\frac{R_a}{R_b}=-\frac{10000}{1000}=-10$
 \item Check
 \item $\phi = \pi$
-\item $V_{in,pp} = 220.0 \text{mV} \wedge V_{uit,pp} = 2.021 \text{V}$
+\item $V_{in,pp} = 220.0 \mathrm{mV} \wedge V_{uit,pp} = 2.021 \mathrm{V}$
 \item $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{2.021}{0.2200}=-9.186$
-\item $f_{-3dB}=137.80000 \text{kHz}$
-\item 
-
+\item $f_{-3dB}=137.80000 \mathrm{kHz}$
+\item Tabel\\
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 $R_a$ & berekende A & gemeten A bij 100Hz & -3dB frequentie & GBW\\
 \hline
-%1\text{k\Omega}
-& 
-1 
-&
- $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{0.1920}{0.2240}=-0.8571$ 
-& 
-1.1200000MHz
-&
-$960000$
-\\
+$1 \mathrm{k}\Omega$& -1 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{0.1920}{0.2240}=-0.8571$ & 1.1200000MHz&$(1-A)\cdot f_{-3dB}=2.080\cdot10^6 Hz$ \\
 \hline
-%$10\text{k\Omega}$
-&10 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{2.021}{0.2200}=-9.186$ & 137.80000kHz&$1265\cdot10^3$\\
+$10 \mathrm{k}\Omega$
+&-10 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{2.021}{0.2200}=-9.186$ & 137.80000kHz&$(1-A)\cdot f_{-3dB}=1.404\cdot10^6 Hz$\\
 \hline
-%$100\text{k\Omega}$
- & 100 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{19.90}{0.2200}=-90.45$&14.600000kHz&$1321\cdot10^3$\\
+$100 \mathrm{k}\Omega$
+ & -100 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{19.90}{0.2200}=-90.45$&14.600000kHz&$(1-A)\cdot f_{-3dB}=1.335\cdot10^6 Hz$\\
 \hline
 \end{tabular}
-\item 9
-\item 10
+\item Done. See 8.
+\item De datasheet geeft 0.437 MHz als minimum 1.5 MHz als typisch. De op-amp op het bord voldoet dus aan deze eisen.
 
 \end{enumerate}
 \section{Integrator}
+LF356
 \begin{enumerate}
-\item 1
-\item 2
+\item \begin{equation}
+V_{out}(t) = V_{in}(t)\cdot \frac{\frac{1}{j\omega C}}{R_{pot}}
+\end{equation}
+\item \begin{equation}
+A_v(s)=\frac{V_{out}(s)}{V_{in}(s)} = \frac{\frac{1}{sC}}{R_{pot}}
+\end{equation}
 \item Done.
 \item Zaagtand, $helling=\frac{V_{in,pp}}{f^-1}$
 \item $helling=\frac{V}{s}=\frac{0.600}{30\cdot10^{-6}}=20000$
@@ -57,10 +53,13 @@ $960000$
 \item Het uitgangssignaal gaat steeds meer lijken op het geinverteerde ingangssignaal.
 \end{enumerate}
 \section{Comparator}
+LF356
 \begin{enumerate}
 \item Done.
 \item 12.80 V en 12.80 V
-\item 3
+\item \begin{equation}
+V_{max}=V_{min} \to V_{drempel} = V_{max}\cdot\frac{R_d}{R_c+R_d}=20\cdot\frac{1000}{1000+10000}=1.81\mathrm{V}
+\end{equation}
 \item 76mV omhoog en omlaag
 \item Uitgangssignaal verandert niet.
 \item 6
