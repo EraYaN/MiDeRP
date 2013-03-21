@@ -14,13 +14,7 @@ entity system is
 		
 		--uart
 		rx: in std_logic;
-		tx: out std_logic
-		--sw: in std_logic_vector(7 downto 0);
-		--led: out std_logic_vector(7 downto 0);
-		--write_data: in std_logic;
-		--read_data: in std_logic;
-		--seg: out std_logic_vector(7 downto 0);
-		--an: out std_logic_vector(3 downto 0)	
+		tx: out std_logic	
 		
 	);
 end entity system;

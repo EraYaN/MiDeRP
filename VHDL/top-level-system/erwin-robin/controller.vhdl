@@ -26,12 +26,12 @@ entity controller is
 	);
 end entity controller;
 architecture b of controller is	
-	type state is(followline, nextturn, leftturn, rightturn, waitforinput)
-	signal state : state);
+	type sys_state is (followline, processnextturn, leftturn, rightturn, waitforinput);
+	signal state : sys_state;
 	signal nextturn : unsigned(1 downto 0); -- 0 = left, 1 = forward, 2 = right, 3 = stop
 	begin
-	process (clk)
-	variable next_state : state;
+	process (clk) is
+	variable next_state : sys_state;
 	begin
 	if rising_edge(clk) then
 		next_state:=state;
@@ -40,9 +40,9 @@ architecture b of controller is
 		if state = followline then
 			--follow line
 			case sensor is
-			  when "000" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8); next_state:=nextturn;
+			  when "000" => motor_l_speed <= to_signed(30,8); motor_r_speed <= to_signed(30,8); next_state:=processnextturn;
 			  when "001" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(100,8);
-			  --when "010" => motor_l_speed <= to_signed(,8); motor_r_speed <= to_signed(,8);
+			  when "010" => motor_l_speed <= to_signed(30,8); motor_r_speed <= to_signed(30,8);
 			  when "011" => motor_l_speed <= to_signed(-50,8); motor_r_speed <= to_signed(100,8);
 			  when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(0,8);
 			  when "101" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
@@ -50,7 +50,7 @@ architecture b of controller is
 			  when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
 			  when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
 		   end case;
-		elsif state = nextturn then
+		elsif state = processnextturn then
 			--nextturn			
 			if nextturn = 0 then
 				next_state:=leftturn; --left
@@ -65,32 +65,41 @@ architecture b of controller is
 			--left
 			motor_l_speed <= to_signed(-100,8);
 			motor_l_speed <= to_signed(100,8);
-		elsif state = 3 then
+			case sensor is			  			  
+			  when "111" => --nothing
+			  when others => next_state:=followline;
+		   end case;
+		elsif state = rightturn then
 			--right
 			motor_l_speed <= to_signed(100,8);
 			motor_l_speed <= to_signed(-100,8);
-		elsif state = 4 then
+			case sensor is			  			  
+			  when "111" => --nothing
+			  when others => next_state:=followline;
+		   end case;
+		elsif state = waitforinput then
 			--wait for input
+			uart_rw(0)<='1';
 			motor_l_speed <= to_signed(0,8);
 			motor_r_speed <= to_signed(0,8);
-			--wait until( uart_br'event and uart_br='1');
-			uart_rw(0);
+			--wait until( uart_br'event and uart_br='1');			
 			if uart_br = '1' then
-				next_state := 1;
+				next_state := processnextturn;
+				uart_rw(0)<='0';
 			end if;			
 		else
 			--stop
-			motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
+			motor_l_speed <= to_signed(0,8);
+			motor_r_speed <= to_signed(0,8);
 		end if;		   
 		state<=next_state;
 	end if;
 	end process;
 	process (uart_br)
-	variable s : integer :=0;
+	--variable next_state : sys_state;
 	variable r : unsigned (7 downto 0);
 	begin
-		if rising_edge(uart_br) then
-			s:=to_integer(state);	
+		if rising_edge(uart_br) then			
 			r:=unsigned(uart_receive);		
 			if r = 76 then
 				--left
@@ -106,8 +115,7 @@ architecture b of controller is
 				nextturn<=to_unsigned(3,2);
 			else
 				--discard				
-			end if;
-			state<=to_unsigned(s,8);
+			end if;			
 		end if;
 	end process;
 	motor_l_reset <= reset;

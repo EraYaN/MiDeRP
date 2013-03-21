@@ -9,25 +9,22 @@ architecture structural of system_tb is
 	
 	component system is
 		port (
-		   clk		: in	std_logic; --kristal;
-			reset		: in	std_logic; -- button;		
+		   clk: in	std_logic; --kristal;
+			reset: in std_logic; -- button;		
 			
-			sensor_l_in	: in	std_logic;
-			sensor_m_in	: in	std_logic;
-			sensor_r_in	: in	std_logic;
-			pwm_motor_l		: out	std_logic;
-			pwm_motor_r		: out	std_logic;
-			---debug_m_speed_l : out signed (7 downto 0);
-			---debug_m_speed_r : out signed (7 downto 0);
-			---debug_count : out unsigned (19 downto 0)
+			sensor: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
+			servo: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
+			
+			--uart
+			rx: in std_logic;
+			tx: out std_logic			
 		);
 	end component system;
 	
-	signal clk, pwm_l, pwm_r	: 	std_logic;
+	signal clk, rx, tx	: 	std_logic;
 	signal reset		:	std_logic := '1' ;
 	signal sensors	:	std_logic_vector (2 downto 0) := "000";
-	--signal msl, msr : signed (7 downto 0);
-	--signal count : unsigned (19 downto 0);
+	signal servo : std_logic_vector(1 downto 0) := "00";
 begin
 
 	clk		<=	'1' after 0 ns,
@@ -43,17 +40,15 @@ begin
 				"110" after 240 ms,
 				"111" after 380 ms,
 				"000" after 420 ms;
+	rx <= '0';
+	tx <= '0';
 sys:	system port map (
 	clk		=>	clk,
 	reset	=>	reset,
-	sensor_l_in	=>	sensors(0),
-	sensor_m_in	=>	sensors(1),
-	sensor_r_in	=>	sensors(2),
-	pwm_motor_l => pwm_l,
-	pwm_motor_r => pwm_r
-	--debug_m_speed_l => msl,
-	--debug_m_speed_r => msr,
-	--debug_count => count
+	sensor	=>	sensors,
+	servo => servo,
+	rx => rx,
+	tx => tx
 );
 					
 end architecture structural;
