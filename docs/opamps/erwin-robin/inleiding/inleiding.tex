@@ -6,13 +6,55 @@
 \author{Robin Hes\\\&\\Erwin R. de Haan}
 
 \begin{document}
-\chapter{Inleiding & Theorie}
+\chapter{Inleiding \& Theorie}
 
 \section{Inleiding}
 In dit meetrapport zetten we de theorie achter de zogenaamde relaxatie-oscillator uit een, een apparaat dat het mogelijk maakt om een analoge sensor te laten communiceren met een digitaal systeem, zoals een FPGA. We zullen een vergelijking maken tussen theoretisch gedrag en daadwerkelijk gemeten waarden en een korte beschrijving geven van de praktische inzetbaarheid in combinatie met een FPGA. Ten slotte zullen we onze bevindingen samenvatten in een conclusie.
 
 \section{Theorie}
-De relaxatie-oscillator bestaat uit drie afzonderlijke onderdelen: een integrator, een comparator en een inverterende versterker.
+Een relaxatie-oscillator maakt het, zoals al gezegd, mogelijk om een analoog signaal op een manier te coderen die bruikbaar is voor digitale systemen. Dit betekent dat een bepaald spanningsniveau moet worden omgezet naar een reeks ``enen en nullen'' of equivalenten daarvan die door het digitale systeem zijn te onderscheiden als twee verschillende waarden. Een relaxatie-oscillator bereikt dit doel door het analoge signaal om te zetten naar een bloksignaal met een periode die afhankelijk is van de waarde van het ingangssignaal.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{relaxatie-oscillator.png}
+	\caption{De relaxatie-oscillator}
+	\label{fig:rel-os}
+\end{figure}
+
+Zoals te zien in figuur \ref{fig:rel-os} bestaat de relaxatie-oscillator uit drie afzonderlijke onderdelen: een integrator, een comparator en een inverterende versterker, allen gebaseerd op een op-amp met terugkoppelcircuit. We zullen hieronder per onderdeel een beschrijving geven van de functie in het geheel.
+
+\subsection{Integrator}
+
+De eerste stap in het digitaliseren van het ingangssignaal is om het signaal te integreren. Het signaal is op een punt in de tijd constant, waardoor integratie een lineaire functie oplevert. Als we een blokgolf zouden invoeren, betekent dit dat de integrator een driehoekige functie oplevert, bij de overgang van hoog naar laag levert integratie een dalende lineaire functie op, bij de overgang van laag naar hoog is deze stijgend.\\
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{integrator.png}
+	\caption{De relaxatie-oscillator}
+	\label{fig:int}
+\end{wrapfigure}
+
+De integrator, zoals weergegeven in figuur \ref{fig:int}, zou gezien kunnen worden als een inverterende spanningsversterker met een capaciteit in het terugkoppelcircuit, in plaats van een weerstand. Om de uitgangsspanning te berekenen als functie van de ingangsspanning stellen we een knooppuntsvergelijking op in knooppunt $X$.
+
+$$\frac{V_{X} - V{in}}{R} + V_{X} \cdot j\omega C = 0$$
+
+\noindent
+Omdat voor de op-amp de nul-conditie geldt dat $V_{+} = V_{X} = V_{-} = 0$ volgt:
+
+$$-\frac{V_{in}}{R} - V_{out} \cdot j\omega C = 0$$
+
+\noindent
+En dus, omdat de stroom door een capaciteit evenredig is met de afgeleide van de spanning over de tijd:
+
+\begin{equation}
+	V_{out} = -\frac{V_{in}}{j\omega CR} = -\int_0^t \frac{V_{in}}{RC} \mathrm{d}t
+	\label{eq:integrator}
+\end{equation}
+
+\noindent
+Het door de integrator geleverde signaal voeren we vervolgens in de comparator, het volgende onderdeel.
+
+\subsection{Comparator}
 
 
 \end{document}
