@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <string.h>
 
-#define COMPORT "COM4"
+#define COMPORT "COM6"
 #define BAUDRATE CBR_9600
 
 //--------------------------------------------------------------
