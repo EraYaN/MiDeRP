@@ -208,7 +208,7 @@ pip-log.txt
 *.toc
 *.run.xml
 *.pdf
-#!*\-rc.pdf
+!*-rc.pdf
 
 #Ignore Robin's pathfinder logs
 log.txt
