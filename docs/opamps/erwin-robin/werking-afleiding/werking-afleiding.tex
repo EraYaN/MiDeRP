@@ -22,7 +22,7 @@ Zoals te zien in figuur \ref{fig:rel-os} bestaat de relaxatie-oscillator uit dri
 
 \subsection{Integrator}
 
-De eerste stap in het digitaliseren van het ingangssignaal is om het signaal te integreren. Het signaal is op een punt in de tijd constant, waardoor integratie een lineaire functie oplevert. Als we een blokgolf zouden invoeren, betekent dit dat de integrator een driehoekige functie oplevert, bij de overgang van hoog naar laag levert integratie een dalende lineaire functie op, bij de overgang van laag naar hoog is deze stijgend.\\
+De eerste stap in het digitaliseren van het ingangssignaal is om het signaal te integreren. Het signaal is op een punt in de tijd constant, waardoor integratie een lineaire functie oplevert. Als we een blokgolf zouden invoeren - dit is namelijk het uiteindelijke uitgangssignaal, wat weer teruggevoerd wordt in de ingang (zie figuur \ref{fig:rel-os} -  betekent dit dat de integrator een driehoekige functie oplevert, bij de overgang van hoog naar laag levert integratie een dalende lineaire functie op, bij de overgang van laag naar hoog is deze stijgend.\\
 
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\centering
@@ -52,6 +52,17 @@ En dus, omdat de stroom door een capaciteit evenredig is met de afgeleide van de
 Het door de integrator geleverde signaal voeren we vervolgens in de comparator, het volgende onderdeel.
 
 \subsection{Comparator}
+
+De integrator levert ons een driehoekig signaal, waar wij een blokgolf nodig hebben. Er is dus nog een bewerking nodig voordat het signaal gebruikt kan worden met een FPGA. Het driehoekige signaal moet worden omgezet in een blokgolf en de comparator is het component dat deze taak voor zijn rekening neemt. De blokgolf die door deze comparator wordt gegenereerd dient vervolgens niet alleen als digitaal signaal voor de FPGA, maar ook als ingangsspanning voor de relaxatie-oscillator zelf, waardoor deze continu oscilleert, vandaar de naam.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.45\textwidth]{comparator-werking.png}
+	\caption{De schematische werking van een comparator met hysterese. Naar: \cite{epo2-ompamps}}
+	\label{fig:comp-werk}
+\end{wrapfigure}
+
+Een simpele comparator is te maken door een op-amp te gebruiken zonder terugkoppelnetwerk. Omdat het ingangssignaal door de op-amp een groot aantal keer wordt versterkt naar een spanningsniveau wat de op de op-amp aangesloten energiebron niet kan leveren, zal het uitgangssignaal altijd gelijk zijn aan ofwel de negatieve voedingsspanning, ofwel de positieve, afhankelijk van het teken van de ingangs- en voedingsspanningen. We willen echter dat de uitgangsspanning pas ``clampt'' aan één van beide voedingsspanningen op het moment dat de ingangsspanning een bepaald spanningsniveau, de \textit{threshhold}-spanning ($V_{th}$) passeert. Dit noemt men hysterese. Hiertoe hebben we twee thresholds nodig: een voor een stijgend signaal ($V_{th,H}$) en één voor één dalend signaal ($V_{th,L}$). Dit is gevisualiseerd in figuur \ref{fig:comp-werk}.
 
 
 \end{document}
