@@ -10,17 +10,17 @@ entity system is
 		reset: in std_logic; -- button;		
 		
 		sensor: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
-		servo: out	std_logic_vector (1 downto 0) -- left = 0 right = 1
+		servo: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
 		
 		--uart
 		rx: in std_logic;
-		tx: out std_logic;
-		sw: in std_logic_vector(7 downto 0);
-		led: out std_logic_vector(7 downto 0);
-		write_data: in std_logic;
-		read_data: in std_logic;
-		seg: out std_logic_vector(7 downto 0);
-		an: out std_logic_vector(3 downto 0)	
+		tx: out std_logic
+		--sw: in std_logic_vector(7 downto 0);
+		--led: out std_logic_vector(7 downto 0);
+		--write_data: in std_logic;
+		--read_data: in std_logic;
+		--seg: out std_logic_vector(7 downto 0);
+		--an: out std_logic_vector(3 downto 0)	
 		
 	);
 end entity system;
@@ -29,19 +29,24 @@ architecture structural of system is
     --components
     component controller is
 		port (	
-			clk	: in	std_logic;
-			reset	: in	std_logic;
+			clk			: in	std_logic;
+			reset			: in	std_logic;
 
-			sensor	: in	std_logic_vector(2 downto 0);	
+			sensor		: in	std_logic_vector(2 downto 0);		
 
-			count_in	: in	unsigned (19 downto 0);
-			count_reset	: out	std_logic;
+			count_in		: in	unsigned (19 downto 0);
+			count_reset		: out	std_logic;
 
-			motor_l_reset	: out	std_logic;
-			motor_l_speed	: out	signed (7 downto 0);
+			motor_l_reset		: out	std_logic;
+			motor_l_speed		: out	signed (7 downto 0);
 
-			motor_r_reset	: out	std_logic;
-			motor_r_speed	: out	signed (7 downto 0)
+			motor_r_reset		: out	std_logic;
+			motor_r_speed		: out	signed (7 downto 0);
+			
+			uart_send				: out std_logic_vector(7 downto 0);
+			uart_receive			: in std_logic_vector(7 downto 0);
+			uart_rw					: out std_logic_vector(1 downto 0);
+			uart_br 				: in std_logic
 		);
 	end component controller;
 	
@@ -79,12 +84,11 @@ architecture structural of system is
 		clk, reset: in std_logic;
 		rx: in std_logic; --input bit stream
 		tx: out std_logic; --output bit stream
-		sw: in std_logic_vector(7 downto 0); --byte to be sent
-		led: out std_logic_vector(7 downto 0); --received byte
+		bytein: in std_logic_vector(7 downto 0); --byte to be sent
+		byteout: out std_logic_vector(7 downto 0); --received byte
 		write_data: in std_logic; --write to transmitter buffer 
 		read_data: in std_logic; --read from receiver buffer 
-		sseg: out std_logic_vector(7 downto 0); --seven segment LED display
-		an: out std_logic_vector(3 downto 0) --anodes of seven segment LED display 
+		byteready: out std_logic --byte in buffer ready to read	
 	);
 	end component uart;
 	
@@ -95,7 +99,9 @@ architecture structural of system is
 	signal side_l : side := left;
 	signal side_r : side := right;
 	signal m_speed_r, m_speed_l : signed (7 downto 0) := "00000000";
-	
+	signal uart_bin, uart_bout: std_logic_vector(7 downto 0);
+	signal uart_rw : std_logic_vector (1 downto 0); -- 0 = read, 1 = write
+	signal uart_br : std_logic;
 begin
 
     IB: inputbuffer port map(
@@ -137,19 +143,22 @@ begin
 		motor_l_speed => m_speed_l,
 
 		motor_r_reset => m_reset_r,
-		motor_r_speed => m_speed_r
+		motor_r_speed => m_speed_r,
+		uart_send =>uart_bin,
+		uart_receive => uart_bout,
+		uart_rw => uart_rw,
+		uart_br => uart_br
     );
 	UARTL: uart port map (
 		clk	=>	clk,
 		reset	=>	reset,
 		rx	=>	rx,
 		tx	=>	tx,
-		sw	=>	sw,
-		led	=>	led,
-		write_data	=>	write_data,
-		read_data	=>	read_data,
-		sseg	=>	seg,
-		an	=>	an
+		bytein	=>	uart_bin,
+		byteout	=>	uart_bout,
+		write_data	=>	uart_rw(1),
+		read_data	=>	uart_rw(0),
+		byteready	=>	uart_br
 	);
 	
 end architecture structural;
