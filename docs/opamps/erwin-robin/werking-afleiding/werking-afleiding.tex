@@ -73,10 +73,18 @@ De integrator levert ons een driehoekig signaal, waar wij een blokgolf nodig heb
 
 Een simpele comparator is te maken door een op-amp te gebruiken zonder terugkoppelnetwerk. Omdat het ingangssignaal door de op-amp een groot aantal keer wordt versterkt naar een spanningsniveau wat de op de op-amp aangesloten energiebron niet kan leveren, zal het uitgangssignaal altijd gelijk zijn aan ofwel de negatieve voedingsspanning, ofwel de positieve, afhankelijk van het teken van de ingangs- en voedingsspanningen. We willen echter dat de uitgangsspanning pas ``clampt'' aan één van beide voedingsspanningen op het moment dat de ingangsspanning een bepaald spanningsniveau, de \textit{threshhold}-spanning ($V_{th}$) passeert. Dit noemt men hysterese. Hiertoe hebben we twee thresholds nodig: één voor een stijgend signaal ($V_{th,H}$) en één voor een dalend signaal ($V_{th,L}$). Dit is gevisualiseerd in figuur \ref{fig:comp-werk}. We bereiken deze hysterese door een gedeelte van de uitgangsstroom via een spanningsdeling terug te voeren naar de positieve ingang. Dit levert het circuit zoals gegeven in figuur \ref{fig:comp} op, waarbij de bijbehorende threshholds dan zijn te berekenen aan de hand van de volgende vergelijkingen:
 
-\begin{equation}
-	V_{th,H} = \frac{R_{1}}{R_{1}+R_{2}}V_{max} \wedge V_{th,L} = \frac{R_{1}}{R_{1}+R_{2}}V_{min}
+\begin{subequations}
+	\begin{equation}
+		V_{th,H} = \frac{R_{1}}{R_{1}+R_{2}}V_{max}
+		\label{eq:comp-H}
+	\end{equation}
+
+	\begin{equation}
+		V_{th,L} = \frac{R_{1}}{R_{1}+R_{2}}V_{min}
+		\label{eq:comp-L}
+	\end{equation}
 	\label{eq:comp}
-\end{equation}
+\end{subequations}
 
 \noindent
 Hierin zijn $V_{max}$ en $V_{min}$ respectievelijk de positieve en negatieve voedingsspanning op de op-amp.
@@ -115,6 +123,45 @@ En hiermee is de relaxatie-oscillator compleet.
 
 \section{Afleiding}
 
+In deze paragraaf geven we een afleiding van een formule die de periodetijd van de oscillator beschrijft in termen van de componentwaarden $R_{a}$, $R_{b}$, $R_{c}$, $R_{d}$, $R_{pot}$ en $C$ en de spanningen waarbij de uitgang van de op-amp verzadigt, $V_{th,H}$ en $V_{th,L}$. We beginnen met het berekenen van de drempelspanningen van de comparator.
 
+\subsection{Drempelspanningen}
+
+De verzadigingsspanning worden gegeven door vergelijking \ref{eq:comp}, wanneer we deze invullen met de reeds bekende waarden - voedingsspanningen van $V_{max} = 12 \mathrm{V}$ en $V_{min}= −12 \mathrm{V}$ en resistanties van $R_{c} = 10 \mathrm{k\Omega}$ en $R_{d} = 1 \mathrm{k\Omega}$ - levert dat op:
+
+\begin{subequations}
+	\begin{equation}
+		V_{th,H} = \frac{10 \times 10^{3}}{10 \times 10^{3} + 1 \times 10^{3}} \cdot 12 = 11 \mathrm{V}
+	\label{eq:comp-H-val}
+	\end{equation}
+
+	\begin{equation}
+		V_{th,L} = \frac{10 \times 10^{3}}{10 \times 10^{3} + 1 \times 10^{3}} \cdot -12 = -11 \mathrm{V}
+		\label{eq:comp-L-val}
+	\end{equation}
+	\label{eq:comp-val}
+\end{subequations}
+
+\noindent
+De uitgangsspanning van de comparator zal dus bij een onder de -11 V dalende ingangsspanning gelijk zijn aan -12 V en bij een boven de 11 V stijgende ingangsspanning gelijk aan 12 V. 
+
+Zoals we weten wordt de integrator via de inverterende versterker aangestuurd met de uitgangsspanning(en) van de comparator. Nu deze bekend zijn kunnen de ingangsspanningen van de integrator dus berekend worden via de overdracht van de inverterende versterker.
+
+\subsection{Ingangsspanning integrator}
+
+De overdracht van de inverterende versterker is gegeven in vergelijking \ref{eq:inv-ver}. Als deze wordt ingevuld met de door ons gebruikte waarden $R_{a}= 1 \mathrm{k\Omega}$ en $R_{b}= 10\mathrm{k\Omega}$, met ingangsspanningen $V_{th,H} = 11 \mathrm{V}$ en $V_{th,L} = -11 \mathrm{V}$ (zie vergelijking \ref{eq:comp-val}), levert dat het volgende resultaat:
+
+\begin{subequations}
+	\begin{equation}
+		V_{out,+} = -\frac{1 \times 10^{3}}{10 \times 10^{3}} \cdot 11 = -1.1 \mathrm{V}
+		\label{eq:inv-ver-val-pos}
+	\end{equation}
+
+	\begin{equation}
+		V_{out,-} = -\frac{1 \times 10^{3}}{10 \times 10^{3}} \cdot -11 = 1.1 \mathrm{V}
+		\label{eq:inv-ver-val-neg}
+	\end{equation}
+	\label{eq:inv-ver-val}
+\end{subequations}
 
 \end{document}
