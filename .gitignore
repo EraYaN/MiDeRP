@@ -194,7 +194,7 @@ pip-log.txt
 #MikTeX, pdfLaTeX
 *.aux
 *.synctex.gz
-*.synctec.gz(busy)
+*.gz(busy)
 *.log
 *.bcf
 *.run.xml

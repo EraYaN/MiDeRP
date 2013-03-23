@@ -45,7 +45,7 @@ En dus, omdat de stroom door een capaciteit evenredig is met de afgeleide van de
 
 \begin{equation}
 	V_{out} = -\frac{V_{in}}{j\omega CR} = -\int_0^t \frac{V_{in}}{RC} \mathrm{d}t
-	\label{eq:integrator}
+	\label{eq:int}
 \end{equation}
 
 \noindent
@@ -55,14 +55,66 @@ Het door de integrator geleverde signaal voeren we vervolgens in de comparator, 
 
 De integrator levert ons een driehoekig signaal, waar wij een blokgolf nodig hebben. Er is dus nog een bewerking nodig voordat het signaal gebruikt kan worden met een FPGA. Het driehoekige signaal moet worden omgezet in een blokgolf en de comparator is het component dat deze taak voor zijn rekening neemt. De blokgolf die door deze comparator wordt gegenereerd dient vervolgens niet alleen als digitaal signaal voor de FPGA, maar ook als ingangsspanning voor de relaxatie-oscillator zelf, waardoor deze continu oscilleert, vandaar de naam.
 
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{comparator-werking.png}
+		\caption{De schematische werking van een comparator met hysterese. Naar: \cite{epo2-opamps}}
+		\label{fig:comp-werk}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{comparator.png}
+		\caption{Schematische weergave van een comparator met hysterese op basis van een op-amp}
+		\label{fig:comp}
+	\end{subfigure}
+\end{figure}
+
+Een simpele comparator is te maken door een op-amp te gebruiken zonder terugkoppelnetwerk. Omdat het ingangssignaal door de op-amp een groot aantal keer wordt versterkt naar een spanningsniveau wat de op de op-amp aangesloten energiebron niet kan leveren, zal het uitgangssignaal altijd gelijk zijn aan ofwel de negatieve voedingsspanning, ofwel de positieve, afhankelijk van het teken van de ingangs- en voedingsspanningen. We willen echter dat de uitgangsspanning pas ``clampt'' aan één van beide voedingsspanningen op het moment dat de ingangsspanning een bepaald spanningsniveau, de \textit{threshhold}-spanning ($V_{th}$) passeert. Dit noemt men hysterese. Hiertoe hebben we twee thresholds nodig: één voor een stijgend signaal ($V_{th,H}$) en één voor een dalend signaal ($V_{th,L}$). Dit is gevisualiseerd in figuur \ref{fig:comp-werk}. We bereiken deze hysterese door een gedeelte van de uitgangsstroom via een spanningsdeling terug te voeren naar de positieve ingang. Dit levert het circuit zoals gegeven in figuur \ref{fig:comp} op, waarbij de bijbehorende threshholds dan zijn te berekenen aan de hand van de volgende vergelijkingen:
+
+\begin{equation}
+	V_{th,H} = \frac{R_{1}}{R_{1}+R_{2}}V_{max} \wedge V_{th,L} = \frac{R_{1}}{R_{1}+R_{2}}V_{min}
+	\label{eq:comp}
+\end{equation}
+
+\noindent
+Hierin zijn $V_{max}$ en $V_{min}$ respectievelijk de positieve en negatieve voedingsspanning op de op-amp.
+
+Het uitgangssignaal van de comparator wordt hiermee dus een blokgolf met een frequentie die afhankelijk is van de ingangsspanning op de integrator. Deze uitgangsspanning wordt voor het oscillatie-effect nu via een inverterende versterker teruggevoerd aan de integrator en daarmee is de lus gesloten en de relaxatie-oscillator voltooid.
+
+\subsection{Inverterende versterker}
+Omdat de comparator en de integrator beide opgesteld zijn in de inverterende configuratie, zal het uiteindelijke signaal wat dus ook dient als ingangssignaal eerst nog een keer geïnverteerd moeten worden. Daarnaast kunnen we hiermee het spanningsniveau aan de ingang van de integrator nog wat aanpassen. 
+
 \begin{wrapfigure}{r}{0.5\textwidth}
 	\centering
-	\includegraphics[width=0.45\textwidth]{comparator-werking.png}
-	\caption{De schematische werking van een comparator met hysterese. Naar: \cite{epo2-ompamps}}
-	\label{fig:comp-werk}
+	\includegraphics[width=0.4\textwidth]{inverterende-versterker.png}
+	\caption{Schematische weergave van de inverterende versterker op basis van een op-amp}
+	\label{fig:inv-ver}
 \end{wrapfigure}
 
-Een simpele comparator is te maken door een op-amp te gebruiken zonder terugkoppelnetwerk. Omdat het ingangssignaal door de op-amp een groot aantal keer wordt versterkt naar een spanningsniveau wat de op de op-amp aangesloten energiebron niet kan leveren, zal het uitgangssignaal altijd gelijk zijn aan ofwel de negatieve voedingsspanning, ofwel de positieve, afhankelijk van het teken van de ingangs- en voedingsspanningen. We willen echter dat de uitgangsspanning pas ``clampt'' aan één van beide voedingsspanningen op het moment dat de ingangsspanning een bepaald spanningsniveau, de \textit{threshhold}-spanning ($V_{th}$) passeert. Dit noemt men hysterese. Hiertoe hebben we twee thresholds nodig: een voor een stijgend signaal ($V_{th,H}$) en één voor één dalend signaal ($V_{th,L}$). Dit is gevisualiseerd in figuur \ref{fig:comp-werk}.
+We doen dit met een normale op-amp in de inverterende configuratie (figuur \ref{fig:inv-ver}), met een combinatie van weerstanden die het ingangssignaal verzwakt ($R_{2}>R_{1}$). Om de uitgangsspanning als functie van de ingangsspanning te berekenen gebruiken we weer een knooppuntsvergelijking in knooppunt X:
+
+$$\frac{V_{x}-V_{in}}{R_{2}} +\frac{V_{x}-V_{out}}{R_{1}} = 0$$
+
+\noindent
+Gebruikmakend van de nulconditie voor op-amps levert dit:
+
+$$-\frac{V_{in}}{R_{2}} - \frac{V_{out}}{R_{1}} = 0$$
+
+\noindent
+En dus is de uiteindelijke overdracht:
+
+\begin{equation}
+	V_{out} = -\frac{R_{1}}{R_{2}}V_{in}
+	\label{eq:inv-ver}
+\end{equation}
+
+\noindent
+En hiermee is de relaxatie-oscillator compleet.
+
+\section{Afleiding}
+
 
 
 \end{document}
