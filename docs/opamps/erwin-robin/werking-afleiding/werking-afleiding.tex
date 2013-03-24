@@ -146,22 +146,22 @@ $$V_{out,int} = -\frac{-\frac{R_{a}}{R_{b}}V_{max,comp}}{R_{pot}C} t - V_{0}$$
 $$V_{out,int} = -\frac{-\frac{R_{a}}{R_{b}}V_{min,comp}}{R_{pot}C} t - V_{0}$$
 
 \noindent
-Als we echter kijken naar het diagram in figuur \ref{fig:comp-werk} zien we dat $V_{out,int}$, $V_{max,comp}$ en $V_{0}$ op toppen van de zaagtand aan elkaar gelijk zijn en $V_{out,int}$, $V_{min,comp}$ en $V_{0}$ in dalen aan elkaar gelijk zijn en dus kunnen we deze uitdelen:
+Als we echter kijken naar het diagram in figuur \ref{fig:comp-werk} zien we dat $V_{out,int} = V_{0} = \frac{R_{a}}{R_{b}}V_{max,comp}$ op toppen van de zaagtand en $V_{out,int} = V_{0} = \frac{R_{a}}{R_{b}}V_{min,comp}$ in dalen aan elkaar gelijk zijn en dus kunnen we deze uitdelen:
 
-$$1 = -\frac{-\frac{R_{a}}{R_{b}}}{R_{pot}C} t - 1$$
-$$-1 = -\frac{\frac{R_{a}}{R_{b}}V_{min,comp}}{R_{pot}C} t + 1$$
+$$1 = -\frac{-1}{R_{pot}C} t - 1$$
+$$-1 = -\frac{1}{R_{pot}C} t + 1$$
 
 \noindent
 Dit levert na oplossen voor $t$ in beide gevallen op:
 
 \begin{equation}
-	t = 2\frac{R_{b}R_{pot}C}{R_{a}}
+	t = 2R_{pot}C
 \end{equation}
 \noindent
 Waarbij geldt dat $T=2t$ en $f=\frac{1}{T}$
 \begin{equation}
 \label{eq:freqOscillator}
-	f(R_{pot}) = \frac{R_a}{4 \cdot R_{b}R_{pot}C}
+	f(R_{pot}) = \frac{1}{4R_{pot}C}
 \end{equation}
 
 \end{document}
