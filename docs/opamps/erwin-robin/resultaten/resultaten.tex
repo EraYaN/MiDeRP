@@ -7,8 +7,11 @@
 
 \begin{document}
 \chapter{Resultaten}
+De gemeten frequentie met de pot-meter op de maximale waarde $f_{R_{pot,max}} = 1070 \mathrm{Hz}$. Als we de de componentwaarden (Tabel \ref{tab:components}) in vullen in de formule voor de frequentie (Formule \ref{eq:freqOscillator}) krijgen we: $$ f(25\cdot 10^3) = 100 \mathrm{Hz}$$
 \begin{table}[H]
 \caption{De gemeten waarden van de inverterende versterker.}
+\label{tab:invAmpMeasured}
+\centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 $R_a$ & berekende A & gemeten A bij 100Hz & -3dB frequentie & GBW\\
@@ -20,6 +23,28 @@ $10 \mathrm{k}\Omega$
 \hline
 $100 \mathrm{k}\Omega$
  & -100 & $A=-\frac{V_{uit,pp}}{V_{in,pp}}=-\frac{19.90}{0.2200}=-90.45$&14.600000kHz&$(1-A)\cdot f_{-3dB}=1.335\cdot10^6 Hz$\\
+\hline
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\caption{De component waarden in de relaxatie oscillator.}
+\label{tab:components}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Naam & Waarde\\
+\hline
+$R_a$ & $1 \mathrm{k\Omega}$\\
+\hline
+$R_b$ & $10 \mathrm{k\Omega}$\\
+\hline
+$R_c$ & $10 \mathrm{k\Omega}$\\
+\hline
+$R_d$ & $1 \mathrm{k\Omega}$\\
+\hline
+$R_{pot}$ & $0-25 \mathrm{k\Omega}$\\
+\hline
+$C$ & $10 \mathrm{nF}$\\
 \hline
 \end{tabular}
 \end{table}
