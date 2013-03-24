@@ -8,12 +8,15 @@
 
 \begin{document}
 \maketitle
-
+\pagenumbering{roman}
 \subimport{inleiding/}{inleiding.tex}
 \tableofcontents
+\newpage
+\pagenumbering{arabic}
 
 \subimport{werking-afleiding/}{werking-afleiding.tex}
 \subimport{resultaten/}{resultaten.tex}
 \subimport{reflectie-conclusie/}{reflectie-conclusie.tex}
+\pagenumbering{Roman}
 \printbibliography
 \end{document}
