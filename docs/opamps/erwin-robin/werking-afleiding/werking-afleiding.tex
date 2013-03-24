@@ -31,20 +31,25 @@ De eerste stap in het digitaliseren van het ingangssignaal is om het signaal te 
 	\label{fig:int}
 \end{wrapfigure}
 
-De integrator, zoals weergegeven in figuur \ref{fig:int}, zou gezien kunnen worden als een inverterende spanningsversterker met een capaciteit in het terugkoppelcircuit, in plaats van een weerstand. Om de uitgangsspanning te berekenen als functie van de ingangsspanning stellen we een knooppuntsvergelijking op in knooppunt $X$.
+De integrator, zoals weergegeven in figuur \ref{fig:int}, zou gezien kunnen worden als een inverterende spanningsversterker met een capaciteit in het terugkoppelcircuit, in plaats van een weerstand. Om de uitgangsspanning te berekenen als functie van de ingangsspanning gebruiken we de eigenschap dat de stroom door een condensator evenredig is met de afgeleide naar de spanning over de tijd:
 
-$$\frac{V_{X} - V{in}}{R} + V_{X} \cdot j\omega C = 0$$
-
-\noindent
-Omdat voor de op-amp de nul-conditie geldt dat $V_{+} = V_{X} = V_{-} = 0$ volgt:
-
-$$-\frac{V_{in}}{R} - V_{out} \cdot j\omega C = 0$$
+$$I_{C} = C\frac{dv}{dt}$$
 
 \noindent
-En dus, omdat de stroom door een capaciteit evenredig is met de afgeleide van de spanning over de tijd:
+Volgens Kirchhoff geldt ook:
+
+$$I_{C} = -\frac{V_{in}}{R}$$
+
+\noindent
+En dus geldt ook:
+
+$$C\frac{dv}{dt} = -\frac{V_{in}}{R}$$
+
+\noindent
+Na integreren vinden we hieruit een uitdrukking:
 
 \begin{equation}
-	V_{out} = -\frac{V_{in}}{j\omega CR} = -\int_0^t \frac{V_{in}}{RC} \mathrm{d}t
+	V_{out} = -\left\lbrack\int \frac{V_{in}}{RC} \mathrm{d}t + V_{0}\right\rbrack = -\frac{V_{in}}{RC} t - V_{0}
 	\label{eq:int}
 \end{equation}
 
@@ -67,11 +72,13 @@ De integrator levert ons een driehoekig signaal, waar wij een blokgolf nodig heb
 		\centering
 		\includegraphics[width=\textwidth]{comparator.png}
 		\caption{Schematische weergave van een comparator met hysterese op basis van een op-amp}
-		\label{fig:comp}
+		\label{fig:comp-schem}
 	\end{subfigure}
+	\caption{De comparator}
+	\label{fig:comp}
 \end{figure}
 
-Een simpele comparator is te maken door een op-amp te gebruiken zonder terugkoppelnetwerk. Omdat het ingangssignaal door de op-amp een groot aantal keer wordt versterkt naar een spanningsniveau wat de op de op-amp aangesloten energiebron niet kan leveren, zal het uitgangssignaal altijd gelijk zijn aan ofwel de negatieve voedingsspanning, ofwel de positieve, afhankelijk van het teken van de ingangs- en voedingsspanningen. We willen echter dat de uitgangsspanning pas ``clampt'' aan één van beide voedingsspanningen op het moment dat de ingangsspanning een bepaald spanningsniveau, de \textit{threshhold}-spanning ($V_{th}$) passeert. Dit noemt men hysterese. Hiertoe hebben we twee thresholds nodig: één voor een stijgend signaal ($V_{th,H}$) en één voor een dalend signaal ($V_{th,L}$). Dit is gevisualiseerd in figuur \ref{fig:comp-werk}. We bereiken deze hysterese door een gedeelte van de uitgangsstroom via een spanningsdeling terug te voeren naar de positieve ingang. Dit levert het circuit zoals gegeven in figuur \ref{fig:comp} op, waarbij de bijbehorende threshholds dan zijn te berekenen aan de hand van de volgende vergelijkingen:
+Een simpele comparator is te maken door een op-amp te gebruiken zonder terugkoppelnetwerk. Omdat het ingangssignaal door de op-amp een groot aantal keer wordt versterkt naar een spanningsniveau wat de op de op-amp aangesloten energiebron niet kan leveren, zal het uitgangssignaal altijd gelijk zijn aan ofwel de negatieve voedingsspanning, ofwel de positieve, afhankelijk van het teken van de ingangs- en voedingsspanningen. We willen echter dat de uitgangsspanning pas ``clampt'' aan één van beide voedingsspanningen op het moment dat de ingangsspanning een bepaald spanningsniveau, de \textit{threshhold}-spanning ($V_{th}$) passeert. Dit noemt men hysterese. Hiertoe hebben we twee thresholds nodig: één voor een stijgend signaal ($V_{th,H}$) en één voor een dalend signaal ($V_{th,L}$). Dit is gevisualiseerd in figuur \ref{fig:comp-werk}. We bereiken deze hysterese door een gedeelte van de uitgangsstroom via een spanningsdeling terug te voeren naar de positieve ingang. Dit levert het circuit zoals gegeven in figuur \ref{fig:comp-schem} op, waarbij de bijbehorende threshholds dan zijn te berekenen aan de hand van de volgende vergelijkingen:
 
 \begin{subequations}
 	\begin{equation}
@@ -119,49 +126,39 @@ En dus is de uiteindelijke overdracht:
 \end{equation}
 
 \noindent
-En hiermee is de relaxatie-oscillator compleet.
+En hiermee is de relaxatie-oscillator compleet. 
 
 \section{Afleiding}
 
-In deze paragraaf geven we een afleiding van een formule die de periodetijd van de oscillator beschrijft in termen van de componentwaarden $R_{a}$, $R_{b}$, $R_{c}$, $R_{d}$, $R_{pot}$ en $C$ en de spanningen waarbij de uitgang van de op-amp verzadigt, $V_{th,H}$ en $V_{th,L}$. We beginnen met het berekenen van de drempelspanningen van de comparator.
+We kunnen de voorgaande individuele overdrachten samenvoegen tot één vergelijking om de tijd te berekenen die de integrator er over doet om de spanning één keer van hoog naar laag (of andersom) te laten gaan, dit is dus een halve periode. Hiervoor nemen we de vergelijking voor de integrator (\ref{eq:int}) er nogmaals bij:
 
-\subsection{Drempelspanningen}
-
-De verzadigingsspanning worden gegeven door vergelijking \ref{eq:comp}, wanneer we deze invullen met de reeds bekende waarden - voedingsspanningen van $V_{max} = 12 \mathrm{V}$ en $V_{min}= −12 \mathrm{V}$ en resistanties van $R_{c} = 10 \mathrm{k\Omega}$ en $R_{d} = 1 \mathrm{k\Omega}$ - levert dat op:
-
-\begin{subequations}
-	\begin{equation}
-		V_{th,H} = \frac{10 \times 10^{3}}{10 \times 10^{3} + 1 \times 10^{3}} \cdot 12 = 11 \mathrm{V}
-	\label{eq:comp-H-val}
-	\end{equation}
-
-	\begin{equation}
-		V_{th,L} = \frac{10 \times 10^{3}}{10 \times 10^{3} + 1 \times 10^{3}} \cdot -12 = -11 \mathrm{V}
-		\label{eq:comp-L-val}
-	\end{equation}
-	\label{eq:comp-val}
-\end{subequations}
+$$V_{out,int} = -\frac{V_{in,int}}{R_{pot}C} t - V_{0}$$
 
 \noindent
-De uitgangsspanning van de comparator zal dus bij een onder de -11 V dalende ingangsspanning gelijk zijn aan -12 V en bij een boven de 11 V stijgende ingangsspanning gelijk aan 12 V. 
+Hierin zijn $R$, $C$, $V_{out,int}$ en $V_{0}$ bekend en wordt $V_{in,int}$ gegeven door de uitgangsspanning van de inverterende versterker:
 
-Zoals we weten wordt de integrator via de inverterende versterker aangestuurd met de uitgangsspanning(en) van de comparator. Nu deze bekend zijn kunnen de ingangsspanningen van de integrator dus berekend worden via de overdracht van de inverterende versterker.
+$$V_{out,int} = -\frac{-\frac{R_{a}}{R_{b}}V_{in,inv}}{R_{pot}C} t - V_{0}$$
 
-\subsection{Ingangsspanning integrator}
+\noindent
+$V_{in,inv}$ wordt op zijn beurt gegeven door ofwel $V_{max}$ ofwel $V_{min}$ uit de comparator:
 
-De overdracht van de inverterende versterker is gegeven in vergelijking \ref{eq:inv-ver}. Als deze wordt ingevuld met de door ons gebruikte waarden $R_{a}= 1 \mathrm{k\Omega}$ en $R_{b}= 10\mathrm{k\Omega}$, met ingangsspanningen $V_{th,H} = 11 \mathrm{V}$ en $V_{th,L} = -11 \mathrm{V}$ (zie vergelijking \ref{eq:comp-val}), levert dat het volgende resultaat:
+$$V_{out,int} = -\frac{-\frac{R_{a}}{R_{b}}V_{max,comp}}{R_{pot}C} t - V_{0}$$
+$$V_{out,int} = -\frac{-\frac{R_{a}}{R_{b}}V_{min,comp}}{R_{pot}C} t - V_{0}$$
 
-\begin{subequations}
-	\begin{equation}
-		V_{out,+} = -\frac{1 \times 10^{3}}{10 \times 10^{3}} \cdot 11 = -1.1 \mathrm{V}
-		\label{eq:inv-ver-val-pos}
-	\end{equation}
+\noindent
+Als we echter kijken naar het diagram in figuur \ref{fig:comp-werk} zien we dat $V_{out,int}$, $V_{max,comp}$ en $V_{0}$ op toppen van de zaagtand aan elkaar gelijk zijn en $V_{out,int}$, $V_{min,comp}$ en $V_{0}$ in dalen aan elkaar gelijk zijn en dus kunnen we deze uitdelen:
 
-	\begin{equation}
-		V_{out,-} = -\frac{1 \times 10^{3}}{10 \times 10^{3}} \cdot -11 = 1.1 \mathrm{V}
-		\label{eq:inv-ver-val-neg}
-	\end{equation}
-	\label{eq:inv-ver-val}
-\end{subequations}
+$$1 = -\frac{-\frac{R_{a}}{R_{b}}}{R_{pot}C} t - 1$$
+$$-1 = -\frac{\frac{R_{a}}{R_{b}}V_{min,comp}}{R_{pot}C} t + 1$$
+
+\noindent
+Dit levert na oplossen voor $t$ in beide gevallen op:
+
+\begin{equation}
+	t = 2\frac{R_{b}R_{pot}C}{R_{a}}
+\end{equation}
+
+\noindent
+Waarbij geldt dat $T=2t$ en $f=\frac{1}{T}$
 
 \end{document}
