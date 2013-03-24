@@ -9,34 +9,47 @@
 \begin{document}
 \chapter{Resultaten}
 \section{Metingen}
-De gemeten frequentie met de pot-meter op de maximale waarde $f_{R_{pot,max}} = 1070 \mathrm{Hz}$. Als we de de componentwaarden (Tabel \ref{tab:components}) invullen in de formule voor de frequentie (Formule \ref{eq:freqOscillator}) krijgen we 1000 Hz. Het verschil tussen deze waarden (70 Hz) is een verschil te wijten aan de afwijkinginen in de potmeter en condensator. Deze waarden stemmen dus overeen.
+
+We vullen de gebruikte componentwaarden in vergelijking \ref{eq:freqOscillator}:
+
+$$f(25000) = \frac{1}{4\cdot 25000C \cdot 10 \times 10^{-9}} = 1000 \mathrm{Hz}$$
+
+\noindent
+De gemeten frequentie met de potmeter op de maximale waarde $f_{R_{pot,max}} = 1070 \mathrm{Hz}$. Het verschil tussen deze waarden (70 Hz, $\frac{70}{1000} \cdot 100 = 7\%$) is een verschil dat onder andere te wijten is aan afwijkingen in de gebruikte componenten (weerstandswaarden, interne weerstand van op-amps enz.) en de gebruikelijke toevallige meetfouten. Deze waarden stemmen dus overeen en zijn voor onze doeleinden voldoende nauwkeurig.
+
 \begin{table}[H]
-\caption{De component waarden in de relaxatie oscillator.}
-\label{tab:components}
-\centering
-\begin{tabular}{|c|c|}
-\hline
-Naam & Waarde\\
-\hline
-$R_a$ & $1 \mathrm{k\Omega}$\\
-\hline
-$R_b$ & $10 \mathrm{k\Omega}$\\
-\hline
-$R_c$ & $10 \mathrm{k\Omega}$\\
-\hline
-$R_d$ & $1 \mathrm{k\Omega}$\\
-\hline
-$R_{pot}$ & $0\--25 \mathrm{k\Omega}$\\
-\hline
-$C$ & $10 \mathrm{nF}$\\
-\hline
-\end{tabular}
+	\caption{De componentwaarden in de relaxatie-oscillator.}
+	\label{tab:components}
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		Naam & Waarde\\
+		\hline
+		$R_a$ & $1 \mathrm{k\Omega}$\\
+		\hline
+		$R_b$ & $10 \mathrm{k\Omega}$\\
+		\hline
+		$R_c$ & $10 \mathrm{k\Omega}$\\
+		\hline
+		$R_d$ & $1 \mathrm{k\Omega}$\\
+		\hline
+		$R_{pot}$ & $0\--25 \mathrm{k\Omega}$\\
+		\hline
+		$C$ & $10 \mathrm{nF}$\\
+		\hline
+	\end{tabular}
 \end{table}
+
 \section{Mogelijke implementatie}
-In de FPGA kunnen we het aantal klokpulsen tellen tussen twee events die het signaal hoog maken. We zouden dit zelfs kunnen middelen met het vorige resultaat.
+
+In de FPGA kunnen we het aantal klokpulsen tellen tussen twee events die het signaal hoog maken. We zouden dit zelfs kunnen middelen met het voorgaande resultaat.
+
 \begin{equation}
-\label{eq:fpgaEq}
-R = \frac{N_{clk}}{4Cf_{FPGA}}
+	\label{eq:fpgaEq}
+	R = \frac{N_{clk}}{4Cf_{FPGA}}
 \end{equation}
-Waarbij $f_{FPGA} = 50 \mathrm{MHz}$ en $N_{clk}$ is het aantal getelde klokcycli. Omdat de FPGA veel makkelijker rekent met integer waarden kunnen we de vergelijking nog maal $10^8$ doen om $C$ ook als integer te krijgen.
+
+\noindent
+Waarbij $f_{FPGA} = 50 \mathrm{MHz}$ en $N_{clk}$ is het aantal getelde klokcycli. Omdat de FPGA veel makkelijker rekent met integer waarden, kunnen we de vergelijking nog maal $10^8$ doen om $C$ ook als integer te gebruiken.
+
 \end{document}
