@@ -1,10 +1,10 @@
 \documentclass{report}
 \input{../../../library/preamble}
 \input{../../../library/style}
+\addbibresource{../../../library/bibliography.bib}
 
 \title{Meetrapport: Opamps - Werking \& Afleiding}
 \author{Robin Hes\\\&\\Erwin R. de Haan}
-
 \begin{document}
 \chapter{Werking \& Afleiding}
 
@@ -65,7 +65,7 @@ De integrator levert ons een driehoekig signaal, waar wij een blokgolf nodig heb
 	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{comparator-werking.png}
-		\caption{De schematische werking van een comparator met hysterese. Naar: \cite{epo2-opamps}}
+		\caption{De schematische werking van een comparator met hysterese. \cite{epo2-opamps}}
 		\label{fig:comp-werk}
 	\end{subfigure}
 	\begin{subfigure}{0.4\textwidth}
@@ -149,7 +149,6 @@ $$V_{out,int} = -\frac{-\frac{R_{a}}{R_{b}}V_{min,comp}}{R_{pot}C} t - V_{0}$$
 Als we echter kijken naar het diagram in figuur \ref{fig:comp-werk} zien we dat $V_{out,int} = V_{0} = \frac{R_{a}}{R_{b}}V_{max,comp}$ op toppen van de zaagtand en $V_{out,int} = V_{0} = \frac{R_{a}}{R_{b}}V_{min,comp}$ in dalen aan elkaar gelijk zijn en dus kunnen we deze uitdelen:
 
 $$1 = -\frac{-1}{R_{pot}C} t - 1$$
-$$-1 = -\frac{1}{R_{pot}C} t + 1$$
 
 \noindent
 Dit levert na oplossen voor $t$ in beide gevallen op:

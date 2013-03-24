@@ -1,13 +1,15 @@
 \documentclass{report}
 \input{../../../library/preamble}
 \input{../../../library/style}
+\addbibresource{../../../library/bibliography.bib}
 
 \title{Meetrapport: Opamps - Resultaten}
 \author{Robin Hes\\\&\\Erwin R. de Haan}
 
 \begin{document}
 \chapter{Resultaten}
-De gemeten frequentie met de pot-meter op de maximale waarde $f_{R_{pot,max}} = 1070 \mathrm{Hz}$. Als we de de componentwaarden (Tabel \ref{tab:components}) in vullen in de formule voor de frequentie (Formule \ref{eq:freqOscillator}) krijgen we: $$ f(25\cdot 10^3) = 100 \mathrm{Hz}$$
+\section{Metingen}
+De gemeten frequentie met de pot-meter op de maximale waarde $f_{R_{pot,max}} = 1070 \mathrm{Hz}$. Als we de de componentwaarden (Tabel \ref{tab:components}) in vullen in de formule voor de frequentie (Formule \ref{eq:freqOscillator}) krijgen we 1000 Hz. Het verschil tussen deze waarden (70 Hz) is een verschil te wijten aan de afwijkinginen in de potmeter en condensator. Deze waarden stemmen dus overeen.
 \begin{table}[H]
 \caption{De gemeten waarden van de inverterende versterker.}
 \label{tab:invAmpMeasured}
@@ -42,11 +44,17 @@ $R_c$ & $10 \mathrm{k\Omega}$\\
 \hline
 $R_d$ & $1 \mathrm{k\Omega}$\\
 \hline
-$R_{pot}$ & $0-25 \mathrm{k\Omega}$\\
+$R_{pot}$ & $0\--25 \mathrm{k\Omega}$\\
 \hline
 $C$ & $10 \mathrm{nF}$\\
 \hline
 \end{tabular}
 \end{table}
-
+\section{Mogelijke implementatie}
+In de FPGA kunnen we het aantal klokpulsen tellen tussen twee events die het signaal hoog maken. We zouden dit zelfs kunnen middelen met het vorige resultaat.
+\begin{equation}
+\label{eq:fpgaEq}
+R = \frac{N_{clk}}{4Cf_{FPGA}}
+\end{equation}
+Waarbij $f_{FPGA} = 50 \mathrm{MHz}$ en $N_{clk}$ is het aantal getelde klokcycli. Omdat de FPGA veel makkelijker rekent met integer waarden kunnen we de vergelijking nog maal $10^8$ doen om $C$ ook als integer te krijgen.
 \end{document}
