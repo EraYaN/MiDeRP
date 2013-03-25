@@ -17,7 +17,16 @@ Node *newNode (Node *current, unsigned int id)
 	node->previous = current;
 	node->f = 0;
 	node->g = 0;
-	node->neighbors = (Node**) safeMalloc (sizeof (Node*) * 4);
+
+	node->mines[0] = 0;
+	node->mines[1] = 0;
+	node->mines[2] = 0;
+	node->mines[3] = 0;
+	
+	node->neighbors[0] = 0;
+	node->neighbors[1] = 0;
+	node->neighbors[2] = 0;
+	node->neighbors[3] = 0;
 
 	nodes[id] = node;
 
@@ -38,51 +47,48 @@ Node *getNode (unsigned int id){
 //Get node neighbours and create them if they do not exist
 void setNeighbors (Node *node)
 {
-	Node **neighbors = (Node**) safeMalloc (sizeof (Node*) * 4);
-
 	if (getXY (node, 'X') != 0)
 	{
 		if (getNode (node->id - 1))
-			neighbors[0] = getNode (node->id - 1);
+			node->neighbors[0] = getNode (node->id - 1);
 		else
-			neighbors[0] = newNode (node, node->id - 1);
+			node->neighbors[0] = newNode (node, node->id - 1);
 	}
 	else
-		neighbors[0] = NULL;
+		node->neighbors[0] = NULL;
 
 	if (getXY (node, 'X') < m - 1)
 	{
 		if (getNode (node->id + 1))
 		{
-			neighbors[1] = getNode (node->id + 1);
+			node->neighbors[1] = getNode (node->id + 1);
 		}
 		else
-			neighbors[1] = newNode (node, node->id + 1);
+			node->neighbors[1] = newNode (node, node->id + 1);
 	}
 	else
-		neighbors[1] = NULL;
+		node->neighbors[1] = NULL;
 
 	if (getXY (node, 'Y') < n - 1)
 	{
 		if (getNode (node->id + m))
-			neighbors[2] = getNode (node->id + m);
+			node->neighbors[2] = getNode (node->id + m);
 		else
-			neighbors[2] = newNode (node, node->id + m);
+			node->neighbors[2] = newNode (node, node->id + m);
 	}
 	else
-		neighbors[2] = NULL;
+		node->neighbors[2] = NULL;
 
 	if (getXY (node, 'Y') != 0)
 	{
 		if (getNode (node->id - m))
-			neighbors[3] = getNode (node->id - m);
+			node->neighbors[3] = getNode (node->id - m);
 		else
-			neighbors[3] = newNode (node, node->id - m);
+			node->neighbors[3] = newNode (node, node->id - m);
 	}
 	else
-		neighbors[3] = NULL;
+		node->neighbors[3] = NULL;
 
-	node->neighbors = neighbors;
 }
 
 //Get node X or Y value
@@ -128,32 +134,29 @@ void addMine (unsigned int id1, unsigned int id2)
 
 	setNeighbors (node1);
 
-	if (!mines)
-		mines = (char**) safeMalloc (sizeof (char) * (size_t) numNodes);
-
 	if (node2 == node1->neighbors[0])
 	{
 		//Node2 is left of node1
-		mines[node1->id][0] = 1;
-		mines[node2->id][1] = 1;
+		node1->mines[0] = 1;
+		node2->mines[1] = 1;
 	}
 	else if (node2 == node1->neighbors[1])
 	{
 		//Node2 is right of node1
-		mines[node1->id][1] = 1;
-		mines[node2->id][0] = 1;
+		node1->mines[1] = 1;
+		node2->mines[0] = 1;
 	}
 	else if (node2 == node1->neighbors[2])
 	{
 		//Node2 is above node1
-		mines[node1->id][2] = 1;
-		mines[node2->id][3] = 1;
+		node1->mines[2] = 1;
+		node2->mines[3] = 1;
 	}
 	else if (node2 == node1->neighbors[3])
 	{
 		//Node2 is under node1
-		mines[node1->id][3] = 1;
-		mines[node2->id][2] = 1;
+		node1->mines[3] = 1;
+		node2->mines[2] = 1;
 	}
 	else
 	{
@@ -178,7 +181,7 @@ char isMine (Node *node1, Node *node2)
 	{
 		if (node2 == node1->neighbors[i])
 		{
-			if (mines[node1->id][i])
+			if (node1->mines[i])
 				return 1;
 			else
 				return 0;

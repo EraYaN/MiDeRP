@@ -6,8 +6,8 @@ typedef struct node Node;
 //Set up the node structure
 struct node {
 	unsigned int id, f, g;
-	char open;
-	Node *previous, **neighbors;
+	char open, mines[4];
+	Node *previous, *neighbors[4];
 };
 
 //Function prototypes

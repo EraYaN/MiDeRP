@@ -34,7 +34,7 @@ void findPath ()
 		for (i=0; i<4; i++)
 		{
 			neighbor = current->neighbors[i];
-			if (!neighbor)
+			if (!neighbor || isMine (current, neighbor))
 				continue; //neighbor does not exist
 
 			pre_g = current->g + 1;

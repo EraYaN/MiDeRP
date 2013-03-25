@@ -10,7 +10,6 @@
 #include "path.h"
 
 //Init variables
-char **mines;
 unsigned int m, n, numNodes, length;
 double gridTime, findTime, totalTime;
 Node *entryNode, *exitNode, **nodes, **path;
