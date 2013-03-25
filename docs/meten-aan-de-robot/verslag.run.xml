@@ -66,8 +66,9 @@
   <external package="biblatex" priority="5" active="0">
     <generic>bibtex</generic>
     <cmdline>
-      <binary>bibtex</binary>
-      <option>-min-crossrefs 2</option>
+      <binary>bibtexu</binary>
+      <option>--wolfgang</option>
+      <option>--min_crossrefs 2</option>
       <infile>verslag</infile>
     </cmdline>
     <input>

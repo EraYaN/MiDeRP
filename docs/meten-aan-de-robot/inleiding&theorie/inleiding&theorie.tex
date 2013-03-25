@@ -4,9 +4,8 @@
 \begin{document}
 
 \chapter{Inleiding}
-\section{Abstract}
 In dit verslag zetten wij onze meetresultaten uiteen van de metingen die we verricht hebben bij het onderdeel "De robot-afstandsmeter". Er komt aan bod hoe we gemeten hebben, welke principes we gebruiken bij het verwerken van de resultaten en natuurlijk de resultaten en de verwerking daarvan zelf.
-\section{Theorie}
+\chapter{Theorie}
 Om een onbekende afstand op een traject te meten kan men gebruikmaken van de EPO-2 robot. Dit wordt gedaan door uit de gemiddelde snelheid van de robot en de tijd 
 die hij er over doet om het traject af te leggen middels onderstaande vergelijking:
 
@@ -15,12 +14,39 @@ s = vt
 \end{equation}
 
 Bij dit type metingen zijn dus twee variabelen aanwezig die bepaald moeten worden: de tijd die het duurt om het traject af te leggen en de gemiddelde snelheid van de robot. 
-De verstreken tijd wordt gemeten door de FPGA-chip op de robot gedurende de meting. Deze wordt real-time weergegeven op een display op de robot in acht cijfers nauwkeurig.
+De verstreken tijd wordt gemeten door de klokpulsen te tellen met de FPGA-chip op de robot gedurende de meting. Deze wordt real-time weergegeven op een display op de robot in acht cijfers nauwkeurig.
 De snelheid is lastiger te bepalen. In dit geval wordt deze bepaald aan de hand van meerdere metingen over een bekende afstand. Aangezien de afstand die wordt afgelegd al bekend is kan men de snelheid bepalen aan de hand van de tijd die het duurt om van het ene naar het andere punt te rijden middels onderstaande vergelijking:
 
 \begin{equation}
+\label{eq:vel}
 v=\frac{s}{t}
 \end{equation}
 
 Om de invloed van eventuele toevallige meetfouten te minimaliseren kan meerdere malen gemeten worden waarna een nauwkeurig gemiddelde wordt bepaald. Ook is het interessant om te weten te komen in welke mate de prestaties van de robot lineair zijn; duurt het daadwerkelijk vijf keer zo lang om een vijf keer zo lange afstand af te leggen? Deze lineairiteit kan bepaald worden door een aantal metingen over verschillende afstanden te doen en deze uit te zetten in een plot.
+Hier volgen nog enkele formules om de meetresultaten om te rekenen naar bruikbare resultaten en de fout in de metingen te berekenen.
+\small{De gemiddelde tijd die de robot over de kalibratie afstand doet.}
+\begin{equation}
+\label{eq:avgTime}
+t_{gem}=\frac{\sum_{i=1}^{n}t_i}{n}
+\end{equation}
+\small{De gemiddelde rijsnelheid van de robot.}
+\begin{equation}
+\label{eq:avgVel}
+v_{gem} = \frac{s}{t_{gem}}
+\end{equation}
+\small{De standaarddeviatie van de tijd.}
+\begin{equation}
+\label{eq:standaardDev}
+\sigma(t) = \sqrt{\frac{\sum_{i=1}^{n}( t_i-t_{gem})^2}{n-1}}
+\end{equation}
+\small{De absolute fout van de tijd.}
+\begin{equation}
+\label{eq:timeError}
+u(t) = \frac{s}{\sqrt{n}} = \sqrt{\frac{\sum_{i=1}^{n}( t_i-t_{gem})^2}{n(n-1)}}
+\end{equation}
+\small{De absolute fout van de snelheid.}
+\begin{equation}
+\label{eq:velError}
+u(v) = \sqrt{\left (\frac{\partial v }{\partial t }\right)^2 u(t)^2 + \left (\frac{\partial v }{\partial s }\right)^2 u(s)^2} = \sqrt{\left (\frac{s }{{t_{gem}}^2 }\right)^2 u(t)^2 + \left (\frac{1}{t_{gem} }\right)^2 u(s)^2}
+\end{equation}
 \end{document}
