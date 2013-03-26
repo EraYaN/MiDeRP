@@ -12,6 +12,9 @@ entity system is
 		sensor: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
 		servo: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
 		
+		seg: out std_logic_vector (7 downto 0);
+		led: out std_logic_vector (7 downto 0);
+		an: out std_logic_vector (3 downto 0);
 		--uart
 		rx: in std_logic;
 		tx: out std_logic	
@@ -37,13 +40,24 @@ architecture structural of system is
 			motor_r_reset		: out	std_logic;
 			motor_r_speed		: out	signed (7 downto 0);
 			
+			bin_seg					: out std_logic_vector (3 downto 0);
+			dpoint_seg					: out std_logic;
+			led					: out std_logic_vector (7 downto 0);
+			an					: out std_logic_vector (3 downto 0);
+			
 			uart_send				: out std_logic_vector(7 downto 0);
 			uart_receive			: in std_logic_vector(7 downto 0);
 			uart_rw					: out std_logic_vector(1 downto 0);
 			uart_br 				: in std_logic
 		);
 	end component controller;
-	
+	component ssegdecoder is
+		port(
+			bin_input : in STD_LOGIC_VECTOR (3 downto 0);
+			dpoint : in std_logic;
+			segments : out STD_LOGIC_VECTOR (7 downto 0)
+		);
+	end component ssegdecoder;
 	component inputbuffer is
 		port (	
 			clk	: in	std_logic;
@@ -96,6 +110,8 @@ architecture structural of system is
 	signal uart_bin, uart_bout: std_logic_vector(7 downto 0);
 	signal uart_rw : std_logic_vector (1 downto 0); -- 0 = read, 1 = write
 	signal uart_br : std_logic;
+	signal bin_seg : STD_LOGIC_VECTOR (3 downto 0);
+	signal dpoint_seg : STD_LOGIC;
 begin
 
     IB: inputbuffer port map(
@@ -135,6 +151,11 @@ begin
 
 		motor_l_reset => m_reset_l,
 		motor_l_speed => m_speed_l,
+		
+		bin_seg=>bin_seg,
+		an=>an,
+		led=>led,
+		dpoint_seg=>dpoint_seg,
 
 		motor_r_reset => m_reset_r,
 		motor_r_speed => m_speed_r,
@@ -143,6 +164,11 @@ begin
 		uart_rw => uart_rw,
 		uart_br => uart_br
     );
+	SSEGS: ssegdecoder port map (
+		segments => seg,
+		dpoint => dpoint_seg,
+		bin_input => bin_seg
+	);
 	UARTL: uart port map (
 		clk	=>	clk,
 		reset	=>	reset,

@@ -19,6 +19,11 @@ entity controller is
 		motor_r_reset		: out	std_logic;
 		motor_r_speed		: out	signed (7 downto 0);
 		
+		bin_seg					: out std_logic_vector (3 downto 0);
+		dpoint_seg					: out std_logic;
+		led					: out std_logic_vector (7 downto 0);
+		an					: out std_logic_vector (3 downto 0);
+		
 		uart_send				: out std_logic_vector(7 downto 0);
 		uart_receive			: in std_logic_vector(7 downto 0);
 		uart_rw					: out std_logic_vector(1 downto 0); -- 0 = read, 1 = write
@@ -27,9 +32,13 @@ entity controller is
 end entity controller;
 architecture b of controller is	
 	type sys_state is (followline, processnextturn, leftturn, rightturn, waitforinput);
-	signal state : sys_state;
+	signal state : sys_state := followline;
 	signal nextturn : unsigned(1 downto 0); -- 0 = left, 1 = forward, 2 = right, 3 = stop
 	begin
+	an<="0000";
+	bin_seg<="0010";
+	led<="10101010";
+	dpoint_seg<='1';
 	process (clk) is
 	variable next_state : sys_state;
 	begin
@@ -37,7 +46,9 @@ architecture b of controller is
 		next_state:=state;
 		motor_l_speed <= "00000000";
 		motor_r_speed <= "00000000";
-		if state = followline then
+		if reset = '1' then
+			next_state:=followline;
+		elsif state = followline then
 			--follow line
 			case sensor is
 			  when "000" => motor_l_speed <= to_signed(30,8); motor_r_speed <= to_signed(30,8); next_state:=processnextturn;
