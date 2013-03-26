@@ -48,10 +48,18 @@ void createGrid ()
 {
 	unsigned int i;
 
+	numNodes = m * n;
+
+	print(1, 1, "Init successful, creating grid...\n");
+	startStopwatch ();
+
 	//Allocate memory and initialize every node to NULL
 	nodes = (Node**) safeMalloc (sizeof (Node*) * (size_t)numNodes);
 	for (i=0; i<numNodes; i++)
 		nodes[i] = NULL;
+
+	gridTime = stopStopwatch ();
+	print(1, 1, "Grid created successfully (took %.4lfs), ready to calculate paths!\n", gridTime);
 }
 
 //Display found path

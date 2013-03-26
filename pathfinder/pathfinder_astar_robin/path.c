@@ -10,6 +10,8 @@ void findPath ()
 	Node **open, *neighbor, *current, *next;
 	current = next = entryNode; //The value of current actually matters, next just has to have a value
 
+	startStopwatch();
+
 	open = (Node**) safeMalloc (sizeof (Node*) * (size_t)numNodes);
 	open[0] = entryNode;
 	length = 0;
@@ -59,6 +61,9 @@ void findPath ()
 			}
 		}
 	}
+
+	findTime = stopStopwatch ();
+
 }
 
 //Backtrace found path and save it to an array
@@ -77,4 +82,7 @@ void makePath ()
 			current = current->previous;
 		}
 	}
+
+	displayPath ();
+
 }

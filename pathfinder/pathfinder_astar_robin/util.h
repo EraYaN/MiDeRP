@@ -8,6 +8,7 @@
 
 #include "node.h"
 #include "path.h"
+#include "input.h"
 
 //Init variables
 unsigned int m, n, numNodes, length;
