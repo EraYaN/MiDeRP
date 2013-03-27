@@ -1,0 +1,27 @@
+##########################################
+Program started
+
+Grid width is 4
+Grid height is 4
+Init successful, creating grid...
+Grid created successfully (took 0.0000s), ready to calculate paths!
+Entry node is 0
+Exit node is 15
+
+Points OK! Starting pathfinder...
+
+Found a path from node 0 to node 15, with length 7 (took 0.0000s)!
+Entry node is 0
+Next node in path is node 4
+Next node in path is node 8
+Next node in path is node 12
+Next node in path is node 13
+Next node in path is node 14
+Next node in path is node 15
+Exit node (id: 15) reached!
+
+
+Done! Total calculation time is 0.0010s
+Quitting...
+##########################################
+
