@@ -192,6 +192,7 @@ pip-log.txt
 .mr.developer.cfg
 
 #MikTeX, pdfLaTeX
+*.tex.bak
 *.aux
 *.synctex.gz
 *.gz(busy)

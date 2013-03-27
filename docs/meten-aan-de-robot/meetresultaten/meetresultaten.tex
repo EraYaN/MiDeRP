@@ -1,14 +1,14 @@
 \documentclass{report}
 \input{../../library/preamble}
 \input{../../library/style}
-
+\addbibresource{../../library/bibliography.bib}
 \begin{document}
 \chapter{Resultaten en Discussie}
 Er zijn drie verschillende metingen verricht, kalibratiemeting, onbekende afstandsmeting en de lineariteitsmeting. Deze metingen zijn drie keer gedaan en dus zijn de meetresultaten ook drie keer weergeven en geanalyseerd.
 \section{Kalibratie}
 Hieronder zijn de meetresultaten van de eerste kalibratiemeting te zien. Bij deze meting is het de bedoeling dat deze 10 keer wordt uitgevoerd, maar bij 1 groepje is de opdracht verkeerd ge\"interpreteerd en is de meting maar vijf keer uitgevoerd.\\
 
-Als we de functies \label{eq:vel}, \ref{eq:avgTime},  \ref{eq:avgVel},  \ref{eq:standaardDev},  \ref{eq:timeError} en  \ref{eq:velError} op de meetresultaten (Tabel \ref{tab:measurementsCalib}) loslaten krijgen we de waarden als in Tabel \ref{tab:resCali}.\\
+Als we de functies \label{eq:vel}, \ref{eq:avgTime},  \ref{eq:avgVel},  \ref{eq:standaardDev},  \ref{eq:timeError} en  \ref{eq:velError} op de meetresultaten (Tabel \ref{tab:measurementsCalib}) loslaten krijgen we de waarden als in Tabel \ref{tab:resCali}. De snelheid wijkt vooral bij Robin \& Erwin af dit komt door dat zij een andere robot gebruikt hebben.\\
 
 In Figuur \ref{fig:measureGraph} zijn de metingen voor de kalibratie afgebeeld. De metingen RE (Robin \& Erwin) liggen vrij ver van de andere af omdat die metingen gedaan zijn met een andere robot, ook hadden dit 10 meetpunten moeten zijn.
 
@@ -120,12 +120,12 @@ In Figuur \ref{fig:measureGraph} zijn de metingen voor de kalibratie afgebeeld. 
 			$v_{gem}$ & 0.0960 m/s \\
 		\hline
 			$s_{onb.}$ & 0.242 m \\
-		\hline		   
-			$\sigma(t)$ & 0.005 s \\
+		\hline		  
+		   $\sigma(t_{gem})$ & $ 5.3 \cdot 10^-3 \mathrm{s}$  \\
 		\hline
-			$u(t_{gem})$ & 0.003 s  \\
+		   $\sigma(v_{gem})$ & $0.684 \cdot 10^-3  \mathrm{ ^m/_s}$ \\
 		\hline
-			$u(v_{gem})$ & 0.00054 cm/s \\
+		$\sigma(s_{onb})$ & $0.874 \cdot 10^-3 \mathrm{m}$ \\
 		\hline
 		\end{tabular}
 	\end{subtable}
@@ -141,13 +141,13 @@ In Figuur \ref{fig:measureGraph} zijn de metingen voor de kalibratie afgebeeld. 
 		\hline
 		   $v_{gem}$ & 0.0881 m/s \\
 		\hline
-			$s_{onb.}$ & 0.240 m \\
+		$s_{onb.}$ & 0.240 m \\
+		\hline		  
+		   $\sigma(t_{gem})$ & $5.9 \cdot 10^-3 \mathrm{s}$  \\
 		\hline
-		   $\sigma(t)$ & 0.006 s \\
+		   $\sigma(v_{gem})$ & $0.638 \cdot 10^-3  \mathrm{ ^m/_s}$ \\
 		\hline
-		   $u(t_{gem})$ & 0.002 s  \\
-		\hline
-		   $u(v_{gem})$ & 0.00047 cm/s \\
+		$\sigma(s_{onb})$ &$ 0.894 \cdot 10^-3 \mathrm{m}$ \\
 		\hline
 		\end{tabular}
 	\end{subtable}
@@ -164,12 +164,12 @@ In Figuur \ref{fig:measureGraph} zijn de metingen voor de kalibratie afgebeeld. 
 		   $v_{gem}$ & 0.0861 cm/s \\
 		\hline
 			$s_{onb.}$ & 0.235 m \\
+		\hline		  
+		   $\sigma(t_{gem})$ & $11 \cdot 10^-3\mathrm{s}$  \\
 		\hline
-		   $\sigma(t)$ & 0.011 s \\
+		   $\sigma(v_{gem})$ & $0.897 \cdot 10^-3 \mathrm{ ^m/_s}$ \\
 		\hline
-		   $u(t_{gem})$ & 0.004 s  \\
-		\hline
-		   $u(v_{gem})$ & 0.00050 cm/s \\
+		$\sigma(s_{onb})$ & $1.39 \cdot 10^-3 \mathrm{m}$ \\
 		\hline
 		\end{tabular}
 	\end{subtable}
@@ -177,7 +177,8 @@ In Figuur \ref{fig:measureGraph} zijn de metingen voor de kalibratie afgebeeld. 
 
 \section{Onbekende afstand}
 
-In Tabel \ref{tab:resExtraUnknownD} zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de snelheid te kunnen bepalen moet er een afstand bekend zijn. Deze afstand is gemeten met een liniaal en deze is 23.4 cm.
+In Tabel \ref{tab:resExtraUnknownD} zijn de meetresultaten te zien van de onbekende afstandsmeting. Om de snelheid te kunnen bepalen moet er een afstand bekend zijn. Deze afstand is gemeten met een liniaal en deze is $0.234 \pm 0.0005\mathrm{m}$. De met de robot gemeten afstand zijn strijdig voor de metingen RE en JC omdat voor deze metingen niet voldaan wordt aan de voorwaarde als in Formule \ref{eq:strijdigheid}, de meting van Luc en Tijmen is niet strijdig. Deze strijdigheid komt waarschijnlijk omdat de robot in een boog reed en dat daardoor de gemeten afstanden allemaal hoger uitvallen.
+
 
 \begin{table}
 	\centering
@@ -219,7 +220,7 @@ In Tabel \ref{tab:resExtraUnknownD} zijn de meetresultaten te zien van de onbeke
 
 \section{Lineariteit}
 \subsection*{Meting 1}
-In Tabel \ref{tab:resExtraLin} zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel van de meetresultaten en de afstand is de gemiddelde snelheid uitgerekend. De grafieken in Figuur \ref{fig:linGraph} geven een duidelijk beeld van de metingen.
+In Tabel \ref{tab:resExtraLin} zijn de meetresultaten te zien van de lineariteitsmeting. Doormiddel van de meetresultaten en de afstand is de gemiddelde snelheid uitgerekend. De grafiek in Figuur \ref{fig:linGraph} geeft een duidelijk beeld van de metingen ten opzichte van de uitgerekende gemiddelde snelheid. Het is te zien dat er voor de afwijking in de rijrichting van de robot, deze rijdt in een cirkel, de afwijking in de gemeten tijd groter wordt naarmate de afstand tussen de lijnen toeneemt.
 
 \begin{figure}[H]
 	\centering
