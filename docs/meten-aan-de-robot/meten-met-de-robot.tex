@@ -1,15 +1,22 @@
 \documentclass{report}
 \input{../library/preamble}
 \input{../library/style}
-
+\addbibresource{../library/bibliography.bib}
 
 \title{Meetrapport: Meten aan de robot}
 \author{EPO-2 D2}
 \begin{document}
 \maketitle
+\newpage
+\pagenumbering{roman}
 \tableofcontents
-\subimport{inleiding&theorie/}{inleiding&theorie.tex}
+\subimport{inleiding/}{inleiding.tex}
+\newpage
+\pagenumbering{arabic}
+\subimport{theorie/}{theorie.tex}
 \subimport{methode/}{methode.tex}
 \subimport{meetresultaten/}{meetresultaten.tex}
-
+\newpage
+\pagenumbering{Roman}
+\printbibliography
 \end{document}
