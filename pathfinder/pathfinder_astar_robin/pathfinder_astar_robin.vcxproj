@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="node.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="util.h" />

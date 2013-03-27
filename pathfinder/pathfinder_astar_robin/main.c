@@ -1,16 +1,31 @@
 #include "util.h"
 
-int main()
+int main ()
 {
-	//Init
+	init ();
+	loop ();
+	quit ();
+
+	return 0;
+}
+
+//Init
+void init ()
+{
+	//Open log file
+	remove ("log_old.txt");
+	rename ("log.txt", "log_old.txt");
 	file = fopen ("log.txt", "a");
 	print (0, 1, "##########################################\nProgram started\n\n");
 
+	//Get grid size
 	getDimensions ();
-	
-	//Create the grid	
+
+	//Create the grid
 	createGrid ();
-	
+
+	//Add mines for debugging
+#ifdef _DEBUG
 	addMine (12, 13);
 	addMine (12, 11);
 	addMine (12, 7);
@@ -21,17 +36,22 @@ int main()
 	addMine (8, 9);
 	addMine (22, 23);
 	addMine (19, 14);
+#endif
 
+	//Get entry and exit nodes
 	getPoints ();
+}
 
-	//Find path
-	findPath ();	
+void loop ()
+{
+	findPath ();
 
-	//Exit program
 	totalTime = gridTime + findTime;
 	print (1, 1, "\nDone! Total calculation time is %.4lfs\n", totalTime);
-	print (0, 1, "All done!\n##########################################\n\n");
-	fclose (file);
+}
 
-	return 0;
+void quit ()
+{
+	print (0, 1, "Quitting...\n##########################################\n\n");
+	fclose (file);
 }

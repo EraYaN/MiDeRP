@@ -27,6 +27,7 @@ void getDimensions ()
 		}
 	}
 	print (1, 1, "Grid height is %d\n", n);
+
 }
 
 //Get entry and exit points

@@ -119,6 +119,7 @@ unsigned int getH (Node *node)
 	return abs ((int)(getXY(node, 'X') - getXY(exitNode, 'X'))) + abs ((int)(getXY(node, 'Y') - getXY(exitNode, 'Y')));
 }
 
+//Add mine to grid
 void addMine (unsigned int id1, unsigned int id2)
 {
 	Node *node1, *node2;
@@ -131,6 +132,12 @@ void addMine (unsigned int id1, unsigned int id2)
 		node2 = newNode (NULL, id2);
 	else
 		node2 = getNode (id2);
+
+	if (!node1 || !node2)
+	{
+		print (1, 1, "Error: tried to create mine out of bounds\n");
+		return;
+	}
 
 	setNeighbors (node1);
 
@@ -165,6 +172,7 @@ void addMine (unsigned int id1, unsigned int id2)
 
 }
 
+//Check for mine
 char isMine (Node *node1, Node *node2)
 {
 	int i;

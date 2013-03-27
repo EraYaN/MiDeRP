@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "main.h"
 #include "node.h"
 #include "path.h"
 #include "input.h"
@@ -22,5 +23,4 @@ void print (char toconsole, char tofile, char *format, ...);
 void startStopwatch(void);
 double stopStopwatch(void);
 void createGrid ();
-void displayPath ();
 #endif
