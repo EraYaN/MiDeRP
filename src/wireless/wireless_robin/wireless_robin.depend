@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1363876748 source:h:\github\miderp\wireless\wireless_robin\serial.c
-	<stdio.h>
-	<stdlib.h>
-	<Windows.h>
-	<string.h>
-

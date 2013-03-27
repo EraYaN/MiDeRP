@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <Windows.h>
-#include <string.h>
+#include "serial.h"
 
-#define COMPORT "COM6"
-#define BAUDRATE CBR_9600
+//TODO make this into a proper interfaced class.
 
 //--------------------------------------------------------------
 // Function: initSio
@@ -12,7 +8,7 @@
 //           Stopbits, Parity and Timeoutparameters of
 //           the COM port
 //--------------------------------------------------------------
-void initSio(HANDLE hSerial){
+void initSio(HANDLE hSerial, DWORD bRate){
 
     COMMTIMEOUTS timeouts ={0};
     DCB dcbSerialParams = {0};
@@ -24,7 +20,7 @@ void initSio(HANDLE hSerial){
         printf("error getting state \n");
     }
 
-    dcbSerialParams.BaudRate = BAUDRATE;
+    dcbSerialParams.BaudRate = bRate;
     dcbSerialParams.ByteSize = 8;
     dcbSerialParams.StopBits = ONESTOPBIT;
     dcbSerialParams.Parity   = NOPARITY;
@@ -52,7 +48,7 @@ void initSio(HANDLE hSerial){
 // Description: reads a single byte from the COM port into
 //              buffer buffRead
 //--------------------------------------------------------------
-int readByte(HANDLE hSerial, char *buffRead) {
+extern int readByte(HANDLE hSerial, char *buffRead) {
 
     DWORD dwBytesRead = 0;
 
@@ -69,7 +65,7 @@ int readByte(HANDLE hSerial, char *buffRead) {
 // Description: writes a single byte stored in buffRead to
 //              the COM port
 //--------------------------------------------------------------
-int writeByte(HANDLE hSerial, char *buffWrite){
+extern int writeByte(HANDLE hSerial, char *buffWrite){
 
     DWORD dwBytesWritten = 0;
 
@@ -82,17 +78,14 @@ int writeByte(HANDLE hSerial, char *buffWrite){
     return(0);
 }
 
-int main()
+//For example hSerial = openSerial("COM6", CBR_9600);
+extern HANDLE openSerial(LPCSTR cPort, DWORD bRate)
 {
-    HANDLE hSerial;
-
-
-    char byteBuffer[BUFSIZ+1];
-
+    HANDLE hSerial;    
     //----------------------------------------------------------
     // Open COMPORT for reading and writing
     //----------------------------------------------------------
-    hSerial = CreateFile(COMPORT,
+    hSerial = CreateFile(cPort,
         GENERIC_READ | GENERIC_WRITE,
         0,
         0,
@@ -104,30 +97,18 @@ int main()
     if(hSerial == INVALID_HANDLE_VALUE){
         if(GetLastError()== ERROR_FILE_NOT_FOUND){
             //serial port does not exist. Inform user.
+			//TODO make proper error handling class.
             printf(" serial port does not exist \n");
         }
         //some other error occurred. Inform user.
+		//TODO make proper error handling class.
         printf(" some other error occured. Inform user.\n");
     }
-
-    //----------------------------------------------------------
-    // Initialize the parameters of the COM port
-    //----------------------------------------------------------
-
-    initSio(hSerial);
-
-    while ( 1 ) {
-        gets(byteBuffer);
-
-        if (byteBuffer[0] == 'q') // end the loop by typing 'q'
-            break;
-
-        writeByte(hSerial, byteBuffer);
-        readByte(hSerial, byteBuffer);
-    }
-
-    printf("ZIGBEE IO DONE!\n");
-    return 0;
-
+	//Init parameters
+    initSio(hSerial,bRate);
+	return hSerial; 
+}
+extern void closeSerial(HANDLE hSerial)
+{
     CloseHandle(hSerial);
 }

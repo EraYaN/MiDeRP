@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\pathfinder\pathfinder_astar_robin\input.h">
+    <ClInclude Include="..\..\pathfinder\pathfinder_astar_robin\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\pathfinder\pathfinder_astar_robin\main.h">
+    <ClInclude Include="..\..\pathfinder\pathfinder_astar_robin\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\pathfinder\pathfinder_astar_robin\node.h">
+    <ClInclude Include="..\..\pathfinder\pathfinder_astar_robin\node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\pathfinder\pathfinder_astar_robin\path.h">
+    <ClInclude Include="..\..\pathfinder\pathfinder_astar_robin\path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\pathfinder\pathfinder_astar_robin\util.h">
+    <ClInclude Include="..\..\pathfinder\pathfinder_astar_robin\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\pathfinder\pathfinder_astar_robin\input.c">
+    <ClCompile Include="..\..\pathfinder\pathfinder_astar_robin\input.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\pathfinder\pathfinder_astar_robin\main.c">
+    <ClCompile Include="..\..\pathfinder\pathfinder_astar_robin\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\pathfinder\pathfinder_astar_robin\node.c">
+    <ClCompile Include="..\..\pathfinder\pathfinder_astar_robin\node.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\pathfinder\pathfinder_astar_robin\path.c">
+    <ClCompile Include="..\..\pathfinder\pathfinder_astar_robin\path.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\pathfinder\pathfinder_astar_robin\util.c">
+    <ClCompile Include="..\..\pathfinder\pathfinder_astar_robin\util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

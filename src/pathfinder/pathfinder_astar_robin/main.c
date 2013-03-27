@@ -1,5 +1,7 @@
 #include "util.h"
 
+//TODO make one h file to include the project and make this into a proper interfaced class.
+
 int main ()
 {
 	init ();

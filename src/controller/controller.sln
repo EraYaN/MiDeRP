@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pathfinder", "pathfinder\pathfinder.vcxproj", "{57BA5512-022E-4B03-ACCA-D310645FEF87}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "communications", "communications\communications.vcxproj", "{3BE4CF19-5636-4266-A8D0-6E521C47EFE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{57BA5512-022E-4B03-ACCA-D310645FEF87}.Debug|Win32.Build.0 = Debug|Win32
 		{57BA5512-022E-4B03-ACCA-D310645FEF87}.Release|Win32.ActiveCfg = Release|Win32
 		{57BA5512-022E-4B03-ACCA-D310645FEF87}.Release|Win32.Build.0 = Release|Win32
+		{3BE4CF19-5636-4266-A8D0-6E521C47EFE2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3BE4CF19-5636-4266-A8D0-6E521C47EFE2}.Debug|Win32.Build.0 = Debug|Win32
+		{3BE4CF19-5636-4266-A8D0-6E521C47EFE2}.Release|Win32.ActiveCfg = Release|Win32
+		{3BE4CF19-5636-4266-A8D0-6E521C47EFE2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
