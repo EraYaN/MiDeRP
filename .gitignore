@@ -209,6 +209,7 @@ pip-log.txt
 *.toc
 *.run.xml
 *.pdf
+*.out
 !*-rc.pdf
 
 #Ignore Robin's pathfinder logs
