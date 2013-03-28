@@ -1,7 +1,7 @@
 \documentclass{report}
 \input{../../library/preamble}
 \input{../../library/style}
-\addbibresource{../../library/bibliography.bib}
+%\addbibresource{../../library/bibliography.bib}
 
 \title{EPO-2: Mid-term Design Report - Routeplanner in C}
 \author{Robin Hes}
@@ -11,7 +11,7 @@
 \chapter{Routeplanner in C}
 \label{ch:route}
 
-Een belangrijk onderdeel van het probleem is het vinden van een pad van begin naar eind. Een mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing komen die zelf het beste pad berekent. Dit zou met de FPGA kunnen, maar de schakeling en rekenkracht die daarvoor benodigd is zou dit vrij complex maken. Bij het EPO-2-project is er dan ook voor gekozen het pad te laten berekenen door een programma geschreven in de C-programmeertaal. Dit programma draait op een normale computer. \\
+Een belangrijk onderdeel van het probleem is het vinden van een pad van begin naar eind. De mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing komen die zelf het beste pad berekent. Dit zou met de FPGA kunnen, maar de schakeling en rekenkracht die daarvoor benodigd is zou dit vrij complex maken. Bij het EPO-2-project is er dan ook voor gekozen het pad te laten berekenen door een programma geschreven in de C-programmeertaal. Dit programma draait op een normale computer. \\
 
 \noindent
 We kunnen voor het programma de volgende eisen opstellen:
@@ -22,15 +22,23 @@ We kunnen voor het programma de volgende eisen opstellen:
 	\item Het programma moet obstakels (mijnen) kunnen ontwijken (geen onderdeel van eerste opdracht)
 \end{enumerate}
 
-\section{Lee}
-\label{sec:lee}
+\section{Ontwerp en implentatie}
+\label{sec:ontwerp-impl}
+
+\subsection{Lee}
+\label{ssec:lee}
 
 De eerste stap bij het schrijven van zo een programma is het vinden van een geschikt algoritme. Hiervoor hebben we ons georiënteerd op de vele beschikbare algoritmen. Uiteindelijk is er door elk van de drie tweetallen binnen D-2 gekozen om Lee's algoritme uit te werken, omdat dit relatief eenvoudig te begrijpen en implementeren is en voor onze doeleinden prima geschikt was. Daarnaast levert Lee's algoritme per definitie het kortste pad op. De resulterende programma's waren allemaal in staat een pad te vinden over het wedstrijdveld en enkele konden hierbij ook al mijnen ontwijken. De implementatie van Lee's algoritme voldoet hiermee in principe aan alle drie de gestelde eisen en kan gebruikt worden om de robot aan te sturen. De berekende kortste route hoeft echter niet \textit{altijd} de snelste route te zijn. Zo zou de door het algoritme berekende kortste route een X aantal bochten kunnen bevatten, waar een andere route, die dezelfde lengte heeft, er maar één heeft. Omdat het aannemelijk is dat de robot sneller rechtdoor rijdt dan dat hij een bocht neemt, zou het de tweede route dus beter zijn, maar dit is niet de route die het programma berekent.
 
 Dit was voor een situatie zonder mijnen geen probleem. Omdat het computerprogramma sequentieel is, zal het altijd een voorkeur hebben voor een bepaalde richting. Dit is de eerste (of de laatste) richting waarvoor het programma checkt of de route er wellicht langs kan gaan. Het gevolg hiervan is dat de route altijd slechts één bocht zal bevatten. Wanneer we echter obstakels toe gaan voegen zou het voor kunnen komen dat het programma op een punt met twee keuzes aankomt: één voor een pad met één bocht en een ander dat bestaat uit een zigzag, beide met dezelfde lengte. In deze situatie kan het dat het programma het zigzagpad kiest, omdat dat als eerste (of als laatste) gecontroleerd wordt. Dit betekent niet-optimaal gedrag en moet dus voorkomen worden. Daarom is er voor gekozen ook naar een tweede algoritme te kijken: het A*-algoritme.
 
-\section{A*}
-\label{sec:astar}
+\subsection{A*}
+\label{ssec:astar}
+
+Het A*-algoritme gebruikt, in tegenstelling tot dat van Lee, een bepaalde heuristiek. Dit betekent dat er al een zekere kennis bestaat bij het bepalen
+van een geschikt pad naar het doel. Het programma "weet" bijvoorbeeld dat het doel boven het startpunt zit en houdt hier rekening mee bij het berekenen van het pad. Dat levert in potentie sneller resultaat op met minder geheugengebruik. Nu is het niet zo dat het berekenen van een pad over een grid van 5x5 een zeer intensieve taak is, maar het zijn hoe dan ook twee positieve eigenschappen. Daarnaast kan de complexiteit van de heuristische functie gevarieerd worden - dit is de functie die berekent hoe geschikt de node is voor het pad - om een optimaal pad, met zo min mogelijk bochten en zonder tussenkomst van mijnen, te berekenen.
+
+Deze voordelen tegenover Lee's algoritme hebben er toe geleid dat er ook nog een implementatie van het A*-algoritme is gemaakt
 
 
 \end{document}
