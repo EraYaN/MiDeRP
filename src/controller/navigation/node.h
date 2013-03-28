@@ -15,8 +15,6 @@ Node *newNode (Node *current, unsigned int id);
 Node *getNode (unsigned int id);
 void setNeighbors (Node *node);
 unsigned int getXY (Node *node, char axis);
-void setScores (Node *node);
-unsigned int getH (Node *node);
 void addMine (unsigned int id1, unsigned int id2);
 char isMine (Node *node1, Node *node2);
 

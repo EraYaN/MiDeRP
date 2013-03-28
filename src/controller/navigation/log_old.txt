@@ -10,3 +10,298 @@ Exit node is 24
 
 Points OK! Starting pathfinder...
 
+Added node 0 as first item to openlist
+Current item: 0
+Removed node 0 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 1
+Added node 1 as first item to openlist
+Now checking neighbor node 5
+Added node 5 to openlist
+Neighbor does not exist or found mine
+Current item: 1
+Removed node 1 from openlist
+Now checking neighbor node 0
+Neighbor is closed or further away from target
+Now checking neighbor node 2
+Added node 2 to openlist
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Current item: 5
+Removed node 5 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 6
+Added node 6 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 0
+Neighbor is closed or further away from target
+Current item: 2
+Removed node 2 from openlist
+Now checking neighbor node 1
+Neighbor is closed or further away from target
+Now checking neighbor node 3
+Added node 3 to openlist
+Now checking neighbor node 7
+Added node 7 to openlist
+Neighbor does not exist or found mine
+Current item: 6
+Removed node 6 from openlist
+Now checking neighbor node 5
+Neighbor is closed or further away from target
+Now checking neighbor node 7
+Added node 7 to openlist
+Now checking neighbor node 11
+Added node 11 to openlist
+Neighbor does not exist or found mine
+Current item: 3
+Removed node 3 from openlist
+Now checking neighbor node 2
+Neighbor is closed or further away from target
+Now checking neighbor node 4
+Added node 4 to openlist
+Now checking neighbor node 8
+Added node 8 to openlist
+Neighbor does not exist or found mine
+Current item: 7
+Removed node 7 from openlist
+Now checking neighbor node 6
+Neighbor is closed or further away from target
+Now checking neighbor node 8
+Added node 8 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 2
+Neighbor is closed or further away from target
+Current item: 7
+Removed node 7 from openlist
+Now checking neighbor node 6
+Neighbor is closed or further away from target
+Now checking neighbor node 8
+Added node 8 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 2
+Neighbor is closed or further away from target
+Current item: 11
+Removed node 11 from openlist
+Now checking neighbor node 10
+Added node 10 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 16
+Added node 16 to openlist
+Now checking neighbor node 6
+Neighbor is closed or further away from target
+Current item: 4
+Removed node 4 from openlist
+Now checking neighbor node 3
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 9
+Added node 9 to openlist
+Neighbor does not exist or found mine
+Current item: 8
+Removed node 8 from openlist
+Now checking neighbor node 7
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 13
+Added node 13 to openlist
+Now checking neighbor node 3
+Neighbor is closed or further away from target
+Current item: 8
+Removed node 8 from openlist
+Now checking neighbor node 7
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 13
+Added node 13 to openlist
+Now checking neighbor node 3
+Neighbor is closed or further away from target
+Current item: 8
+Removed node 8 from openlist
+Now checking neighbor node 7
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 13
+Added node 13 to openlist
+Now checking neighbor node 3
+Neighbor is closed or further away from target
+Current item: 10
+Removed node 10 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 11
+Neighbor is closed or further away from target
+Now checking neighbor node 15
+Added node 15 to openlist
+Neighbor does not exist or found mine
+Current item: 13
+Removed node 13 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 14
+Added node 14 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 8
+Neighbor is closed or further away from target
+Current item: 13
+Removed node 13 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 14
+Added node 14 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 8
+Neighbor is closed or further away from target
+Current item: 13
+Removed node 13 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 14
+Added node 14 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 8
+Neighbor is closed or further away from target
+Current item: 9
+Removed node 9 from openlist
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 14
+Added node 14 to openlist
+Now checking neighbor node 4
+Neighbor is closed or further away from target
+Current item: 16
+Removed node 16 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 17
+Added node 17 to openlist
+Now checking neighbor node 21
+Added node 21 to openlist
+Now checking neighbor node 11
+Neighbor is closed or further away from target
+Current item: 15
+Removed node 15 from openlist
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 20
+Added node 20 to openlist
+Now checking neighbor node 10
+Neighbor is closed or further away from target
+Current item: 21
+Removed node 21 from openlist
+Now checking neighbor node 20
+Added node 20 to openlist
+Now checking neighbor node 22
+Added node 22 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 16
+Neighbor is closed or further away from target
+Current item: 17
+Removed node 17 from openlist
+Now checking neighbor node 16
+Neighbor is closed or further away from target
+Now checking neighbor node 18
+Added node 18 to openlist
+Now checking neighbor node 22
+Added node 22 to openlist
+Neighbor does not exist or found mine
+Current item: 14
+Removed node 14 from openlist
+Now checking neighbor node 13
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 9
+Neighbor is closed or further away from target
+Current item: 14
+Removed node 14 from openlist
+Now checking neighbor node 13
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 9
+Neighbor is closed or further away from target
+Current item: 14
+Removed node 14 from openlist
+Now checking neighbor node 13
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 9
+Neighbor is closed or further away from target
+Current item: 14
+Removed node 14 from openlist
+Now checking neighbor node 13
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 9
+Neighbor is closed or further away from target
+Current item: 20
+Removed node 20 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 21
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 15
+Neighbor is closed or further away from target
+Current item: 22
+Removed node 22 from openlist
+Now checking neighbor node 21
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 17
+Neighbor is closed or further away from target
+Current item: 18
+Removed node 18 from openlist
+Now checking neighbor node 17
+Neighbor is closed or further away from target
+Now checking neighbor node 19
+Added node 19 to openlist
+Now checking neighbor node 23
+Added node 23 to openlist
+Neighbor does not exist or found mine
+Current item: 22
+Removed node 22 from openlist
+Now checking neighbor node 21
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Neighbor does not exist or found mine
+Now checking neighbor node 17
+Neighbor is closed or further away from target
+Current item: 20
+Removed node 20 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 21
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 15
+Neighbor is closed or further away from target
+Current item: 23
+Removed node 23 from openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 24
+Added node 24 to openlist
+Neighbor does not exist or found mine
+Now checking neighbor node 18
+Neighbor is closed or further away from target
+Current item: 19
+Removed node 19 from openlist
+Now checking neighbor node 18
+Neighbor is closed or further away from target
+Neighbor does not exist or found mine
+Now checking neighbor node 24
+Added node 24 to openlist
+Neighbor does not exist or found mine
+Current item: 24
+Found a path from node 0 to node 24, with length 8 (took 0.0550s)!
+Entry node is 0
+Next node in path is node 5
+Next node in path is node 6
+Next node in path is node 11
+Next node in path is node 16
+Next node in path is node 17
+Next node in path is node 18
+Next node in path is node 19
+Exit node (id: 24) reached!
+
+
+Done! Total calculation time is 0.0550s
+Quitting...
+##########################################
+

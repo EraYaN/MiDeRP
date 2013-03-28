@@ -1,6 +1,6 @@
 #include "util.h"
 
-//TODO make one h file to include the project and make this into a proper interfaced class.
+//TODO make one h file to include the project and make this into a properly interfaced class.
 
 int main ()
 {
@@ -57,5 +57,4 @@ void quit ()
 {
 	print (0, 1, "Quitting...\n##########################################\n\n");
 	fclose (file);
-	system ("pause");
 }

@@ -115,38 +115,6 @@ unsigned int getXY (Node *node, char axis)
 	}
 }
 
-//Get an estimated heuristic cost to exitNode
-unsigned int getH (Node *node)
-{
-	unsigned int H, straight = 0;
-	Node *current;
-
-	H = abs ((int)(getXY(node, 'X') - getXY(exitNode, 'X'))) + abs ((int)(getXY(node, 'Y') - getXY(exitNode, 'Y')));
-
-	//current = node;
-
-	//while (current->neighbors[node->previousDir] && !isMine (current, current->neighbors[node->previousDir]))
-	//{
-	//	straight++;
-
-	//	current = current->neighbors[node->previousDir];
-	//	setNeighbors (current);
-	//}
-
-	//if (node->previousDir == 0 || node->previousDir == 1)
-	//{
-	//	//Horizontal path
-	//	H = H + m - straight;
-	//}
-	//else
-	//{
-	//	//Vertical path
-	//	H = H + n - straight;
-	//}
-
-	return H;
-}
-
 //Add mine to grid
 void addMine (unsigned int id1, unsigned int id2)
 {
