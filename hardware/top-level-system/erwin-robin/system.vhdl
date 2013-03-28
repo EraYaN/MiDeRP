@@ -40,22 +40,23 @@ architecture structural of system is
 			motor_r_reset		: out	std_logic;
 			motor_r_speed		: out	signed (7 downto 0);
 			
-			bin_seg					: out std_logic_vector (3 downto 0);
-			dpoint_seg					: out std_logic;
-			led					: out std_logic_vector (7 downto 0);
-			an					: out std_logic_vector (3 downto 0);
+			bin_seg					: out std_logic_vector (15 downto 0);
+			dpoint_seg					: out std_logic_vector(3 downto 0);
+			led					: out std_logic_vector (7 downto 0);			
 			
 			uart_send				: out std_logic_vector(7 downto 0);
 			uart_receive			: in std_logic_vector(7 downto 0);
-			uart_rw					: out std_logic_vector(1 downto 0);
+			uart_rw_out				: out std_logic_vector(1 downto 0);
 			uart_br 				: in std_logic
 		);
 	end component controller;
 	component ssegdecoder is
 		port(
-			bin_input : in STD_LOGIC_VECTOR (3 downto 0);
-			dpoint : in std_logic;
-			segments : out STD_LOGIC_VECTOR (7 downto 0)
+			clk	: in	std_logic;
+			bin_input : in STD_LOGIC_VECTOR (15 downto 0);
+			dpoint : in std_logic_vector(3 downto 0);
+			segments : out STD_LOGIC_VECTOR (7 downto 0);-- "DP,G,F,E,D,C,B,A"
+			anodes : out std_logic_vector(3 downto 0)
 		);
 	end component ssegdecoder;
 	component inputbuffer is
@@ -110,8 +111,8 @@ architecture structural of system is
 	signal uart_bin, uart_bout: std_logic_vector(7 downto 0);
 	signal uart_rw : std_logic_vector (1 downto 0); -- 0 = read, 1 = write
 	signal uart_br : std_logic;
-	signal bin_seg : STD_LOGIC_VECTOR (3 downto 0);
-	signal dpoint_seg : STD_LOGIC;
+	signal bin_seg : STD_LOGIC_VECTOR (15 downto 0);
+	signal dpoint_seg : STD_LOGIC_vector(3 downto 0);
 begin
 
     IB: inputbuffer port map(
@@ -152,8 +153,7 @@ begin
 		motor_l_reset => m_reset_l,
 		motor_l_speed => m_speed_l,
 		
-		bin_seg=>bin_seg,
-		an=>an,
+		bin_seg=>bin_seg,		
 		led=>led,
 		dpoint_seg=>dpoint_seg,
 
@@ -161,13 +161,15 @@ begin
 		motor_r_speed => m_speed_r,
 		uart_send =>uart_bin,
 		uart_receive => uart_bout,
-		uart_rw => uart_rw,
+		uart_rw_out => uart_rw,
 		uart_br => uart_br
     );
 	SSEGS: ssegdecoder port map (
+		clk=>clk,
 		segments => seg,
 		dpoint => dpoint_seg,
-		bin_input => bin_seg
+		bin_input => bin_seg,
+		anodes=>an
 	);
 	UARTL: uart port map (
 		clk	=>	clk,
