@@ -12,18 +12,10 @@ die hij er over doet om het traject af te leggen middels onderstaande vergelijki
 	\label{eq:vel}
 	s = vt
 \end{equation}
-
 \noindent
 Bij dit type metingen zijn dus twee variabelen aanwezig die bepaald moeten worden: de tijd die het duurt om het traject af te leggen en de gemiddelde snelheid van de robot. 
 De verstreken tijd wordt gemeten door de klokpulsen te tellen met de FPGA-chip op de robot gedurende de meting. Deze wordt real-time weergegeven op een display op de robot in acht cijfers nauwkeurig.
-De snelheid is lastiger te bepalen. In dit geval wordt deze bepaald aan de hand van meerdere metingen over een bekende afstand. Aangezien de afstand die wordt afgelegd al bekend is kan men de snelheid bepalen aan de hand van de tijd die het duurt om van het ene naar het andere punt te rijden middels onderstaande vergelijking:
-
-\begin{equation}
-	\label{eq:vel}
-	v=\frac{s}{t}
-\end{equation}
-
-\noindent
+De snelheid is lastiger te bepalen. In dit geval wordt deze bepaald aan de hand van meerdere metingen over een bekende afstand. Aangezien de afstand die wordt afgelegd al bekend is kan men de snelheid bepalen aan de hand van de tijd die het duurt om van het ene naar het andere punt te rijden middels vergelijking \ref{eq:vel}. 
 Om de invloed van eventuele toevallige meetfouten te minimaliseren kan meerdere malen gemeten worden waarna een nauwkeurig gemiddelde wordt bepaald. Ook is het interessant om te weten te komen in welke mate de prestaties van de robot lineair zijn; duurt het daadwerkelijk vijf keer zo lang om een vijf keer zo lange afstand af te leggen? Deze lineairiteit kan bepaald worden door een aantal metingen over verschillende afstanden te doen en deze uit te zetten in een plot. De vergelijkingen die we gaan gebruiken voor het verwerken van de meetresultaten staan hieronder gegeven.\\
 
 \begin{equation}
@@ -49,21 +41,21 @@ De standaarddeviatie van de tijd: \cite{epo1-onzekerheden}
 De standaarddeviatie van de snelheid: \cite{epo1-onzekerheden}
 \begin{equation}
 \label{eq:velError}
-	u(v) = \sqrt{\left (\frac{\partial v }{\partial t }\right)^2 u(t)^2 + \left (\frac{\partial v }{\partial s }\right)^2 u(s)^2} = \sqrt{\left (\frac{s }{{t}^2 }\right)^2 u(t)^2 + \left (\frac{1}{t}\right)^2 u(s)^2}
+	\sigma(v) = \sqrt{\left (\frac{\partial v }{\partial t }\right)^2 \sigma(t)^2 + \left (\frac{\partial v }{\partial s }\right)^2 \sigma(s)^2} = \sqrt{\left (\frac{s }{{t}^2 }\right)^2 \sigma(t)^2 + \left (\frac{1}{t}\right)^2 \sigma(s)^2}
 \end{equation}
 
 \noindent
 De standaarddeviatie van de afstand: \cite{epo1-onzekerheden}
 \begin{equation}
 \label{eq:distError}
-	u(s) = \sqrt{\left (\frac{\partial s }{\partial t }\right)^2 u(t)^2 + \left (\frac{\partial s }{\partial v }\right)^2 u(v)^2} = \sqrt{(v)^2 u(t)^2 + (t)^2 u(v)^2} 
+	\sigma(s) = \sqrt{\left (\frac{\partial s }{\partial t }\right)^2 \sigma(t)^2 + \left (\frac{\partial s }{\partial v }\right)^2 \sigma(v)^2} = \sqrt{(v)^2 \sigma(t)^2 + (t)^2 \sigma(v)^2} 
 \end{equation}
 
 \noindent
 Voorwaarde voor strijdigheid: \cite{epo1-onzekerheden}
 \begin{equation}
 \label{eq:strijdigheid}
-	|A-B|\overset{?}{\le}2\cdot\sqrt{[u(A)]^2+[u(B)]^2}
+	|A-B|\overset{?}{\le}2\cdot\sqrt{[\sigma(A)]^2+[\sigma(B)]^2}
 \end{equation}
 
 \end{document}
