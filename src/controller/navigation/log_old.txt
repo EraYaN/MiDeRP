@@ -1,0 +1,12 @@
+##########################################
+Program started
+
+Grid width is 5
+Grid height is 5
+Init successful, creating grid...
+Grid created successfully (took 0.0000s), ready to calculate paths!
+Entry node is 0
+Exit node is 24
+
+Points OK! Starting pathfinder...
+
