@@ -13,6 +13,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "navigation", "navigation\navigation.vcxproj", "{57BA5512-022E-4B03-ACCA-D310645FEF87}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Director", "Director\Director.csproj", "{06A67266-85E5-46E9-9A71-953CD7342C11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57BA5512-022E-4B03-ACCA-D310645FEF87} = {57BA5512-022E-4B03-ACCA-D310645FEF87}
+		{3BE4CF19-5636-4266-A8D0-6E521C47EFE2} = {3BE4CF19-5636-4266-A8D0-6E521C47EFE2}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

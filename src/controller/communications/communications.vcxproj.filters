@@ -18,6 +18,9 @@
     <ClCompile Include="serial.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="communications.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="serial.h">

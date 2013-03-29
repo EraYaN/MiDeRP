@@ -1,18 +1,18 @@
 #include "util.h"
 
-//TODO make one h file to include the project and make this into a properly interfaced class.
+//TODO make one cpp file to include the project and make this into a properly interfaced class or pure C dll
 
-int main ()
+/*int main ()
 {
 	init ();
 	loop ();
 	quit ();
 
 	return 0;
-}
+}*/
 
 //Init
-void init ()
+void init (int m, int n)
 {
 	//Open log file
 	remove ("log_old.txt");

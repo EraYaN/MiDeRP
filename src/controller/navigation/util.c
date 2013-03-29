@@ -25,7 +25,7 @@ void print (char toconsole, char tofile, char *format, ...)
 
 	va_start (args, format);
 	if (toconsole)
-		vprintf (format, args);
+		//vprintf (format, args);
 	if (tofile)
 		vfprintf (file, format, args);
 	va_end (args);

@@ -1,14 +1,12 @@
 #include "serial.h"
-
-//TODO make this into a proper interfaced class.
-
+#include <windows.h>
 //--------------------------------------------------------------
 // Function: initSio
 // Description: intializes the parameters as Baudrate, Bytesize,
 //           Stopbits, Parity and Timeoutparameters of
 //           the COM port
 //--------------------------------------------------------------
-void initSio(HANDLE hSerial, DWORD bRate){
+int initSio(HANDLE hSerial, DWORD bRate){
 
     COMMTIMEOUTS timeouts ={0};
     DCB dcbSerialParams = {0};
@@ -17,7 +15,8 @@ void initSio(HANDLE hSerial, DWORD bRate){
 
     if (!GetCommState(hSerial, &dcbSerialParams)) {
     //error getting state
-        printf("error getting state \n");
+        //printf("error getting state \n");
+		return -1;
     }
 
     dcbSerialParams.BaudRate = bRate;
@@ -27,7 +26,8 @@ void initSio(HANDLE hSerial, DWORD bRate){
 
     if(!SetCommState(hSerial, &dcbSerialParams)){
         //error setting serial port state
-        printf("error setting state \n");
+        //printf("error setting state \n");
+		return -2;
     }
 
     timeouts.ReadIntervalTimeout = 50;
@@ -39,8 +39,10 @@ void initSio(HANDLE hSerial, DWORD bRate){
 
     if(!SetCommTimeouts(hSerial, &timeouts)){
     //error occureed. Inform user
-        printf("error setting timeout state \n");
+        //printf("error setting timeout state \n");
+		return -3;
     }
+	return 0;
 }
 
 //--------------------------------------------------------------
@@ -48,16 +50,16 @@ void initSio(HANDLE hSerial, DWORD bRate){
 // Description: reads a single byte from the COM port into
 //              buffer buffRead
 //--------------------------------------------------------------
-extern int readByte(HANDLE hSerial, char *buffRead) {
+int readByte(HANDLE const hSerial, byte *buffRead) {
 
     DWORD dwBytesRead = 0;
 
     if (!ReadFile(hSerial, buffRead, 1, &dwBytesRead, NULL))
     {
-        printf("error reading byte from input buffer \n");
+        return -1;
     }
-    printf("Byte read from read buffer is: %x \n", buffRead[0]);
-    return(0);
+    //printf("Byte read from read buffer is: %x \n", buffRead[0]);
+    return 0;
 }
 
 //--------------------------------------------------------------
@@ -65,23 +67,24 @@ extern int readByte(HANDLE hSerial, char *buffRead) {
 // Description: writes a single byte stored in buffRead to
 //              the COM port
 //--------------------------------------------------------------
-extern int writeByte(HANDLE hSerial, char *buffWrite){
+int writeByte(HANDLE const hSerial, byte *buffWrite){
 
     DWORD dwBytesWritten = 0;
 
     if (!WriteFile(hSerial, buffWrite, 1, &dwBytesWritten, NULL))
     {
-        printf("error writing byte to output buffer \n");
+        return -1;
     }
-    printf("Byte written to write buffer is: %x \n", buffWrite[0]);
+    //printf("Byte written to write buffer is: %x \n", buffWrite[0]);
 
-    return(0);
+    return 0;
 }
 
 //For example hSerial = openSerial("COM6", CBR_9600);
-extern HANDLE openSerial(LPCSTR cPort, DWORD bRate)
+int openSerial(HANDLE *_hSerial, LPCWSTR const cPort, DWORD const bRate)
 {
-    HANDLE hSerial;    
+    HANDLE hSerial; 
+	int res;
     //----------------------------------------------------------
     // Open COMPORT for reading and writing
     //----------------------------------------------------------
@@ -98,17 +101,22 @@ extern HANDLE openSerial(LPCSTR cPort, DWORD bRate)
         if(GetLastError()== ERROR_FILE_NOT_FOUND){
             //serial port does not exist. Inform user.
 			//TODO make proper error handling class.
-            printf(" serial port does not exist \n");
+            //printf(" serial port does not exist \n");
+			return -1;
         }
         //some other error occurred. Inform user.
 		//TODO make proper error handling class.
-        printf(" some other error occured. Inform user.\n");
+        //printf(" some other error occured. Inform user.\n");
+		return -2;
     }
 	//Init parameters
-    initSio(hSerial,bRate);
-	return hSerial; 
+	
+    if(res = initSio(hSerial,bRate)!=0)
+		return -2+res;
+	_hSerial = &hSerial; 
+	return 0;
 }
-extern void closeSerial(HANDLE hSerial)
+int closeSerial(HANDLE const hSerial)
 {
-    CloseHandle(hSerial);
+    return CloseHandle(hSerial);
 }

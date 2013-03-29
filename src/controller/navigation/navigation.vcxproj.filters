@@ -47,5 +47,8 @@
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="navigation.cpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
