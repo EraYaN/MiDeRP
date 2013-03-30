@@ -1,12 +1,102 @@
 \documentclass{report}
 \input{../../library/preamble}
 \input{../../library/style}
-%\addbibresource{../../library/bibliography.bib}
+\addbibresource{../../library/bibliography.bib}
 
 \title{EPO-2: Mid-term Design Report - Routeplanner in C}
 \author{Robin Hes}
 
 \begin{document}
 \chapter{Systeemoverzicht}
+Het systeem bestaat uit driehoofdblokken, de FPGA met de logica erop, de twee xBee modules voor de communicatie en het Director programma dat op de PC draait. In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem afgebeeld, hierin is de robot nog verder uitgesplitst. 
+\section{Communicatie}
+De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet berijkt worden.
+De eerste versie van het communicatie protocol staat in tabel \ref{tab:comProtocol}.
+Op de robot is een losse state machine geïmplementeerd (zie Figuur \ref{fig:fsmReceiver}) om de commando's onafhankelijk af te handelen en in een commando buffer te zetten zodat het hoofd systeem deze op de correcte tijd op kan pikken.
+Ook is er een losse state machine om het versturen (zie Figuur \ref{fig:fsmSender}) van een byte naar de pc af te handelen geïmplementeerd.
+Beide geven een 2-bit respons code, waarvan de ene bit een response aangeeft en de andere aangeeft of de operatie succesvol was.
+In Tabel \ref{tab:xBeeSettings} staan de gekozen instellingen van de xBee modules.
+\begin{table}
+\centering
+\caption{}
+\begin{subtable}{0.48\textwidth}
+\subcaption{Com. Protocol Versie A}
+\label{tab:comProtocol}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Commando} & \textbf{hex} & \textbf{2-way} \\
+\hline
+Forward				& 0x46 	& to robot only\\
+\hline
+Stop 					& 0x53 	& to robot only\\
+\hline
+Right 				& 0x52 	& to robot only\\
+\hline
+Left 					& 0x4C 	& to robot only\\
+\hline
+Acknowledge 			& 0x06	& to pc only\\
+\hline
+Negative Acknowledge 	& 0x15	& to pc only\\
+\hline
+Enquiry 				& 0x05	& to pc only\\
+\hline
+Mine 					& 0x07	& to pc only\\
+\hline
+Done 				& 0x04	& to robot only\\
+\hline
+\end{tabular}
+\end{subtable}
+\quad
+\begin{subtable}{0.48\textwidth}
+\subcaption{xBee Settings van de twee modules. Master is de Director.}
+\label{tab:xBeeSettings}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Setting} & \textbf{master}& \textbf{slave} \\
+\hline
+Channel				& 0x1A 	& 0x1A\\
+\hline
+Pan ID				& 0x1337 	& 0x1337\\
+\hline
+Destination High			& 0x0000	& 0x0000\\
+\hline
+Destination Low			& 0x8564 	& 0x4658\\
+\hline
+My Address			& 0x4658 	& 0x8564\\
+\hline
+*		 			& (default)	&(default)\\
+\hline
+\end{tabular}
+\end{subtable}
+\end{table}
+\begin{figure}
+\centering
+\caption{De FSM's op de FPGA}
+\begin{subfigure}{0.23\linewidth}
+\subcaption{FSM van de receiver.}
+\label{fig:fsmReceiver}
+\includegraphics[width=\linewidth]{FSMReceiver}
+\end{subfigure}
+\quad
+\begin{subfigure}{0.46\linewidth}
+\subcaption{FSM van het hoofd systeem.}
+\label{fig:fsmMain}
+\includegraphics[width=\linewidth]{FSMMain}
+\end{subfigure}
+\quad
+\begin{subfigure}{0.23\linewidth}
+\subcaption{FSM van de sender.}
+\label{fig:fsmSender}
+\includegraphics[width=\linewidth]{FSMSender}
+\end{subfigure}
+\end{figure}
+\section{Robot FPGA}
+De FPGA handelt alle directe acties af, zoals reageren op sensoren zodat een lijn gevolgd kan worden. Deze stuurt ook de motoren aan door een PWM signaal te genereren wat propotioneel is aan de gekozen snelheid. Op de FPGA wordt ook de communicatie met de xBee afgehandeld via een UART inteface. De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender}.
+
+\section{Director}
+We hebben uiteindelijk zoals te lezen in hoofdstuk \ref{ch:route} gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall). Het zelfde geldt voor de dll voor de serial interface deze is lichtelijk verbouwd zodat deze makkelijker in een andere applicatie gebruikt kan worden. Ons hoofd project wordt geschreven in C\# (.NET 4.5) en in combinatie met WPF (een UI framework gebaseerd op XAML UI's). Dit geeft een veel vriendelijkere ontwikkel omgeving, managed talen zijn nou eenmaal wat vriendelijker voor de programmeur. Nu is het ook mogelijk om alleen een van de dll's te vervangen dus kan iemand daar los aan werken. Het hebben van een UI is ook vriendelijker aan de ogen en het gebruik van het event model is ook heel fijn voor de seriële communicatie. Dit is natuurlijk deels persoonlijke voorkeur, maar om iedereen bekend te houden met de code hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ gehouden.\\
+De director moet nu nog adeqaat reageren op de bytes van de robot. Hier voor laten we een thread constant checken of er een nieuwe byte in de input buffer zit en zodra deze er is geven we een event af zodat de main thread op de byte kan reageren.
 
 \end{document}
