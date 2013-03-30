@@ -41,8 +41,8 @@ namespace Director
         }
 
         private void findPathButton_Click(object sender, RoutedEventArgs e)
-        {
-            Navigation.loopNavigation();
+        {            
+            Navigation.loopNavigation(0,M*N-1);
         }
     }
 }

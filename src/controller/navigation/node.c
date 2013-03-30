@@ -1,5 +1,6 @@
 #include "util.h"
 
+
 //Create a new node
 Node *newNode (Node *current, unsigned int id)
 {
@@ -8,7 +9,7 @@ Node *newNode (Node *current, unsigned int id)
 
 	if (id < 0 || id > (numNodes - 1))
 	{
-		print (1, 1, "Error: tried to create node %ld out of bounds!\n", id);
+		printf( "Error: tried to create node %ld out of bounds!\n", id);
 		return NULL; //node is out of bounds
 	}
 
@@ -98,7 +99,7 @@ unsigned int getXY (Node *node, char axis)
 {
 	if (!node)
 	{
-		print (1, 1, "Error: tried to get coordinates of non-existing node %d!\n", node->id);
+		printf("Error: tried to get coordinates of non-existing node!\n");
 		return 0;
 	}
 	else
@@ -109,7 +110,7 @@ unsigned int getXY (Node *node, char axis)
 			return node->id / m % n;
 		else
 		{
-			print (1, 1, "Error: entered invalid axis %c!\n", axis);
+			printf("Error: entered invalid axis %c!\n", axis);
 			return 0;
 		}
 	}
@@ -119,7 +120,6 @@ unsigned int getXY (Node *node, char axis)
 void addMine (unsigned int id1, unsigned int id2)
 {
 	Node *node1, *node2;
-
 	if (!nodes[id1])
 		node1 = newNode (NULL, id1);
 	else
@@ -131,7 +131,7 @@ void addMine (unsigned int id1, unsigned int id2)
 
 	if (!node1 || !node2)
 	{
-		print (1, 1, "Error: tried to create mine out of bounds\n");
+		printf( "Error: tried to create mine out of bounds\n");
 		return;
 	}
 
@@ -163,7 +163,7 @@ void addMine (unsigned int id1, unsigned int id2)
 	}
 	else
 	{
-		print(1, 1, "Error: mines are not neighbours!\n");
+		printf( "Error: mines are not neighbours!\n");
 	}
 
 }
@@ -175,7 +175,7 @@ char isMine (Node *node1, Node *node2)
 
 	if (!node1 || !node2)
 	{
-		print(1, 1, "Error: tried to check for mines near non-existing mine!\n");
+		printf( "Error: tried to check for mines near non-existing mine!\n");
 		return 0;
 	}
 
@@ -192,6 +192,6 @@ char isMine (Node *node1, Node *node2)
 		}
 	}
 
-	print(1, 1, "Error: mines are not neighbours!\n");
+	printf( "Error: mines are not neighbours!\n");
 	return 0;
 }

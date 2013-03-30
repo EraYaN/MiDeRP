@@ -30,7 +30,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="node.h" />
     <ClInclude Include="path.h" />
-    <ClInclude Include="navigation.cpp" />
+    <ClCompile Include="navigation.c" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

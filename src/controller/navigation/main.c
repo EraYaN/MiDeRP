@@ -12,19 +12,28 @@
 }*/
 
 //Init
-void init (int m, int n)
+int init (int _m, int _n)
 {
 	//Open log file
+	m = _m;
+	n=_n;
+	
+
 	remove ("log_old.txt");
 	rename ("log.txt", "log_old.txt");
-	file = fopen ("log.txt", "a");
-	print (0, 1, "##########################################\nProgram started\n\n");
+	//file = fopen ("log.txt", "a");
 
-	//Get grid size
-	getDimensions ();
+	//reroute stdout
+	freopen("log.txt", "a", stdout);
+	//if(file==NULL)
+	//return -1;
+	printf( "##########################################\nProgram started\n\n");
+
+	//Get grid size, NEIN nu argumenten
+	//getDimensions ();
 
 	//Create the grid
-	createGrid ();
+	createGrid(m,n);
 
 	//Add mines for debugging
 #ifdef _DEBUG
@@ -41,20 +50,23 @@ void init (int m, int n)
 	addMine (13, 18);
 #endif
 
-	//Get entry and exit nodes
-	getPoints ();
+	
+
+	return 0;
 }
 
-void loop ()
+void loop (unsigned int entry, unsigned int exit)
 {
-	findPath ();
+	//Get entry and exit nodes
+	getPoints(entry, exit);
+	findPath (entryNode, exitNode);//TODO need class to store m and n
 
 	totalTime = gridTime + findTime;
-	print (1, 1, "\nDone! Total calculation time is %.4lfs\n", totalTime);
+	printf( "\nDone! Total calculation time is %.4lfs\n", totalTime);
 }
 
 void quit ()
 {
-	print (0, 1, "Quitting...\n##########################################\n\n");
-	fclose (file);
+	printf( "Quitting...\n##########################################\n\n");
+	fclose (stdout);
 }

@@ -1,5 +1,5 @@
 #include "serial.h"
-#include "serial.c" // Don't know why this one need to be here. Otherwise I get unresolved externals.
+//#include "serial.c" // Don't know why this one need to be here. Otherwise I get unresolved externals.
 #include "windows.h"
 
 BOOL __stdcall DllMain(HINSTANCE hInst, DWORD dwReason, LPVOID lpReserved) {

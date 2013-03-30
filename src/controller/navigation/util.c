@@ -9,27 +9,33 @@ void *safeMalloc (size_t size)
 
 	if (p == NULL)
 	{
-		print (1, 1, "Error: out of memory (tried to allocate %d bytes), terminating program!\n", size);
+		printf("Error: out of memory (tried to allocate %d bytes), terminating program!\n", size);
 		quit ();
 	}
 	return p;
 }
 
 //Prints to either console, logs or both
-void print (char toconsole, char tofile, char *format, ...)
+/*void print (char toconsole, char tofile, char *format, ...)
 {
 	va_list args;
 
 	if (!toconsole && !tofile)
 		return;
-
+	if(format==NULL){
+		return;
+	}
+	if(file==NULL)
+		return;
 	va_start (args, format);
 	if (toconsole)
 		//vprintf (format, args);
-	if (tofile)
+	if (tofile&&args!=NULL)
 		vfprintf (file, format, args);
+	else if (tofile)
+		printf(file,format);
 	va_end (args);
-}
+}*/
 
 //Mark the beginning of a time count
 void startStopwatch(void){
@@ -43,13 +49,12 @@ double stopStopwatch(void){
 }
 
 //Create grid
-void createGrid ()
+void createGrid (int m, int n)
 {
 	unsigned int i;
-
 	numNodes = m * n;
 
-	print(1, 1, "Init successful, creating grid...\n");
+	printf( "Init successful, creating grid...\n");
 	startStopwatch ();
 
 	//Allocate memory and initialize every node to NULL
@@ -58,6 +63,6 @@ void createGrid ()
 		nodes[i] = NULL;
 
 	gridTime = stopStopwatch ();
-	print(1, 1, "Grid created successfully (took %.4lfs), ready to calculate paths!\n", gridTime);
+	printf( "Grid created successfully (took %.4lfs), ready to calculate paths!\n", gridTime);
 }
 

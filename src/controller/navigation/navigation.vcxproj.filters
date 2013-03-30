@@ -21,6 +21,9 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="navigation.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="node.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,9 +49,6 @@
     </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="navigation.cpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

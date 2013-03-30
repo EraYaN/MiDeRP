@@ -1,13 +1,7 @@
 #include "util.h"
 
-unsigned int getH();
-void addToOpenlist ();
-void removeFromOpenlist ();
-void makePath ();
-void displayPath ();
-
 //Find a path from startingNode to exitNode
-void findPath ()
+void findPath (Node * entryNode, Node * exitNode)
 {
 	//Init
 	unsigned int i, pre_g;
@@ -29,7 +23,7 @@ void findPath ()
 		current = head->node;
 
 #ifdef _DEBUG
-		print(1, 1, "Current item: %d\n", current->id);
+		printf( "Current item: %d\n", current->id);
 #endif
 
 		if (current == exitNode)
@@ -53,13 +47,13 @@ void findPath ()
 			if (!neighbor || isMine (current, neighbor))
 			{
 #ifdef _DEBUG
-				print(1, 1, "Neighbor does not exist or found mine\n");
+				printf( "Neighbor does not exist or found mine\n");
 #endif
 				continue; //neighbor does not exist
 			}
 
 #ifdef _DEBUG
-			print(1, 1, "Now checking neighbor node %d\n", neighbor->id);
+			printf( "Now checking neighbor node %d\n", neighbor->id);
 #endif
 
 			pre_g = current->g + 1;
@@ -67,7 +61,7 @@ void findPath ()
 			{
 				//Neighbor is further from target than current node
 #ifdef _DEBUG
-				print(1, 1, "Neighbor is closed or further away from target\n");
+				printf( "Neighbor is closed or further away from target\n");
 #endif
 				continue;
 			}
@@ -84,7 +78,7 @@ void findPath ()
 		}
 	}
 
-	print (1, 1, "Error: failed to find a path!\n");
+	printf("Error: failed to find a path!\n");
 
 }
 
@@ -109,7 +103,7 @@ void addToOpenlist (Node *node)
 		head->node = node;
 		head->next = NULL;
 #ifdef _DEBUG
-		print (1, 1, "Added node %d as first item to openlist\n", node->id);
+		printf( "Added node %d as first item to openlist\n", node->id);
 #endif
 	}
 	else
@@ -125,7 +119,7 @@ void addToOpenlist (Node *node)
 				newItem->next = current->next;
 				current->next = newItem;
 #ifdef _DEBUG
-				print (1, 1, "Added node %d to openlist\n", node->id);
+				printf( "Added node %d to openlist\n", node->id);
 #endif
 				return;
 			}
@@ -136,7 +130,7 @@ void addToOpenlist (Node *node)
 			}
 		}
 
-		print (1, 1, "Error: failed to add node %d to openlist\n", node->id);
+		printf( "Error: failed to add node %d to openlist\n", node->id);
 
 	}
 }
@@ -159,7 +153,7 @@ void removeFromOpenlist (Node *node)
 			free (current);
 		}
 #ifdef _DEBUG
-		print (1, 1, "Removed node %d from openlist\n", node->id);
+		printf( "Removed node %d from openlist\n", node->id);
 #endif
 		return;
 	}
@@ -170,7 +164,7 @@ void removeFromOpenlist (Node *node)
 			if (!current->next)
 			{
 				//Last element in list
-				print (1, 1, "Error: failed to remove node %d from open list, it probably wasn't in there in the first place!\n", node->id);
+				printf( "Error: failed to remove node %d from open list, it probably wasn't in there in the first place!\n", node->id);
 				break;
 			}
 			else if (current->next->node == node)
@@ -178,7 +172,7 @@ void removeFromOpenlist (Node *node)
 				current->next = current->next->next;
 				free (current->next);
 #ifdef _DEBUG
-				print (1, 1, "Removed node %d from open list", node->id);
+				printf( "Removed node %d from open list", node->id);
 #endif
 				break;
 			}
@@ -220,30 +214,30 @@ void displayPath ()
 
 	if (!path)
 	{
-		print (1, 1, "Failed to find a path, quitting...\n");
+		printf( "Failed to find a path, quitting...\n");
 		return;
 	}
 
-	print (1, 1, "Found a path from node %d to node %d, with length %d (took %.4lfs)!\n", entryNode->id, exitNode->id, length, findTime);
+	printf( "Found a path from node %d to node %d, with length %d (took %.4lfs)!\n", entryNode->id, exitNode->id, length, findTime);
 
 	if (length > 250)
 	{
-		print (1, 1, "Path length too high for display in console, will only print to logs\n\n");
-		print (0, 1, "Entry node is %d\n", entryNode->id);
+		printf( "Path length too high for display in console, will only print to logs\n\n");
+		printf( "Entry node is %d\n", entryNode->id);
 		for (i=0; i<length; i++)
 		{
-			print (0, 1, "Next node in path is node %d\n", path[i+1]->id);
+			printf( "Next node in path is node %d\n", path[i+1]->id);
 		}
-		print (0, 1, "Exit node (id: %d) reached!\n", exitNode->id);
+		printf( "Exit node (id: %d) reached!\n", exitNode->id);
 	}
 	else
 	{
-		print (1, 0, "Displaying result:\n\n");
-		print (1, 1, "Entry node is %d\n", entryNode->id);
+		printf( "Displaying result:\n\n");
+		printf( "Entry node is %d\n", entryNode->id);
 		for (i=1; i<length; i++)
 		{
-			print (1, 1, "Next node in path is node %d\n", path[i+1]->id);
+			printf( "Next node in path is node %d\n", path[i+1]->id);
 		}
-		print (1, 1, "Exit node (id: %d) reached!\n\n", exitNode->id);
+		printf( "Exit node (id: %d) reached!\n\n", exitNode->id);
 	}
 }

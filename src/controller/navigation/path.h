@@ -12,6 +12,11 @@ struct openlist {
 Openlist *head;
 
 //Function prototypes
-void findPath ();
+void findPath (Node * entryNode, Node * exitNode);
+unsigned int getH(Node *node);
+void addToOpenlist (Node *node);
+void removeFromOpenlist (Node *node);
+void makePath ();
+void displayPath ();
 
 #endif
