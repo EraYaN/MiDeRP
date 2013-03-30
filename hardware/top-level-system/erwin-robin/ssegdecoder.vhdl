@@ -7,15 +7,16 @@ entity ssegdecoder is
 		bin_input : in STD_LOGIC_VECTOR (15 downto 0);
 		dpoint : in std_logic_vector(3 downto 0);
 		segments : out STD_LOGIC_VECTOR (7 downto 0);-- "DP,G,F,E,D,C,B,A"
-		anodes : out std_logic_vector(3 downto 0)
+		anodes : out std_logic_vector(3 downto 0);
+		debug : out std_logic_vector(3 downto 0)
 	);
 end ssegdecoder;
 
 architecture Behavioral of ssegdecoder is
-signal char : std_logic_vector(1 downto 0);
+signal char : std_logic_vector(1 downto 0):="00";
 begin
 process(clk) is
-variable bin : std_logic_vector(3 downto 0);
+variable bin : std_logic_vector(3 downto 0):=x"F";
 variable next_char : std_logic_vector(1 downto 0);
 begin
 --abcdefg
@@ -39,6 +40,11 @@ elsif char = "11" then
 	bin := bin_input(15 downto 12);
 	anodes <= "0111";
 	segments(7)<=not dpoint(3);
+else
+	next_char:="01";
+	bin := bin_input(3 downto 0);
+	anodes <= "1110";
+	segments(7)<=not dpoint(0);
 end if;
 case bin is
 	when "0000"=> segments(6 downto 0) <= not "0111111" ; -- 0
@@ -60,5 +66,7 @@ case bin is
 	when others => segments(6 downto 0) <= not "0000000";
 end case;
 char<=next_char;
+debug(1 downto 0)<=next_char;
+debug(3 downto 2)<=char;
 end process;
 end Behavioral;
