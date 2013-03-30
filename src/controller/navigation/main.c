@@ -4,11 +4,11 @@
 
 /*int main ()
 {
-	init ();
-	loop ();
-	quit ();
+init ();
+loop ();
+quit ();
 
-	return 0;
+return 0;
 }*/
 
 //Init
@@ -17,7 +17,7 @@ int init (int _m, int _n)
 	//Open log file
 	m = _m;
 	n=_n;
-	
+
 
 	remove ("log_old.txt");
 	rename ("log.txt", "log_old.txt");
@@ -36,7 +36,7 @@ int init (int _m, int _n)
 	createGrid(m,n);
 
 	//Add mines for debugging
-/*#ifdef _DEBUG
+	/*#ifdef _DEBUG
 	addMine (12, 13);
 	addMine (12, 11);
 	addMine (12, 7);
@@ -48,14 +48,14 @@ int init (int _m, int _n)
 	addMine (22, 23);
 	addMine (19, 14);
 	addMine (13, 18);
-#endif*/
+	#endif*/
 
-	
+
 
 	return 0;
 }
 
-void loop (unsigned int entry, unsigned int exit)
+int loop (unsigned int entry, unsigned int exit)
 {
 	//Get entry and exit nodes
 	getPoints(entry, exit);
@@ -63,6 +63,14 @@ void loop (unsigned int entry, unsigned int exit)
 
 	totalTime = gridTime + findTime;
 	printf( "\nDone! Total calculation time is %.4lfs\n", totalTime);
+	if(path)
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 void quit ()

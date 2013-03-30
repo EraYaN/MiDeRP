@@ -22,7 +22,7 @@ namespace Director
         uint n; //y-size
         double marginlarge = 80;
         double marginsmall = 30;
-        double mineradius = 6;
+        double mineradius = 8;
         public Visualization(Canvas _c, uint _m, uint _n)
         {
             //Constructor
@@ -77,6 +77,8 @@ namespace Director
                     mine.Height = mineradius;
                     mine.Width = mineradius;
                     c.Children.Add(mine);
+                    mine.MouseUp += mine_MouseUp;
+                    Data.SetMineLocation(mine, ml);
                     if (xlim == m&&ylim!=n)
                     {
                         Canvas.SetLeft(mine, marginlarge + xstep * (x) - mineradius / 2);
@@ -94,6 +96,28 @@ namespace Director
                     }
                 }
             }
+        }
+
+        void mine_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Ellipse circle = (Ellipse)e.OriginalSource;
+            MineLocation ml = Data.GetMineLocation(circle);
+            MineLocation ml2 = new MineLocation(ml.N2, ml.N1);
+            if (Data.mines.Contains(ml))
+            {
+                Data.mines.Remove(ml);
+            }
+            else if (Data.mines.Contains(ml))
+            {
+                Data.mines.Remove(ml2);
+            }
+            else
+            {
+                Data.mines.Add(ml);
+            }
+
+            MainWindow.vis.DrawField();
+            Data.db.MineCount = 0; //Trigger changed.
         }
         public void DrawField()
         {

@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace Director
 {
-    class Communications
+    public class Communications
     {
         IntPtr h;
         string port;

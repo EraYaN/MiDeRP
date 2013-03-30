@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Director
 {
-    class Navigation
+    public class Navigation
     {
         //TODO static dll import all function from c dll pathfinder.dll
         //Import all functions
@@ -14,7 +14,7 @@ namespace Director
         static extern int initNavigation(int m, int n);
 
         [DllImport("navigation.dll")]
-        public static extern void loopNavigation(uint EntryID, uint ExitID);
+        public static extern int loopNavigation(uint EntryID, uint ExitID);
 
         [DllImport("navigation.dll")]
         static extern void closeNavigation();
@@ -23,7 +23,7 @@ namespace Director
         static extern int clearMines();
 
         [DllImport("navigation.dll")]
-        static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, bool mine);
+        static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
 
         public Navigation(int _M, int _N)
         {
@@ -35,14 +35,14 @@ namespace Director
             //constructor
             closeNavigation();
         }
-        public int SetMinesInDLL(){
+        static public int SetMinesInDLL(){
             if (clearMines() != 0)
             {
                 //error
                 return -1;
             }
             foreach(MineLocation m in Data.mines){
-                setMineC(m.N1.X, m.N1.Y, m.N2.X, m.N2.Y, true);
+                setMineC(m.N1.X, m.N1.Y, m.N2.X, m.N2.Y, 1);
             }
             return 0;
         }

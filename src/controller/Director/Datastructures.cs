@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Director
@@ -23,10 +24,34 @@ namespace Director
             N2 = n2;
         }
     }
-    public static class Data
+    public class Databindings : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public int MineCount
+        {
+            get { return Data.mines.Count; }
+            set
+            {
+                //name = value;
+                // Call OnPropertyChanged whenever the property is updated
+                OnPropertyChanged("MineCount");
+            }
+        }
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+    }
+    public static class Data 
     {
         public static List<MineLocation> mines = new List<MineLocation>();
-
+        public static Databindings db = new Databindings();
+        public static string ComPort = "COM1";
+        public static uint BaudRate = 9600;
         public static readonly DependencyProperty MineLocationProperty = DependencyProperty.RegisterAttached(
           "MineLocation",
           typeof(MineLocation),
@@ -41,5 +66,6 @@ namespace Director
         {
             return (MineLocation)element.GetValue(MineLocationProperty);
         }
+        
     }
 }

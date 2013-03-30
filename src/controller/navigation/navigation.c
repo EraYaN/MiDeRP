@@ -23,22 +23,29 @@ __declspec(dllexport) int __stdcall getNumberofNodes(void) {
 }*/
 
 __declspec(dllexport) int __stdcall clearMines() {
-	int i;
+	unsigned int i;
 	for(i=0;i<numNodes;i++){
-		nodes[i]->mines[0] = 0;
-		nodes[i]->mines[1] = 0;
-		nodes[i]->mines[2] = 0;
-		nodes[i]->mines[3] = 0;
+		if(nodes[i]){
+			nodes[i]->mines[0] = 0;
+			nodes[i]->mines[1] = 0;
+			nodes[i]->mines[2] = 0;
+			nodes[i]->mines[3] = 0;
+		}
 	}
 	return 0;
 }
 
 __declspec(dllexport) int __stdcall setMineC(unsigned int X1, unsigned int Y1, unsigned int X2, unsigned int Y2, char mine) {
-	return setMine(getNodeC(X1,Y1),getNodeC(X2,Y2),mine);	
+	
+	unsigned int id1 = Y1*m+X1;
+	unsigned int id2 = Y2*m+X2;
+	printf("Adding mine between %d;%d (%d) and %d;%d (%d).\n",X1,Y1,id1,X2,Y2,id2);
+	//return setMine(getNodeC(X1,Y1),getNodeC(X2,Y2),mine);	
+	return setMineI(id1,id2,mine);
 }
 
-__declspec(dllexport) void __stdcall loopNavigation(unsigned int entry, unsigned int exit) {
-	loop(entry, exit);
+__declspec(dllexport) int __stdcall loopNavigation(unsigned int entry, unsigned int exit) {
+	return loop(entry, exit);
 }
 
 __declspec(dllexport) void __stdcall closeNavigation(void) {
