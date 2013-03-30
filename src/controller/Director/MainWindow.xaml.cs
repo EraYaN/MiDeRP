@@ -30,9 +30,7 @@ namespace Director
         public MainWindow()
         {
             InitializeComponent();            
-            //Init draw class
-            vis = new Visualization(fieldmapcanvas, M, N);
-            nav = new Navigation(M,N);
+            
         }
 
         private void TestDrawButton_Click(object sender, RoutedEventArgs e)
@@ -44,5 +42,36 @@ namespace Director
         {            
             Navigation.loopNavigation(0,M*N-1);
         }
+
+        private void startInitButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Init classes
+            vis = new Visualization(fieldmapcanvas, M, N);
+            nav = new Navigation(M, N);
+            com = new Communications("COM1", 9600);
+            //enable buttons
+            findPathButton.IsEnabled = true;
+            TestDrawButton.IsEnabled = true;
+            startInitButton.IsEnabled = false;
+            destroyButton.IsEnabled = true;
+        }
+
+        private void destroyButton_Click(object sender, RoutedEventArgs e)
+        {
+            findPathButton.IsEnabled = false;
+            TestDrawButton.IsEnabled = false;
+            startInitButton.IsEnabled = true;
+            destroyButton.IsEnabled = false;
+            nav = null;
+            com = null;
+            vis = null;
+        }
+
+        private void minCircle_Click(object sender, RoutedEventArgs e)
+        {
+            Ellipse circle = (Ellipse)e.OriginalSource;
+            vis.DrawField();
+        }
+                
     }
 }

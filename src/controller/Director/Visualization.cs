@@ -18,27 +18,53 @@ namespace Director
     public class Visualization
     {
         Canvas c;
-        int m; //x-size
-        int n; //y-size
+        uint m; //x-size
+        uint n; //y-size
         double marginlarge = 80;
         double marginsmall = 30;
         double mineradius = 6;
-        public Visualization(Canvas _c, int _m, int _n)
+        public Visualization(Canvas _c, uint _m, uint _n)
         {
             //Constructor
             c = _c;
             m = _m;
             n = _n;
         }
-        private void DrawMines(int xlim, int ylim, double xstep, double ystep)
+        ~Visualization()
         {
-            for (int x = 0; x < xlim; x++)
+            //c.Children.Clear(); kan niet. verkeerde thread
+        }
+        private void DrawMines(uint xlim, uint ylim, double xstep, double ystep)
+        {
+            for (uint x = 0; x < xlim; x++)
             {
-                for (int y = 0; y < ylim; y++)
+                for (uint y = 0; y < ylim; y++)
                 {
                     //Add mines (circles) on horizontal lines
                     Ellipse mine = new Ellipse();
-                    if (xlim == m&&ylim!=n) //method the takes position and returns true if there is a mine
+                    Coord N1 = new Coord();
+                    Coord N2 = new Coord();
+                    MineLocation ml = new MineLocation();
+                    MineLocation ml2 = new MineLocation();
+                    if (xlim == m && ylim != n)
+                    {
+                        N1.X = x;
+                        N1.Y = y;
+                        N2.X = x;
+                        N2.Y = y + 1;
+                    }
+                    else
+                    {
+                        N1.X = x;
+                        N1.Y = y;
+                        N2.X = x+1;
+                        N2.Y = y;
+                    }
+                    ml.N1 = N1;
+                    ml.N2 = N2;
+                    ml2.N1 = N2;
+                    ml2.N2 = N1;
+                    if (Data.mines.Contains(ml) || Data.mines.Contains(ml2)) //method the takes position and returns true if there is a mine
                     {
                         //mine
                         mine.Fill = Brushes.Red;

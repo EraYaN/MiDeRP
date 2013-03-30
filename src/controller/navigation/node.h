@@ -12,10 +12,13 @@ struct node {
 
 //Function prototypes
 Node *newNode (Node *current, unsigned int id);
-Node *getNode (unsigned int id);
+Node *getNodeC(unsigned int x, unsigned int y);
+Node *getNodeI(unsigned int id);
+
 void setNeighbors (Node *node);
 unsigned int getXY (Node *node, char axis);
-void addMine (unsigned int id1, unsigned int id2);
+int setMineI(unsigned int id1, unsigned int id2, char mine);
+int setMine(Node *node1, Node *node2, char mine);
 char isMine (Node *node1, Node *node2);
 
 #endif

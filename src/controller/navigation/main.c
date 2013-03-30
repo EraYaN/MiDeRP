@@ -36,7 +36,7 @@ int init (int _m, int _n)
 	createGrid(m,n);
 
 	//Add mines for debugging
-#ifdef _DEBUG
+/*#ifdef _DEBUG
 	addMine (12, 13);
 	addMine (12, 11);
 	addMine (12, 7);
@@ -48,7 +48,7 @@ int init (int _m, int _n)
 	addMine (22, 23);
 	addMine (19, 14);
 	addMine (13, 18);
-#endif
+#endif*/
 
 	
 

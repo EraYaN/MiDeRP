@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace Director
 {
@@ -12,17 +13,19 @@ namespace Director
         {
             port = _port;
             baudrate = _baudrate;
-            if (initCommunications(out h, port, baudrate) != 0)
+            int res;
+            if ((res = initCommunications(out h, port, baudrate)) != 0)
             {
-                //throw exception
+                MessageBox.Show("Communications init returned error (" + res + ")","Communications Error",MessageBoxButton.OK,MessageBoxImage.Error);
                 //TODO exception
             }
         }
         ~Communications()
         {
-            if (closeCommunications(h) != 0)
+            int res;
+            if ((res = closeCommunications(h)) != 0)
             {
-                //throw exception
+                MessageBox.Show("Communications close returned error (" + res + ")", "Communications Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 //TODO exception
             }
         }
@@ -38,7 +41,7 @@ namespace Director
         /// 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200, 128000, 256000.
         /// </param>
         /// <returns>Return Code (0 = success)</returns>
-        [DllImport("navigation.dll")]
+        [DllImport("communications.dll")]
         static extern int initCommunications(out IntPtr Handle, string ComPort, uint BaudRate);
         /// <summary>
         /// The function the seeks to open the COM port and link to the serial xBee module.
@@ -46,7 +49,7 @@ namespace Director
         /// <param name="Handle">Handle to the serial port returned by <see cref="initCommunications"/></param>
         /// 
         /// <returns>Return Code (0 = success)</returns>
-        [DllImport("navigation.dll")]
+        [DllImport("communications.dll")]
         static extern int closeCommunications(IntPtr Handle);
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace Director
         /// <param name="Handle">Handle to the serial port returned by <see cref="initCommunications"/></param>
         /// <param name="ByteToWrite">The byte the needs to be written.</param>
         /// <returns>Return Code (0 = success)</returns>
-        [DllImport("navigation.dll")]
+        [DllImport("communications.dll")]
         static extern int writeToRobot(IntPtr Handle, Byte ByteToWrite);
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace Director
         /// <param name="Handle">Handle to the serial port returned by <see cref="initCommunications"/></param>
         /// <param name="ByteRead">The byte was read from the robot.</param>
         /// <returns>Return Code (0 = success)</returns>
-        [DllImport("navigation.dll")]
+        [DllImport("communications.dll")]
         static extern int readFromRobot(IntPtr Handle, out Byte ByteRead);
     }
 }

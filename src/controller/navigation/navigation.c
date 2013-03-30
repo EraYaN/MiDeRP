@@ -12,7 +12,7 @@ __declspec(dllexport) int __stdcall initNavigation(int m, int n) {
 	return init(m, n);
 }
 
-__declspec(dllexport) int __stdcall getNumberofMines(void) {
+/*__declspec(dllexport) int __stdcall getNumberofMines(void) {
 	//return int the is number of mines.
 	return 0;
 }
@@ -20,12 +20,21 @@ __declspec(dllexport) int __stdcall getNumberofMines(void) {
 __declspec(dllexport) int __stdcall getNumberofNodes(void) {
 	//return int the is number of Nodes.
 	return 0;
+}*/
+
+__declspec(dllexport) int __stdcall clearMines() {
+	int i;
+	for(i=0;i<numNodes;i++){
+		nodes[i]->mines[0] = 0;
+		nodes[i]->mines[1] = 0;
+		nodes[i]->mines[2] = 0;
+		nodes[i]->mines[3] = 0;
+	}
+	return 0;
 }
 
-__declspec(dllexport) char __stdcall getMine(int X1, int Y1, int X2, int Y2) {
-	//return btween 2 nodes.
-	//true if mine
-	return 0;
+__declspec(dllexport) int __stdcall setMineC(unsigned int X1, unsigned int Y1, unsigned int X2, unsigned int Y2, char mine) {
+	return setMine(getNodeC(X1,Y1),getNodeC(X2,Y2),mine);	
 }
 
 __declspec(dllexport) void __stdcall loopNavigation(unsigned int entry, unsigned int exit) {

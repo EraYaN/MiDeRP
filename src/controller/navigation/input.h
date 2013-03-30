@@ -3,6 +3,6 @@
 
 //Function prototypes
 //void getDimensions ();
-void getPoints ();
+void getPoints (unsigned int entry_id, unsigned int exit_id);
 
 #endif
