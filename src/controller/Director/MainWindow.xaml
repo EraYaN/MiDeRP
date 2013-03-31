@@ -38,7 +38,6 @@
             <Button x:Name="findPathButton" Content="Find Path" Width="61" Margin="2,0,2,0" Height="20" IsEnabled="False" Click="findPathButton_Click"/>
             <Button x:Name="startInitButton" Content="Start Init" Width="52" Margin="2,0,2,0" Height="20" Click="startInitButton_Click" IsDefault="True"/>
             <Button x:Name="destroyButton" Content="Destroy" Width="54" Margin="2,0,2,0" Height="20" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
-            <TextBlock TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
 
         </StackPanel>
 
