@@ -1,7 +1,7 @@
 ﻿<Window x:Name="mainWindow" x:Class="Director.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MiDeRP Director EPO2-D2" Height="426.4" Width="400" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" MinHeight="400" MinWidth="400">
+        Title="MiDeRP Director EPO2-D2" Height="550" Width="500" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" MinHeight="400" MinWidth="403">
     <Grid>
         
         
@@ -9,15 +9,37 @@
         <StatusBar x:Name="statusBar" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom">
             <StatusBarItem Content="{Binding MineCount, Mode=OneWay}" Width="25" x:Name="statusBarMineNumber" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <StatusBarItem Width="40" Content="mines" x:Name="statusBarMineText" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-             
+            <StatusBarItem Width="40" Content="{Binding SerialPortStatus, Mode=OneWay}" Foreground="{Binding SerialPortStatusColor, Mode=OneWay}" x:Name="statusBarComPort" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             
+
+
         </StatusBar>
         <StackPanel Height="20" VerticalAlignment="Bottom" Margin="10,0,10,24.8" Orientation="Horizontal">
-            <ComboBox x:Name="comPortsComboBox" Width="60" Margin="2,0,2,0" Height="20" DropDownOpened="comPortsComboBox_DropDownOpened"/>
+            <ComboBox x:Name="comPortsComboBox" Width="60" Margin="2,0,2,0" Height="20" DropDownOpened="comPortsComboBox_DropDownOpened"/>            
+            <ComboBox x:Name="baudRateComboBox" Width="60" Margin="2,0,2,0" Height="20">
+                <ComboBoxItem Content="110"/>
+                <ComboBoxItem Content="300"/>
+                <ComboBoxItem Content="600"/>
+                <ComboBoxItem Content="1200"/>
+                <ComboBoxItem Content="2400"/>
+                <ComboBoxItem Content="4800"/>
+                <ComboBoxItem Content="9600" IsSelected="True"/>
+                <ComboBoxItem Content="14400"/>
+                <ComboBoxItem Content="19200"/>
+                <ComboBoxItem Content="38400"/>
+                <ComboBoxItem Content="56000"/>
+                <ComboBoxItem Content="57600"/>
+                <ComboBoxItem Content="115200"/>
+                <ComboBoxItem Content="128000"/>
+                <ComboBoxItem Content="256000"/>                    
+            </ComboBox>
+
             <Button x:Name="TestDrawButton" Content="Draw Field" Width="59" Margin="2,0,2,0" Height="20" Click="TestDrawButton_Click" IsEnabled="False"/>
             <Button x:Name="findPathButton" Content="Find Path" Width="61" Margin="2,0,2,0" Height="20" IsEnabled="False" Click="findPathButton_Click"/>
             <Button x:Name="startInitButton" Content="Start Init" Width="52" Margin="2,0,2,0" Height="20" Click="startInitButton_Click" IsDefault="True"/>
             <Button x:Name="destroyButton" Content="Destroy" Width="54" Margin="2,0,2,0" Height="20" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
+            <TextBlock TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+
         </StackPanel>
 
     </Grid>

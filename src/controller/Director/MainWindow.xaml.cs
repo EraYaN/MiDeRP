@@ -24,24 +24,23 @@ namespace Director
         const int M = 5;
         const int N = 5;        
         //Random rand = new Random();
-        static public Visualization vis;
-        static public Navigation nav;
-        static public Communications com;
+        
   
         public MainWindow()
         {
             InitializeComponent();
             statusBarMineNumber.DataContext = Data.db;
+            statusBarComPort.DataContext = Data.db;
         }
 
         private void TestDrawButton_Click(object sender, RoutedEventArgs e)
         {
-            vis.DrawField();            
+            Data.vis.DrawField();            
         }
 
         private void findPathButton_Click(object sender, RoutedEventArgs e)
         {
-            Navigation.SetMinesInDLL();
+            Data.nav.SetMinesInDLL();
             int res;
             if ((res = Navigation.loopNavigation(0, M * N - 1)) != 0)
             {
@@ -57,15 +56,57 @@ namespace Director
         private void startInitButton_Click(object sender, RoutedEventArgs e)
         {
             //Init classes
-            vis = new Visualization(fieldmapcanvas, M, N);
-            nav = new Navigation(M, N);
-            com = new Communications(Data.ComPort, Data.BaudRate);
+            Data.vis = new Visualization(fieldmapcanvas, M, N);
+            Data.nav = new Navigation(M, N);
+            Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
+            //subscribe to events
+            Data.com.SerialDataEvent += com_SerialDataEvent;
+            if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
+            {
+                Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
+                Data.BaudRate = (int)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
+                if (Data.ComPort != "" && Data.BaudRate > 0)
+                {
+                    int res = Data.com.OpenPort();
+                    if (res != 0)
+                        MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show("COM Port or Baud Rate not valid.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+                 
+            Data.db.UpdateProperty("MineCount");
+            Data.db.UpdateProperty("SerialPortStatus");
+            Data.db.UpdateProperty("SerialPortStatusColor");
             //enable buttons
             findPathButton.IsEnabled = true;
             TestDrawButton.IsEnabled = true;
             startInitButton.IsEnabled = false;
             destroyButton.IsEnabled = true;
             comPortsComboBox.IsEnabled = false;
+            baudRateComboBox.IsEnabled = false;
+        }
+
+        void com_SerialDataEvent(object sender, SerialDataEventArgs e)
+        {
+            //Test respons
+            //TODO proper respons.
+            if (e.innerEvent.EventType == SerialData.Chars)
+            {
+                //echo die shit.
+                Data.com.SendByte(e.DataByte);
+            }
+            else
+            {
+                //EOF niks terug sturen
+                //com.SendByte(e.DataByte);
+            }
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
@@ -75,9 +116,10 @@ namespace Director
             startInitButton.IsEnabled = true;
             destroyButton.IsEnabled = false;
             comPortsComboBox.IsEnabled = true;
-            nav = null;
-            com = null;
-            vis = null;
+            baudRateComboBox.IsEnabled = true;
+            Data.nav = null;
+            Data.com = null;
+            Data.vis = null;
         }               
 
         private void comPortsComboBox_DropDownOpened(object sender, EventArgs e)
