@@ -10,7 +10,7 @@
 \chapter{Systeemoverzicht}
 Het systeem bestaat uit driehoofdblokken, de FPGA met de logica erop, de twee xBee modules voor de communicatie en het Director programma dat op de PC draait. In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem afgebeeld, hierin is de robot nog verder uitgesplitst. 
 \section{Communicatie}
-De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet berijkt worden.
+De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet bereikt worden.
 De eerste versie van het communicatie protocol staat in tabel \ref{tab:comProtocol}.
 Op de robot is een losse state machine geïmplementeerd (zie Figuur \ref{fig:fsmReceiver}) om de commando's onafhankelijk af te handelen en in een commando buffer te zetten zodat het hoofd systeem deze op de correcte tijd op kan pikken.
 Ook is er een losse state machine om het versturen (zie Figuur \ref{fig:fsmSender}) van een byte naar de pc af te handelen geïmplementeerd.
@@ -93,10 +93,10 @@ My Address			& 0x4658 	& 0x8564\\
 \end{subfigure}
 \end{figure}
 \section{Robot FPGA}
-De FPGA handelt alle directe acties af, zoals reageren op sensoren zodat een lijn gevolgd kan worden. Deze stuurt ook de motoren aan door een PWM signaal te genereren wat propotioneel is aan de gekozen snelheid. Op de FPGA wordt ook de communicatie met de xBee afgehandeld via een UART inteface. De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender}.
+De FPGA handelt alle directe acties af, zoals reageren op sensoren zodat een lijn gevolgd kan worden. Deze stuurt ook de motoren aan door een PWM signaal te genereren wat proportioneel is aan de gekozen snelheid. Op de FPGA wordt ook de communicatie met de xBee afgehandeld via een UART interface. De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender}.
 
 \section{Director}
 We hebben uiteindelijk zoals te lezen in hoofdstuk \ref{ch:route} gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall). Het zelfde geldt voor de dll voor de serial interface deze is lichtelijk verbouwd zodat deze makkelijker in een andere applicatie gebruikt kan worden. Ons hoofd project wordt geschreven in C\# (.NET 4.5) en in combinatie met WPF (een UI framework gebaseerd op XAML UI's). Dit geeft een veel vriendelijkere ontwikkel omgeving, managed talen zijn nou eenmaal wat vriendelijker voor de programmeur. Nu is het ook mogelijk om alleen een van de dll's te vervangen dus kan iemand daar los aan werken. Het hebben van een UI is ook vriendelijker aan de ogen en het gebruik van het event model is ook heel fijn voor de seriële communicatie. Dit is natuurlijk deels persoonlijke voorkeur, maar om iedereen bekend te houden met de code hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ gehouden.\\
-De director moet nu nog adeqaat reageren op de bytes van de robot. Hier voor laten we een thread constant checken of er een nieuwe byte in de input buffer zit en zodra deze er is geven we een event af zodat de main thread op de byte kan reageren.
+De director moet nu nog adequaat reageren op de bytes van de robot. Hier voor laten we een thread constant checken of er een nieuwe byte in de input buffer zit en zodra deze er is geven we een event af zodat de main thread op de byte kan reageren.
 
 \end{document}
