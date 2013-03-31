@@ -113,7 +113,8 @@ Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met WPF (ee
 Dit geeft een vriendelijkere ontwikkelomgeving, managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
 Het is ook mogelijk om alleen een van de dll's te vervangen, zodat iemand daar los aan kan werken.
 Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel fijn voor de seriële communicatie.
-Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ code gehouden. Al halen we misschien de seriële communicatie naar C\#, omdat je hierin een veel simpelere asynchrone afhandeling van input hebt.\\
+Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ code gehouden. Al halen we misschien de seriële communicatie naar C\#, omdat je hierin een veel simpelere asynchrone afhandeling van input hebt.
+
 De director moet nu nog adequaat reageren op de bytes van de robot.
 Hiervoor laten we een thread constant checken of er een nieuwe byte in de input buffer zit. Zodra deze er is, geven we een event af zodat de main thread op de byte kan reageren.
 
