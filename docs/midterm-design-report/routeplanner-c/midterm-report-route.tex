@@ -22,7 +22,7 @@ We kunnen voor het programma de volgende eisen opstellen:
 	\item Het programma moet obstakels (mijnen) kunnen ontwijken (geen onderdeel van eerste opdracht)
 \end{enumerate}
 
-\section{Ontwerp en implentatie}
+\section{Ontwerp en implementatie}
 \label{sec:ontwerp-impl}
 
 \subsection{Lee}
@@ -38,7 +38,6 @@ Dit was voor een situatie zonder mijnen geen probleem. Omdat het computerprogram
 Het A*-algoritme gebruikt, in tegenstelling tot dat van Lee, een bepaalde heuristiek. Dit betekent dat er al een zekere kennis bestaat bij het bepalen
 van een geschikt pad naar het doel. Het programma "weet" bijvoorbeeld dat het doel boven het startpunt zit en houdt hier rekening mee bij het berekenen van het pad. Dat levert in potentie sneller resultaat op met minder geheugengebruik. Nu is het niet zo dat het berekenen van een pad over een grid van 5x5 een zeer intensieve taak is, maar het zijn hoe dan ook twee positieve eigenschappen. Daarnaast kan de complexiteit van de heuristische functie gevarieerd worden - dit is de functie die berekent hoe geschikt de node is voor het pad - om een optimaal pad, met zo min mogelijk bochten en zonder tussenkomst van mijnen, te berekenen.
 
-Deze voordelen tegenover Lee's algoritme hebben er toe geleid dat er ook nog een implementatie van het A*-algoritme is gemaakt
-
+Deze voordelen tegenover Lee's algoritme hebben er toe geleid dat er ook nog een implementatie van het A*-algoritme is gemaakt, die inderdaad een stuk sneller is met minder geheugengebruik. Deze implementatie zal dan ook gebruikt worden tijdens het verdere verloop van het project.
 
 \end{document}
