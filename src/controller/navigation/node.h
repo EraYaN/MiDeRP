@@ -6,12 +6,12 @@ typedef struct node Node;
 //Set up the node structure
 struct node {
 	unsigned int id, f, g;
-	char open, close, mines[4], previousDir;
+	char open, close, mines[4];
 	Node *previous, *neighbors[4];
 };
 
 //Function prototypes
-Node *newNode (Node *current, unsigned int id);
+Node *newNode (unsigned int id);
 Node *getNodeC(unsigned int x, unsigned int y);
 Node *getNodeI(unsigned int id);
 

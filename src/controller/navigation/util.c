@@ -15,28 +15,6 @@ void *safeMalloc (size_t size)
 	return p;
 }
 
-//Prints to either console, logs or both
-/*void print (char toconsole, char tofile, char *format, ...)
-{
-	va_list args;
-
-	if (!toconsole && !tofile)
-		return;
-	if(format==NULL){
-		return;
-	}
-	if(file==NULL)
-		return;
-	va_start (args, format);
-	if (toconsole)
-		//vprintf (format, args);
-	if (tofile&&args!=NULL)
-		vfprintf (file, format, args);
-	else if (tofile)
-		printf(file,format);
-	va_end (args);
-}*/
-
 //Mark the beginning of a time count
 void startStopwatch(void){
 	begin = clock();
