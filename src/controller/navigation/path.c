@@ -1,17 +1,23 @@
 #include "util.h"
 
+unsigned int getH(Node *node);
+void addToOpenlist (Node *node);
+void makePath ();
+int displayPath ();
+
 //Find a path from startingNode to exitNode
-void findPath (Node * entryNode, Node * exitNode)
+int findPath (Node * entryNode, Node * exitNode)
 {
 	//Init
-	unsigned int i, pre_g;
-	Node *neighbor, *current, *next;
-	Openlist *currentItem;
-	current = next = entryNode; //The value of current actually matters, next just has to have a value
+	unsigned int i, pre_g, displayedPath;
+	Node *neighbor, *current;
+	Openlist *tmp;
 
-	current->f = getH (current);
-	addToOpenlist (current);
-	currentItem = head;
+	head = NULL;
+
+	entryNode->f = getH (entryNode);
+	addToOpenlist (entryNode);
+	current = entryNode;
 
 	startStopwatch();
 
@@ -23,7 +29,7 @@ void findPath (Node * entryNode, Node * exitNode)
 		current = head->node;
 
 #ifdef _DEBUG
-		printf( "Current item: %d\n", current->id);
+		printf( "\nCurrent item: %d\n", current->id);
 #endif
 
 		if (current == exitNode)
@@ -31,13 +37,26 @@ void findPath (Node * entryNode, Node * exitNode)
 			//Reached endpoint, trace back path
 			makePath ();
 			findTime = stopStopwatch ();
-			displayPath ();
-			return;
+			displayedPath = displayPath ();
+			
+			if (displayedPath == 0)
+			{
+				//Succesfully found and displayed a path
+				return 0;
+			}
+			else
+			{
+				//Path was found but not displayed, something is very wrong
+				return -2;
+			}
 		}
 
+		//Remove current node from open list so it will not be processed again
 		current->open = 0;
-		removeFromOpenlist (current);
 		current->close = 1;
+		tmp = head;
+		head = head->next;
+		free (tmp);
 
 		setNeighbors (current);
 		for (i=0; i<4; i++)
@@ -65,20 +84,22 @@ void findPath (Node * entryNode, Node * exitNode)
 #endif
 				continue;
 			}
-			else
+			else if (!neighbor->open || pre_g < neighbor->g)
 			{
 				//Neighbor might be part of the shortest path to target
 				neighbor->previous = current;
-				neighbor->previousDir = i;
 				neighbor->g = pre_g;
 				neighbor->f = neighbor->g + getH (neighbor);
-				neighbor->open = 1;
-				addToOpenlist (neighbor);
+				if (!neighbor->open)
+				{
+					neighbor->open = 1;
+					addToOpenlist (neighbor);
+				}
 			}
 		}
 	}
 
-	printf("Error: failed to find a path!\n");
+	return -1;
 
 }
 
@@ -130,56 +151,10 @@ void addToOpenlist (Node *node)
 			}
 		}
 
+		//Fail, openlist was empty before exitNode was reached
 		printf( "Error: failed to add node %d to openlist\n", node->id);
 
 	}
-}
-
-void removeFromOpenlist (Node *node)
-{
-	Openlist *current;
-	current = head;
-
-	if (node == head->node)
-	{
-		if (!head->next)
-		{
-			head = NULL;
-		}
-		else
-		{
-			current = head;
-			head = head->next;
-			free (current);
-		}
-#ifdef _DEBUG
-		printf( "Removed node %d from openlist\n", node->id);
-#endif
-		return;
-	}
-	else
-	{
-		while (current)
-		{
-			if (!current->next)
-			{
-				//Last element in list
-				printf( "Error: failed to remove node %d from open list, it probably wasn't in there in the first place!\n", node->id);
-				break;
-			}
-			else if (current->next->node == node)
-			{
-				current->next = current->next->next;
-				free (current->next);
-#ifdef _DEBUG
-				printf( "Removed node %d from open list", node->id);
-#endif
-				break;
-			}
-			current = current->next;
-		}
-	}
-	
 }
 
 //Backtrace found path and save it to an array
@@ -208,14 +183,14 @@ void makePath ()
 }
 
 //Display found path
-void displayPath ()
+int displayPath ()
 {
 	unsigned int i;
 
 	if (!path)
 	{
-		printf( "Failed to find a path, quitting...\n");
-		return;
+		printf( "Error: called displayPath (), but no path found, this should not be happening!\n\n");
+		return -1;
 	}
 
 	printf( "Found a path from node %d to node %d, with length %d (took %.4lfs)!\n", entryNode->id, exitNode->id, length, findTime);
@@ -239,5 +214,33 @@ void displayPath ()
 			printf( "Next node in path is node %d\n", path[i+1]->id);
 		}
 		printf( "Exit node (id: %d) reached!\n\n", exitNode->id);
+	}
+
+	return 0;
+}
+
+void cleanup ()
+{
+	unsigned int i;
+	Openlist *tmp, *current;
+
+	//Empty openlist completely
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		free (tmp);
+	}
+
+	free (head);
+
+	//Reset node values
+	for (i=0; i<numNodes; i++)
+	{
+		nodes[i]->f = 0;
+		nodes[i]->g = 0;
+		nodes[i]->open = 0;
+		nodes[i]->close = 0;
+		nodes[i]->previous = NULL;
 	}
 }

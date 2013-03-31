@@ -2,7 +2,7 @@
 
 
 //Create a new node
-Node *newNode (Node *current, unsigned int id)
+Node *newNode (unsigned int id)
 {
 
 	Node *node	= (Node*)safeMalloc (sizeof (Node));
@@ -16,8 +16,7 @@ Node *newNode (Node *current, unsigned int id)
 	node->id = id;
 	node->open = 0;
 	node->close = 0;
-	node->previous = current;
-	node->previousDir = 0;
+	node->previous = NULL;
 	node->f = 0;
 	node->g = 0;
 
@@ -63,7 +62,7 @@ void setNeighbors (Node *node)
 		if (getNodeI(node->id - 1))
 			node->neighbors[0] = getNodeI(node->id - 1);
 		else
-			node->neighbors[0] = newNode (node, node->id - 1);
+			node->neighbors[0] = newNode (node->id - 1);
 	}
 	else
 		node->neighbors[0] = NULL;
@@ -75,7 +74,7 @@ void setNeighbors (Node *node)
 			node->neighbors[1] = getNodeI(node->id + 1);
 		}
 		else
-			node->neighbors[1] = newNode (node, node->id + 1);
+			node->neighbors[1] = newNode (node->id + 1);
 	}
 	else
 		node->neighbors[1] = NULL;
@@ -85,7 +84,7 @@ void setNeighbors (Node *node)
 		if (getNodeI(node->id + m))
 			node->neighbors[2] = getNodeI(node->id + m);
 		else
-			node->neighbors[2] = newNode (node, node->id + m);
+			node->neighbors[2] = newNode (node->id + m);
 	}
 	else
 		node->neighbors[2] = NULL;
@@ -95,7 +94,7 @@ void setNeighbors (Node *node)
 		if (getNodeI(node->id - m))
 			node->neighbors[3] = getNodeI(node->id - m);
 		else
-			node->neighbors[3] = newNode (node, node->id - m);
+			node->neighbors[3] = newNode (node->id - m);
 	}
 	else
 		node->neighbors[3] = NULL;
@@ -129,11 +128,11 @@ int setMineI(unsigned int id1, unsigned int id2, char mine)
 {
 	Node *node1, *node2;
 	if (!nodes[id1])
-		node1 = newNode (NULL, id1);
+		node1 = newNode (id1);
 	else
 		node1 = getNodeI(id1);
 	if (!nodes[id2])
-		node2 = newNode (NULL, id2);
+		node2 = newNode (id2);
 	else
 		node2 = getNodeI(id2);
 

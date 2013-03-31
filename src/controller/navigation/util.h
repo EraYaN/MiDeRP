@@ -12,7 +12,7 @@
 #include "input.h"
 
 //Init variables
-unsigned int m,n, numNodes, length;
+unsigned int m, n, numNodes, length;
 double gridTime, findTime, totalTime;
 Node *entryNode, *exitNode, **nodes, **path;
 //Function prototypes
