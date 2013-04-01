@@ -153,6 +153,7 @@ namespace Director
         public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
         public static uint entryCP = 1;
         public static uint exitCP = (M-2)+(N-2);
+        public static NodeConnection currentPos;
         public static List<NodeConnection> path = new List<NodeConnection>();
         static public Visualization vis;
         static public Navigation nav;
