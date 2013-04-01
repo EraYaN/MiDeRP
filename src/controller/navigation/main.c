@@ -3,7 +3,7 @@
 //TODO make one cpp file to include the project and make this into a properly interfaced class or pure C dll
 
 //Init
-int init (int _m, int _n)
+int init (unsigned int _m, unsigned int _n)
 {
 	//Open log file
 	m = _m;

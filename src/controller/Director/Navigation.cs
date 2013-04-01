@@ -13,10 +13,16 @@ namespace Director
         /// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
         /// </summary>
         [DllImport("navigation.dll")]
-        static extern int initNavigation(int m, int n);
+        static extern int initNavigation(uint m, uint n);
 
         [DllImport("navigation.dll")]
-        public static extern int loopNavigation(uint EntryID, uint ExitID);
+        public static extern int updatePath(uint EntryID, uint ExitID);
+
+        [DllImport("navigation.dll")]
+        public static extern uint getPathLength();
+
+        [DllImport("navigation.dll")]
+        public static extern int extractPath(IntPtr path);
 
         [DllImport("navigation.dll")]
         static extern void closeNavigation();
@@ -25,12 +31,15 @@ namespace Director
         static extern int clearMines();
 
         [DllImport("navigation.dll")]
+        static extern IntPtr extractPath();
+
+        [DllImport("navigation.dll")]
         static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
 
-        public Navigation(int _M, int _N)
+        public Navigation()
         {
             //constructor
-            initNavigation(_M,_N);
+            initNavigation(Data.M, Data.N);
         }
         ~Navigation()
         {
@@ -44,47 +53,67 @@ namespace Director
                 return -1;
             }
             foreach(NodeConnection m in mines){
-                setMineC(m.N1.X, m.N1.Y, m.N2.X, m.N2.Y, 1);
+                setMineC(m.To.X, m.To.Y, m.From.X, m.From.Y, 1);
             }
             return 0;
         }
-        /*Node* getNodeFromControlPost(long controlPost)
+        public int getPath()
         {
-            //TODO
-            //long i;
-            const long hori = m - 2; //controlPosts per horizontale zijde van het veld
-            const long vert = n - 2; //controlPosts per verticale zijde van het veld
-            if (controlPost > numControlPosts || controlPost < 1)
-            {
-                //bestaat niet!
-                return NULL;
+            //TODO             
+            uint len = getPathLength();
+            IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
+            int[] stage1 = new int[len+1];
+            int res = extractPath(ptr);
+            
+            if (res == 0&&len>0&&ptr!=null)
+            {   
+                Marshal.Copy(ptr, stage1, 0, (int)len+1);                
+                Marshal.FreeHGlobal(ptr);
+                //Marshal.Copy(pointer, stage1, 0, (int)len);
+                //freeUnmanaged(pointer);
+                List<Coord> stage2 = new List<Coord>(); //node's
+                for (int i = 0; i < len+1; i++)
+                {
+                    //stage1[i] = (UInt32)Marshal.ReadInt32(pointer, sizeof(Int32) * i);
+                    Coord c = new Coord();
+                    c.Id = (uint)stage1[i];
+                    stage2.Add(c);
+                }
+                Data.path.Clear();
+                Coord? prev = null;
+                foreach (Coord c in stage2)
+                {
+                    if (prev == null)
+                    {
+                        prev = c;
+                    }
+                    else
+                    {
+                        NodeConnection nc = new NodeConnection((Coord)c, (Coord)prev);
+                        Data.path.Add(nc);
+                        prev = c;
+                    }
+                }
             }
-            if (controlPost <= hori)
-            {
-                //onder
-                return getNode(controlPost, 0);
-            }
-            else if (controlPost > hori && controlPost <= hori + vert)
-            {
-                //rechts
-                return getNode(m - 1, controlPost - hori);
-            }
-            else if (controlPost > hori + vert && controlPost <= 2 * hori + vert)
-            {
-                //boven
-                return getNode((m - 1) - (controlPost - hori - vert), n - 1);
-            }
-            else if (controlPost > 2 * hori + vert && controlPost <= 2 * hori + 2 * vert)
-            {
-                //links
-                return getNode(0, (n - 1) - (controlPost - 2 * hori - vert));
-            }
-            else
-            {
-                //bestaat niet!
-                return NULL;
-            }
-            return NULL;
-        }*/
+             //nodeconnections
+            return res;
+        }
+        //TODO controlPosts ID or someway of defining them.
+        public int findPath()
+        {
+            //TODO entry
+            Coord entry = new Coord(Data.entryCP);
+            Coord exit = new Coord(Data.exitCP);
+            int res = updatePath(entry.Id, exit.Id);
+            getPath();
+            return res;
+        }
+        public int findPath(NodeConnection currentPos)
+        {
+            Coord exit = new Coord(Data.exitCP);
+            int res = updatePath(currentPos.From.Id, exit.Id);
+            getPath();
+            return res;
+        }
     }
 }

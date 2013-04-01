@@ -237,10 +237,12 @@ void cleanup ()
 	//Reset node values
 	for (i=0; i<numNodes; i++)
 	{
-		nodes[i]->f = 0;
-		nodes[i]->g = 0;
-		nodes[i]->open = 0;
-		nodes[i]->close = 0;
-		nodes[i]->previous = NULL;
+		if(nodes[i]){
+			nodes[i]->f = 0;
+			nodes[i]->g = 0;
+			nodes[i]->open = 0;
+			nodes[i]->close = 0;
+			nodes[i]->previous = NULL;
+		}
 	}
 }

@@ -14,17 +14,60 @@ namespace Director
             X = x;
             Y = y;
         }
+        public Coord(uint controlPost)
+        {
+            const uint hori = Data.M - 2; //controlPosts per horizontale zijde van het veld
+            const uint vert = Data.N - 2; //controlPosts per verticale zijde van het veld
+            if (controlPost > Data.numControlPosts || controlPost < 1)
+            {
+                throw new ArgumentException("Controlpost is not valid.");
+            }
+            if (controlPost <= hori)
+            {
+                //onder
+                X = controlPost;
+                Y = 0;
+            }
+            else if (controlPost > hori && controlPost <= hori + vert)
+            {
+                //rechts
+                X = Data.M - 1;
+                Y = controlPost - hori;
+            }
+            else if (controlPost > hori + vert && controlPost <= 2 * hori + vert)
+            {
+                //boven
+                X = (Data.M - 1) - (controlPost - hori - vert);
+                Y = Data.N - 1;
+            }
+            else if (controlPost > 2 * hori + vert && controlPost <= 2 * hori + 2 * vert)
+            {
+                //links
+                X = 0;
+                Y = (Data.N - 1) - (controlPost - 2 * hori - vert);
+            }
+            else
+            {
+                //bestaat niet!
+                throw new Exception("Controlpost is not valid.");
+            }        
+        }
+        public uint Id
+        {
+            get { return Data.M * Y + X; }
+            set { X = value % Data.M; Y = (uint)Math.Floor((decimal)value / Data.M); }
+        }
     }
     public struct NodeConnection
     {
-        public Coord N1;
-        public Coord N2;
-        public NodeConnection(Coord n1, Coord n2)
+        public Coord To;
+        public Coord From;
+        public NodeConnection(Coord to, Coord from)
         {
-            N1 = n1;
-            N2 = n2;
+            To = to;
+            From = from;
         }
-    }
+    }    
     public class Databindings : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -100,11 +143,17 @@ namespace Director
         }
     }
     public static class Data 
-    {
-        
+    {        
         public static Databindings db = new Databindings();
         public static string ComPort = "COM1";
         public static int BaudRate = 9600;
+        public const uint M = 15;
+        public const uint N = 10;
+        public const uint numNodes = M*N;
+        public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
+        public static uint entryCP = 1;
+        public static uint exitCP = (M-2)+(N-2);
+        public static List<NodeConnection> path = new List<NodeConnection>();
         static public Visualization vis;
         static public Navigation nav;
         static public SerialInterface com;

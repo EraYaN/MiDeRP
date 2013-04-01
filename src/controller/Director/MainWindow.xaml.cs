@@ -21,8 +21,7 @@ namespace Director
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int M = 5;
-        const int N = 5;        
+            
         //Random rand = new Random();
         
   
@@ -42,22 +41,23 @@ namespace Director
         {
             Data.nav.SetMinesInDLL();
             int res;
-            if ((res = Navigation.loopNavigation(0, M * N - 1)) != 0)
+            if ((res = Data.nav.findPath()) != 0)
             {
                 MessageBox.Show("Error during path finding. #" + res, "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 //TODO exception
             }
             else
             {
-                MessageBox.Show("Path found!", "Path Found!", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("Path found!", "Path Found!", MessageBoxButton.OK, MessageBoxImage.Information);
+                Data.vis.DrawField();
             }
         }
 
         private void startInitButton_Click(object sender, RoutedEventArgs e)
         {
             //Init classes
-            Data.vis = new Visualization(fieldmapcanvas, M, N);
-            Data.nav = new Navigation(M, N);
+            Data.vis = new Visualization(fieldmapcanvas);
+            Data.nav = new Navigation();
             Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
             //subscribe to events
             Data.com.SerialDataEvent += com_SerialDataEvent;

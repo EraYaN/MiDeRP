@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 extern "C"{
 #endif
-__declspec(dllexport) int __stdcall initNavigation(int m, int n) {
+__declspec(dllexport) int __stdcall initNavigation(unsigned int m, unsigned int n) {
 	return init(m, n);
 }
 
@@ -44,8 +44,33 @@ __declspec(dllexport) int __stdcall setMineC(unsigned int X1, unsigned int Y1, u
 	return setMineI(id1,id2,mine);
 }
 
-__declspec(dllexport) int __stdcall loopNavigation(unsigned int entry, unsigned int exit) {
+__declspec(dllexport) int __stdcall updatePath(unsigned int entry, unsigned int exit) {
+	printf("Finding path between ID's: %d and %d.\n",entry, exit);
 	return loop(entry, exit);
+}
+
+__declspec(dllexport) unsigned int __stdcall getPathLength() {	
+	return length;
+}
+
+__declspec(dllexport) int __stdcall extractPath(int *pathout) {
+	unsigned int i;
+	if(path){
+		printf("Extracting path....\n");
+		//pathout = (unsigned int*)safeMalloc(sizeof(unsigned int)*(length+1));		
+		//pathout[0]=entryNode->id;
+		for (i=0; i<length; i++)
+		{
+			//printf( "Next node in path is node %d\n", path[i+1]->id);
+			pathout[i]=path[i+1]->id;
+		}
+		pathout[length]=exitNode->id;	
+		
+		return 0;
+	} else {
+		printf("No path to extract....\n");
+		return -1;
+	}
 }
 
 __declspec(dllexport) void __stdcall closeNavigation(void) {
