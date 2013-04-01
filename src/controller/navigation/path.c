@@ -118,12 +118,9 @@ int findPath (Node * entryNode, Node * exitNode)
 //Get an estimated heuristic cost to exitNode
 unsigned int getH (Node *node, Node *exitNode)
 {
-	unsigned int H, straight = 0;
+	unsigned int H;
 
 	H = abs ((int)(getXY(node, 'X') - getXY(exitNode, 'X'))) + abs ((int)(getXY(node, 'Y') - getXY(exitNode, 'Y')));
-
-	//if (node->previous && node->previousDir != -1 && node->previous->previousDir != node->previousDir)
-	//	H = H + 1;
 
 	return H;
 }

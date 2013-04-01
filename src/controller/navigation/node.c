@@ -190,7 +190,7 @@ char isMine (Node *node1, Node *node2)
 	if (!node1 || !node2)
 	{
 		printf( "Error: tried to check for mines near non-existing mine!\n");
-		return 0;
+		return -1;
 	}
 
 	setNeighbors (node1);
@@ -207,5 +207,5 @@ char isMine (Node *node1, Node *node2)
 	}
 
 	printf( "Error: mines are not neighbours!\n");
-	return 0;
+	return -1;
 }
