@@ -17,6 +17,7 @@ Node *newNode (unsigned int id)
 	node->open = 0;
 	node->close = 0;
 	node->previous = NULL;
+	node->previousDir = -1;
 	node->f = 0;
 	node->g = 0;
 

@@ -58,13 +58,10 @@ __declspec(dllexport) int __stdcall extractPath(int *pathout) {
 	if(path){
 		printf("Extracting path....\n");
 		//pathout = (unsigned int*)safeMalloc(sizeof(unsigned int)*(length+1));		
-		//pathout[0]=entryNode->id;
-		for (i=0; i<length; i++)
+		for (i=0; i<=length; i++)
 		{
-			//printf( "Next node in path is node %d\n", path[i+1]->id);
-			pathout[i]=path[i+1]->id;
+			pathout[i]=path[i]->id;
 		}
-		pathout[length]=exitNode->id;	
 		
 		return 0;
 	} else {

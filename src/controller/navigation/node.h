@@ -6,7 +6,7 @@ typedef struct node Node;
 //Set up the node structure
 struct node {
 	unsigned int id, f, g;
-	char open, close, mines[4];
+	char open, close, previousDir, mines[4];
 	Node *previous, *neighbors[4];
 };
 

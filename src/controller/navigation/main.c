@@ -25,11 +25,9 @@ int init (unsigned int _m, unsigned int _n)
 int loop (unsigned int entry, unsigned int exit)
 {
 	int foundPath;
-	//Get entry and exit nodes
-	getPoints(entry, exit);
 
 	//Find path
-	foundPath = findPath (entryNode, exitNode); //TODO need class to store m and n
+	foundPath = findPath (newNode (entry), newNode (exit)); //TODO need class to store m and n
 	cleanup ();
 
 	if (foundPath == 0)

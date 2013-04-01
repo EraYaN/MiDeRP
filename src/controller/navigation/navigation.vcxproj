@@ -19,14 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="input.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="node.c" />
     <ClCompile Include="path.c" />
     <ClCompile Include="util.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="node.h" />
     <ClInclude Include="path.h" />
