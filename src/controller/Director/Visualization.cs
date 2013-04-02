@@ -201,13 +201,54 @@ namespace Director
         }
         private void DrawPath(double xstep, double ystep)
         {            
-            if (Data.path.Count>0)
+            if (Data.nav.path.Count>0)
             {
-                foreach (NodeConnection nc in Data.path)
+                foreach (NodeConnection nc in Data.nav.path)
                 {
                     Arrow arr = new Arrow();
-                    Point N1 = getCanvasCoordinates(nc.From, xstep, ystep);
-                    Point N2 = getCanvasCoordinates(nc.To, xstep, ystep);
+                    Point N1, N2;
+                    N1 = getCanvasCoordinates(nc.From, xstep, ystep);
+                    N2 = getCanvasCoordinates(nc.To, xstep, ystep);
+                    double CPExtension = marginlarge - marginsmall-controlpointsize/2-1;
+                    if (nc.ToCPoint)
+                    {
+                        if (nc.To.X == Data.M-1)
+                        {
+                            N2.X += CPExtension;
+                        }
+                        else if (nc.To.X == 0)
+                        {
+                            N2.X -= CPExtension;
+                        }
+                        else if (nc.To.Y == 0)
+                        {
+                            N2.Y -= CPExtension;
+                        }
+                        else if (nc.To.Y == Data.N-1)
+                        {
+                            N2.Y += CPExtension;
+                        }
+                    }
+                    else if (nc.FromCPoint)
+                    {
+                        if (nc.From.X == Data.M-1)
+                        {
+                            N1.X += CPExtension;
+                        }
+                        else if (nc.From.X == 0)
+                        {
+                            N1.X -= CPExtension;
+                        }
+                        else if (nc.From.Y == 0)
+                        {
+                            N1.Y -= CPExtension;
+                        }
+                        else if (nc.From.Y == Data.N-1)
+                        {
+                            N1.Y += CPExtension;
+                        }                        
+                    }
+                    
                     arr.X1 = N1.X;
                     arr.X2 = N2.X;
                     arr.Y1 = c.ActualHeight - N1.Y;
@@ -221,48 +262,95 @@ namespace Director
                 }
             }            
         }
-        private void DrawCurrent(double xstep, double ystep)
+        private void DrawCurrentPosistion(double xstep, double ystep)
         {
-            if (Data.currentPos.To != Data.currentPos.From)
+            if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
             {
                 Arrow arr = new Arrow();
-                Point N1 = getCanvasCoordinates(Data.currentPos.From, xstep, ystep);
-                Point N2 = getCanvasCoordinates(Data.currentPos.To, xstep, ystep);
-                if (Data.currentPos.From.X == Data.currentPos.To.X)
+                Point N1 = getCanvasCoordinates(Data.nav.currentPos.From, xstep, ystep);
+                Point N2 = getCanvasCoordinates(Data.nav.currentPos.To, xstep, ystep);
+                double CPExtension = (marginlarge - marginsmall - controlpointsize / 2 -1) ;
+                if (Data.nav.currentPos.ToCPoint)
                 {
+                    if (Data.nav.currentPos.To.X == Data.M - 1)
+                    {
+                        N2.X += CPExtension;                        
+                    }
+                    else if (Data.nav.currentPos.To.X == 0)
+                    {
+                        N2.X -= CPExtension;                        
+                    }
+                    else if (Data.nav.currentPos.To.Y == 0)
+                    {
+                        N2.Y -= CPExtension;
+                    }
+                    else if (Data.nav.currentPos.To.Y == Data.N - 1)
+                    {
+                        N2.Y += CPExtension;
+                    }
                     arr.X1 = N1.X;
                     arr.X2 = N2.X;
-                    if (N1.Y > N2.Y)
-                    {
-                        arr.Y1 = c.ActualHeight - N1.Y + ystep * currentPosArrowLength / 2;
-                        arr.Y2 = c.ActualHeight - N2.Y - ystep * currentPosArrowLength / 2;
-                    }
-                    else
-                    {
-                        arr.Y1 = c.ActualHeight - N1.Y - ystep * currentPosArrowLength / 2;
-                        arr.Y2 = c.ActualHeight - N2.Y + ystep * currentPosArrowLength / 2;
-                    }
+                    arr.Y1 = c.ActualHeight - N1.Y;
+                    arr.Y2 = c.ActualHeight - N2.Y;
                 }
-                else if (Data.currentPos.From.Y == Data.currentPos.To.Y)
+                else if (Data.nav.currentPos.FromCPoint)
                 {
-
-                    if (N1.X < N2.X)
+                    if (Data.nav.currentPos.From.X == Data.M - 1)
                     {
-                        arr.X1 = N1.X + xstep * currentPosArrowLength / 2;
-                        arr.X2 = N2.X - xstep * currentPosArrowLength / 2;
+                        N1.X += CPExtension;
                     }
-                    else
+                    else if (Data.nav.currentPos.From.X == 0)
                     {
-                        arr.X1 = N1.X - xstep * currentPosArrowLength / 2;
-                        arr.X2 = N2.X + xstep * currentPosArrowLength / 2;
+                        N1.X -= CPExtension;
                     }
+                    else if (Data.nav.currentPos.From.Y == 0)
+                    {
+                        N1.Y -= CPExtension;
+                    }
+                    else if (Data.nav.currentPos.From.Y == Data.N - 1)
+                    {
+                        N1.Y += CPExtension;
+                    }
+                    arr.X1 = N1.X;
+                    arr.X2 = N2.X;
                     arr.Y1 = c.ActualHeight - N1.Y;
                     arr.Y2 = c.ActualHeight - N2.Y;
                 }
                 else
                 {
-                    //invalid currentPos
+                    if (Data.nav.currentPos.From.X == Data.nav.currentPos.To.X)
+                    {
+                        arr.X1 = N1.X;
+                        arr.X2 = N2.X;
+                        if (N1.Y > N2.Y)
+                        {
+                            arr.Y1 = c.ActualHeight - N1.Y + ystep * currentPosArrowLength / 2;
+                            arr.Y2 = c.ActualHeight - N2.Y - ystep * currentPosArrowLength / 2;
+                        }
+                        else
+                        {
+                            arr.Y1 = c.ActualHeight - N1.Y - ystep * currentPosArrowLength / 2;
+                            arr.Y2 = c.ActualHeight - N2.Y + ystep * currentPosArrowLength / 2;
+                        }
+                    }
+                    else if (Data.nav.currentPos.From.Y == Data.nav.currentPos.To.Y)
+                    {
+
+                        if (N1.X < N2.X)
+                        {
+                            arr.X1 = N1.X + xstep * currentPosArrowLength / 2;
+                            arr.X2 = N2.X - xstep * currentPosArrowLength / 2;
+                        }
+                        else
+                        {
+                            arr.X1 = N1.X - xstep * currentPosArrowLength / 2;
+                            arr.X2 = N2.X + xstep * currentPosArrowLength / 2;
+                        }
+                        arr.Y1 = c.ActualHeight - N1.Y;
+                        arr.Y2 = c.ActualHeight - N2.Y;
+                    }
                 }
+                
                 arr.Stroke = currentPosBrush;
                 arr.HeadHeight = currentPosArrowHeadHeight;
                 arr.HeadWidth = currentPosArrowHeadWidth;
@@ -291,7 +379,7 @@ namespace Director
                 //exit
                 //MessageBox.Show("CP #" + id + " clicked.\n Made exit.");
                 Data.exitCP = id;
-            }
+            }            
             Data.vis.DrawField();
         }
         void mine_MouseUp(object sender, MouseButtonEventArgs e)
@@ -317,17 +405,17 @@ namespace Director
             }
             else if(e.ChangedButton == MouseButton.Right)
             {
-                if (Data.currentPos == ml)
+                if (Data.nav.currentPos == ml)
                 {
-                    Data.currentPos = ml2;
+                    Data.nav.currentPos = ml2;
                 }
-                else if (Data.currentPos == ml)
+                else if (Data.nav.currentPos == ml)
                 {
-                    Data.currentPos = ml;
+                    Data.nav.currentPos = ml;
                 }
                 else
                 {
-                    Data.currentPos = ml;
+                    Data.nav.currentPos = ml;
                 }
                 Data.db.UpdateProperty("CurrentPosText");
             }
@@ -394,7 +482,7 @@ namespace Director
             DrawMines(Data.M, Data.N - 1, xstep, ystep);
             DrawControlpoints(xstep, ystep);
             DrawPath(xstep, ystep);
-            DrawCurrent(xstep, ystep);
+            DrawCurrentPosistion(xstep, ystep);
         }
     }
 }

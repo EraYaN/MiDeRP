@@ -82,7 +82,7 @@ namespace Director
             {
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-                 
+            Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
             Data.db.UpdateProperty("SerialPortStatus");
@@ -141,6 +141,19 @@ namespace Director
                 }
                 comPortsComboBox.Items.Add(extra);
             }
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e)
+        {
+            Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP),false);
+            Data.nav.mines.Clear();
+            Data.nav.path.Clear();
+            Data.vis.DrawField();
+            Data.db.UpdateProperty("MineCount");
+            Data.db.UpdateProperty("PathLength");
+            Data.db.UpdateProperty("SerialPortStatus");
+            Data.db.UpdateProperty("SerialPortStatusColor");
+            Data.db.UpdateProperty("CurrentPosText");
         }   
     }
 }

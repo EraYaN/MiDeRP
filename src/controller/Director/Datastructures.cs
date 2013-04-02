@@ -83,10 +83,22 @@ namespace Director
     {
         public Coord To;
         public Coord From;
+        public bool FromCPoint;
+        public bool ToCPoint;
         public NodeConnection(Coord to, Coord from)
         {
             To = to;
             From = from;
+            FromCPoint = false;
+            ToCPoint = false;
+        }
+        public NodeConnection(Coord to, bool _ToCPoint)
+        {
+            //pos is on CP
+            To = to;
+            From = to;
+            ToCPoint = _ToCPoint;
+            FromCPoint = !_ToCPoint;
         }
         public bool IsSame(NodeConnection other){
             return (other.From == this.From && other.To == this.To) || (other.To == this.From && other.From == this.To);
@@ -133,9 +145,9 @@ namespace Director
         {
             get
             {
-                if (Data.path != null&&Data.path.Count > 0)
+                if (Data.nav.path != null&&Data.nav.path.Count > 0)
                 {
-                    return "Path length: "+Data.path.Count.ToString();
+                    return "Path length: "+Data.nav.path.Count.ToString();
                 }
                 else
                 {
@@ -147,9 +159,19 @@ namespace Director
         {
             get
             {
-                if (Data.currentPos.From!=Data.currentPos.To)
+                if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
                 {
-                    return "(" + Data.currentPos.From.X + "," + Data.currentPos.From.Y + ") -> (" + Data.currentPos.To.X + "," + Data.currentPos.To.Y + ")";
+                    if (Data.nav.currentPos.FromCPoint){
+                        return "CP -> (" + Data.nav.currentPos.To.X + "," + Data.nav.currentPos.To.Y + ")";
+                    }
+                    else if (Data.nav.currentPos.ToCPoint)
+                    {
+                        return "(" + Data.nav.currentPos.From.X + "," + Data.nav.currentPos.From.Y + ") -> CP";
+                    }
+                    else
+                    {
+                        return "(" + Data.nav.currentPos.From.X + "," + Data.nav.currentPos.From.Y + ") -> (" + Data.nav.currentPos.To.X + "," + Data.nav.currentPos.To.Y + ")";
+                    }
                 }
                 else
                 {
@@ -224,9 +246,7 @@ namespace Director
         public const uint numNodes = M*N;
         public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
         public static uint entryCP = 1;
-        public static uint exitCP = (M-2)+(N-2);
-        public static NodeConnection currentPos;
-        public static List<NodeConnection> path = new List<NodeConnection>();
+        public static uint exitCP = (M-2)+(N-2);        
         static public Visualization vis;
         static public Navigation nav;
         static public SerialInterface com;

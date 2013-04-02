@@ -8,6 +8,8 @@ namespace Director
     public class Navigation
     {
         public List<NodeConnection> mines = new List<NodeConnection>();
+        public NodeConnection currentPos;
+        public List<NodeConnection> path = new List<NodeConnection>();
         //TODO static dll import all function from c dll pathfinder.dll
         //Import all functions
         /// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
@@ -79,8 +81,9 @@ namespace Director
                     c.Id = (uint)stage1[i];
                     stage2.Add(c);
                 }
-                Data.path.Clear();
+                Data.nav.path.Clear();
                 Coord? prev = null;
+                Data.nav.path.Add(new NodeConnection(new Coord(Data.entryCP),false));
                 foreach (Coord c in stage2)
                 {
                     if (prev == null)
@@ -90,10 +93,11 @@ namespace Director
                     else
                     {
                         NodeConnection nc = new NodeConnection((Coord)c, (Coord)prev);
-                        Data.path.Add(nc);
+                        path.Add(nc);
                         prev = c;
                     }
                 }
+                Data.nav.path.Add(new NodeConnection(new Coord(Data.exitCP), true));
             }
              //Update UI
             Data.db.UpdateProperty("PathLength");

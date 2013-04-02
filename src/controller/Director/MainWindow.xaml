@@ -5,7 +5,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400*"/>
-            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="110*"/>
         </Grid.ColumnDefinitions>
         <Canvas x:Name="fieldmapcanvas" Margin="10,10,2.4,24.8" ClipToBounds="True"/>       
         <StatusBar x:Name="statusBar" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
@@ -15,7 +15,7 @@
             <StatusBarItem Content="{Binding PathLength, Mode=OneWay}" Width="97" x:Name="statusBarPathLength" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <StatusBarItem Content="{Binding CurrentPosText, Mode=OneWay}" Width="97" x:Name="statusBarRobotPos" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
         </StatusBar>
-        <StackPanel Margin="2" HorizontalAlignment="Stretch" Grid.Column="1">
+        <StackPanel Margin="1.8,2,1.6,82.4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
             <GroupBox Header="SerialInterface">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Label Target="{Binding ElementName=comPortsComboBox}" Content="COM Port:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
@@ -46,10 +46,18 @@
                     <Button x:Name="TestDrawButton" Content="Draw Field" Margin="2" Height="20" Click="TestDrawButton_Click" IsEnabled="False"/>
                     <Button x:Name="findPathButton" Content="Find Path" Margin="2" Height="20" IsEnabled="False" Click="findPathButton_Click"/>
                     <Button x:Name="destroyButton" Content="Destroy" Margin="2" Height="20" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
+                    <Button x:Name="resetButton" Content="Reset" Margin="2" Height="20" Click="resetButton_Click"/>
                 </StackPanel>
             </GroupBox>
+            
 
         </StackPanel>
-
+        <TextBlock TextWrapping="Wrap" FontSize="9" Margin="0.4,0,0.6,25.4" Grid.Column="1" HorizontalAlignment="Stretch" Height="60" VerticalAlignment="Bottom">
+            Canvas controls:
+            <LineBreak/>
+            Mines: click = set/unset, rclick = set/unset Pos;
+            <LineBreak/>
+            Controlposts: click = set Entry, rclick = set Exit
+        </TextBlock>
     </Grid>
 </Window>
