@@ -83,7 +83,7 @@ namespace Director
                 }
                 Data.nav.path.Clear();
                 Coord? prev = null;
-                Data.nav.path.Add(new NodeConnection(new Coord(Data.entryCP),false));
+                //Data.nav.path.Add(new NodeConnection(new Coord(Data.entryCP),false)); //Not needed anymore (currentPos impelmented)
                 foreach (Coord c in stage2)
                 {
                     if (prev == null)
@@ -106,17 +106,9 @@ namespace Director
         //TODO controlPosts ID or someway of defining them.
         public int findPath()
         {
-            //TODO entry
-            Coord entry = new Coord(Data.entryCP);
+            Coord entry = currentPos.To;
             Coord exit = new Coord(Data.exitCP);
             int res = updatePath(entry.Id, exit.Id);
-            getPath();
-            return res;
-        }
-        public int findPath(NodeConnection currentPos)
-        {
-            Coord exit = new Coord(Data.exitCP);
-            int res = updatePath(currentPos.From.Id, exit.Id);
             getPath();
             return res;
         }
