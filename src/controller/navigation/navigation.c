@@ -12,16 +12,6 @@ __declspec(dllexport) int __stdcall initNavigation(unsigned int m, unsigned int 
 	return init(m, n);
 }
 
-/*__declspec(dllexport) int __stdcall getNumberofMines(void) {
-	//return int the is number of mines.
-	return 0;
-}
-
-__declspec(dllexport) int __stdcall getNumberofNodes(void) {
-	//return int the is number of Nodes.
-	return 0;
-}*/
-
 __declspec(dllexport) int __stdcall clearMines() {
 	unsigned int i;
 	for(i=0;i<numNodes;i++){
@@ -40,7 +30,6 @@ __declspec(dllexport) int __stdcall setMineC(unsigned int X1, unsigned int Y1, u
 	unsigned int id1 = Y1*m+X1;
 	unsigned int id2 = Y2*m+X2;
 	printf("Adding mine between %d;%d (%d) and %d;%d (%d).\n",X1,Y1,id1,X2,Y2,id2);
-	//return setMine(getNodeC(X1,Y1),getNodeC(X2,Y2),mine);	
 	return setMineI(id1,id2,mine);
 }
 
@@ -56,8 +45,7 @@ __declspec(dllexport) unsigned int __stdcall getPathLength() {
 __declspec(dllexport) int __stdcall extractPath(int *pathout) {
 	unsigned int i;
 	if(path){
-		printf("Extracting path....\n");
-		//pathout = (unsigned int*)safeMalloc(sizeof(unsigned int)*(length+1));		
+		printf("Extracting path....\n");		
 		for (i=0; i<=length; i++)
 		{
 			pathout[i]=path[i]->id;

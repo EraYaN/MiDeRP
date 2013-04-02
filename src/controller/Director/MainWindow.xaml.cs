@@ -30,6 +30,8 @@ namespace Director
             InitializeComponent();
             statusBarMineNumber.DataContext = Data.db;
             statusBarComPort.DataContext = Data.db;
+            statusBarPathLength.DataContext = Data.db;
+            statusBarRobotPos.DataContext = Data.db;
         }
 
         private void TestDrawButton_Click(object sender, RoutedEventArgs e)
@@ -82,8 +84,10 @@ namespace Director
             }
                  
             Data.db.UpdateProperty("MineCount");
+            Data.db.UpdateProperty("PathLength");
             Data.db.UpdateProperty("SerialPortStatus");
             Data.db.UpdateProperty("SerialPortStatusColor");
+            Data.db.UpdateProperty("CurrentPosText");
             //enable buttons
             findPathButton.IsEnabled = true;
             TestDrawButton.IsEnabled = true;

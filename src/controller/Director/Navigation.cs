@@ -95,7 +95,8 @@ namespace Director
                     }
                 }
             }
-             //nodeconnections
+             //Update UI
+            Data.db.UpdateProperty("PathLength");
             return res;
         }
         //TODO controlPosts ID or someway of defining them.

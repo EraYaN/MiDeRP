@@ -20,17 +20,22 @@ namespace Director
         Canvas c;        
         double marginlarge = 80;
         double marginsmall = 30;
-        double mineradius = 8;
+        double mineradius = 16;
         double controlpointsize = 20;
         double pathArrowHeadHeight = 2;
         double pathArrowHeadWidth = 10;
         double pathArrowThickness = 3;
+        double currentPosArrowHeadHeight = 8;
+        double currentPosArrowHeadWidth = 10;
+        double currentPosArrowThickness = 5;
+        double currentPosArrowLength = 0.5; // piece of xstep of ystep
         double lineThickness = 1;
         Brush lineBrush = Brushes.Black;
         Brush noMineBrush = Brushes.Black;
         Brush entryBrush = Brushes.Green;
         Brush mineBrush = Brushes.Red;
         Brush pathBrush = Brushes.BlueViolet;
+        Brush currentPosBrush = Brushes.ForestGreen;
         Brush exitBrush = Brushes.Blue;
         public Visualization(Canvas _c)
         {
@@ -195,8 +200,7 @@ namespace Director
             }
         }
         private void DrawPath(double xstep, double ystep)
-        {
-            //TODO show path.
+        {            
             if (Data.path.Count>0)
             {
                 foreach (NodeConnection nc in Data.path)
@@ -216,6 +220,56 @@ namespace Director
                     c.Children.Add(arr);
                 }
             }            
+        }
+        private void DrawCurrent(double xstep, double ystep)
+        {
+            if (Data.currentPos.To != Data.currentPos.From)
+            {
+                Arrow arr = new Arrow();
+                Point N1 = getCanvasCoordinates(Data.currentPos.From, xstep, ystep);
+                Point N2 = getCanvasCoordinates(Data.currentPos.To, xstep, ystep);
+                if (Data.currentPos.From.X == Data.currentPos.To.X)
+                {
+                    arr.X1 = N1.X;
+                    arr.X2 = N2.X;
+                    if (N1.Y > N2.Y)
+                    {
+                        arr.Y1 = c.ActualHeight - N1.Y + ystep * currentPosArrowLength / 2;
+                        arr.Y2 = c.ActualHeight - N2.Y - ystep * currentPosArrowLength / 2;
+                    }
+                    else
+                    {
+                        arr.Y1 = c.ActualHeight - N1.Y - ystep * currentPosArrowLength / 2;
+                        arr.Y2 = c.ActualHeight - N2.Y + ystep * currentPosArrowLength / 2;
+                    }
+                }
+                else if (Data.currentPos.From.Y == Data.currentPos.To.Y)
+                {
+
+                    if (N1.X < N2.X)
+                    {
+                        arr.X1 = N1.X + xstep * currentPosArrowLength / 2;
+                        arr.X2 = N2.X - xstep * currentPosArrowLength / 2;
+                    }
+                    else
+                    {
+                        arr.X1 = N1.X - xstep * currentPosArrowLength / 2;
+                        arr.X2 = N2.X + xstep * currentPosArrowLength / 2;
+                    }
+                    arr.Y1 = c.ActualHeight - N1.Y;
+                    arr.Y2 = c.ActualHeight - N2.Y;
+                }
+                else
+                {
+                    //invalid currentPos
+                }
+                arr.Stroke = currentPosBrush;
+                arr.HeadHeight = currentPosArrowHeadHeight;
+                arr.HeadWidth = currentPosArrowHeadWidth;
+                arr.StrokeThickness = currentPosArrowThickness;
+                arr.IsHitTestVisible = false;
+                c.Children.Add(arr);                
+            }
         }
         private Point getCanvasCoordinates(Coord node, double xstep, double ystep)
         {
@@ -245,21 +299,40 @@ namespace Director
             Ellipse circle = (Ellipse)e.OriginalSource;
             NodeConnection ml = Data.GetMineLocation(circle);
             NodeConnection ml2 = new NodeConnection(ml.From, ml.To);
-            if (Data.nav.mines.Contains(ml))
-            {
-                Data.nav.mines.Remove(ml);
+            if (e.ChangedButton == MouseButton.Left)
+            {                
+                if (Data.nav.mines.Contains(ml))
+                {
+                    Data.nav.mines.Remove(ml);
+                }
+                else if (Data.nav.mines.Contains(ml))
+                {
+                    Data.nav.mines.Remove(ml2);
+                }
+                else
+                {
+                    Data.nav.mines.Add(ml);
+                }
+                Data.db.UpdateProperty("MineCount");
             }
-            else if (Data.nav.mines.Contains(ml))
+            else if(e.ChangedButton == MouseButton.Right)
             {
-                Data.nav.mines.Remove(ml2);
+                if (Data.currentPos == ml)
+                {
+                    Data.currentPos = ml2;
+                }
+                else if (Data.currentPos == ml)
+                {
+                    Data.currentPos = ml;
+                }
+                else
+                {
+                    Data.currentPos = ml;
+                }
+                Data.db.UpdateProperty("CurrentPosText");
             }
-            else
-            {
-                Data.nav.mines.Add(ml);
-            }
-
             Data.vis.DrawField();
-            Data.db.UpdateProperty("MineCount");
+           
         }
         public void DrawField()
         {
@@ -321,6 +394,7 @@ namespace Director
             DrawMines(Data.M, Data.N - 1, xstep, ystep);
             DrawControlpoints(xstep, ystep);
             DrawPath(xstep, ystep);
+            DrawCurrent(xstep, ystep);
         }
     }
 }

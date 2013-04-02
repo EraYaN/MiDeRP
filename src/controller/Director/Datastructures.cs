@@ -6,7 +6,8 @@ using System.Windows.Media;
 
 namespace Director
 {
-    public struct Coord{
+    public struct Coord : IEquatable<Coord>
+    {
         public uint X;
         public uint Y;
         public Coord(uint x, uint y)
@@ -57,8 +58,28 @@ namespace Director
             get { return Data.M * Y + X; }
             set { X = value % Data.M; Y = (uint)Math.Floor((decimal)value / Data.M); }
         }
+        public override bool Equals(Object obj)
+        {
+            return obj is Coord && this == (Coord)obj;
+        }
+        public bool Equals(Coord other)
+        {
+            return this == other;
+        }
+        public override int GetHashCode()
+        {
+            return X.GetHashCode() ^ Y.GetHashCode();
+        }
+        public static bool operator ==(Coord a, Coord b)
+        {
+            return a.X == b.X && a.Y == b.Y;
+        }
+        public static bool operator !=(Coord a, Coord b)
+        {
+            return !(a == b);
+        }
     }
-    public struct NodeConnection
+    public struct NodeConnection : IEquatable<NodeConnection>
     {
         public Coord To;
         public Coord From;
@@ -67,7 +88,30 @@ namespace Director
             To = to;
             From = from;
         }
-    }    
+        public bool IsSame(NodeConnection other){
+            return (other.From == this.From && other.To == this.To) || (other.To == this.From && other.From == this.To);
+        }
+        public override bool Equals(Object obj)
+        {
+            return obj is NodeConnection && this == (NodeConnection)obj;
+        }
+        public bool Equals(NodeConnection other)
+        {
+            return this == other;
+        }
+        public override int GetHashCode()
+        {
+            return From.GetHashCode() ^ To.GetHashCode();
+        }
+        public static bool operator ==(NodeConnection a, NodeConnection b)
+        {
+            return a.From == b.From && a.To == b.To;
+        }
+        public static bool operator !=(NodeConnection a, NodeConnection b)
+        {
+            return !(a == b);
+        }
+    }
     public class Databindings : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -82,6 +126,34 @@ namespace Director
                 else
                 {
                     return "??";
+                }
+            }
+        }
+        public string PathLength
+        {
+            get
+            {
+                if (Data.path != null&&Data.path.Count > 0)
+                {
+                    return "Path length: "+Data.path.Count.ToString();
+                }
+                else
+                {
+                    return "No Path";
+                }
+            }
+        }
+        public string CurrentPosText
+        {
+            get
+            {
+                if (Data.currentPos.From!=Data.currentPos.To)
+                {
+                    return "(" + Data.currentPos.From.X + "," + Data.currentPos.From.Y + ") -> (" + Data.currentPos.To.X + "," + Data.currentPos.To.Y + ")";
+                }
+                else
+                {
+                    return "Unkown";
                 }
             }
         }
@@ -128,7 +200,7 @@ namespace Director
                     return Brushes.OrangeRed;
                 }
             }            
-        }
+        }        
         public void UpdateProperty(string name)
         {
             OnPropertyChanged(name);
@@ -140,15 +212,15 @@ namespace Director
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
-        }
+        }               
     }
     public static class Data 
     {        
         public static Databindings db = new Databindings();
         public static string ComPort = "COM1";
         public static int BaudRate = 9600;
-        public const uint M = 15;
-        public const uint N = 10;
+        public const uint M = 5;
+        public const uint N = 5;
         public const uint numNodes = M*N;
         public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
         public static uint entryCP = 1;
