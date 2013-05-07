@@ -1,24 +1,48 @@
 CommandLine-Map
 
 s
+CommandLine-Map
+
+-
 CommandLine-Ngdbuild
 C:\Program Files\Xilinx\11.1\ISE\bin\nt\unwrapped\ngdbuild.exe -ise robot.ise -intstyle ise -dd _ngo -nt timestamp -i -p xc3s250e-cp132-4 system.ngc system.ngd
 s
+CommandLine-Ngdbuild
+C:\Program Files\Xilinx\11.1\ISE\bin\nt\unwrapped\ngdbuild.exe -ise robot.ise -intstyle ise -dd _ngo -nt timestamp -i -p xc3s250e-cp132-4 system.ngc system.ngd
+-
 CommandLine-Par
+
+s
+CommandLine-Par
+
+-
+CommandLine-Xst
 
 s
 CommandLine-Xst
 
+-
+Previous-NGD
+
 s
 Previous-NGD
+
+-
+Previous-NGM
 
 s
 Previous-NGM
 
+-
+Previous-Packed-NCD
+
 s
 Previous-Packed-NCD
+
+-
+Previous-Routed-NCD
 
 s
 Previous-Routed-NCD
 
-s
+-
