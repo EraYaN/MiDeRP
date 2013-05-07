@@ -13,7 +13,7 @@
             <StatusBarItem Width="40" Content="mines" x:Name="statusBarMineText" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
             <StatusBarItem Width="40" Content="{Binding SerialPortStatus, Mode=OneWay}" Foreground="{Binding SerialPortStatusColor, Mode=OneWay}" x:Name="statusBarComPort" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <StatusBarItem Content="{Binding PathLength, Mode=OneWay}" Width="97" x:Name="statusBarPathLength" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <StatusBarItem Content="{Binding CurrentPosText, Mode=OneWay}" Width="97" x:Name="statusBarRobotPos" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+            <StatusBarItem Content="{Binding CurrentPosText, Mode=OneWay}" Width="97" x:Name="statusBarRobotPos" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>            
         </StatusBar>
         <StackPanel Margin="1.8,2,1.6,82.4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
             <GroupBox Header="Serial Interface">
@@ -42,19 +42,20 @@
             </GroupBox>
             <GroupBox Header="Path Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button x:Name="startInitButton" Content="Start Init" Margin="2" Height="20" Click="startInitButton_Click" IsDefault="True"/>
-                    <Button x:Name="TestDrawButton" Content="Draw Field" Margin="2" Height="20" Click="TestDrawButton_Click" IsEnabled="False"/>
-                    <Button x:Name="findPathButton" Content="Find Path" Margin="2" Height="20" IsEnabled="False" Click="findPathButton_Click"/>
-                    <Button x:Name="destroyButton" Content="Destroy" Margin="2" Height="20" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
-                    <Button x:Name="resetButton" Content="Reset" Margin="2" Height="20" Click="resetButton_Click"/>
+                    <Button x:Name="startInitButton" Content="Start Init" Margin="2" Click="startInitButton_Click" IsDefault="True"/>
+                    <Button x:Name="TestDrawButton" Content="Draw Field" Margin="2" Click="TestDrawButton_Click" IsEnabled="False"/>
+                    <Button x:Name="findPathButton" Content="Find Path" Margin="2" IsEnabled="False" Click="findPathButton_Click"/>
+                    <Button x:Name="destroyButton" Content="Destroy" Margin="2" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
+                    <Button x:Name="resetButton" Content="Reset" Margin="2" Click="resetButton_Click"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Robot Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Height="20" Click="startRobotButton_Click" IsDefault="True"/>
+                    <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click"/>
+                    <Button x:Name="abortRobotButton" Content="Abort" Margin="2"/>
                 </StackPanel>
             </GroupBox>
-            
+
 
         </StackPanel>
         <TextBlock TextWrapping="Wrap" FontSize="9" Margin="0.4,0,0.6,25.4" Grid.Column="1" HorizontalAlignment="Stretch" Height="60" VerticalAlignment="Bottom">
