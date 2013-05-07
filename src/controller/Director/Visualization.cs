@@ -18,25 +18,25 @@ namespace Director
     public class Visualization
     {
         Canvas c;        
-        double marginlarge = 80;
-        double marginsmall = 30;
-        double mineradius = 16;
-        double controlpointsize = 20;
-        double pathArrowHeadHeight = 2;
-        double pathArrowHeadWidth = 10;
-        double pathArrowThickness = 3;
-        double currentPosArrowHeadHeight = 8;
-        double currentPosArrowHeadWidth = 10;
-        double currentPosArrowThickness = 5;
-        double currentPosArrowLength = 0.5; // piece of xstep of ystep
-        double lineThickness = 1;
-        Brush lineBrush = Brushes.Black;
-        Brush noMineBrush = Brushes.Black;
-        Brush entryBrush = Brushes.Green;
-        Brush mineBrush = Brushes.Red;
-        Brush pathBrush = Brushes.BlueViolet;
-        Brush currentPosBrush = Brushes.ForestGreen;
-        Brush exitBrush = Brushes.Blue;
+        const double marginlarge = 80;
+        const double marginsmall = 30;
+        const double mineradius = 16;
+        const double controlpointsize = 20;
+        const double pathArrowHeadHeight = 2;
+        const double pathArrowHeadWidth = 10;
+        const double pathArrowThickness = 3; 
+        const double currentPosArrowHeadHeight = 8;
+        const double currentPosArrowHeadWidth = 10;
+        const double currentPosArrowThickness = 5;
+        const double currentPosArrowLength = 0.5; // piece of xstep of ystep; true length = this * xstep or ystep
+        const double lineThickness = 1;
+        readonly Brush lineBrush = Brushes.Black;
+        readonly Brush noMineBrush = Brushes.Black;
+        readonly Brush entryBrush = Brushes.Green;
+        readonly Brush mineBrush = Brushes.Red;
+        readonly Brush pathBrush = Brushes.BlueViolet;
+        readonly Brush currentPosBrush = Brushes.ForestGreen;
+        readonly Brush exitBrush = Brushes.Blue;
         public Visualization(Canvas _c)
         {
             //Constructor
