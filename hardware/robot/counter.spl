@@ -1,0 +1,6 @@
+[Inputs]
+clk
+reset
+[Outputs]
+=count_out[19:0]=
+[BiDir]

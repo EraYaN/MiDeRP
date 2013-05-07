@@ -1,0 +1,7 @@
+NET "clk" LOC = B8;
+NET "pwm_motor_l" LOC = A9;
+NET "pwm_motor_r" LOC = B9;
+NET "reset" LOC = G12;
+NET "sensor_l_in" LOC = A3;
+NET "sensor_m_in" LOC = J3;
+NET "sensor_r_in" LOC = B5;

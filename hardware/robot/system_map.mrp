@@ -1,0 +1,261 @@
+Release 11.1 Map L.33 (nt)
+Xilinx Mapping Report File for Design 'system'
+
+Design Information
+------------------
+Command Line   : map -ise robot.ise -intstyle ise -p xc3s250e-cp132-4 -cm area
+-ir off -pr off -c 100 -o system_map.ncd system.ngd system.pcf 
+Target Device  : xc3s250e
+Target Package : cp132
+Target Speed   : -4
+Mapper Version : spartan3e -- $Revision: 1.51 $
+Mapped Date    : Tue May 07 14:31:19 2013
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:   14
+Logic Utilization:
+  Total Number Slice Registers:          86 out of   4,896    1%
+    Number used as Flip Flops:           74
+    Number used as Latches:              12
+  Number of 4 input LUTs:               183 out of   4,896    3%
+Logic Distribution:
+  Number of occupied Slices:            132 out of   2,448    5%
+    Number of Slices containing only related logic:     132 out of     132 100%
+    Number of Slices containing unrelated logic:          0 out of     132   0%
+      *See NOTES below for an explanation of the effects of unrelated logic.
+  Total Number of 4 input LUTs:         227 out of   4,896    4%
+    Number used as logic:               183
+    Number used as a route-thru:         44
+
+  The Slice Logic Distribution report is not meaningful if the design is
+  over-mapped for a non-slice resource or if Placement fails.
+
+  Number of bonded IOBs:                 20 out of      92   21%
+    IOB Latches:                          3
+  Number of BUFGMUXs:                     1 out of      24    4%
+  Number of MULT18X18SIOs:                2 out of      12   16%
+
+Average Fanout of Non-Clock Nets:                2.57
+
+Peak Memory Usage:  217 MB
+Total REAL time to MAP completion:  4 secs 
+Total CPU time to MAP completion:   1 secs 
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group and Partition Summary
+Section 10 - Modular Design Summary
+Section 11 - Timing Report
+Section 12 - Configuration String Information
+Section 13 - Control Set Information
+Section 14 - Utilization by Hierarchy
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+WARNING:Security:43 - No license file was found in the standard Xilinx license
+directory.
+WARNING:Security:44 - No license file was found.
+WARNING:Security:42 - Your license support version '2013.03' for ISE expires in
+-37 days.
+WARNING:MapLib:701 - Signal an<3> connected to top level port an<3> has been
+   removed.
+WARNING:MapLib:701 - Signal an<2> connected to top level port an<2> has been
+   removed.
+WARNING:MapLib:701 - Signal an<1> connected to top level port an<1> has been
+   removed.
+WARNING:MapLib:701 - Signal an<0> connected to top level port an<0> has been
+   removed.
+WARNING:MapLib:701 - Signal seg<7> connected to top level port seg<7> has been
+   removed.
+WARNING:MapLib:701 - Signal seg<6> connected to top level port seg<6> has been
+   removed.
+WARNING:MapLib:701 - Signal seg<3> connected to top level port seg<3> has been
+   removed.
+WARNING:MapLib:701 - Signal seg<2> connected to top level port seg<2> has been
+   removed.
+WARNING:MapLib:701 - Signal seg<1> connected to top level port seg<1> has been
+   removed.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net C/nextturn_not0001 is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net C/sstate<0> is sourced by a
+   combinatorial pin. This is not good design practice. Use the CE pin to
+   control the loading of data into the flip-flop.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net C/rstate_not0001 is sourced
+   by a combinatorial pin. This is not good design practice. Use the CE pin to
+   control the loading of data into the flip-flop.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net C/next_state1_not0001 is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net C/uart_rw_0_not0001 is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
+
+Section 3 - Informational
+-------------------------
+INFO:Security:51 - The XILINXD_LICENSE_FILE environment variable is not set.
+INFO:Security:52 - The LM_LICENSE_FILE environment variable is set to
+'27017@flexserv1.tudelft.nl;27032@flexserv1.tudelft.nl'.
+INFO:Security:54 - 'xc3s250e' is a WebPack part.
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+  20 block(s) removed
+   2 block(s) optimized away
+  11 signal(s) removed
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic reported below is either:
+   1. part of a cycle
+   2. part of disabled logic
+   3. a side-effect of other trimmed logic
+
+The signal "SSEGS/Mrom_bin_rom0000" is unused and has been removed.
+ Unused block "SSEGS/Mrom_bin_rom000011_INV_0" (BUF) removed.
+  The signal "SSEGS/Mrom_bin_rom00003" is unused and has been removed.
+   Unused block "SSEGS/next_char_mux0003<0>" (ROM) removed.
+The signal "an<0>" is unused and has been removed.
+ Unused block "an_0_OBUF" (BUF) removed.
+The signal "an<1>" is unused and has been removed.
+ Unused block "an_1_OBUF" (BUF) removed.
+The signal "an<2>" is unused and has been removed.
+ Unused block "an_2_OBUF" (BUF) removed.
+The signal "an<3>" is unused and has been removed.
+ Unused block "an_3_OBUF" (BUF) removed.
+The signal "seg<1>" is unused and has been removed.
+ Unused block "seg_1_OBUF" (BUF) removed.
+The signal "seg<2>" is unused and has been removed.
+ Unused block "seg_2_OBUF" (BUF) removed.
+The signal "seg<3>" is unused and has been removed.
+ Unused block "seg_3_OBUF" (BUF) removed.
+The signal "seg<6>" is unused and has been removed.
+ Unused block "seg_6_OBUF" (BUF) removed.
+The signal "seg<7>" is unused and has been removed.
+ Unused block "seg_7_OBUF" (BUF) removed.
+Unused block "an<0>" (PAD) removed.
+Unused block "an<1>" (PAD) removed.
+Unused block "an<2>" (PAD) removed.
+Unused block "an<3>" (PAD) removed.
+Unused block "seg<1>" (PAD) removed.
+Unused block "seg<2>" (PAD) removed.
+Unused block "seg<3>" (PAD) removed.
+Unused block "seg<6>" (PAD) removed.
+Unused block "seg<7>" (PAD) removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		XST_GND
+VCC 		XST_VCC
+
+To enable printing of redundant blocks removed and signals merged, set the
+detailed map report option and rerun map.
+
+Section 6 - IOB Properties
+--------------------------
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | Type             | Direction | IO Standard          | Diff  | Drive    | Slew | Reg (s)      | Resistor | IOB      |
+|                                    |                  |           |                      | Term  | Strength | Rate |              |          | Delay    |
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| clk                                | IBUF             | INPUT     | LVCMOS25             |       |          |      |              |          | 0 / 0    |
+| led<0>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF1         |          | 0 / 0    |
+| led<1>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF1         |          | 0 / 0    |
+| led<2>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| led<3>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| led<4>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| led<5>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW | OFF1         |          | 0 / 0    |
+| led<6>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| led<7>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| reset                              | IBUF             | INPUT     | LVCMOS25             |       |          |      |              |          | 0 / 0    |
+| rx                                 | IBUF             | INPUT     | LVCMOS25             |       |          |      |              |          | 0 / 0    |
+| seg<0>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| seg<4>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| seg<5>                             | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| sensor<0>                          | IBUF             | INPUT     | LVCMOS25             |       |          |      |              |          | 0 / 0    |
+| sensor<1>                          | IBUF             | INPUT     | LVCMOS25             |       |          |      |              |          | 0 / 0    |
+| sensor<2>                          | IBUF             | INPUT     | LVCMOS25             |       |          |      |              |          | 0 / 0    |
+| servo<0>                           | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| servo<1>                           | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
+| tx                                 | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          | 0 / 0    |
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group and Partition Summary
+--------------------------------------------
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Area Group Information
+----------------------
+
+  No area groups were found in this design.
+
+----------------------
+
+Section 10 - Modular Design Summary
+-----------------------------------
+Modular Design not used for this design.
+
+Section 11 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 12 - Configuration String Details
+-----------------------------------------
+Use the "-detail" map option to print out Configuration Strings
+
+Section 13 - Control Set Information
+------------------------------------
+No control set information for this architecture.
+
+Section 14 - Utilization by Hierarchy
+-------------------------------------
+Use the "-detail" map option to print out the Utilization by Hierarchy section.
