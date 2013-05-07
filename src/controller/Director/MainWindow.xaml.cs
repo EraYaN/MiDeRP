@@ -97,6 +97,24 @@ namespace Director
             baudRateComboBox.IsEnabled = false;
         }
 
+		private void startRobotButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (Data.com == null)
+			{
+				MessageBox.Show("No serial connection found, no robot");
+				return;
+			}
+			
+			if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
+			{
+				MessageBox.Show("No path, robot will not start");
+				return;
+			}
+
+
+
+		}
+
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
             //Test respons

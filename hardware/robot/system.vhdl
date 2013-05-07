@@ -53,6 +53,7 @@ architecture structural of system is
 	component ssegdecoder is
 		port(
 			clk	: in	std_logic;
+			reset : in std_logic;
 			bin_input : in STD_LOGIC_VECTOR (15 downto 0);
 			dpoint : in std_logic_vector(3 downto 0);
 			segments : out STD_LOGIC_VECTOR (7 downto 0);-- "DP,G,F,E,D,C,B,A"
@@ -169,7 +170,8 @@ begin
 		segments => seg,
 		dpoint => dpoint_seg,
 		bin_input => bin_seg,
-		anodes=>an
+		anodes => an,
+		reset => reset
 	);
 	UARTL: uart port map (
 		clk	=>	clk,
