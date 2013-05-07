@@ -7,21 +7,37 @@ using System.Threading.Tasks;
 
 namespace Director
 {
-	public enum ByteCodes : byte { forward = 0x46, stop = 0x53, left = 0x4c, right = 0x52 };
+	public enum StatusByteCode : byte { 
+		Unknown = 0x00,
+		Forward = 0x46, 
+		Stop = 0x53, 
+		Left = 0x4c, 
+		Right = 0x52, 
+		Acknowledged = 0x06, 
+		NotAcknowledged = 0x15,
+		Enquiry = 0x05,
+		MineDetected = 0x07,
+		Done = 0x04
+	};
 
 	public class Controller
 	{
-		private byte _receivedByte;
+		private StatusByteCode _receivedByte;
 		
-		public void Controller()
+		public Controller()
 		{
 			Data.com.SerialDataEvent += com_SerialDataEvent;
 		}
 
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
-			//throw new NotImplementedException();
-			_receivedByte = e.DataByte;
+			uint i = 0;
+			_receivedByte = (StatusByteCode)e.DataByte;
+
+			if (_receivedByte == StatusByteCode.Enquiry)
+			{
+				//Robot asks for new directions
+			}
 		}
 	}
 }
