@@ -11,21 +11,21 @@ architecture structural of timebase_tb is
 		port (	clk		: in	std_logic;
 			reset		: in	std_logic;
 
-			count_out	: out	std_logic_vector (19 downto 0)
+			count_out	: out	unsigned (19 downto 0)
 		);
 	end component counter;
 	
 	signal clk			: 	std_logic;
 	signal reset		:	std_logic := '1' ;
-	signal count_out	:	std_logic_vector (19 downto 0);
+	signal count_out	:	unsigned (19 downto 0);
 	
 begin
 
 	clk		<=	'1' after 0 ns,
 				'0' after 10 ns when clk /= '0' else '1' after 10 ns;
 	reset	<=	'0' after 40 ns,
-				'1' after 20000000 ns,
-				'0' after 20000040 ns;
+				'1' after 27574768 ns,
+				'0' after 27574808 ns;
 
 l1:	counter port map (
 					clk		=>	clk,

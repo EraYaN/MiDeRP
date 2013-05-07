@@ -6,7 +6,7 @@ entity counter is
 	port (	clk		: in	std_logic;
 		reset		: in	std_logic;
 
-		count_out	: out	std_logic_vector (19 downto 0)
+		count_out	: out	unsigned (19 downto 0)
 	);
 end entity counter;
 
@@ -19,7 +19,7 @@ begin
 	process (clk)
 	begin
 		if (rising_edge (clk)) then
-			if (reset = '1') then
+			if (reset = '1' or count >= 999999) then
 				count	<= (others => '0');	-- zet op 0 bij reset
 			else
 				count	<= new_count;
@@ -34,6 +34,6 @@ begin
 	end process;
 
 	-- Met deze regel wordt de count-waarde naar buiten gebracht
-	count_out	<= std_logic_vector (count);
+	count_out	<= count;
 
 end architecture behavioural;
