@@ -43,11 +43,13 @@ namespace Director
             //constructor
             initNavigation(Data.M, Data.N);
         }
+
         ~Navigation()
         {
             //constructor
             closeNavigation();
         }
+
         public int SetMinesInDLL(){
             if (clearMines() != 0)
             {
@@ -59,6 +61,7 @@ namespace Director
             }
             return 0;
         }
+
         public int getPath()
         {
             //TODO             
@@ -103,6 +106,7 @@ namespace Director
             Data.db.UpdateProperty("PathLength");
             return res;
         }
+
         //TODO controlPosts ID or someway of defining them.
         public int findPath()
         {

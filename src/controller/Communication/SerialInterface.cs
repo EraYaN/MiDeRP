@@ -125,13 +125,15 @@ namespace Director
                 //EOF char
             }
             throw new NotImplementedException();
-        }        
+        }
+    
         void DataSerial(Byte b, SerialDataReceivedEventArgs e)
         {
             // Do something before the event…
             OnSerialDataChanged(new SerialDataEventArgs(b,e));
             // or do something after the event. 
         }
+
         protected virtual void OnSerialDataChanged(SerialDataEventArgs e)
         {
             if (SerialDataEvent != null)

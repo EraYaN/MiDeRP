@@ -16,7 +16,7 @@
             <StatusBarItem Content="{Binding CurrentPosText, Mode=OneWay}" Width="97" x:Name="statusBarRobotPos" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
         </StatusBar>
         <StackPanel Margin="1.8,2,1.6,82.4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
-            <GroupBox Header="SerialInterface">
+            <GroupBox Header="Serial Interface">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Label Target="{Binding ElementName=comPortsComboBox}" Content="COM Port:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
                     <ComboBox x:Name="comPortsComboBox" Height="20" DropDownOpened="comPortsComboBox_DropDownOpened" Padding="4,0,0,0" VerticalContentAlignment="Center" Margin="2"/>
@@ -40,13 +40,18 @@
                     </ComboBox>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Controls">
+            <GroupBox Header="Path Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Button x:Name="startInitButton" Content="Start Init" Margin="2" Height="20" Click="startInitButton_Click" IsDefault="True"/>
                     <Button x:Name="TestDrawButton" Content="Draw Field" Margin="2" Height="20" Click="TestDrawButton_Click" IsEnabled="False"/>
                     <Button x:Name="findPathButton" Content="Find Path" Margin="2" Height="20" IsEnabled="False" Click="findPathButton_Click"/>
                     <Button x:Name="destroyButton" Content="Destroy" Margin="2" Height="20" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
                     <Button x:Name="resetButton" Content="Reset" Margin="2" Height="20" Click="resetButton_Click"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Robot Controls">
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Height="20" Click="startRobotButton_Click" IsDefault="True"/>
                 </StackPanel>
             </GroupBox>
             
