@@ -24,14 +24,17 @@ namespace Director
 	{
 		Unknown,
 		Left,
-		Right,
 		Up,
+		Right,
 		Down
 	};
 
 	public class Controller
 	{
+		private bool _sentDirectiveIsUnacknowledged = false;
 		private StatusByteCode _receivedByte;
+		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
+		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 		private int _i = 0;
 		
 		public Controller()
@@ -40,51 +43,127 @@ namespace Director
 		}
 
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
-		{
-			Direction robotDirection; //current direction the robot is pointing in
-			Direction nextAbsoluteDirection; //next direction in terms of the XY grid
-			Direction nextRelativeDirection; //next direction relative to the robot's current one
-			NodeConnection nextNodeConnection;
-
+		{	
 			_receivedByte = (StatusByteCode)e.DataByte;
-
-			if (_i == 0)
-			{
-				//First run, robot is still outside of field
-
-			}
 
 			if (_receivedByte == StatusByteCode.Enquiry)
 			{
-				//Robot asks for new directions
-				nextNodeConnection = Data.nav.path[_i];
+				if (_sentDirectiveIsUnacknowledged == true)
+				{
+					//Out of sync
+					//TODO: Handle this
+					return;
+				}
 
-				if ((int)nextNodeConnection.From.X - (int)nextNodeConnection.To.X >= 1)
+				getNextDirective();
+				Data.com.SendByte((byte)_nextDirective);
+				_sentDirectiveIsUnacknowledged = true;
+			}
+			else if (_receivedByte == StatusByteCode.Acknowledged)
+			{
+				_i++; //Advance to next item in path
+				_sentDirectiveIsUnacknowledged = false;
+			}
+			else if (_receivedByte == StatusByteCode.NotAcknowledged)
+			{
+				//Resend directives
+				Data.com.SendByte((byte)_nextDirective);
+			}
+			else if (_receivedByte == StatusByteCode.MineDetected)
+			{
+				//Detected mine
+				//TODO: Handle this
+			}
+			else if (_receivedByte == StatusByteCode.NotAcknowledged)
+			{
+				//Finished
+				//TODO: Handle this
+			}
+			else
+			{
+				//Ignore all others?
+				return;
+			}
+		}
+
+		private void getNextDirective()
+		{
+			Direction nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
+			StatusByteCode nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
+			NodeConnection nextNodeConnection;
+
+			//Robot asks for new directions
+			nextNodeConnection = Data.nav.path[_i];
+
+			//Find initial direction
+			if (_i == 0)
+			{
+				//Amount of control posts on horizontal sides is m - 2, on vertical sides n - 2, placing is counterclockwise, starting from bottom left (1)
+				if (Data.entryCP < (Data.numControlPosts - (Data.N - 2)))
 				{
-					//Next destination is left of origin
-					nextAbsoluteDirection = Direction.Left;
+					//entryCP is at left side
+					_robotDirection = Direction.Right;
 				}
-				if ((int)nextNodeConnection.From.X - (int)nextNodeConnection.To.X <= -1)
+				else if (Data.entryCP < (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
 				{
-					//Next destination is right of origin
-					nextAbsoluteDirection = Direction.Right;
+					//entryCP is at top side
+					_robotDirection = Direction.Down;
 				}
-				if ((int)nextNodeConnection.From.Y - (int)nextNodeConnection.To.Y <= -1)
+				else if (Data.entryCP < (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
 				{
-					//Next destination is above origin
-					nextAbsoluteDirection = Direction.Up;
+					//entryCP is at right side
+					_robotDirection = Direction.Left;
 				}
-				if ((int)nextNodeConnection.From.Y - (int)nextNodeConnection.To.Y >= 1)
+				else if (Data.entryCP < (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
 				{
-					//Next destination is under origin
-					nextAbsoluteDirection = Direction.Down;
+					//entryCP is at bottom side
+					_robotDirection = Direction.Up;
 				}
 				else
 				{
-					//Shit is pretty wrong
-					nextAbsoluteDirection = Direction.Unknown;
+					_robotDirection = Direction.Unknown;
 				}
+			}
 
+			//Determine next direction in the field
+			if ((int)nextNodeConnection.From.X - (int)nextNodeConnection.To.X >= 1)
+			{
+				//Next destination is left of origin
+				nextAbsoluteDirection = Direction.Left;
+			}
+			else if ((int)nextNodeConnection.From.X - (int)nextNodeConnection.To.X <= -1)
+			{
+				//Next destination is right of origin
+				nextAbsoluteDirection = Direction.Right;
+			}
+			else if ((int)nextNodeConnection.From.Y - (int)nextNodeConnection.To.Y <= -1)
+			{
+				//Next destination is above origin
+				nextAbsoluteDirection = Direction.Up;
+			}
+			else if ((int)nextNodeConnection.From.Y - (int)nextNodeConnection.To.Y >= 1)
+			{
+				//Next destination is under origin
+				nextAbsoluteDirection = Direction.Down;
+			}
+			else
+			{
+				//Shit is pretty wrong
+				nextAbsoluteDirection = Direction.Unknown;
+			}
+
+			//Determine the robot's next turn
+			if (nextAbsoluteDirection - _robotDirection == 1 || nextAbsoluteDirection - _robotDirection == -3)
+			{
+				nextDirective = StatusByteCode.Right;
+			}
+			else if (nextAbsoluteDirection - _robotDirection == -1 || nextAbsoluteDirection - _robotDirection == 3)
+			{
+				nextDirective = StatusByteCode.Left;
+			}
+			else
+			{
+				nextDirective = StatusByteCode.Forward;
 			}
 		}
 	}
