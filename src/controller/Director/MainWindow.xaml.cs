@@ -110,9 +110,6 @@ namespace Director
 				MessageBox.Show("No path, robot will not start");
 				return;
 			}
-
-
-
 		}
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)

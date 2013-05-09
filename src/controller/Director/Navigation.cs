@@ -46,7 +46,7 @@ namespace Director
 
         ~Navigation()
         {
-            //constructor
+            //destructor
             closeNavigation();
         }
 

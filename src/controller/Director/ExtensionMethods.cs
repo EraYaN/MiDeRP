@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Director
 {
-    class ExtensionMethods
+    static class ExtensionMethods
     {
-        public static StatusByteCode ToStatusByteCode(this Byte b)
-        {
-            var sbc = (StatusByteCode)b;
-            if (sbc == null)
-            {
-                return ToStatusByteCode.Unknown;
-            }
-            else
-            {
-                return sbc;
-            }
-        }
+		//public static StatusByteCode ToStatusByteCode(this Byte b)
+		//{
+		//	var sbc = (StatusByteCode)b;
+		//	if (sbc == null)
+		//	{
+		//		return ToStatusByteCode.Unknown;
+		//	}
+		//	else
+		//	{
+		//		return sbc;
+		//	}
+		//}
     }
 }

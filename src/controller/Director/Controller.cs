@@ -33,6 +33,7 @@ namespace Director
 	{
 		private bool _sentDirectiveIsUnacknowledged = false;
 		private StatusByteCode _receivedByte;
+		NodeConnection nextNodeConnection;
 		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 		private int _i = 0;
@@ -71,8 +72,11 @@ namespace Director
 			}
 			else if (_receivedByte == StatusByteCode.MineDetected)
 			{
-				//Detected mine
-				//TODO: Handle this
+				//Detected mine, add to list
+				Data.nav.mines.Add(Data.nav.path[_i - 1]);
+				Data.nav.SetMinesInDLL();
+				recalculatePath();
+				getNextDirective();
 			}
 			else if (_receivedByte == StatusByteCode.NotAcknowledged)
 			{
@@ -89,14 +93,12 @@ namespace Director
 		private void getNextDirective()
 		{
 			Direction nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
-			StatusByteCode nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
-			NodeConnection nextNodeConnection;
 
 			//Robot asks for new directions
 			nextNodeConnection = Data.nav.path[_i];
 
 			//Find initial direction
-			if (_i == 0)
+			if (_i == 0 && _robotDirection == Direction.Unknown)
 			{
 				//Amount of control posts on horizontal sides is m - 2, on vertical sides n - 2, placing is counterclockwise, starting from bottom left (1)
 				if (Data.entryCP < (Data.numControlPosts - (Data.N - 2)))
@@ -155,16 +157,22 @@ namespace Director
 			//Determine the robot's next turn
 			if (nextAbsoluteDirection - _robotDirection == 1 || nextAbsoluteDirection - _robotDirection == -3)
 			{
-				nextDirective = StatusByteCode.Right;
+				_nextDirective = StatusByteCode.Right;
 			}
 			else if (nextAbsoluteDirection - _robotDirection == -1 || nextAbsoluteDirection - _robotDirection == 3)
 			{
-				nextDirective = StatusByteCode.Left;
+				_nextDirective = StatusByteCode.Left;
 			}
 			else
 			{
-				nextDirective = StatusByteCode.Forward;
+				_nextDirective = StatusByteCode.Forward;
 			}
+		}
+
+		private void recalculatePath()
+		{
+			_i = 0;
+
 		}
 	}
 }
