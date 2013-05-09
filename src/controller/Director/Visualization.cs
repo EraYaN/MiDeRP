@@ -268,7 +268,7 @@ namespace Director
             }            
         }
 
-        private void DrawCurrentPosistion(double xstep, double ystep)
+        private void DrawCurrentPosition(double xstep, double ystep)
         {
             if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
             {
@@ -402,10 +402,10 @@ namespace Director
                 {
                     Data.nav.mines.Remove(ml);
                 }
-                else if (Data.nav.mines.Contains(ml))
-                {
-                    Data.nav.mines.Remove(ml2);
-                }
+				//else if (Data.nav.mines.Contains(ml)) //WTF IS THE DIFFERENCE
+				//{
+				//	Data.nav.mines.Remove(ml2);
+				//}
                 else
                 {
                     Data.nav.mines.Add(ml);
@@ -418,10 +418,10 @@ namespace Director
                 {
                     Data.nav.currentPos = ml2;
                 }
-                else if (Data.nav.currentPos == ml)
-                {
-                    Data.nav.currentPos = ml;
-                }
+				//else if (Data.nav.currentPos == ml) //WTF IS THE DIFFERENCE
+				//{
+				//	Data.nav.currentPos = ml;
+				//}
                 else
                 {
                     Data.nav.currentPos = ml;
@@ -492,7 +492,7 @@ namespace Director
             DrawMines(Data.M, Data.N - 1, xstep, ystep);
             DrawControlpoints(xstep, ystep);
             DrawPath(xstep, ystep);
-            DrawCurrentPosistion(xstep, ystep);
+            DrawCurrentPosition(xstep, ystep);
         }
     }
 }

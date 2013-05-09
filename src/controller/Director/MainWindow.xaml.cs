@@ -66,7 +66,7 @@ namespace Director
             if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
             {
                 Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
-                Data.BaudRate = (int)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
+				Data.BaudRate = int.Parse((string)((ComboBoxItem)baudRateComboBox.SelectedItem).Content);
                 if (Data.ComPort != "" && Data.BaudRate > 0)
                 {
                     int res = Data.com.OpenPort();
@@ -101,15 +101,17 @@ namespace Director
 		{
 			if (Data.com == null)
 			{
-				MessageBox.Show("No serial connection found, no robot");
+				MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 			
 			if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
 			{
-				MessageBox.Show("No path, robot will not start");
+				MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
+			//Start controller
+			Data.ctr = new Controller();
 		}
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
@@ -119,7 +121,7 @@ namespace Director
             if (e.innerEvent.EventType == SerialData.Chars)
             {
                 //echo die shit.
-                Data.com.SendByte(e.DataByte);
+           //     Data.com.SendByte(e.DataByte);
             }
             else
             {
@@ -139,6 +141,7 @@ namespace Director
             Data.nav = null;
             Data.com = null;
             Data.vis = null;
+			Data.ctr = null;
         }               
 
         private void comPortsComboBox_DropDownOpened(object sender, EventArgs e)

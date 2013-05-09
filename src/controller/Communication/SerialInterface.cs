@@ -124,7 +124,6 @@ namespace Director
             {
                 //EOF char
             }
-            throw new NotImplementedException();
         }
     
         void DataSerial(Byte b, SerialDataReceivedEventArgs e)

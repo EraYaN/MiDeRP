@@ -276,6 +276,7 @@ namespace Director
         static public Visualization vis;
         static public Navigation nav;
         static public SerialInterface com;
+		static public Controller ctr;
 
         public static readonly DependencyProperty MineLocationProperty = DependencyProperty.RegisterAttached(
           "MineLocation",
