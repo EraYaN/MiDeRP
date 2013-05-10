@@ -110,24 +110,29 @@ namespace Director
 				MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
+
+			if (Data.ctr != null)
+			{
+				MessageBoxResult result = MessageBox.Show("The controller is still running, exit and restart?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+				if (result == MessageBoxResult.Yes)
+				{
+
+					Data.ctr.Reset();
+					return;
+				}
+				else
+				{
+					return;
+				}
+			}
+
 			//Start controller
 			Data.ctr = new Controller();
 		}
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
-            //Test respons
-            //TODO proper respons.
-            if (e.innerEvent.EventType == SerialData.Chars)
-            {
-                //echo die shit.
-           //     Data.com.SendByte(e.DataByte);
-            }
-            else
-            {
-                //EOF niks terug sturen
-                //com.SendByte(e.DataByte);
-            }
+
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
@@ -163,15 +168,26 @@ namespace Director
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
-            Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP),false);
-            Data.nav.mines.Clear();
-            Data.nav.path.Clear();
-            Data.vis.DrawField();
-            Data.db.UpdateProperty("MineCount");
-            Data.db.UpdateProperty("PathLength");
-            Data.db.UpdateProperty("SerialPortStatus");
-            Data.db.UpdateProperty("SerialPortStatusColor");
-            Data.db.UpdateProperty("CurrentPosText");
+			if (Data.nav != null)
+			{
+				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
+				Data.nav.mines.Clear();
+				Data.nav.path.Clear();
+			}
+
+			if (Data.vis != null)
+			{
+				Data.vis.DrawField();
+			}
+
+			if (Data.db != null)
+			{
+				Data.db.UpdateProperty("MineCount");
+				Data.db.UpdateProperty("PathLength");
+				Data.db.UpdateProperty("SerialPortStatus");
+				Data.db.UpdateProperty("SerialPortStatusColor");
+				Data.db.UpdateProperty("CurrentPosText");
+			}
         }   
     }
 }

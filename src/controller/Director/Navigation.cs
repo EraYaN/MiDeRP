@@ -69,45 +69,40 @@ namespace Director
             IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
             int[] stage1 = new int[len+1];
             int res = extractPath(ptr);
-            
-            if (res == 0&&len>0&&ptr!=null)
-            {   
-                Marshal.Copy(ptr, stage1, 0, (int)len+1);                
-                Marshal.FreeHGlobal(ptr);
-                //Marshal.Copy(pointer, stage1, 0, (int)len);
-                //freeUnmanaged(pointer);
-                List<Coord> stage2 = new List<Coord>(); //node's
-                for (int i = 0; i < len+1; i++)
-                {
-                    //stage1[i] = (UInt32)Marshal.ReadInt32(pointer, sizeof(Int32) * i);
-                    Coord c = new Coord();
-                    c.Id = (uint)stage1[i];
-                    stage2.Add(c);
-                }
-                Data.nav.path.Clear();
-                Coord? prev = null;
-                //Data.nav.path.Add(new NodeConnection(new Coord(Data.entryCP),false)); //Not needed anymore (currentPos impelmented)
-                foreach (Coord c in stage2)
-                {
-                    if (prev == null)
-                    {
-                        prev = c;
-                    }
-                    else
-                    {
-                        NodeConnection nc = new NodeConnection((Coord)c, (Coord)prev);
-                        path.Add(nc);
-                        prev = c;
-                    }
-                }
-                Data.nav.path.Add(new NodeConnection(new Coord(Data.exitCP), true));
-            }
+
+			if (res == 0 && len > 0 && ptr != null)
+			{
+				Marshal.Copy(ptr, stage1, 0, (int)len + 1);
+				Marshal.FreeHGlobal(ptr);
+				List<Coord> stage2 = new List<Coord>(); //node's
+				for (int i = 0; i < len + 1; i++)
+				{
+					Coord c = new Coord();
+					c.Id = (uint)stage1[i];
+					stage2.Add(c);
+				}
+				Data.nav.path.Clear();
+				Coord? prev = null;
+				foreach (Coord c in stage2)
+				{
+					if (prev == null)
+					{
+						prev = c;
+					}
+					else
+					{
+						NodeConnection nc = new NodeConnection((Coord)c, (Coord)prev);
+						path.Add(nc);
+						prev = c;
+					}
+				}
+				Data.nav.path.Add(new NodeConnection(new Coord(Data.exitCP), true));
+			}
              //Update UI
             Data.db.UpdateProperty("PathLength");
             return res;
         }
 
-        //TODO controlPosts ID or someway of defining them.
         public int findPath()
         {
             Coord entry = currentPos.To;

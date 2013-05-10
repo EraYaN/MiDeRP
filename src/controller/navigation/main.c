@@ -37,6 +37,9 @@ int loop (unsigned int entry, unsigned int exit)
 	else
 		exitNode = getNodeI (exit);
 
+	//Unset previous path
+	if (path != NULL)
+		path = NULL;
 	foundPath = findPath (entryNode, exitNode); //TODO need class to store m and n
 	cleanup ();
 
