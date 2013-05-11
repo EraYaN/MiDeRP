@@ -28,6 +28,7 @@ begin
          r_reg <= (others=>'0');
       elsif (clk'event and clk='1') then
          r_reg <= r_next;
+		--NO ELSE HERE!
       end if;
    end process;
    -- next-state logic

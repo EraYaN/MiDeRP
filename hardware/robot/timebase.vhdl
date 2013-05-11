@@ -24,6 +24,7 @@ begin
 			else
 				count	<= new_count;
 			end if;
+		--NO ELSE HERE!
 		end if;
 	end process;
 

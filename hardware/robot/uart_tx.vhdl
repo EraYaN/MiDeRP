@@ -42,6 +42,7 @@ begin
          n_reg <= n_next;
          b_reg <= b_next;
          tx_reg <= tx_next;
+	--NO ELSE HERE!
       end if;
    end process;
    -- next-state logic & data path functional units/routing
@@ -52,7 +53,7 @@ begin
       s_next <= s_reg;
       n_next <= n_reg;
       b_next <= b_reg;
-      tx_next <= tx_reg ;
+      tx_next <= tx_reg;
       tx_done_tick <= '0';
       case state_reg is
          when idle =>
@@ -61,6 +62,7 @@ begin
                state_next <= start;
                s_next <= (others=>'0');
                b_next <= din;
+			 --NO ELSE HERE!
             end if;
          when start =>
             tx_next <= '0'; -- output in START bit
@@ -72,6 +74,7 @@ begin
                else
                   s_next <= s_reg + 1;
                end if;
+			--NO ELSE HERE!
             end if;
          when data =>
             tx_next <= b_reg(0); -- data bit put on outputr
@@ -87,6 +90,7 @@ begin
                else
                   s_next <= s_reg + 1;
                end if;
+			 --NO ELSE HERE!
             end if;
          when stop =>
             tx_next <= '1'; -- STOP bit put on output
@@ -97,7 +101,9 @@ begin
                else
                   s_next <= s_reg + 1;
                end if;
+			 --NO ELSE HERE!
             end if;
+		--NO OTHERS HERE!
       end case;
    end process;
    tx <= tx_reg;

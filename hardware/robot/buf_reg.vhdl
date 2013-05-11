@@ -26,6 +26,7 @@ begin
       elsif (clk'event and clk='1') then
          b_reg <= b_next;
          flag_reg <= flag_next;
+		 --NO ELSE HERE!
       end if;
    end process;
    -- next-state logic
@@ -38,6 +39,7 @@ begin
          flag_next <= '1'; -- data will be written into register
       elsif (clr_flag='1') then
          flag_next <= '0';
+		--NO ELSE HERE!
       end if;
    end process;
    -- output logic

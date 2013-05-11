@@ -105,6 +105,7 @@ architecture b of controller is
 				--nextturn <= to_unsigned(3,2);
 			elsif nextturn = 3 then
 				next_state:=callforinput; --stop (wait for input)
+			--NO ELSE HERE!
 			end if;
 		elsif state = leftturn then
 			debugid:=to_unsigned(3,4);
@@ -133,6 +134,7 @@ architecture b of controller is
 			if sresponse = "10" then
 				next_state:=waitforinput;	
 				next_sending:='0';
+			--NO ELSE HERE!
 			end if;			
 		elsif state = waitforinput then
 			debugid:=to_unsigned(6,4);			
@@ -144,6 +146,7 @@ architecture b of controller is
 					else
 					next_state:=sendfail;
 				end if;
+			--NO ELSE HERE!
 			end if;	
 		elsif state = sendok then
 			debugid:=to_unsigned(7,4);			
@@ -218,6 +221,7 @@ architecture b of controller is
 				--discard				
 			end if;	
 			next_state := runsetread;
+		--NO ELSE HERE!
 		end if;		
 		uart_rw(0)<=next_r;
 		rstate<=next_state;
@@ -236,7 +240,8 @@ architecture b of controller is
 		if sstate = swaiting then
 		debugid:=to_unsigned(1,4);	
 			if sending = '1'  then			
-				next_state:=ssetwrite;		
+				next_state:=ssetwrite;
+			--NO ELSE HERE!
 			end if;	
 		elsif sstate = ssetwrite then
 		debugid:=to_unsigned(2,4);	
@@ -250,6 +255,7 @@ architecture b of controller is
 		elsif sstate = ssending then
 		debugid:=to_unsigned(4,4);	
 			next_state := sunsetwrite;
+		--NO ELSE HERE!
 		end if;
 		uart_rw(1)<=next_w;
 		sstate<=next_state;
