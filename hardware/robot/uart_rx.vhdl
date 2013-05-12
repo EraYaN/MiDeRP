@@ -38,7 +38,6 @@ begin
          s_reg <= s_next;
          n_reg <= n_next;
          b_reg <= b_next;
-	--NO ELSE HERE!
       end if;
    end process;
    -- next-state logic & data path functional units/routing
@@ -54,7 +53,6 @@ begin
             if rx='0' then -- falling edge of the START bit detected
                state_next <= start;
                s_next <= (others=>'0');
-			   --NO ELSE HERE!
             end if;
          when start =>
             if (s_tick = '1') then
@@ -65,7 +63,6 @@ begin
                else
                   s_next <= s_reg + 1;
                end if;
-			 --NO ELSE HERE!
             end if;
          when data =>
             if (s_tick = '1') then
@@ -80,7 +77,6 @@ begin
                else
                   s_next <= s_reg + 1;
                end if;
-			 --NO ELSE HERE!
             end if;
          when stop =>
             if (s_tick = '1') then
@@ -90,9 +86,7 @@ begin
                else
                   s_next <= s_reg + 1;
                end if;
-			 --NO ELSE HERE!
             end if;
-		--NO OTHERS HERE!
       end case;
    end process;
    dout <= b_reg;
