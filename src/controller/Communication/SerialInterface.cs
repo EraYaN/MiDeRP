@@ -4,7 +4,7 @@ using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Director
+namespace MiDeRP
 {
     public class SerialInterface : ISerial
     {

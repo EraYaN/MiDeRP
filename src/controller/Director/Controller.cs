@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Director
+namespace MiDeRP
 {
 	public enum StatusByteCode : byte { 
 		Unknown = 0x00,
@@ -46,8 +46,8 @@ namespace Director
 		}
 
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
-		{	
-			_receivedByte = (StatusByteCode)e.DataByte;
+		{
+			_receivedByte = e.DataByte.ToStatusByteCode();
 
 			if (_receivedByte == StatusByteCode.Acknowledged)
 			{

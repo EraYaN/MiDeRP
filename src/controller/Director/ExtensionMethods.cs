@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Director
+namespace MiDeRP
 {
-    static class ExtensionMethods
+    public static class ExtensionMethods
     {
-		//public static StatusByteCode ToStatusByteCode(this Byte b)
-		//{
-		//	var sbc = (StatusByteCode)b;
-		//	if (sbc == null)
-		//	{
-		//		return ToStatusByteCode.Unknown;
-		//	}
-		//	else
-		//	{
-		//		return sbc;
-		//	}
-		//}
+        public static StatusByteCode ToStatusByteCode(this Byte b)
+        {
+            var sbc = (StatusByteCode)b;
+            if (sbc == null)
+            {
+                return StatusByteCode.Unknown;
+            }
+            else
+            {
+                return sbc;
+            }
+        }
     }
 }

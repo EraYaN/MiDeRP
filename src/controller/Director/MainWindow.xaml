@@ -1,4 +1,4 @@
-﻿<Window x:Name="mainWindow" x:Class="Director.MainWindow"
+﻿<Window x:Name="mainWindow" x:Class="MiDeRP.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MiDeRP Director EPO2-D2" Height="500" Width="600" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" MinHeight="400" MinWidth="403">

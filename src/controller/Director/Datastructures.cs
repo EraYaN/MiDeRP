@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Director
+namespace MiDeRP
 {
     public struct Coord : IEquatable<Coord>
     {
@@ -165,7 +165,9 @@ namespace Director
         {
             get
             {
-                if (Data.nav.path != null&&Data.nav.path.Count > 0)
+				if (Data.nav == null)
+					return "No Path";
+				if (Data.nav.path != null&&Data.nav.path.Count > 0)
                 {
                     return "Path length: "+Data.nav.path.Count.ToString();
                 }
@@ -180,7 +182,9 @@ namespace Director
         {
             get
             {
-                if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
+				if (Data.nav == null)
+					return "No Nav";
+				if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
                 {
                     if (Data.nav.currentPos.FromCPoint){
                         return "CP -> (" + Data.nav.currentPos.To.X + "," + Data.nav.currentPos.To.Y + ")";

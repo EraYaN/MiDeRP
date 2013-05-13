@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
 
-namespace Director
+namespace MiDeRP
 {
     public class SerialDataEventArgs : EventArgs
     {

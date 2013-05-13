@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
-namespace Director
+namespace MiDeRP
 {
     public class Navigation
     {
