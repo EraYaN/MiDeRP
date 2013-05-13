@@ -51,8 +51,8 @@
             </GroupBox>
             <GroupBox Header="Robot Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click"/>
-                    <Button x:Name="abortRobotButton" Content="Abort" Margin="2"/>
+                    <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click" IsEnabled="False"/>
+                    <Button x:Name="abortRobotButton" Content="Abort" Margin="2" IsEnabled="False"/>
                 </StackPanel>
             </GroupBox>
 

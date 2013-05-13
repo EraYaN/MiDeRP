@@ -15,6 +15,7 @@ char buff[1];
 bool done;
 //bool started;
 bool minehere;
+bool led;
 void setup()
 {
   /* add setup code here */
@@ -22,6 +23,8 @@ void setup()
 	done = false;
 	minehere = false;
 	//started = true; // TODO protocol add start instruction
+	led = false;
+	pinMode(LED_BUILTIN,OUTPUT);
 }
 void loop()
 {
@@ -37,43 +40,50 @@ void loop()
 				StatusByteCode code = (StatusByteCode)buff[0];
 				switch(code){
 					case Forward:
-						Serial.print(Acknowledged);
+						Serial.write(Acknowledged);
 						minehere = false;
 					break;
 					case Stop:
-						Serial.print(Acknowledged);
+						Serial.write(Acknowledged);
 					break;
 					case Left:
-						Serial.print(Acknowledged);
+						Serial.write(Acknowledged);
 						minehere = false;
 					break;
 					case Right:
-						Serial.print(Acknowledged);
+						Serial.write(Acknowledged);
 						minehere = false;
 					break;
 					case Turn:
-						Serial.print(Acknowledged);
+						Serial.write(Acknowledged);
 						minehere = false;
 					break;
 					case Done:
-						Serial.print(Acknowledged);
+						Serial.write(Acknowledged);
 						done = true;
 					break;
 					default:
-						Serial.print(NotAcknowledged);
+						Serial.write(NotAcknowledged);
 					break;
 				}
 			}
 		} else {
 			//maybe a mine
 			if(random(0,100)<10&&!minehere){
-				Serial.print(MineDetected);
+				Serial.write(MineDetected);
 				minehere = true;
 			} else {
-				Serial.print(Enquiry);
+				Serial.write(Enquiry);
 				
 			}
 		}
 	}
 	delay(1000);
+	if(led){
+		digitalWrite(LED_BUILTIN,LOW);
+		led=false;
+	} else {
+		digitalWrite(LED_BUILTIN,HIGH);
+		led=true;
+	}
 }

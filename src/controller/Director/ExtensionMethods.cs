@@ -10,14 +10,14 @@ namespace MiDeRP
     {
         public static StatusByteCode ToStatusByteCode(this Byte b)
         {
-            var sbc = (StatusByteCode)b;
+            StatusByteCode? sbc = (StatusByteCode)b;
             if (sbc == null)
             {
                 return StatusByteCode.Unknown;
             }
             else
             {
-                return sbc;
+				return (StatusByteCode)sbc;
             }
         }
     }

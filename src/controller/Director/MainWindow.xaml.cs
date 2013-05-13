@@ -83,6 +83,9 @@ namespace MiDeRP
             {
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+			System.Diagnostics.Debug.WriteLine("COM Port status: {0}",Data.com.IsOpen);
+			if(Data.com.IsOpen)
+				Data.com.SendByte(25);
             Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
@@ -96,10 +99,12 @@ namespace MiDeRP
             destroyButton.IsEnabled = true;
             comPortsComboBox.IsEnabled = false;
             baudRateComboBox.IsEnabled = false;
+			startRobotButton.IsEnabled = true;
         }
 
 		private void startRobotButton_Click(object sender, RoutedEventArgs e)
 		{
+			startRobotButton.IsEnabled = false;
 			if (Data.com == null)
 			{
 				MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -133,9 +138,9 @@ namespace MiDeRP
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
-			//Data.vis.DrawField();
+			Data.vis.DrawField();
 
-			System.Diagnostics.Debug.WriteLine("Serial byte received: %x", e.DataByte);
+			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
@@ -146,6 +151,7 @@ namespace MiDeRP
             destroyButton.IsEnabled = false;
             comPortsComboBox.IsEnabled = true;
             baudRateComboBox.IsEnabled = true;
+			startRobotButton.IsEnabled = false;
             Data.nav = null;
             Data.com = null;
             Data.vis = null;
@@ -176,6 +182,11 @@ namespace MiDeRP
 				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
 				Data.nav.mines.Clear();
 				Data.nav.path.Clear();
+			}
+
+			if (Data.ctr != null)
+			{
+				Data.ctr.Reset();
 			}
 
 			if (Data.vis != null)
