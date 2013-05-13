@@ -69,9 +69,10 @@ namespace MiDeRP
 				Data.BaudRate = int.Parse((string)((ComboBoxItem)baudRateComboBox.SelectedItem).Content);
                 if (Data.ComPort != "" && Data.BaudRate > 0)
                 {
-                    int res = Data.com.OpenPort();
-                    if (res != 0)
-                        MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					int res = Data.com.OpenPort();
+					if (res != 0)
+						MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					
                 }
                 else
                 {
@@ -132,7 +133,9 @@ namespace MiDeRP
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
+			//Data.vis.DrawField();
 
+			System.Diagnostics.Debug.WriteLine("Serial byte received: %x", e.DataByte);
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)

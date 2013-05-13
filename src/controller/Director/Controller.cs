@@ -84,9 +84,9 @@ namespace MiDeRP
 
 					recalculatePath();
 
-					getNextDirective();
-					Data.com.SendByte((byte)_nextDirective);
-					_sentDirectiveIsUnacknowledged = true;
+					//getNextDirective();
+					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
+					//_sentDirectiveIsUnacknowledged = true;
 				}
 				else if (_receivedByte == StatusByteCode.Done)
 				{
