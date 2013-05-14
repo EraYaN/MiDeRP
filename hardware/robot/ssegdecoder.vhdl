@@ -15,16 +15,15 @@ end ssegdecoder;
 architecture Behavioral of ssegdecoder is
 signal char : std_logic_vector(1 downto 0):="00";
 begin
-process(clk, reset) is
-	variable bin : std_logic_vector(3 downto 0):=x"F";
-	variable next_char : std_logic_vector(1 downto 0);
+process(clk) is
+variable bin : std_logic_vector(3 downto 0):=x"F";
+variable next_char : std_logic_vector(1 downto 0);
 begin
-	--default values
-	segments <= "11111111";
-	anodes <= "1111";
-
+	if rising_edge(clk) then
 	if reset = '1' then
-		char <= "00";	
+		char <= "00";
+		segments <= "11111111";
+		anodes <= "1111";	
 	else
 		--abcdefg
 		if char = "00" then
@@ -46,12 +45,7 @@ begin
 			next_char:="00";
 			bin := bin_input(15 downto 12);
 			anodes <= "0111";
-			segments(7)<=not dpoint(3);
-		else
-			next_char:="01";
-			bin := bin_input(3 downto 0);
-			anodes <= "1110";
-			segments(7)<=not dpoint(0);
+			segments(7)<=not dpoint(3);		
 		end if;
 		case bin is
 			when "0000"=> segments(6 downto 0) <= not "0111111" ; -- 0
@@ -73,6 +67,7 @@ begin
 			when others => segments(6 downto 0) <= not "0000000";
 		end case;
 		char<=next_char;
+	end if;
 	end if;
 end process;
 end Behavioral;
