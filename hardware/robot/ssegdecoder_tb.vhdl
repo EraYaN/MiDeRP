@@ -31,10 +31,10 @@ begin
 				'0' after 10 ns when clk /= '0' else '1' after 10 ns;
 	dpoint	<=	"1011";
 	bin_input	<=	x"0000",
-					x"1234" after 120 ns,
-					x"5678" after 200 ns,
-					x"9ABC" after 360 ns,
-					x"DEF0" after 440 ns;
+					x"1234" after 1200 ns,
+					x"5678" after 2000 ns,
+					x"9ABC" after 3600 ns,
+					x"DEF0" after 4400 ns;
 
 l1:	ssegdecoder port map (
 		clk		=>	clk,
