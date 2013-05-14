@@ -73,13 +73,14 @@ begin
 		variable debugid : unsigned ( 3 downto 0);
 		variable next_sending :std_logic;
 	begin
-		--default values
-		motor_l_speed <= "00000000";
-		motor_r_speed <= "00000000";
-		bin_seg(11 downto 0) = "111111111111";
-		uart_send = p_unknown;
+		
 	
 		if rising_edge(clk) then
+			--default values
+			motor_l_speed <= to_signed(0,8);
+			motor_r_speed <= to_signed(0,8);
+			--bin_seg(11 downto 4) <= "11111111";
+			uart_send <= p_unknown;
 			next_state:=state;
 			next_sending:=sending;
 			if reset = '1' then
@@ -181,20 +182,13 @@ begin
 	end process;
 	
 	--receiver
-<<<<<<< HEAD
 	process (clk, rstate, uart_rw, uart_br, uart_receive)
-	variable next_state : receiver_state;
-	variable next_r : std_logic;
-	variable debugid : unsigned ( 3 downto 0);
-	variable response : std_logic_vector (1 downto 0);	
-=======
-	process (clk)
 		variable next_state : receiver_state;
 		variable next_r : std_logic;
 		variable debugid : unsigned ( 3 downto 0);
 		variable response : std_logic_vector (1 downto 0);	
->>>>>>> 9c83eb65def44f9596900dfb71229f1b7ae49dea
 	begin
+	if(rising_edge(clk)) then
 		next_state:=rstate;
 		response:="00";	
 		next_r:=uart_rw(0);	
@@ -241,6 +235,7 @@ begin
 		rstate<=next_state;
 		rresponse<=response;
 		bin_seg(7 downto 4)<=std_logic_vector(debugid);
+		end if;
 	end process;
 	
 	--sender
