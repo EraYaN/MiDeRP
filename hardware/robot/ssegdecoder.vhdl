@@ -22,8 +22,9 @@ begin
 	if rising_edge(clk) then
 	if reset = '1' then
 		char <= "00";
-		segments <= "11111111";
-		anodes <= "1111";	
+		segments <= "00000000";
+		anodes <= "1010";
+		dpoint <= "0101";		
 	else
 		--abcdefg
 		if char = "00" then
