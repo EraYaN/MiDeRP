@@ -52,7 +52,7 @@ begin
       s_next <= s_reg;
       n_next <= n_reg;
       b_next <= b_reg;
-      tx_next <= tx_reg ;
+      tx_next <= tx_reg;
       tx_done_tick <= '0';
       case state_reg is
          when idle =>

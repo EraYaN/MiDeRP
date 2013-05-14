@@ -15,15 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="communications.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="serial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <None Include="robotsim.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="serial.h">
+    <ClInclude Include="Visual Micro\.robotsim.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

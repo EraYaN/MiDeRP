@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Director
+namespace MiDeRP
 {
     public struct Coord : IEquatable<Coord>
     {
@@ -15,6 +15,7 @@ namespace Director
             X = x;
             Y = y;
         }
+
         public Coord(uint controlPost)
         {
             const uint hori = Data.M - 2; //controlPosts per horizontale zijde van het veld
@@ -53,38 +54,46 @@ namespace Director
                 throw new Exception("Controlpost is not valid.");
             }        
         }
+
         public uint Id
         {
             get { return Data.M * Y + X; }
             set { X = value % Data.M; Y = (uint)Math.Floor((decimal)value / Data.M); }
         }
+
         public override bool Equals(Object obj)
         {
             return obj is Coord && this == (Coord)obj;
         }
+
         public bool Equals(Coord other)
         {
             return this == other;
         }
+
         public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode();
         }
+
         public static bool operator ==(Coord a, Coord b)
         {
             return a.X == b.X && a.Y == b.Y;
         }
+
         public static bool operator !=(Coord a, Coord b)
         {
             return !(a == b);
         }
     }
+
     public struct NodeConnection : IEquatable<NodeConnection>
     {
         public Coord To;
         public Coord From;
         public bool FromCPoint;
         public bool ToCPoint;
+
         public NodeConnection(Coord to, Coord from)
         {
             To = to;
@@ -92,6 +101,7 @@ namespace Director
             FromCPoint = false;
             ToCPoint = false;
         }
+
         public NodeConnection(Coord to, bool _ToCPoint)
         {
             //pos is on CP
@@ -100,33 +110,42 @@ namespace Director
             ToCPoint = _ToCPoint;
             FromCPoint = !_ToCPoint;
         }
-        public bool IsSame(NodeConnection other){
+
+        public bool IsSame(NodeConnection other)
+		{
             return (other.From == this.From && other.To == this.To) || (other.To == this.From && other.From == this.To);
         }
+
         public override bool Equals(Object obj)
         {
             return obj is NodeConnection && this == (NodeConnection)obj;
         }
+
         public bool Equals(NodeConnection other)
         {
             return this == other;
         }
+
         public override int GetHashCode()
         {
             return From.GetHashCode() ^ To.GetHashCode();
         }
+
         public static bool operator ==(NodeConnection a, NodeConnection b)
         {
             return a.From == b.From && a.To == b.To;
         }
+
         public static bool operator !=(NodeConnection a, NodeConnection b)
         {
             return !(a == b);
         }
     }
+
     public class Databindings : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         public string MineCount
         {
             get
@@ -141,11 +160,14 @@ namespace Director
                 }
             }
         }
+
         public string PathLength
         {
             get
             {
-                if (Data.nav.path != null&&Data.nav.path.Count > 0)
+				if (Data.nav == null)
+					return "No Path";
+				if (Data.nav.path != null&&Data.nav.path.Count > 0)
                 {
                     return "Path length: "+Data.nav.path.Count.ToString();
                 }
@@ -155,11 +177,14 @@ namespace Director
                 }
             }
         }
+
         public string CurrentPosText
         {
             get
             {
-                if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
+				if (Data.nav == null)
+					return "No Nav";
+				if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
                 {
                     if (Data.nav.currentPos.FromCPoint){
                         return "CP -> (" + Data.nav.currentPos.To.X + "," + Data.nav.currentPos.To.Y + ")";
@@ -179,6 +204,7 @@ namespace Director
                 }
             }
         }
+
         public string SerialPortStatus
         {
             get
@@ -195,6 +221,7 @@ namespace Director
                 }
             }
         }
+
         public Brush SerialPortStatusColor
         {
             get
@@ -222,11 +249,13 @@ namespace Director
                     return Brushes.OrangeRed;
                 }
             }            
-        }        
+        }  
+      
         public void UpdateProperty(string name)
         {
             OnPropertyChanged(name);
         }
+
         protected void OnPropertyChanged(string name)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -236,6 +265,7 @@ namespace Director
             }
         }               
     }
+
     public static class Data 
     {        
         public static Databindings db = new Databindings();
@@ -250,20 +280,23 @@ namespace Director
         static public Visualization vis;
         static public Navigation nav;
         static public SerialInterface com;
+		static public Controller ctr;
+
         public static readonly DependencyProperty MineLocationProperty = DependencyProperty.RegisterAttached(
           "MineLocation",
           typeof(NodeConnection),
           typeof(Data),
           new FrameworkPropertyMetadata(new NodeConnection(new Coord(0,0), new Coord(0,1)), FrameworkPropertyMetadataOptions.AffectsRender)
         );
+
         public static void SetMineLocation(UIElement element, NodeConnection value)
         {
             element.SetValue(MineLocationProperty, value);
         }
+
         public static NodeConnection GetMineLocation(UIElement element)
         {
             return (NodeConnection)element.GetValue(MineLocationProperty);
-        }
-        
+        }     
     }
 }

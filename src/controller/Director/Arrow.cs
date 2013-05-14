@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace Director
+namespace MiDeRP
 {
     //Source: http://www.codeproject.com/articles/23116/wpf-arrow-and-custom-shapes
     public sealed class Arrow : Shape

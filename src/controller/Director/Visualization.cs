@@ -13,39 +13,42 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Director
+namespace MiDeRP
 {
     public class Visualization
     {
-        Canvas c;        
-        double marginlarge = 80;
-        double marginsmall = 30;
-        double mineradius = 16;
-        double controlpointsize = 20;
-        double pathArrowHeadHeight = 2;
-        double pathArrowHeadWidth = 10;
-        double pathArrowThickness = 3;
-        double currentPosArrowHeadHeight = 8;
-        double currentPosArrowHeadWidth = 10;
-        double currentPosArrowThickness = 5;
-        double currentPosArrowLength = 0.5; // piece of xstep of ystep
-        double lineThickness = 1;
-        Brush lineBrush = Brushes.Black;
-        Brush noMineBrush = Brushes.Black;
-        Brush entryBrush = Brushes.Green;
-        Brush mineBrush = Brushes.Red;
-        Brush pathBrush = Brushes.BlueViolet;
-        Brush currentPosBrush = Brushes.ForestGreen;
-        Brush exitBrush = Brushes.Blue;
+        Canvas c;
+        const double marginlarge = 80;
+        const double marginsmall = 30;
+        const double mineradius = 16;
+        const double controlpointsize = 20;
+        const double pathArrowHeadHeight = 2;
+        const double pathArrowHeadWidth = 10;
+        const double pathArrowThickness = 3; 
+        const double currentPosArrowHeadHeight = 8;
+        const double currentPosArrowHeadWidth = 10;
+        const double currentPosArrowThickness = 5;
+        const double currentPosArrowLength = 0.5; // piece of xstep of ystep; true length = this * xstep or ystep
+        const double lineThickness = 1;
+        readonly Brush lineBrush = Brushes.Black;
+        readonly Brush noMineBrush = Brushes.Black;
+        readonly Brush entryBrush = Brushes.Green;
+        readonly Brush mineBrush = Brushes.Red;
+        readonly Brush pathBrush = Brushes.BlueViolet;
+        readonly Brush currentPosBrush = Brushes.ForestGreen;
+        readonly Brush exitBrush = Brushes.Blue;
+
         public Visualization(Canvas _c)
         {
             //Constructor
             c = _c;            
         }
+
         ~Visualization()
         {
             //c.Children.Clear(); kan niet. verkeerde thread
         }
+
         private void DrawMines(uint xlim, uint ylim, double xstep, double ystep)
         {
             for (uint x = 0; x < xlim; x++)
@@ -109,6 +112,7 @@ namespace Director
                 }
             }
         }
+		
         private void DrawControlpoints(double xstep, double ystep)
         {
             for (int x = 1; x < Data.M - 1; x++)
@@ -199,6 +203,7 @@ namespace Director
                 c.Children.Add(cpl);
             }
         }
+
         private void DrawPath(double xstep, double ystep)
         {            
             if (Data.nav.path.Count>0)
@@ -262,7 +267,8 @@ namespace Director
                 }
             }            
         }
-        private void DrawCurrentPosistion(double xstep, double ystep)
+
+        private void DrawCurrentPosition(double xstep, double ystep)
         {
             if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
             {
@@ -359,6 +365,7 @@ namespace Director
                 c.Children.Add(arr);                
             }
         }
+
         private Point getCanvasCoordinates(Coord node, double xstep, double ystep)
         {
             Point p = new Point();
@@ -366,6 +373,7 @@ namespace Director
             p.Y = marginlarge + ystep * (node.Y);
             return p;
         }
+
         void cp_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Border cp = (Border)sender;
@@ -382,6 +390,7 @@ namespace Director
             }            
             Data.vis.DrawField();
         }
+
         void mine_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Ellipse circle = (Ellipse)e.OriginalSource;
@@ -393,10 +402,10 @@ namespace Director
                 {
                     Data.nav.mines.Remove(ml);
                 }
-                else if (Data.nav.mines.Contains(ml))
-                {
-                    Data.nav.mines.Remove(ml2);
-                }
+				//else if (Data.nav.mines.Contains(ml)) //WTF IS THE DIFFERENCE
+				//{
+				//	Data.nav.mines.Remove(ml2);
+				//}
                 else
                 {
                     Data.nav.mines.Add(ml);
@@ -409,10 +418,10 @@ namespace Director
                 {
                     Data.nav.currentPos = ml2;
                 }
-                else if (Data.nav.currentPos == ml)
-                {
-                    Data.nav.currentPos = ml;
-                }
+				//else if (Data.nav.currentPos == ml) //WTF IS THE DIFFERENCE
+				//{
+				//	Data.nav.currentPos = ml;
+				//}
                 else
                 {
                     Data.nav.currentPos = ml;
@@ -422,6 +431,7 @@ namespace Director
             Data.vis.DrawField();
            
         }
+
         public void DrawField()
         {
             //remove all objects
@@ -482,7 +492,7 @@ namespace Director
             DrawMines(Data.M, Data.N - 1, xstep, ystep);
             DrawControlpoints(xstep, ystep);
             DrawPath(xstep, ystep);
-            DrawCurrentPosistion(xstep, ystep);
+            DrawCurrentPosition(xstep, ystep);
         }
     }
 }

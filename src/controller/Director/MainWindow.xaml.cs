@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Director
+namespace MiDeRP
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -66,12 +66,13 @@ namespace Director
             if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
             {
                 Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
-                Data.BaudRate = (int)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
+				Data.BaudRate = int.Parse((string)((ComboBoxItem)baudRateComboBox.SelectedItem).Content);
                 if (Data.ComPort != "" && Data.BaudRate > 0)
                 {
-                    int res = Data.com.OpenPort();
-                    if (res != 0)
-                        MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					int res = Data.com.OpenPort();
+					if (res != 0)
+						MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					
                 }
                 else
                 {
@@ -82,6 +83,9 @@ namespace Director
             {
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+			System.Diagnostics.Debug.WriteLine("COM Port status: {0}",Data.com.IsOpen);
+			if(Data.com.IsOpen)
+				Data.com.SendByte(25);
             Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
@@ -95,22 +99,48 @@ namespace Director
             destroyButton.IsEnabled = true;
             comPortsComboBox.IsEnabled = false;
             baudRateComboBox.IsEnabled = false;
+			startRobotButton.IsEnabled = true;
         }
+
+		private void startRobotButton_Click(object sender, RoutedEventArgs e)
+		{
+			startRobotButton.IsEnabled = false;
+			if (Data.com == null)
+			{
+				MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			
+			if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
+			{
+				MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (Data.ctr != null)
+			{
+				MessageBoxResult result = MessageBox.Show("The controller is still running, exit and restart?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+				if (result == MessageBoxResult.Yes)
+				{
+
+					Data.ctr.Reset();
+					return;
+				}
+				else
+				{
+					return;
+				}
+			}
+
+			//Start controller
+			Data.ctr = new Controller();
+		}
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
-            //Test respons
-            //TODO proper respons.
-            if (e.innerEvent.EventType == SerialData.Chars)
-            {
-                //echo die shit.
-                Data.com.SendByte(e.DataByte);
-            }
-            else
-            {
-                //EOF niks terug sturen
-                //com.SendByte(e.DataByte);
-            }
+			Data.vis.DrawField();
+
+			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
@@ -121,9 +151,11 @@ namespace Director
             destroyButton.IsEnabled = false;
             comPortsComboBox.IsEnabled = true;
             baudRateComboBox.IsEnabled = true;
+			startRobotButton.IsEnabled = false;
             Data.nav = null;
             Data.com = null;
             Data.vis = null;
+			Data.ctr = null;
         }               
 
         private void comPortsComboBox_DropDownOpened(object sender, EventArgs e)
@@ -145,15 +177,31 @@ namespace Director
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
-            Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP),false);
-            Data.nav.mines.Clear();
-            Data.nav.path.Clear();
-            Data.vis.DrawField();
-            Data.db.UpdateProperty("MineCount");
-            Data.db.UpdateProperty("PathLength");
-            Data.db.UpdateProperty("SerialPortStatus");
-            Data.db.UpdateProperty("SerialPortStatusColor");
-            Data.db.UpdateProperty("CurrentPosText");
+			if (Data.nav != null)
+			{
+				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
+				Data.nav.mines.Clear();
+				Data.nav.path.Clear();
+			}
+
+			if (Data.ctr != null)
+			{
+				Data.ctr.Reset();
+			}
+
+			if (Data.vis != null)
+			{
+				Data.vis.DrawField();
+			}
+
+			if (Data.db != null)
+			{
+				Data.db.UpdateProperty("MineCount");
+				Data.db.UpdateProperty("PathLength");
+				Data.db.UpdateProperty("SerialPortStatus");
+				Data.db.UpdateProperty("SerialPortStatusColor");
+				Data.db.UpdateProperty("CurrentPosText");
+			}
         }   
     }
 }
