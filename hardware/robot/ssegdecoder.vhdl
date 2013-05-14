@@ -15,7 +15,7 @@ end ssegdecoder;
 architecture Behavioral of ssegdecoder is
 signal char : std_logic_vector(1 downto 0):="00";
 begin
-process(clk, reset) is
+process(clk, reset, char, bin_input, dpoint) is
 variable bin : std_logic_vector(3 downto 0):=x"F";
 variable next_char : std_logic_vector(1 downto 0);
 begin

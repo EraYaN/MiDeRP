@@ -67,7 +67,7 @@ architecture b of controller is
 	variable next_state : sys_state;
 	variable debugid : unsigned ( 3 downto 0);
 	variable next_sending :std_logic;
-	begin
+	begin	
 	if rising_edge(clk) then
 		next_state:=state;
 		next_sending:=sending;
@@ -172,7 +172,7 @@ architecture b of controller is
 	end process;
 	
 	--receiver
-	process (clk)
+	process (clk, rstate, uart_rw, uart_br, uart_receive)
 	variable next_state : receiver_state;
 	variable next_r : std_logic;
 	variable debugid : unsigned ( 3 downto 0);
@@ -226,7 +226,7 @@ architecture b of controller is
 	end process;
 	
 	--sender
-	process (clk)
+	process (clk, uart_rw, sstate, sending)
 	variable next_state : sender_state;
 	variable next_w : std_logic;
 	variable debugid : unsigned ( 3 downto 0);
