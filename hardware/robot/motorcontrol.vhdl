@@ -18,7 +18,7 @@ end entity motorcontrol;
 architecture b of motorcontrol is
 	
 begin
-	process (clk, reset)
+	process (clk, reset, motor)
 		variable c, s, pulse : integer;
 	begin
 		c := To_integer (count_in);
@@ -29,9 +29,9 @@ begin
 		else
 		
 			if (motor = left) then
-				pulse := 75000 + 25000/100*s;
+				pulse := 75000 + 250*s;
 			else
-				pulse := 75000 - 25000/100*s;
+				pulse := 75000 - 250*s;
 			end if;
 		
 			if (c < pulse) then
