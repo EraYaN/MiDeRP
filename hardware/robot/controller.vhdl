@@ -45,33 +45,36 @@ architecture b of controller is
 	constant p_done		: byte := x"04"; -- EOT
 	constant p_unknown	: byte := x"00"; -- NULL
 	
-	type sys_state is (followline, processnextturn, leftturn, rightturn, callforinput, waitforinput, sendok, sendfail);
+	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, callforinput, waitforinput, sendok, sendfail, arewedone, done, delay);
 	type sender_state is (swaiting, ssending, ssetwrite, sunsetwrite);
 	type receiver_state is (rwaiting, rreceiving, rsetread, runsetread);
 	signal state : sys_state := followline;
+	
+	signal state_after_delay : sys_state := followline;
+	signal delaycounter : integer;
 	signal sstate : sender_state := swaiting;
 	signal rstate : receiver_state := rwaiting;
 	signal uart_rw : std_logic_vector(1 downto 0);
-	signal nextturn : unsigned(1 downto 0) := to_unsigned(1,4); -- 0 = left, 1 = forward, 2 = right, 3 = stop	
+	signal nextturn : unsigned(2 downto 0) := to_unsigned(1,3); -- 0 = left, 1 = forward, 2 = right, 3 = stop, 4 = turn
 	signal sending : std_logic := '0'; -- internal
 	signal rresponse, sresponse : std_logic_vector (1 downto 0) := "00";
-	
+	--signal turnprocessed : std_logic;
+	signal isdone : std_logic;
 begin
 	
-	bin_seg(15 downto 12)<="1111";
-	led(1 downto 0)<=std_logic_vector(nextturn);
-	led(3 downto 2)<=rresponse;
-	led(5 downto 4)<=sresponse;
-	led(6)<=sending;
-	led(7)<=uart_rw(1);
-	dpoint_seg(0)<=uart_br;
-	dpoint_seg(3 downto 1)<="101";
+	bin_seg(15 downto 12)<="0000";
+	led(2 downto 0)<=std_logic_vector(nextturn);
+	led(4 downto 3)<=rresponse;
+	led(5)<=sresponse(1);
+	led(7 downto 6)<=uart_rw;	
+	dpoint_seg(3 downto 0)<="0000";
 	uart_rw_out<=uart_rw;
 	
 	process (clk) is
 		variable next_state : sys_state;
 		variable debugid : unsigned ( 3 downto 0);
 		variable next_sending :std_logic;
+		variable next_delaycounter : integer;
 	begin
 		
 	
@@ -80,42 +83,73 @@ begin
 			motor_l_speed <= to_signed(0,8);
 			motor_r_speed <= to_signed(0,8);
 			--bin_seg(11 downto 4) <= "11111111";
-			uart_send <= p_unknown;
 			next_state:=state;
-			next_sending:=sending;
+			next_sending:='0';
 			if reset = '1' then
-				next_state:=followline;
+				uart_send <= p_unknown;
+				next_state:=followline;				
+				debugid:=to_unsigned(0,4);
+				next_delaycounter:=2000;
+				--turnprocessed <= '1';				
+			elsif state = arewedone then
+				debugid:=to_unsigned(11,4);
+				if isdone = '1' then
+					next_state:=done;
+				else 
+					next_state:=arewedone;
+				end if;
+			elsif state = done then
+				debugid:=to_unsigned(10,4);
+				motor_l_speed <= to_signed(0,8);
+				motor_r_speed <= to_signed(0,8);
+			elsif state = delay then
+				debugid:=to_unsigned(12,4);
+				if delaycounter>0 then
+					next_delaycounter:=delaycounter-1;
+				else
+					next_state:= state_after_delay;
+				end if;
 			elsif state = followline then
 				debugid:=to_unsigned(1,4);			
 				--follow line
 				case sensor is
-					when "000" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8); next_state:=callforinput;
+					when "000" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8); delaycounter<=200000; state_after_delay<=callforinput; next_state:=delay;
 					when "001" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(100,8);
 					when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
 					when "011" => motor_l_speed <= to_signed(-50,8); motor_r_speed <= to_signed(100,8);
 					when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(0,8);
 					when "101" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
 					when "110" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(-50,8);
-					when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
+					when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8); next_state:=arewedone;
 					when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
 			   end case;
 			elsif state = processnextturn then
 				debugid:=to_unsigned(2,4);
 				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
 				--uart_rw(0)<='1';
-				--nextturn			
-				if nextturn = 0 then
-					next_state:=leftturn; --left
-					--nextturn <= to_unsigned(3,2);
-				elsif nextturn = 1 then
-					next_state:=followline; --forward (line)
-					--nextturn <= to_unsigned(3,2);
-				elsif nextturn = 2 then
-					next_state:=rightturn; --right
-					--nextturn <= to_unsigned(3,2);
-				elsif nextturn = 3 then
-					next_state:=callforinput; --stop (wait for input)
-				end if;
+				--nextturn	
+				--if 	turnprocessed = '1'	then
+					--next_state:=callforinput;
+				--else				
+					if nextturn = 0 then
+						next_state:=leftturn; --left
+						--turnprocessed<='1';
+						--nextturn <= to_unsigned(3,3);
+					elsif nextturn = 1 then
+						next_state:=followline; --forward (line)
+						--nextturn <= to_unsigned(3,3);
+					elsif nextturn = 2 then
+						next_state:=rightturn; --right
+						--turnprocessed<='1';
+						--nextturn <= to_unsigned(3,3);
+					elsif nextturn = 3 then
+						next_state:=callforinput; --stop (wait for input)
+					elsif nextturn = 4 then
+						next_state:=fullturn; --turn
+						--turnprocessed<='1';
+					end if;
+				--end if;
+				
 			elsif state = leftturn then
 				debugid:=to_unsigned(3,4);
 				--left
@@ -133,6 +167,16 @@ begin
 				case sensor is			  			  
 				  when "101" => next_state:=followline;
 				  when others => --nothing
+			   end case;			   
+			elsif state = fullturn then
+				debugid:=to_unsigned(9,4);
+				--right
+				motor_l_speed <= to_signed(100,8);
+				motor_r_speed <= to_signed(-100,8);
+				case sensor is	
+				--TODO impelement full turn properly			
+				  when "101" => next_state:=followline;
+				  when others => --nothing
 			   end case;
 			elsif state = callforinput then
 				debugid:=to_unsigned(5,4);			
@@ -142,7 +186,7 @@ begin
 				next_sending:='1';	
 				if sresponse = "10" then
 					next_state:=waitforinput;	
-					next_sending:='0';
+					next_sending:='0';					
 				end if;			
 			elsif state = waitforinput then
 				debugid:=to_unsigned(6,4);			
@@ -151,6 +195,7 @@ begin
 				if rresponse(1) = '1'  then					
 					if rresponse(0) = '0' then
 						next_state:=sendok;
+						--turnprocessed<='0';
 						else
 						next_state:=sendfail;
 					end if;
@@ -161,14 +206,14 @@ begin
 				motor_r_speed <= to_signed(0,8);
 				uart_send <= p_ack;
 				next_sending:='1';			
-				next_state:=processnextturn;	
+				next_state:=processnextturn;								
 			elsif state = sendfail then
 				debugid:=to_unsigned(8,4);			
 				motor_l_speed <= to_signed(0,8);
 				motor_r_speed <= to_signed(0,8);
 				uart_send <= p_nak;
 				next_sending:='1';			
-				next_state:=callforinput;				
+				next_state:=callforinput;							
 			else
 				debugid:=to_unsigned(15,4);
 				--stop
@@ -177,12 +222,13 @@ begin
 			end if;		   
 			state<=next_state;
 			sending<=next_sending;
+			delaycounter<=next_delaycounter;
 			bin_seg(3 downto 0)<=std_logic_vector(debugid);
 		end if;
 	end process;
 	
 	--receiver
-	process (clk, rstate, uart_rw, uart_br, uart_receive)
+	process (clk)
 		variable next_state : receiver_state;
 		variable next_r : std_logic;
 		variable debugid : unsigned ( 3 downto 0);
@@ -190,40 +236,57 @@ begin
 	begin
 	if(rising_edge(clk)) then
 		next_state:=rstate;
-		response:="00";	
-		next_r:=uart_rw(0);	
-		if rstate = rwaiting then
-		debugid:=to_unsigned(1,4);	
+		if reset = '1' then
+			debugid:=to_unsigned(0,4);
+			next_r:='0';
+			nextturn<=to_unsigned(3,3);
+			response:="00";	
+			next_state:=rwaiting;
+			isdone <= '0';
+		elsif rstate = rwaiting then
+			debugid:=to_unsigned(1,4);
+			next_r:='0';
+			response:="00";			
 			if uart_br = '1'  then			
 				next_state:=rsetread;		
 			end if;	
 		elsif rstate = rsetread then
-		debugid:=to_unsigned(2,4);	
+			debugid:=to_unsigned(2,4);	
 			next_r:='1';
 			next_state := rreceiving;
 		elsif rstate = runsetread then
-		debugid:=to_unsigned(3,4);	
+			debugid:=to_unsigned(3,4);	
 			next_r:='0';
 			next_state := rwaiting;
 		elsif rstate = rreceiving then
-		debugid:=to_unsigned(4,4);	
+			debugid:=to_unsigned(4,4);
+			next_r:='1';
 			response(1):='1';
 			if uart_receive = p_left then
 				--left
 				response(0):='0';
-				nextturn<=to_unsigned(0,2);
+				nextturn<=to_unsigned(0,3);
 			elsif uart_receive = p_right then
 				--right
 				response(0):='0';
-				nextturn<=to_unsigned(2,2);
+				nextturn<=to_unsigned(2,3);
 			elsif uart_receive = p_forward then
 				--forward
 				response(0):='0';
-				nextturn<=to_unsigned(1,2);
+				nextturn<=to_unsigned(1,3);
 			elsif uart_receive = p_stop then
 				--stop
 				response(0):='0';
-				nextturn<=to_unsigned(3,2);
+				nextturn<=to_unsigned(3,3);
+			elsif uart_receive = p_turn then
+				--turn
+				response(0):='0';
+				nextturn<=to_unsigned(4,3);
+			elsif uart_receive = p_done then
+				--done
+				response(0):='0';
+				isdone <= '1';
+				nextturn<=to_unsigned(3,3);
 			else
 				response(0):='1';
 				--discard				
@@ -239,35 +302,45 @@ begin
 	end process;
 	
 	--sender
-	process (clk, uart_rw, sstate, sending)
+	process (clk)
 	variable next_state : sender_state;
 	variable next_w : std_logic;
 	variable debugid : unsigned ( 3 downto 0);
 	variable response : std_logic_vector (1 downto 0);		
-	begin			
-		next_w:=uart_rw(1);
-		if sstate = swaiting then
-		debugid:=to_unsigned(1,4);	
+	begin
+	if(rising_edge(clk)) then
+		next_state:=sstate;
+		if reset = '1' then
+			debugid:=to_unsigned(0,4);
+			next_w:='0';
+			response:="00";	
+			next_state:=swaiting;
+		elsif sstate = swaiting then
+			debugid:=to_unsigned(1,4);	
+			next_w:='0';
+			response:="00";	
 			if sending = '1'  then			
 				next_state:=ssetwrite;
 			end if;	
 		elsif sstate = ssetwrite then
-		debugid:=to_unsigned(2,4);	
+			debugid:=to_unsigned(2,4);	
 			next_w:='1';
 			next_state := ssending;
 		elsif sstate = sunsetwrite then
-		debugid:=to_unsigned(3,4);	
+			debugid:=to_unsigned(3,4);	
 			next_w:='0';
 			response:="10";			
 			next_state := swaiting;
 		elsif sstate = ssending then
-		debugid:=to_unsigned(4,4);	
+			debugid:=to_unsigned(4,4);
+			next_w:='1';		
 			next_state := sunsetwrite;
 		end if;
 		uart_rw(1)<=next_w;
 		sstate<=next_state;
 		sresponse<=response;
 		bin_seg(11 downto 8)<=std_logic_vector(debugid);
+	end if;
 	end process;
 	motor_l_reset <= reset;
 	motor_r_reset <= reset;

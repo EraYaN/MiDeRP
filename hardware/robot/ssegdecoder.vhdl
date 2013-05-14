@@ -26,12 +26,12 @@ begin
 		char <= "00";
 		segments <= "00000000";
 		anodes <= "1010";	
-		next_delay := 2000;		
+		next_delay := 0;		
 	else
 		if(delay>0) then
 			next_delay := delay-1;
 		else
-		next_delay := 2000;
+		next_delay := 200000;
 			--abcdefg
 			if char = "00" then
 				next_char:="01";
