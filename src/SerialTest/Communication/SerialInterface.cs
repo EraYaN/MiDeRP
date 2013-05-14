@@ -44,7 +44,7 @@ namespace MiDeRP
             serialPort.Parity = Parity.None;
             serialPort.DataBits = 8;
             serialPort.StopBits = StopBits.One;
-            serialPort.Handshake = Handshake.RequestToSend;
+            serialPort.Handshake = Handshake.None;
             serialPort.ReceivedBytesThreshold = 1;
             serialPort.ReadTimeout = 500;
             serialPort.WriteTimeout = 500;
@@ -114,16 +114,8 @@ namespace MiDeRP
 
         void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (SerialData.Chars==e.EventType)
-            {
-                //other char
-                int input = serialPort.ReadByte();
-                DataSerial((byte)input, e);
-            }
-            else
-            {
-                //EOF char
-            }
+            int input = serialPort.ReadByte();
+            DataSerial((byte)input, e);           
         }
     
         void DataSerial(Byte b, SerialDataReceivedEventArgs e)

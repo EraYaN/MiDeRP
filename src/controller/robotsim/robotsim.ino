@@ -69,7 +69,7 @@ void loop()
 			}
 		} else {
 			//maybe a mine
-			if(random(0,100)<10&&!minehere){
+			if(random(0,100)<40&&!minehere){
 				Serial.write(MineDetected);
 				minehere = true;
 			} else {

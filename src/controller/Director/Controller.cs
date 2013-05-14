@@ -104,13 +104,18 @@ namespace MiDeRP
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			if (Data.nav.path.Count > 0)
+			if (Data.nav.path.Count > 0 && Data.nav.path.Count > _i)
 			{
 				_nextNodeConnection = Data.nav.path[_i];
+			}
+			else if (Data.nav.path.Count==_i)
+			{
+				_nextDirective = StatusByteCode.Done;
 			}
 			else
 			{
 				//No path
+				_nextDirective = StatusByteCode.Unknown;
 				return;
 			}
 

@@ -61,8 +61,7 @@ namespace MiDeRP
             Data.vis = new Visualization(fieldmapcanvas);
             Data.nav = new Navigation();
             Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
-            //subscribe to events
-            Data.com.SerialDataEvent += com_SerialDataEvent;
+			//Data.ctr = new Controller();            
             if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
             {
                 Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
@@ -104,7 +103,6 @@ namespace MiDeRP
 
 		private void startRobotButton_Click(object sender, RoutedEventArgs e)
 		{
-			startRobotButton.IsEnabled = false;
 			if (Data.com == null)
 			{
 				MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -134,14 +132,8 @@ namespace MiDeRP
 
 			//Start controller
 			Data.ctr = new Controller();
-		}
-
-        void com_SerialDataEvent(object sender, SerialDataEventArgs e)
-        {
-			Data.vis.DrawField();
-
-			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
-        }
+			startRobotButton.IsEnabled = false;
+		}        
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
         {

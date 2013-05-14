@@ -100,6 +100,7 @@ namespace MiDeRP
         {
             byte[] buf = {data};
             serialPort.Write(buf,0,1);
+			System.Diagnostics.Debug.WriteLine("Serial byte send: {0}", data);
         }
         void serialPort_PinChanged(object sender, SerialPinChangedEventArgs e)
         {
@@ -115,6 +116,7 @@ namespace MiDeRP
         void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             int input = serialPort.ReadByte();
+			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", input);
             DataSerial((byte)input, e);           
         }
     
