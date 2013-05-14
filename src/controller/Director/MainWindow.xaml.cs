@@ -60,19 +60,21 @@ namespace MiDeRP
             //Init classes
             Data.vis = new Visualization(fieldmapcanvas);
             Data.nav = new Navigation();
-            Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
-            //subscribe to events
-            Data.com.SerialDataEvent += com_SerialDataEvent;
+            
             if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
             {
                 Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
 				Data.BaudRate = int.Parse((string)((ComboBoxItem)baudRateComboBox.SelectedItem).Content);
                 if (Data.ComPort != "" && Data.BaudRate > 0)
                 {
+					Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
 					int res = Data.com.OpenPort();
 					if (res != 0)
 						MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					
+					else
+					{
+						Data.com.SerialDataEvent += com_SerialDataEvent;
+					}
                 }
                 else
                 {
@@ -83,6 +85,7 @@ namespace MiDeRP
             {
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+			
 			System.Diagnostics.Debug.WriteLine("COM Port status: {0}",Data.com.IsOpen);
 			if(Data.com.IsOpen)
 				Data.com.SendByte(25);
@@ -104,7 +107,6 @@ namespace MiDeRP
 
 		private void startRobotButton_Click(object sender, RoutedEventArgs e)
 		{
-			startRobotButton.IsEnabled = false;
 			if (Data.com == null)
 			{
 				MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -134,11 +136,12 @@ namespace MiDeRP
 
 			//Start controller
 			Data.ctr = new Controller();
+			startRobotButton.IsEnabled = false;
 		}
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
-			Data.vis.DrawField();
+			//Data.vis.DrawField();
 
 			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
         }

@@ -69,6 +69,7 @@ namespace MiDeRP
             IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
             int[] stage1 = new int[len+1];
             int res = extractPath(ptr);
+			Data.nav.path.Clear();
 
 			if (res == 0 && len > 0 && ptr != null)
 			{
@@ -81,7 +82,6 @@ namespace MiDeRP
 					c.Id = (uint)stage1[i];
 					stage2.Add(c);
 				}
-				Data.nav.path.Clear();
 				Coord? prev = null;
 				foreach (Coord c in stage2)
 				{
