@@ -67,7 +67,7 @@ begin
 				when "1001"=> segments(6 downto 0) <= not "1101111"; -- 9
 				when "1010"=> segments(6 downto 0) <= not "1110111"; -- 10 (A)
 				when "1011"=> segments(6 downto 0) <= not "1111100"; -- 11 (b)
-				when "1100"=> segments(6 downto 0) <= not "1100010"; -- 12 (C)
+				when "1100"=> segments(6 downto 0) <= not "0111001"; -- 12 (C)
 				when "1101"=> segments(6 downto 0) <= not "1011110"; -- 13 (d)
 				when "1110"=> segments(6 downto 0) <= not "1111001"; -- 14 (E)
 				when "1111"=> segments(6 downto 0) <= not "1110001"; -- 15 (F)

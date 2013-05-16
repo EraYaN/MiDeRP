@@ -10,6 +10,7 @@ entity system is
 		reset: in std_logic; -- button;		
 		
 		sensor: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
+		detector: in std_logic_vector (3 downto 0); -- wave in = 0; other pins are not used
 		servo: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
 		
 		seg: out std_logic_vector (7 downto 0);
@@ -29,7 +30,8 @@ architecture structural of system is
 			clk			: in	std_logic;
 			reset			: in	std_logic;
 
-			sensor		: in	std_logic_vector(2 downto 0);		
+			sensor		: in	std_logic_vector(2 downto 0);
+			minedetected	: in	std_logic;
 
 			count_in		: in	unsigned (19 downto 0);
 			count_reset		: out	std_logic;
@@ -102,9 +104,19 @@ architecture structural of system is
 	);
 	end component uart;
 	
+	component minedetector is
+	port (
+		clk, reset: in std_logic;
+		wave_in: in std_logic_vector(3 downto 0);
+		
+		minedetected: out std_logic
+	);
+	end component minedetector;
+	
      --signals 
     signal count : unsigned (19 downto 0);
 	signal bufferedsensor : std_logic_vector (2 downto 0); -- (left,middle,right)
+	signal minedetected : std_logic;
     signal count_reset, m_reset_l, m_reset_r : std_logic := '0';  
 	signal side_l : side := left;
 	signal side_r : side := right;
@@ -147,7 +159,8 @@ begin
 		reset => reset,
 		count_in => count,		
 
-		sensor => bufferedsensor,	
+		sensor => bufferedsensor,
+		minedetected => minedetected,
 		
 		count_reset => count_reset,
 
@@ -183,6 +196,12 @@ begin
 		write_data	=>	uart_rw(1),
 		read_data	=>	uart_rw(0),
 		byteready	=>	uart_br
+	);
+	DET: minedetector port map (
+		clk => clk,
+		reset => reset,
+		wave_in => detector,
+		minedetected => minedetected
 	);
 	
 end architecture structural;
