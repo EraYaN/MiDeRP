@@ -62,14 +62,10 @@ namespace MiDeRP
 				Data.BaudRate = int.Parse((string)((ComboBoxItem)baudRateComboBox.SelectedItem).Content);
                 if (Data.ComPort != "" && Data.BaudRate > 0)
                 {
-					Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
-					int res = Data.com.OpenPort();
-					if (res != 0)
-						MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					else
-					{
-						Data.com.SerialDataEvent += com_SerialDataEvent;
-					}
+                    Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
+                    int res = Data.com.OpenPort();
+                    if (res != 0)
+                        MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
@@ -99,44 +95,38 @@ namespace MiDeRP
 			startRobotButton.IsEnabled = true;
         }
 
-		private void startRobotButton_Click(object sender, RoutedEventArgs e)
-		{
-			if (Data.com == null)
-			{
-				MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-			
-			if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
-			{
-				MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
-			if (Data.ctr != null)
-			{
-				MessageBoxResult result = MessageBox.Show("The controller is still running, exit and restart?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-				if (result == MessageBoxResult.Yes)
-				{
-
-					Data.ctr.Reset();
-					return;
-				}
-				else
-				{
-					return;
-				}
-			}
-
-			//Start controller
-			Data.ctr = new Controller();
-			startRobotButton.IsEnabled = false;
-		}
-
-        void com_SerialDataEvent(object sender, SerialDataEventArgs e)
+        private void startRobotButton_Click(object sender, RoutedEventArgs e)
         {
-            Data.vis.DrawField();
-            System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
+            if (Data.com == null)
+            {
+                MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
+            {
+                MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (Data.ctr != null)
+            {
+                MessageBoxResult result = MessageBox.Show("The controller is still running, exit and restart?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+
+                    Data.ctr.Reset();
+                    return;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            //Start controller
+            Data.ctr = new Controller();
+            startRobotButton.IsEnabled = false;
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)

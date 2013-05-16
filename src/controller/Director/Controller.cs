@@ -47,7 +47,8 @@ namespace MiDeRP
 
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
-			_receivedByte = e.DataByte.ToStatusByteCode();
+			
+            _receivedByte = e.DataByte.ToStatusByteCode();
 
 			if (_receivedByte == StatusByteCode.Acknowledged)
 			{
@@ -104,8 +105,11 @@ namespace MiDeRP
 			{
 				//Invalid bytecode or out of sync
 				return;
-			}
-		}
+            }
+            Data.vis.DrawField();
+            System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
+
+        }
 
 		private void getNextDirective()
 		{
