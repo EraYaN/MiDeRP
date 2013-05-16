@@ -135,7 +135,8 @@ namespace MiDeRP
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
-			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
+            Data.vis.DrawField();
+            System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)

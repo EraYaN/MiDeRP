@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MiDeRP
 {
@@ -38,10 +39,14 @@ namespace MiDeRP
         readonly Brush currentPosBrush = Brushes.ForestGreen;
         readonly Brush exitBrush = Brushes.Blue;
 
+        delegate void DrawFieldDelegate();
+        DrawFieldDelegate drawField; 
+
         public Visualization(Canvas _c)
         {
             //Constructor
-            c = _c;            
+            c = _c;
+            drawField = DrawField;
         }
 
         ~Visualization()
@@ -434,65 +439,73 @@ namespace MiDeRP
 
         public void DrawField()
         {
-            //remove all objects
-            c.Children.Clear();
-            //add vertical lines
-            double xstep = ((c.ActualWidth - marginlarge * 2) / (Data.M - 1)); //spacing between vertical lines
-            double ystep = ((c.ActualHeight - marginlarge * 2) / (Data.N - 1)); //spacing between horizontal lines
-            for (int x = 0; x < Data.M; x++)
+            if (c.Dispatcher.CheckAccess())
             {
-                //Create line object and set parameters.
-                Line line = new Line();
-                line.Stroke = lineBrush;
-                line.StrokeThickness = lineThickness;
-                line.X1 = marginlarge + xstep * x;
-                if (x == 0 || x == Data.M - 1)
+                //we're on the main thread that means GO.
+                //remove all objects
+                c.Children.Clear();
+                //add vertical lines
+                double xstep = ((c.ActualWidth - marginlarge * 2) / (Data.M - 1)); //spacing between vertical lines
+                double ystep = ((c.ActualHeight - marginlarge * 2) / (Data.N - 1)); //spacing between horizontal lines
+                for (int x = 0; x < Data.M; x++)
                 {
-                    //shorter
-                    line.Y1 = c.ActualHeight - (marginlarge-0.5); //minus 0.5 to close gap
-                    line.Y2 = marginlarge;
-                }
-                else
-                {
-                    //longer
-                    line.Y1 = c.ActualHeight - marginsmall;
-                    line.Y2 = marginsmall;
-                }
-                line.X2 = line.X1;
+                    //Create line object and set parameters.
+                    Line line = new Line();
+                    line.Stroke = lineBrush;
+                    line.StrokeThickness = lineThickness;
+                    line.X1 = marginlarge + xstep * x;
+                    if (x == 0 || x == Data.M - 1)
+                    {
+                        //shorter
+                        line.Y1 = c.ActualHeight - (marginlarge - 0.5); //minus 0.5 to close gap
+                        line.Y2 = marginlarge;
+                    }
+                    else
+                    {
+                        //longer
+                        line.Y1 = c.ActualHeight - marginsmall;
+                        line.Y2 = marginsmall;
+                    }
+                    line.X2 = line.X1;
 
-                //Add to canvas
-                c.Children.Add(line);
+                    //Add to canvas
+                    c.Children.Add(line);
+                }
+                //add horizontal lines
+                for (int y = 0; y < Data.N; y++)
+                {
+                    //Create line object and set parameters.
+                    Line line = new Line();
+                    line.Stroke = lineBrush;
+                    line.StrokeThickness = lineThickness;
+                    line.Y1 = c.ActualHeight - (marginlarge + ystep * y);
+                    if (y == 0 || y == Data.N - 1)
+                    {
+                        //shorter
+                        line.X1 = marginlarge - 0.5;
+                        line.X2 = c.ActualWidth - marginlarge;
+                    }
+                    else
+                    {
+                        //longer
+                        line.X1 = marginsmall;
+                        line.X2 = c.ActualWidth - marginsmall;
+                    }
+                    line.Y2 = line.Y1;
+
+                    //Add to canvas
+                    c.Children.Add(line);
+                }
+                DrawMines(Data.M - 1, Data.N, xstep, ystep);
+                DrawMines(Data.M, Data.N - 1, xstep, ystep);
+                DrawControlpoints(xstep, ystep);
+                DrawPath(xstep, ystep);
+                DrawCurrentPosition(xstep, ystep);
             }
-            //add horizontal lines
-            for (int y = 0; y < Data.N; y++)
+            else
             {
-                //Create line object and set parameters.
-                Line line = new Line();
-                line.Stroke = lineBrush;
-                line.StrokeThickness = lineThickness;
-                line.Y1 = c.ActualHeight - (marginlarge + ystep * y);
-                if (y == 0 || y == Data.N - 1)
-                {
-                    //shorter
-                    line.X1 = marginlarge-0.5;
-                    line.X2 = c.ActualWidth - marginlarge;
-                }
-                else
-                {
-                    //longer
-                    line.X1 = marginsmall;
-                    line.X2 = c.ActualWidth - marginsmall;
-                }
-                line.Y2 = line.Y1;
-
-                //Add to canvas
-                c.Children.Add(line);
+                c.Dispatcher.Invoke(drawField, DispatcherPriority.Normal);
             }
-            DrawMines(Data.M - 1, Data.N, xstep, ystep);
-            DrawMines(Data.M, Data.N - 1, xstep, ystep);
-            DrawControlpoints(xstep, ystep);
-            DrawPath(xstep, ystep);
-            DrawCurrentPosition(xstep, ystep);
         }
     }
 }
