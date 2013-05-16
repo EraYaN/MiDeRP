@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiDeRP
+namespace MiDeRP    
 {
 	public enum StatusByteCode : byte { 
 		Unknown = 0x00,
@@ -72,8 +72,14 @@ namespace MiDeRP
 			{
 				if (_receivedByte == StatusByteCode.Enquiry)
 				{
-					getNextDirective();
+                    getNextDirective();
 					Data.com.SendByte((byte)_nextDirective);
+                    if (_i == (Data.nav.path.Count - 1))
+                    {
+                        _i++;
+                        getNextDirective();
+                        Data.com.SendByte((byte)_nextDirective);
+                    }
 					_sentDirectiveIsUnacknowledged = true;
 				}
 				else if (_receivedByte == StatusByteCode.MineDetected)
@@ -111,6 +117,7 @@ namespace MiDeRP
 			else if (Data.nav.path.Count==_i)
 			{
 				_nextDirective = StatusByteCode.Done;
+                return;
 			}
 			else
 			{
@@ -146,11 +153,6 @@ namespace MiDeRP
 				{
 					_nextAbsoluteDirection = Direction.Unknown;
 				}
-			}
-			else if (_i == Data.nav.path.Count)
-			{
-				_nextDirective = StatusByteCode.Done;
-				return;
 			}
 			else
 			{

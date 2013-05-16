@@ -21,10 +21,6 @@ namespace MiDeRP
     /// </summary>
     public partial class MainWindow : Window
     {
-            
-        //Random rand = new Random();
-        
-  
         public MainWindow()
         {
             InitializeComponent();
@@ -86,8 +82,7 @@ namespace MiDeRP
             }
 			
 			System.Diagnostics.Debug.WriteLine("COM Port status: {0}",Data.com.IsOpen);
-			if(Data.com.IsOpen)
-				Data.com.SendByte(25);
+
             Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
@@ -140,8 +135,6 @@ namespace MiDeRP
 
         void com_SerialDataEvent(object sender, SerialDataEventArgs e)
         {
-			//Data.vis.DrawField();
-
 			System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
         }
 
@@ -204,6 +197,6 @@ namespace MiDeRP
 				Data.db.UpdateProperty("SerialPortStatusColor");
 				Data.db.UpdateProperty("CurrentPosText");
 			}
-        }   
+        }
     }
 }
