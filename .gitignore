@@ -219,4 +219,6 @@ log.txt
 work/
 *.wlf
 
+#sublime text shit
+*.sublime-workspace
 
