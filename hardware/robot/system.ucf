@@ -65,10 +65,10 @@ NET "sensor<0>" LOC = "A3" ;
 NET "sensor<1>" LOC = "J3" ;
 NET "sensor<2>" LOC = "B5" ;
 
-NET "detector<0>" LOC = "C6" ;
-NET "detector<1>" LOC = "B6" ; 
-NET "detector<2>" LOC = "C5" ; 
-NET "detector<3>" LOC = "B7" ;
+NET "detector_in" LOC = "C6" ;
+NET "detector_out<0>" LOC = "B6" ; 
+NET "detector_out<1>" LOC = "C5" ; 
+NET "detector_out<2>" LOC = "B7" ;
 
 NET "servo<0>" LOC = "A9" ; # servo left
 NET "servo<1>" LOC = "B9" ; # servo right
