@@ -10,7 +10,7 @@ entity controller is
 		reset	: in	std_logic;
 
 		sensor		: in	std_logic_vector(2 downto 0);
-		minedetected	: in	std_logic;
+		minedetected	: in	std_logic;		
 
 		count_in		: in	unsigned (19 downto 0);
 		count_reset		: out	std_logic;
@@ -47,7 +47,7 @@ architecture b of controller is
 	constant p_done		: byte := x"04"; -- EOT
 	constant p_unknown	: byte := x"00"; -- NULL
 	
-	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, callforinput, waitforinput, sendok, sendfail, arewedone, done);
+	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, callforinput, sendmine, waitforinput, sendok, sendfail, arewedone, done);
 	type sender_state is (swaiting, ssending, ssetwrite, sunsetwrite);
 	type receiver_state is (rwaiting, rreceiving, rsetread, runsetread);
 	signal state : sys_state := followline;
@@ -67,10 +67,10 @@ begin
 	bin_seg(15 downto 12)<="0000";
 	led(2 downto 0)<=std_logic_vector(nextturn);
 	led(4 downto 3)<=rresponse;
-	led(5)<=sresponse(1);
+	led(5)<=minedetected;
 	led(7 downto 6)<=uart_rw;	
 	dpoint_seg(3 downto 0)<="0000";
-	uart_rw_out<=uart_rw;
+	uart_rw_out<=uart_rw;	
 	
 	process (clk) is
 		variable next_state : sys_state;
@@ -112,55 +112,47 @@ begin
 					debugid:=to_unsigned(12,4);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				case sensor is
-					when "000" => 
-						motor_l_speed <= to_signed(100,8);
-						motor_r_speed <= to_signed(100,8);
-						if delaycounter = 0 then
-							if passedminesite = '1' then
-								next_delaycounter:=20000000;
-								next_state:=callforinput;
-								next_passedminesite:='0';
-							else
-								next_delaycounter:=20000000;
-								next_passedminesite:='1';
-							end if;
-						end if;						
-					when "001" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(100,8);
-					when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
-					when "011" => motor_l_speed <= to_signed(-50,8); motor_r_speed <= to_signed(100,8);
-					when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(0,8);
-					when "101" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
-					when "110" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(-50,8);
-					when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8); next_state:=arewedone;
-					when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
-			   end case;
+				if minedetected = '1' then
+					next_state:=sendmine;
+				else				
+					case sensor is
+						when "000" => 
+							motor_l_speed <= to_signed(100,8);
+							motor_r_speed <= to_signed(100,8);
+							if delaycounter = 0 then
+								if passedminesite = '1' then
+									next_delaycounter:=20000000;
+									next_state:=callforinput;
+									next_passedminesite:='0';
+								else
+									next_delaycounter:=20000000;
+									next_passedminesite:='1';
+								end if;
+							end if;						
+						when "001" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(100,8);
+						when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
+						when "011" => motor_l_speed <= to_signed(-50,8); motor_r_speed <= to_signed(100,8);
+						when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(0,8);
+						when "101" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
+						when "110" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(-50,8);
+						when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8); next_state:=arewedone;
+						when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
+				   end case;
+				end if;
 			elsif state = processnextturn then
 				debugid:=to_unsigned(2,4);
-				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
-				--uart_rw(0)<='1';
-				--nextturn	
-				--if 	turnprocessed = '1'	then
-					--next_state:=callforinput;
-				--else				
+				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);			
 					if nextturn = 0 then
 						next_state:=leftturn; --left
-						--turnprocessed<='1';
-						--nextturn <= to_unsigned(3,3);
 					elsif nextturn = 1 then
 						next_state:=followline; --forward (line)
-						--nextturn <= to_unsigned(3,3);
 					elsif nextturn = 2 then
 						next_state:=rightturn; --right
-						--turnprocessed<='1';
-						--nextturn <= to_unsigned(3,3);
 					elsif nextturn = 3 then
 						next_state:=callforinput; --stop (wait for input)
 					elsif nextturn = 4 then
 						next_state:=fullturn; --turn
-						--turnprocessed<='1';
 					end if;
-				--end if;
 				
 			elsif state = leftturn then
 				debugid:=to_unsigned(3,4);
@@ -199,7 +191,17 @@ begin
 				if sresponse = "10" then
 					next_state:=waitforinput;	
 					next_sending:='0';					
-				end if;			
+				end if;	
+			elsif state = sendmine then
+				debugid:=to_unsigned(13,4);			
+				motor_l_speed <= to_signed(0,8);
+				motor_r_speed <= to_signed(0,8);
+				uart_send <= p_mine;
+				next_sending:='1';	
+				if sresponse = "10" then
+				--	next_state:=callforinput;	
+					next_sending:='0';					
+				end if;	
 			elsif state = waitforinput then
 				debugid:=to_unsigned(6,4);			
 				motor_l_speed <= to_signed(0,8);
