@@ -7,25 +7,22 @@ Het groot-signaal equivalent circuit maakt het mogelijk om de niet-lineaire scha
 
 De versterkingsfactor van de 2N2222 transistor is 75. Als er een bepaalde ingangsspanning wordt geleverd, kan het zo zijn dat de voedingsspanning van 9 V de versterking niet kan leveren. Hierdoor ontstaat er niet een sinusgrafiek met een grotere amplitude, maar bijvoorbeeld een blokgolf (de uitgangsspanning wordt geclipt).\\
 
-Het instelpunt Q is maximale waarde van de uitgangsspanning waarbij de sinusgrafiek stabiel is. Dat wil zeggen: het punt waarbij de uitgangsspanning net niet clipt. Met het groot-signaal model kan het instelpunt worden bepaald.
+Om het instelpunt te bepalen wordt DC-analyse gebruikt. Alle AC-componenten worden uit de schakeling gehaald. In deze schakeling worden de condensatoren en de wisselspanningsbron eruit gehaald.
 
 \begin{equation}
 I_B=\frac{V_{CC}-V_{BE}}{R_B}
 \end{equation}
 $$\Rightarrow I_B=\frac{9\: V-0.7 \: V}{64 \: k \Omega}=1.3\times 10^{-4}A$$
 
-De collector stroom $I_C$ wordt gegeven door, 
-\begin{equation}
-I_C=\beta I_B
-\end{equation}
-$$\Rightarrow I_C=75 \times 1.3\times 10^{-4}A=9.7 \: mA$$
-De uitgangsspanning $V_o$ is de voedingsspanning minus de spanningsval over $R_2$ ($R_C$),
-\begin{equation}
-V_o=V_{CC}-I_{C}R_{C}
-\end{equation}
-$$\Rightarrow V_o=9-9.7\times 10^{-3}\times 875\approx 0.49 \: V$$
+\noindent De collector stroom bij een versterkingsfactor van 75 is 10 mA. 
 
-\noindent Dus, het instelpunt van de schakeling is bij een collector stroom van 9.7 mA en een uitgangsspanning van ongeveer 0.49 V.
+\noindent De uitgangsspanning $V_o$ is de voedingsspanning minus de spanningsval over $R_2$ ($R_C$),
+\begin{equation}
+V_o=V_{CC}-I_{C} \cdot R_{C}
+\end{equation}
+$$\Rightarrow V_o=9-10\times 10^{-3}\cdot 450=4.5 \: V$$
+
+\noindent Dus, het instelpunt van de schakeling is bij een collector stroom van 10 mA en een uitgangsspanning van 4.5 V.
 
 \newpage
 \section{Klein-signaal model en versterkingsfactor}
@@ -35,12 +32,17 @@ De spanningsversterking is het klein-signaal model wordt gegeven door,
 \begin{equation}
 A_v=\frac{v_o}{v_i}
 \end{equation}
-$$v_o=-g_m\cdot u_{be}\cdot R_2'$$
+
+\begin{equation}
+v_o=-g_m\cdot u_{be}\cdot R_2'
+\end{equation}
 Hierin is $R_2'$ de vervangende waarde voor de parallelschakeling van $R_2$ en $r_{ce}$,
 $$R_2'=\frac{R_2\cdot r_{ce}}{R_2+r_{ce}}$$
 
 \noindent Het is meestal zo dat $r_{ce}\gg R_2$, hierdoor wordt $R_2'\approx R_2$,
 $$\Rightarrow v_o=-g_m\cdot u_{be}\cdot R_2$$
+Hierbij is $u_{be}=v_i$, dus de spanningsversterking is:
+$$A_v=\frac{-g_m\cdot u_{be}\cdot R_2}{u_{be}}=-g_m\cdot R_2$$
 
 \noindent De waarde van $g_m$ kan berekend worden door middel van,
 
@@ -49,5 +51,11 @@ g_m=\frac{I_C}{V_T}
 \end{equation}
 Hierin is $I_C$ de collector stroom bij het instelpunt en $V_T$ de thermische spanning van de transistor op kamertemperatuur, de waarde is ongeveer 25 mV.
 
-$$\Rightarrow g_m=\frac{9.7\times 10^{-3}A}{25\times 10^{-3}V}= 0.39$$
+$$\Rightarrow g_m=\frac{9.7\times 10^{-3}A}{25\times 10^{-3}V}= 0.39 \: S$$
+
+Nu alle waarden berekend zijn, kan alles in de formule worden ingevuld:
+
+$$A_v= -0.39 \: S\cdot 450 \: \Omega\approx 176 $$
+
+
 \end{document}
