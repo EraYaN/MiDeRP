@@ -27,4 +27,28 @@
 
 \includepdf[pages={1-10}]{plan-van-aanpak-rc.pdf}
 
+ \section{Routeplanner Pseudocode}
+ \label{sec:pseudocode}
+
+\subsection{Lee}
+\label{ssec:pseudocode-lee}
+% \begin{verbatim}
+%  - Select start point, mark with 0
+%  - i := 0
+%   - REPEAT
+%      - Mark all unlabeled neighbors of points marked with i with i+1
+%      - i := i+1
+%    UNTIL ((target reached) or (no points can be marked))
+%    - go to the target point
+%    REPEAT
+%      - go to next node that has a lower mark than the actual node
+%      - add this node to path
+%    UNTIL (start point reached)
+%    - Block the path for future wirings
+%  - Delete all marks
+% \end{verbatim}
+
+\subsection{A*}
+\label{ssec:pseudocode-astar}
+
 \end{document}
