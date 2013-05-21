@@ -1,0 +1,228 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/D/Users/Robin/Downloads/games/Total_War_Shogun_2_READNFO-FLT/fairlight.nfo",
+			"settings":
+			{
+				"buffer_size": 7430,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Robin/Terraria/serverconfig.txt",
+			"settings":
+			{
+				"buffer_size": 2009,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 380.0,
+		"selected_items":
+		[
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 209.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Program Files (x86)/Steam/GreenLuma.log",
+		"/D/Users/Robin/Downloads/games/EMPIRE EARTH 3/README!!!.txt",
+		"//SERVER/Software/Sid Meiers Civilization V-SKIDROW/skidrow.nfo",
+		"/C/Program Files (x86)/Steam/GreenLuma.ini",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/midterm-design-report/midterm-report.tex",
+		"/D/Users/Robin/Documents/Default.rdp",
+		"/D/Users/Robin/Steam/SteamApps/common/Terraria/start-server.bat",
+		"/C/Users/Robin/AppData/Roaming/SecuROM/UserData/readme.txt",
+		"//SERVER/Software/Adobe Acrobat XI Pro 11.0.0 Multilanguage (Cracked dll ) [ChingLiu]/ChingLiu.Notes.nfo",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/midterm-design-report/midterm-report.pdf",
+		"//server/software/Adobe.CS6.Master.Collection/Serial Adobe Master Collection CS6.txt",
+		"//server/software/Adobe.CS6.Master.Collection/Instructions.txt",
+		"/D/Program Files/WinRAR/License.txt"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/D/Users/Robin/Downloads/games/Total_War_Shogun_2_READNFO-FLT/fairlight.nfo",
+					"settings":
+					{
+						"buffer_size": 7430,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2166.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Robin/Terraria/serverconfig.txt",
+					"settings":
+					{
+						"buffer_size": 2009,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1220,
+								1220
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.exec":
+	{
+		"height": 124.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 206.0,
+	"status_bar_visible": true
+}

@@ -1,0 +1,33 @@
+\documentclass{report}
+\input{../library/preamble}
+\input{../library/style}
+\addbibresource{../library/bibliography.bib}
+
+\title{EPO-2: Design Report}
+\author{Joris Blom; Luc Does; Erwin de Haan; Robin Hes; Chy Lau; Tijmen Witte}
+
+\begin{document}
+\maketitle
+\newpage
+\pagenumbering{roman}
+
+\subimport{inleiding/}{design-report-inleiding}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+
+\subimport{probleemstelling/}{design-report-probleemstelling}
+\subimport{systeemoverzicht/}{design-report-overzicht}
+\subimport{routeplanner-c/}{design-report-route}
+\subimport{discussie-reflectie-conclusie/}{design-report-discussie}
+\subimport{discussie-reflectie-conclusie/}{design-report-reflectie}
+\subimport{discussie-reflectie-conclusie/}{design-report-afsluiting}
+
+\newpage
+\pagenumbering{Roman}
+
+\printbibliography
+\subimport{bijlagen/}{design-report-bijlagen}
+
+\end{document}
