@@ -1,0 +1,36 @@
+\documentclass[11pt]{article}
+
+\begin{document}
+
+\section{Weerstandswaarden $R_1$, $R_2$}
+
+
+\begin{equation}
+\frac{V_{CC}-V_{BE}}{R_1}=I_B 
+\end{equation}
+$$\Rightarrow R_1=\frac{V_{CC}-V_{BE}}{I_B}$$
+
+\noindent De basisstroom wordt berekend door de collectorstroom te delen met de versterkingsfactor van de transistor,
+
+\begin{equation}
+I_C=I_B \cdot \beta
+\end{equation}
+$$\Rightarrow I_B=\frac{I_C}{\beta}$$
+$$\Rightarrow I_B=\frac{10 \: mA}{75}=1.3\times 10^{-4}A$$
+
+\noindent Alle waarden in formule 1 invullen geeft,
+$$\Rightarrow R_1=\frac{9\: V-0.7\: V}{1.3\times 10^{-4}A}$$
+$$\Rightarrow R_1=63.8 \: k  \Omega$$
+
+\noindent Om de waarden van $R_2$ te berekenen, veronderstellen we dat de collector spanning $V_C$ gelijk is aan 4.5 V. Een spanning van 4.5 V geeft het meeste bereik naar de aarde en naar de voedingsspanning $V_{CC}$ van 9 V. 
+
+\begin{equation}
+V = I \cdot R 
+\end{equation}
+
+$$R_2 = \frac{V_{CC}-V_C}{I_C} = \frac{9\:V-4.5\:V}{10\:mA}=450\: \Omega$$
+
+
+
+
+\end{document}
