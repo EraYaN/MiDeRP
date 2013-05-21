@@ -8,18 +8,34 @@
 	"buffers":
 	[
 		{
-			"file": "/D/Users/Robin/Downloads/games/Total_War_Shogun_2_READNFO-FLT/fairlight.nfo",
+			"file": "docs/niet-lineaire-schakelingen/chy-robin-thijmen/groot_signaal_instelpunt.tex",
 			"settings":
 			{
-				"buffer_size": 7430,
-				"line_ending": "Unix"
+				"buffer_size": 3213,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/Robin/Terraria/serverconfig.txt",
+			"file": "docs/meten-aan-de-robot/meten-met-de-robot.tex",
 			"settings":
 			{
-				"buffer_size": 2009,
+				"buffer_size": 544,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "docs/niet-lineaire-schakelingen/chy-robin-thijmen/weerstanden_transistor_niet_lineair.tex",
+			"settings":
+			{
+				"buffer_size": 1092,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "docs/niet-lineaire-schakelingen/chy-robin-thijmen/niet-lineaire-schakelingen.tex",
+			"settings":
+			{
+				"buffer_size": 4558,
 				"line_ending": "Windows"
 			}
 		}
@@ -56,6 +72,15 @@
 	},
 	"file_history":
 	[
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/library/preamble.tex",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/design-report/bijlagen/design-report-bijlagen.tex",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/design-report/design-report.tex",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/design-report/routeplanner-c/design-report-route.tex",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/niet-lineaire-schakelingen/chy-robin-thijmen/groot_signaal_instelpunt.tex",
+		"/D/Users/Robin/Documents/GitHub/MiDeRP/docs/design-report/systeemoverzicht/midterm-report-overzicht.tex",
+		"/D/Users/Robin/Downloads/games/Total_War_Shogun_2_READNFO-FLT/fairlight.nfo",
+		"/C/Users/Robin/Terraria/serverconfig.txt",
+		"//SERVER/Software/Microsoft Office 2010 Professional Plus/key.txt",
 		"/C/Program Files (x86)/Steam/GreenLuma.log",
 		"/D/Users/Robin/Downloads/games/EMPIRE EARTH 3/README!!!.txt",
 		"//SERVER/Software/Sid Meiers Civilization V-SKIDROW/skidrow.nfo",
@@ -86,6 +111,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"van",
+			"midterm"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -93,6 +120,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"design"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -103,56 +131,106 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/D/Users/Robin/Downloads/games/Total_War_Shogun_2_READNFO-FLT/fairlight.nfo",
+					"file": "docs/niet-lineaire-schakelingen/chy-robin-thijmen/groot_signaal_instelpunt.tex",
 					"settings":
 					{
-						"buffer_size": 7430,
+						"buffer_size": 3213,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								149,
+								3196
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 2166.0,
+						"translation.y": 855.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/C/Users/Robin/Terraria/serverconfig.txt",
+					"file": "docs/meten-aan-de-robot/meten-met-de-robot.tex",
 					"settings":
 					{
-						"buffer_size": 2009,
+						"buffer_size": 544,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1220,
-								1220
+								207,
+								197
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "docs/niet-lineaire-schakelingen/chy-robin-thijmen/weerstanden_transistor_niet_lineair.tex",
+					"settings":
+					{
+						"buffer_size": 1092,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								147,
+								147
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "docs/niet-lineaire-schakelingen/chy-robin-thijmen/niet-lineaire-schakelingen.tex",
+					"settings":
+					{
+						"buffer_size": 4558,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								82,
+								82
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -169,7 +247,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 35.0
 	},
 	"layout":
 	{
@@ -200,7 +278,7 @@
 	},
 	"replace":
 	{
-		"height": 0.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
