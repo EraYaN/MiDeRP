@@ -13,7 +13,7 @@
 
 \section{Projectopgave: Mijnen-ontwijkende robot}
 
-Het is de bedoeling dat er tijdens het EPO-2 project, de ``Smart Robot Challenge'', een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond. Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst, die de robot dient te detecteren en ontwijken. Als laatste wordt er nog één mijn toegevoegd, die op dat moment gevonden moet worden en dienst doet als schat.
+Het is de bedoeling dat er tijdens het EPO-2 project “Smart Robot Challange” een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond. Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst, die de robot dient te ontwijken. Als laatste wordt er nog één mijn toegevoegd, die op dat moment gevonden moet worden en dienst doet als schat. Dit alles dient te worden voltooid door middel van zelfgemaakte VHDL en C-codes, die de directe besturing van de robot realiseren. 
 
 \section{Beschikbare infrastructuur}
 \subsection{Spartan-3 robotplatform}
@@ -22,17 +22,55 @@ De basisvorm van de robot is van te voren gebouwd en bestaat uit een plateau waa
 
 \subsection{Eigenschappen mijnenveld}
 
-Het veld dat gebruikt wordt voor de robotcompetitie bestaat uit een zwart-wit geprint papiervel, dat bevestigd is op een houten bord met afmetingen van 244 cm x 244 cm. Het zwarte patroon wordt gevormd door een 4 bij 4 rooster van wegen en kruispunten. Aan elke zijde van het vierkante veld zijn er drie ingangswegen (16 cm lang) die aangegeven worden met de getallen 1 t/m 12. Het veld is te vinden bijlage \ref{sec:field}.
+Het veld dat gebruikt wordt voor de robotcompetitie bestaat uit een zwart-wit geprint papiervel, dat bevestigd is op een houten bord met afmetingen 244 cm x 244 cm. Het zwarte patroon wordt gevormd door een 4 bij 4 rooster van wegen en kruispunten. De wegen zijn aangegeven als een zwarte strip van 15 mm breend, één wegsegment is 48cm lang. In het midden van elk wegsegment zit een zwarte stip met een diameter van 30mm, deze dienen als de plaats waar de mijnen op komen te liggen. De mijnen zijn gemaakt van een zwartgeverfde verzinkte stalen ring. Aan elke zijde van het vierkante veld zijn er drie ingangswegen (16 cm lang) die aangegeven worden met de getallen 1 t/m 12. Het veld is te vinden in bijlage. \ref{sec:field}.
 
 \subsection{Functionele eisen}
 
-Het is de bedoeling dat er met behulp van de hardware beschrijvingstaal VHDL op de FPGA een VHDL-beschrijving wordt gemaakt, zodat de informatie afkomstig van de sensoren wordt gebruikt om de servomotoren op de juiste manier aan te sturen. Verder moet er een routeplanner algoritme in een C-programma worden geïmplementeerd die het kortste pad zoekt op het wedstrijdveld. Daarnaast moeten er sensoren ontworpen en gebouwd worden om de mijnen te detecteren in het mijnenveld. De communicatie tussen FPGA en de computer waar het C-programma op draait dient draadloos te verlopen via de XBee-module.
+Het is de bedoeling dat er met behulp van de hardware beschrijvingstaal VHDL op de FPGA een VHDL-beschrijving wordt gemaakt, zodat de informatie afkomstig van de sensoren kan worden gebruikt om de servomotoren op de juiste manier aan te sturen. Verder moet er een routeplanner algoritme in een C-programma worden geïmplementeerd die het kortste pad zoekt op het wedstrijdveld. Daarnaast moeten er sensoren ontworpen en gebouwd worden om de mijnen te detecteren in het mijnenveld. Hierbij kan er gekozen worden uit twee soorten sensoren, namelijk een capacitieve sensor of een inductieve sensor. Het projectteam kan zelf bepalen welke het kiest. 
+\newline
+De communicatie tussen FPGA en de computer waar het C-programma op draait dient draadloos te verlopen via de XBee-module.
 
 \subsection{Randvoorwaarden}
 
-De robot heeft een aantal eisen waaraan voldaan moet worden. Zo moet de robot in een fictieve box passen die niet groter is dan 30 cm x 25 cm x 20 cm. Verder mag de robot maximaal 1 kg wegen. De aandrijving wordt gerealiseerd met behulp van elektromotoren en een batterij. De batterij is de enige aanwezige energiebron op de robot.
-De robotaansturing kan alleen worden gedaan via de beschikbare Basys2 ontwikkelbord met Spartan-3 FPGA chip, twee XBee modules en een besturingsprogamma op een laptop dat geschreven is in de programmeertaal C. De FPGA-chip kan alleen werken met een VHDL-geschreven code.
-Verder is het niet toegestaan om in het besturingsproggama in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen, daarnaast moet de robot zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld.
+De robot heeft een aantal eisen waaraan voldaan moet worden;
+
+\begin{itemize}
+
+\item
+De robot in een fictieve box passen die niet groter is dan 30 cm x 25 cm x 20 cm.
+
+\item
+De robot mag maximaal 1 kg wegen.
+
+\item
+De aandrijving wordt gerealiseerd met behulp van elektromotoren en een batterij. De batterij is de enige aanwezige energiebron op de robot.
+
+\item
+De robotaansturing kan alleen worden gedaan via de beschikbare Basys2 ontwikkelbord, die bestaat uit;
+
+\begin{itemize}
+
+\item
+één Spartan-3 FPGA chip,
+
+\item
+twee Xbee modules,
+
+\item
+één besturingsprogamma op een laptop dat geschreven is in de programmeertaal C. 
+
+\end{itemize}
+
+\item
+De FPGA-chip kan alleen werken met een VHDL-geschreven code.
+
+\item
+Het niet toegestaan om in het besturingsproggama in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen 
+
+\item
+De robot  moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld.
+
+\end{itemize}
 
 \subsection{Plan van aanpak}
 
