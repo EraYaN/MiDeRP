@@ -86,7 +86,9 @@ A* begint zijn zoektocht naar het kortste pad bij het startpunt. Vanaf het begin
 Nadat dit proces zich voor ieder aanliggende node heeft herhaald (vier maal dus) zitten er dus een n-aantal nodes extra in de openlist. Vervolgens wordt de node met de laagste f-score, het eerste item van de openlist, ingesteld als huidige node en begint het proces opnieuw. Dit herhaalt zich totdat het eindpunt als huidige node wordt aangewezen. Op dat moment is begint net als bij het algoritme van Lee een backtrace, maar ditmaal op basis van de ``vorige''-verwijzing die in iedere node is opgeslagen. Iedere node verwijst op die manier namelijk terug naar een andere, tot aan het startpunt. Wanneer de hiermee opgebouwde lijst dan tot slot wordt geïnverteerd, wordt het een pad van begin tot eind.
 \\
 
-Simpel gezegd gaat het algoritme zo hard mogelijk richting het eindpunt
+\noindent
+Simpel gezegd gaat het algoritme zo hard mogelijk richting het eindpunt, waarbij het er dus op neer komt dat telkens de eerste node uit de openlist een onderdeel van het pad wordt. Dit gaat zo door totdat er een obstakel voorkomt, in dit geval valt het algoritme terug op de laatst bekende node die nog beschikbare aanliggende nodes heeft, vanuit daar gaat het algoritme op dezelfde manier verder, totdat het eindpunt gevonden is.
+\\
 
 \noindent
 Om mijnen te ontwijken kan simpelweg een check ingebouwd worden tijdens het evalueren van de aanliggende nodes; wanneer er een mijn ligt tussen de huidige en aanliggende node, wordt deze simpelweg overgeslagen en kan hij dus niet aangemerkt worden als ``vorige''.
