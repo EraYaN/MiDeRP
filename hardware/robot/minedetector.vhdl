@@ -11,7 +11,7 @@ entity minedetector is
 	  
 	  minedetected: out std_logic
    );
-end minedetector ;
+end minedetector;
 
 architecture arch of minedetector is
    constant threshold : integer := 37750; --amount of ticks per pulse to trigger detector
@@ -31,27 +31,28 @@ begin
 				next_minedetected := '0';		
 			elsif wave_in = '1' and prev = '0' then
 				next_counting := '1'; --pulse detected
+				next_prev := wave_in;
 			elsif wave_in = '0' and prev = '1' then
 				next_counting := '0';				
 				if count > threshold then
 					next_minedetected := '1';
-				end if;				
+				end if;
+				next_prev := wave_in;			
 			else
 				next_prev := wave_in;
-			end if;			
+			end if;	
+
 			if counting = '1' then			
 				next_count := count + 1;
-				else
+			else
 				next_count:=0;
 			end if;
 		end if;
-
-		
 		
 		prev <= next_prev;
 		counting <= next_counting;
 		count <= next_count;
 		minedetected <= next_minedetected;
 	end process;
-   
+
 end arch;

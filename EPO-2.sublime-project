@@ -3,6 +3,9 @@
 	[
 		{
 			"path": "docs"
+		},
+		{
+			"path": "hardware"
 		}
 	]
 }
