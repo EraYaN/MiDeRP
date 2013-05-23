@@ -12,28 +12,32 @@ end avcontroller;
 
 architecture Behavioral of avcontroller is
 type av_state is (silent,siren);
-signal counter : integer;
+signal count : integer;
+signal count2 : integer;
 signal state : av_state;
 signal piezo:std_logic;
 begin
 process(clk) is
 variable bin : std_logic_vector(3 downto 0):=x"F";
 variable next_state : av_state;
-variable next_counter : integer;
+variable next_count,next_count2 : integer;
 variable next_piezo : std_logic;
 
 begin
 	if rising_edge(clk) then
 		next_state:= state;
 		next_piezo := piezo;
-		next_counter := 0;
+		next_count := count;
+		next_count2 := count2;
 		if reset = '1' then
 			next_piezo := '0';
 			led_out <= "00";
-			next_counter := 0;			
+			next_count := 0;	
+			next_count2 := 0;			
 		elsif state = silent then		
 			if minedetected = '1' then
 				led_out <= "11";
+				next_count2 := 1200;
 				next_state := siren;
 			else
 				led_out <= "00";
@@ -41,16 +45,21 @@ begin
 			end if;
 		elsif state = siren then	
 			led_out <= "11"; 
-			if counter > 85000 then
+			if count = 0 then
 				next_piezo := not piezo;
-				next_counter := 0;
+				next_count := 20000;
+				next_count2:=count2-1;							
 			else
-				next_counter:=counter+1;				
+				next_count:=count-1;				
+			end if;
+			if count2 = 0 then
+				next_state:=silent;
 			end if;
 		end if;	
 		piezo <= next_piezo;
 		state<=next_state;
-		counter<=next_counter;
+		count<=next_count;
+		count2<=next_count2;
 	end if;
 end process;
 piezo_out<=piezo;

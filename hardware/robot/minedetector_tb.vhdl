@@ -29,7 +29,7 @@ begin
 				'0' after 10 ns when clk /= '0' else '1' after 10 ns;
 
 	wave_in	<=	'1' after 0 ns,
-				'0' after 0.756 ms when wave_in /= '0' else '1' after 0.756 ms;
+				'0' after 0.8 ms when wave_in /= '0' else '1' after 0.8 ms;
 
 	l1: minedetector port map (
 		clk				=>	clk,

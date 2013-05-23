@@ -40,6 +40,7 @@ architecture b of controller is
 	constant p_left		: byte := x"4C"; -- 'L'
 	constant p_right	: byte := x"52"; -- 'R'
 	constant p_turn		: byte := x"54"; -- 'T'
+	constant p_cont		: byte := x"01"; -- SOH
 	constant p_ack		: byte := x"06"; -- ACK
 	constant p_nak		: byte := x"15"; -- NAK
 	constant p_enq		: byte := x"05"; -- ENQ
@@ -104,7 +105,10 @@ begin
 			elsif state = done then
 				debugid:=to_unsigned(10,4);
 				motor_l_speed <= to_signed(0,8);
-				motor_r_speed <= to_signed(0,8);			
+				motor_r_speed <= to_signed(0,8);
+				if isdone= '0' then
+					next_state:=callforinput;
+				end if;
 			elsif state = followline then
 				debugid:=to_unsigned(1,4);			
 				--follow line
@@ -114,6 +118,7 @@ begin
 				end if;
 				if minedetected = '1' then
 					next_state:=sendmine;
+					next_passedminesite:= '1';
 				else				
 					case sensor is
 						when "000" => 
@@ -157,7 +162,7 @@ begin
 			elsif state = leftturn then
 				debugid:=to_unsigned(3,4);
 				--left
-				motor_l_speed <= to_signed(-20,8);
+				motor_l_speed <= to_signed(-25,8);
 				motor_r_speed <= to_signed(100,8);
 				case sensor is			  			  
 				  when "101" => next_state:=followline;
@@ -167,7 +172,7 @@ begin
 				debugid:=to_unsigned(4,4);
 				--right
 				motor_l_speed <= to_signed(100,8);
-				motor_r_speed <= to_signed(-20,8);
+				motor_r_speed <= to_signed(-25,8);
 				case sensor is			  			  
 				  when "101" => next_state:=followline;
 				  when others => --nothing
@@ -177,11 +182,16 @@ begin
 				--full turn
 				motor_l_speed <= to_signed(100,8);
 				motor_r_speed <= to_signed(-100,8);
-				case sensor is	
-				--TODO impelement full turn properly			
-				  when "101" => next_state:=followline;
-				  when others => --nothing
-			   end case;
+				if delaycounter > 0 then
+					debugid:=to_unsigned(12,4);
+					next_delaycounter:=delaycounter-1;
+				end if;
+				if delaycounter = 0	then			
+					case sensor is															
+					  when "101" => next_state:=followline;
+					  when others => --nothing
+				   end case;
+			   end if;
 			elsif state = callforinput then
 				debugid:=to_unsigned(5,4);			
 				motor_l_speed <= to_signed(0,8);
@@ -199,7 +209,8 @@ begin
 				uart_send <= p_mine;
 				next_sending:='1';	
 				if sresponse = "10" then
-				--	next_state:=callforinput;	
+					next_delaycounter:=20000000;
+					next_state:=fullturn;	
 					next_sending:='0';					
 				end if;	
 			elsif state = waitforinput then
@@ -297,6 +308,11 @@ begin
 				--turn
 				response(0):='0';
 				nextturn<=to_unsigned(4,3);
+			elsif uart_receive = p_cont then
+				--cont
+				response(0):='0';
+				isdone <= '0';
+				nextturn<=to_unsigned(3,3);			
 			elsif uart_receive = p_done then
 				--done
 				response(0):='0';

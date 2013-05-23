@@ -29,9 +29,9 @@ begin
 		else
 		
 			if (motor = left) then
-				pulse := 75000 + 250*s;
+				pulse := 75000 + 300*s;
 			else
-				pulse := 75000 - 250*s;
+				pulse := 75000 - 300*s;
 			end if;
 		
 			if (c < pulse) then
