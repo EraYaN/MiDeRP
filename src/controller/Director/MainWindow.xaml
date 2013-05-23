@@ -51,6 +51,13 @@
             </GroupBox>
             <GroupBox Header="Robot Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Label Target="{Binding ElementName=challengeComboBox}" Content="Challenge:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
+                    <ComboBox x:Name="challengeComboBox" Height="20" Margin="2" Padding="4,0,0,0" VerticalContentAlignment="Center">
+                        <ComboBoxItem Content="None" IsSelected="True"/>
+                        <ComboBoxItem Content="A"/>
+                        <ComboBoxItem Content="B"/>
+                        <ComboBoxItem Content="C"/>
+                    </ComboBox>
                     <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click" IsEnabled="False"/>
                 </StackPanel>
             </GroupBox>

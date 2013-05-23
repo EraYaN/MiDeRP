@@ -1,0 +1,30 @@
+\documentclass{report}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{EPO-2: Mid-term Design Report - Aansturing Servomotoren}
+\author{Robin Hes}
+
+\begin{document}
+
+\chapter{Aansturing Servomotoren}
+\label{ch:servo}
+
+De belangrijkste actuators in het ontwerp zijn de servomotoren die de wielen van de robot aandrijven. Zonder deze servo's zou de robot vanzelfsprekend niet van zijn plek af komen. Beide motoren worden onafhankelijk aangestuurd en verzorgen niet alleen de voortstuwing, maar ook de besturing van de robot. De servo's worden aangestuurd door de FPGA op de robot, middels een PWM-signaal. Dit signaal moet in de FPGA gegenereerd worden en aan de volgende eisen voldoen:
+
+\begin{itemize}
+	\item De frequentie van het signaal moet gelijk zijn aan 50 Hz
+	\item De duty-cycle moet tussen de 5 en 10 \% (1.0 en 2.0 ms) liggen
+	\item Het pulssignaal moet tussen de 3 en 5 V liggen
+\end{itemize}
+
+\noindent
+Verder geldt het volgende voor wat betreft de draairichting van de servo's:
+
+\begin{itemize}
+	\item Van bovenaf gezien draait de servo bij pulswijdtes onder de 1.5 ms met de klok mee
+	\item Van bovenaf gezien draait de servo bij pulswijdtes boven de 1.5 ms tegen de klok in
+\end{itemize}
+
+\end{document}

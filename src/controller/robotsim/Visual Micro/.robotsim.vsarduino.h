@@ -2,7 +2,7 @@
 #define _VSARDUINO_H_
 //Board = Arduino Mega 2560 or Mega ADK
 #define __AVR_ATmega2560__
-#define ARDUINO 104
+#define ARDUINO 105
 #define __AVR__
 #define F_CPU 16000000L
 #define __cplusplus
@@ -31,5 +31,5 @@ extern "C" void __cxa_pure_virtual() {;}
 
 #include "F:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
 #include "F:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
-#include "F:\Users\Erwin\GitHub\MiDeRP\src\controller\robotsim\robotsim.ino"
+#include "C:\Users\Erwin\Documents\GitHub\MiDeRP\src\controller\robotsim\robotsim.ino"
 #endif
