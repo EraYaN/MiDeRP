@@ -14,7 +14,7 @@ entity minedetector is
 end minedetector;
 
 architecture arch of minedetector is
-   constant threshold : integer := 38000; --amount of ticks per pulse to trigger detector
+   constant threshold : integer := 37800; --amount of ticks per pulse to trigger detector
    signal count : integer := 0;
    signal count2 : integer := 0;
    signal prev, counting : std_logic;
@@ -41,7 +41,7 @@ begin
 				next_counting := '0';				
 				if count > threshold then
 					--next_count2 := count2+1;
-					if count2 >= 30 then
+					if count2 >= 25 then
 						next_minedetected := '1';
 						next_count2 := 0;
 					else
