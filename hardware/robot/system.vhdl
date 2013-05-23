@@ -10,7 +10,8 @@ entity system is
 		reset: in std_logic; -- button;		
 		
 		sensor: in	std_logic_vector (2 downto 0); -- left = 0 middle = 1 right = 2
-		detector: in std_logic_vector (3 downto 0); -- wave in = 0; other pins are not used
+		detector_in : in std_logic; -- wave in = 0; other pins are not used
+		detector_out : out std_logic_vector(2 downto 0);
 		servo: out	std_logic_vector (1 downto 0); -- left = 0 right = 1
 		
 		seg: out std_logic_vector (7 downto 0);
@@ -31,7 +32,7 @@ architecture structural of system is
 			reset			: in	std_logic;
 
 			sensor		: in	std_logic_vector(2 downto 0);
-			minedetected	: in	std_logic;
+			minedetected	: in	std_logic;			
 
 			count_in		: in	unsigned (19 downto 0);
 			count_reset		: out	std_logic;
@@ -107,11 +108,21 @@ architecture structural of system is
 	component minedetector is
 	port (
 		clk, reset: in std_logic;
-		wave_in: in std_logic_vector(3 downto 0);
+		wave_in: in std_logic;
 		
 		minedetected: out std_logic
 	);
 	end component minedetector;
+	
+	component avcontroller is
+	port(
+		clk : in std_logic;
+		reset : in std_logic;
+		minedetected : in std_logic;
+		piezo_out: out std_logic;
+		led_out: out std_logic_vector(1 downto 0)
+	);
+	end component avcontroller;
 	
      --signals 
     signal count : unsigned (19 downto 0);
@@ -125,7 +136,7 @@ architecture structural of system is
 	signal uart_rw : std_logic_vector (1 downto 0); -- 0 = read, 1 = write
 	signal uart_br : std_logic;
 	signal bin_seg : STD_LOGIC_VECTOR (15 downto 0);
-	signal dpoint_seg : STD_LOGIC_vector(3 downto 0);
+	signal dpoint_seg : STD_LOGIC_vector(3 downto 0);	
 begin
 
     IB: inputbuffer port map(
@@ -160,7 +171,7 @@ begin
 		count_in => count,		
 
 		sensor => bufferedsensor,
-		minedetected => minedetected,
+		minedetected => minedetected,		
 		
 		count_reset => count_reset,
 
@@ -200,8 +211,15 @@ begin
 	DET: minedetector port map (
 		clk => clk,
 		reset => reset,
-		wave_in => detector,
+		wave_in => detector_in,
 		minedetected => minedetected
+	);
+	AVC: avcontroller port map (
+		clk =>clk,
+		reset => reset,
+		minedetected => minedetected,
+		piezo_out => detector_out(2),
+		led_out => detector_out(1 downto 0)
 	);
 	
 end architecture structural;

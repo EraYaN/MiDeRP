@@ -1,0 +1,112 @@
+\documentclass{article}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{Niet lineaire schakelingen: versterking met een BPT}
+\author{Robin Hes; Chy Lau; Tijmen Witte}
+\begin{document}
+\maketitle
+
+\section*{Inleiding}
+
+Tijdens de Just-in-time training van 24-04-2013 was het bedoeling dat we meer inzicht zouden krijgen in niet-lineaire elektronische componenten. Hierdoor 
+zijn we beter voorbereid om een ontwerp te maken voor een mogelijke mijndetecterende sensor voor de robot. Bij deze opdrachten zouden we gebruik maken van verschillende simulatieprogramma's (Falstad en SPICE) om een eerste schatting van bepaalde waarden te verkrijgen en vervolgens om een precies gedrag van componenten te verkrijgen.
+\\
+
+\noindent
+In dit verslag behandelen we een versterker op basis van een bipolaire transistor met een terugkoppelcircuit van twee weerstanden. Als eerste bepalen we geschikte waarden voor de twee weerstanden, vervolgens komt het groot-signaal model aan bod en als laatst bespreken we het klein-signaal model.
+
+\section*{Weerstandswaarden $R_1$, $R_2$}
+
+\begin{equation}
+\frac{V_{CC}-V_{BE}}{R_1}=I_B 
+\end{equation}
+$$\Rightarrow R_1=\frac{V_{CC}-V_{BE}}{I_B}$$
+
+\noindent De basisstroom wordt berekend door de collectorstroom te delen met de versterkingsfactor van de transistor,
+
+\begin{equation}
+I_C=I_B \cdot \beta
+\end{equation}
+$$\Rightarrow I_B=\frac{I_C}{\beta}$$
+$$\Rightarrow I_B=\frac{10 \: mA}{75}=1.3\times 10^{-4}A$$
+
+\noindent Alle waarden in formule 1 invullen geeft,
+$$\Rightarrow R_1=\frac{9\: V-0.7\: V}{1.3\times 10^{-4}A}$$
+$$\Rightarrow R_1=63.8 \: k  \Omega$$
+
+\noindent Om de waarden van $R_2$ te berekenen, veronderstellen we dat de collector spanning $V_C$ gelijk is aan 4.5 V. Een spanning van 4.5 V geeft het meeste bereik naar de aarde en naar de voedingsspanning $V_{CC}$ van 9 V. 
+
+\begin{equation}
+V = I \cdot R 
+\end{equation}
+
+$$R_2 = \frac{V_{CC}-V_C}{I_C} = \frac{9\:V-4.5\:V}{10\:mA}=450\: \Omega$$
+
+\section*{Groot-signaal model en instelpunt}
+
+Het groot-signaal equivalent circuit maakt het mogelijk om de niet-lineaire schakeling te beschrijven. De spanning die wordt aangeboden aan de ingang is een sinusvormig signaal en kan al bij grotere waarden ertoe leiden dat de uitgangsspanning geen lineaire versterking is van de ingangsspanning.
+
+De versterkingsfactor van de 2N2222 transistor is 75. Als er een bepaalde ingangsspanning wordt geleverd, kan het zo zijn dat de voedingsspanning van 9 V de versterking niet kan leveren. Hierdoor ontstaat er niet een sinusgrafiek met een grotere amplitude, maar bijvoorbeeld een blokgolf (de uitgangsspanning wordt geclipt).\\
+
+Het instelpunt (operating point) is het punt waarbij de uitgangsspanning ongeveer de helft is van de voedingsspanning bij een geen-ingangsspanning conditie. Dit geeft het grootste bereik van het uitgangssignaal voordat het gaat clippen. 
+
+Om het instelpunt te bepalen wordt DC-analyse gebruikt. Alle AC-componenten worden uit de schakeling gehaald. In deze schakeling worden de condensatoren en de wisselspanningsbron eruit gehaald.
+
+\begin{equation}
+I_B=\frac{V_{CC}-V_{BE}}{R_B}
+\end{equation}
+$$\Rightarrow I_B=\frac{9\: V-0.7 \: V}{64 \: k \Omega}=1.3\times 10^{-4}A$$
+
+\noindent De collector stroom bij een versterkingsfactor van 75 is 10 mA. 
+
+\noindent De uitgangsspanning $V_o$ is de voedingsspanning minus de spanningsval over $R_2$ ($R_C$),
+\begin{equation}
+V_o=V_{CC}-I_{C} \cdot R_{C}
+\end{equation}
+$$\Rightarrow V_o=9-10\times 10^{-3}\cdot 450=4.5 \: V$$
+
+\noindent Dus, het instelpunt van de schakeling is bij een collector stroom van 10 mA en een uitgangsspanning van 4.5 V.
+
+\section*{Klein-signaal model en versterkingsfactor}
+
+De spanningsversterking is het klein-signaal model wordt gegeven door,
+
+\begin{equation}
+A_v=\frac{v_o}{v_i}
+\end{equation}
+
+\begin{equation}
+v_o=-g_m\cdot u_{be}\cdot R_2'
+\end{equation}
+Hierin is $R_2'$ de vervangende waarde voor de parallelschakeling van $R_2$ en $r_{ce}$,
+$$R_2'=\frac{R_2\cdot r_{ce}}{R_2+r_{ce}}$$
+
+\noindent Het is meestal zo dat $r_{ce}\gg R_2$, hierdoor wordt $R_2'\approx R_2$,
+$$\Rightarrow v_o=-g_m\cdot u_{be}\cdot R_2$$
+Hierbij is $u_{be}=v_i$, dus de spanningsversterking is:
+$$A_v=\frac{-g_m\cdot u_{be}\cdot R_2}{u_{be}}=-g_m\cdot R_2$$
+
+\noindent De waarde van $g_m$ kan berekend worden door middel van,
+
+\begin{equation}
+g_m=\frac{I_C}{V_T}
+\end{equation}
+Hierin is $I_C$ de collector stroom bij het instelpunt en $V_T$ de thermische spanning van de transistor op kamertemperatuur, de waarde is ongeveer 25 mV.
+
+$$\Rightarrow g_m=\frac{9.7\times 10^{-3}A}{25\times 10^{-3}V}= 0.39 \: S$$
+
+Nu alle waarden berekend zijn, kan alles in de formule worden ingevuld:
+
+$$A_v= -0.39 \: S\cdot 450 \: \Omega\approx -176 $$
+
+\section*{Conclusie}
+Het werken met de spanningsversterker circuit met behulp van een NPN-transistor geeft ons inzicht in de werking van niet-lineaire elektrische componenten. Bovendien wordt er ook inzicht verkregen in het verschil tussen groot-signaal en klein-signaal gedrag.
+
+Om het circuit te laten werken, werden de waarden van de weerstanden bepaald door middel van de Falstad simulator en daarna door middel van een berekening.
+
+Met het groot-signaalmodel wordt het instelpunt van de transistor bepaald. Bovendien wordt er met het instelpunt de waarde van $R_2$ berekend. Verder is de versterkingsfactor met het klein-signaalmodel te berekenen. 
+
+Om het gedrag van de spanningsversterker circuit met behulp van een NPN-transistor te analyseren, moet er dus gebruik worden gemaakt van simulaties, groot-signaalmodel en klein-signaalmodel. 
+\end{document}
