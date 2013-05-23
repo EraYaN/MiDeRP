@@ -1,0 +1,37 @@
+\documentclass{report}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{EPO-2: Mid-term Design Report - Mijndetector}
+\author{Chy Lau}
+
+\begin{document}
+
+\chapter{Mijndetector}
+\label{ch:mijn}
+Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beiden?
+
+Wij hebben uiteindelijk voor de inductieve sensor gekozen. De inductieve sensor gebruikt minder componenten dan de capacitieve sensor. Dus de inductieve sensor heeft qua opbouw het meest eenvoudige circuit. De werking van deze sensor is dan ook makkelijker te verklaren. 
+
+\section{Eisen}
+\label{sec:eisen}
+De mijn-detecterende sensor moet aan de volgende eisen voldoen: 
+\begin{itemize}
+\item De mijndetector moet een metalen ring detecteren op het wedstrijdveld;
+\item De sensor mag geen contact maken met de metalen ring;
+\item De sensor moet compatibel met de batterij op de robot zijn; 
+\item Het uitgangssignaal van de sensor is een blokgolf;
+\end{itemize}
+
+\section{Ontwerp}
+\label{sec:ontwerp}
+De schakeling van de inductieve sensor is zoals die van de JIT: Inductieve sensoren. Het is overbodig om de schakeling te veranderen, want de originele schakeling levert geen problemen op. In figuur ** staat de oscillator op basis van de inductieve sensor.
+
+\subsection{Werkingsprincipe}
+\label{ssec:werking}
+Over het algmeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
+
+Voor de sensor geldt de eerste werkingsprincipe. Er zal een verschil van permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. 
+
+\end{document}

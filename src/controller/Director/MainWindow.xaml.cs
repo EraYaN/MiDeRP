@@ -77,9 +77,7 @@ namespace MiDeRP
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 			
-			System.Diagnostics.Debug.WriteLine("COM Port status: {0}",Data.com.IsOpen);
-
-            Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
+			Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
             Data.db.UpdateProperty("SerialPortStatus");
