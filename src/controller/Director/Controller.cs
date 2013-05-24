@@ -9,6 +9,7 @@ namespace MiDeRP
 {
 	public enum StatusByteCode : byte { 
 		Unknown = 0x00,
+        Continue = 0x01,
 		Forward = 0x46, 
 		Stop = 0x53, 
 		Left = 0x4c, 
@@ -39,14 +40,26 @@ namespace MiDeRP
 		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 		private int _i = 0;
+
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get
+            {
+                return _isEnabled;
+            }
+        }
 		
 		public Controller()
 		{
 			Data.com.SerialDataEvent += com_SerialDataEvent;
+            _isEnabled = false;
 		}
 
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
+            if (!_isEnabled)
+                return;
 			
             _receivedByte = e.DataByte.ToStatusByteCode();
 
@@ -85,20 +98,15 @@ namespace MiDeRP
 				}
 				else if (_receivedByte == StatusByteCode.MineDetected)
 				{
+                    if (_i == 0)
+                        return;
+
 					//Detected mine, add to list
 					Data.nav.mines.Add(Data.nav.path[_i - 1]);
 					Data.nav.SetMinesInDLL();
 
 					recalculatePath();
-
-					//getNextDirective();
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
-					//_sentDirectiveIsUnacknowledged = true;
-				}
-				else if (_receivedByte == StatusByteCode.Done)
-				{
-					//Finished
-					//TODO: Handle this
 				}
 			}
 			else
@@ -248,8 +256,6 @@ namespace MiDeRP
 				}
 			}
 
-
-
 			//Determine the robot's next turn
 			if (_nextAbsoluteDirection - _robotDirection == 1 || _nextAbsoluteDirection - _robotDirection == -3)
 			{
@@ -277,8 +283,14 @@ namespace MiDeRP
 			Data.nav.findPath();
 		}
 
+        public void Enable()
+        {
+            _isEnabled = true;
+        }
+
 		public void Reset()
 		{
+            _isEnabled = false;
 			_sentDirectiveIsUnacknowledged = false;
 			_nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
 			_robotDirection = Direction.Unknown; //current direction the robot is pointing in

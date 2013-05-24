@@ -64,6 +64,7 @@ namespace MiDeRP
                 {
                     Data.com = new SerialInterface(Data.ComPort, Data.BaudRate);
                     int res = Data.com.OpenPort();
+                    Data.ctr = new Controller();
                     if (res != 0)
                         MessageBox.Show("SerialInterface Error: #" + res + "\n" + Data.com.lastError, "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -90,40 +91,20 @@ namespace MiDeRP
             destroyButton.IsEnabled = true;
             comPortsComboBox.IsEnabled = false;
             baudRateComboBox.IsEnabled = false;
-			startRobotButton.IsEnabled = true;
+            if (Data.ctr != null)
+			    startRobotButton.IsEnabled = true;
         }
 
         private void startRobotButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Data.com == null)
-            {
-                MessageBox.Show("No serial connection found, no robot", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
             if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
             {
                 MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (Data.ctr != null)
-            {
-                MessageBoxResult result = MessageBox.Show("The controller is still running, exit and restart?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-
-                    Data.ctr.Reset();
-                    return;
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            //Start controller
-            Data.ctr = new Controller();
+            //Enable controller
+            Data.ctr.Enable();
             startRobotButton.IsEnabled = false;
         }
 
@@ -170,7 +151,8 @@ namespace MiDeRP
 
 			if (Data.ctr != null)
 			{
-				Data.ctr.Reset();
+                Data.ctr.Reset();
+                startRobotButton.IsEnabled = true;
 			}
 
 			if (Data.vis != null)
