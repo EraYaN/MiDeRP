@@ -12,10 +12,16 @@
 
 Tijdens de Just-in-time training van 24-04-2013 was het bedoeling dat we meer inzicht zouden krijgen in niet-lineaire elektronische componenten. Hierdoor 
 zijn we beter voorbereid om een ontwerp te maken voor een mogelijke mijndetecterende sensor voor de robot. Bij deze opdrachten zouden we gebruik maken van verschillende simulatieprogramma's (Falstad en SPICE) om een eerste schatting van bepaalde waarden te verkrijgen en vervolgens om een precies gedrag van componenten te verkrijgen.
-\\
+
+\begin{figure}[H]
+	\centering
+	\label{fig:npn-amplifier}
+	\includegraphics[width=0.6\textwidth]{resource/npn-amplifier}
+	\caption{Spanningsversterker op basis van een bipolaire NPN-transistor \cite[p.~3]{epo2-non-linear}}
+\end{figure}
 
 \noindent
-In dit verslag behandelen we een versterker op basis van een bipolaire transistor met een terugkoppelcircuit van twee weerstanden. Als eerste bepalen we geschikte waarden voor de twee weerstanden, vervolgens komt het groot-signaal model aan bod en als laatst bespreken we het klein-signaal model.
+In dit verslag behandelen we een versterker op basis van een bipolaire NPN-transistor met een terugkoppelcircuit van twee weerstanden. Als eerste bepalen we geschikte waarden voor de twee weerstanden, vervolgens komt het groot-signaal model aan bod en als laatst bespreken we het klein-signaal model.
 
 \section*{Weerstandswaarden $R_1$, $R_2$}
 
@@ -48,7 +54,14 @@ $$R_2 = \frac{V_{CC}-V_C}{I_C} = \frac{9\:V-4.5\:V}{10\:mA}=450\: \Omega$$
 
 Het groot-signaal equivalent circuit maakt het mogelijk om de niet-lineaire schakeling te beschrijven. De spanning die wordt aangeboden aan de ingang is een sinusvormig signaal en kan al bij grotere waarden ertoe leiden dat de uitgangsspanning geen lineaire versterking is van de ingangsspanning.
 
-De versterkingsfactor van de 2N2222 transistor is 75. Als er een bepaalde ingangsspanning wordt geleverd, kan het zo zijn dat de voedingsspanning van 9 V de versterking niet kan leveren. Hierdoor ontstaat er niet een sinusgrafiek met een grotere amplitude, maar bijvoorbeeld een blokgolf (de uitgangsspanning wordt geclipt).\\
+\begin{figure}[H]
+	\centering
+	\label{fig:npn-amplifier-grootsignaal}
+	\includegraphics[width=0.4\textwidth]{resource/npn-grootsignaal-versterker}
+	\caption{Grootsignaalmodel van NPN-spanningsversterker}
+\end{figure}
+
+De versterkingsfactor van de 2N2222 transistor is 75 \cite[p.~3]{epo2-non-linear}. Als er een bepaalde ingangsspanning wordt geleverd, kan het zo zijn dat de voedingsspanning van 9 V de versterking niet kan leveren. Hierdoor ontstaat er niet een sinusgrafiek met een grotere amplitude, maar bijvoorbeeld een blokgolf (de uitgangsspanning wordt geclipt).\\
 
 Het instelpunt (operating point) is het punt waarbij de uitgangsspanning ongeveer de helft is van de voedingsspanning bij een geen-ingangsspanning conditie. Dit geeft het grootste bereik van het uitgangssignaal voordat het gaat clippen. 
 
@@ -70,6 +83,13 @@ $$\Rightarrow V_o=9-10\times 10^{-3}\cdot 450=4.5 \: V$$
 \noindent Dus, het instelpunt van de schakeling is bij een collector stroom van 10 mA en een uitgangsspanning van 4.5 V.
 
 \section*{Klein-signaal model en versterkingsfactor}
+
+\begin{figure}[H]
+	\centering
+	\label{fig:npn-amplifier-kleinsignaal}
+	\includegraphics[width=0.8\textwidth]{resource/npn-kleinsignaal-versterker}
+	\caption{Kleinsignaalmodel van NPN-spanningsversterker}
+\end{figure}
 
 De spanningsversterking is het klein-signaal model wordt gegeven door,
 
@@ -103,10 +123,13 @@ $$A_v= -0.39 \: S\cdot 450 \: \Omega\approx -176 $$
 
 \section*{Conclusie}
 Het werken met de spanningsversterker circuit met behulp van een NPN-transistor geeft ons inzicht in de werking van niet-lineaire elektrische componenten. Bovendien wordt er ook inzicht verkregen in het verschil tussen groot-signaal en klein-signaal gedrag.
-
 Om het circuit te laten werken, werden de waarden van de weerstanden bepaald door middel van de Falstad simulator en daarna door middel van een berekening.
-
 Met het groot-signaalmodel wordt het instelpunt van de transistor bepaald. Bovendien wordt er met het instelpunt de waarde van $R_2$ berekend. Verder is de versterkingsfactor met het klein-signaalmodel te berekenen. 
+Om het gedrag van de spanningsversterker circuit met behulp van een NPN-transistor te analyseren, moet er dus gebruik worden gemaakt van simulaties, groot-signaalmodel en klein-signaalmodel.
 
-Om het gedrag van de spanningsversterker circuit met behulp van een NPN-transistor te analyseren, moet er dus gebruik worden gemaakt van simulaties, groot-signaalmodel en klein-signaalmodel. 
+Met de opgedane kennis konden de volgende waarden worden berekend voor de spanningsversterker:
+$$R_{1} = 63.8 \mathrm{k}\Omega \quad R_{2} = 450 \Omega \quad A_{v} = -176$$
+
+\newpage
+\printbibliography
 \end{document}
