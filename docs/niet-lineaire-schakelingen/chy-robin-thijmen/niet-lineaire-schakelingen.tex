@@ -53,14 +53,14 @@ $$R_2 = \frac{V_{CC}-V_C}{I_C} = \frac{9\:V-4.5\:V}{10\:mA}=450\: \Omega$$
 
 \chapter{Groot-signaal model en instelpunt}
 
-Het groot-signaal equivalent circuit maakt het mogelijk om de niet-lineaire schakeling te beschrijven. De spanning die wordt aangeboden aan de ingang is een sinusvormig signaal en kan al bij grotere waarden ertoe leiden dat de uitgangsspanning geen lineaire versterking is van de ingangsspanning.
-
-\begin{figure}[H]
+\begin{wrapfigure}{r}{0.4\textwidth}
 	\centering
 	\label{fig:npn-amplifier-grootsignaal}
 	\includegraphics[width=0.4\textwidth]{resource/npn-grootsignaal-versterker}
 	\caption{Grootsignaalmodel van NPN-spanningsversterker}
-\end{figure}
+\end{wrapfigure}
+
+Het groot-signaal equivalent circuit maakt het mogelijk om de niet-lineaire schakeling te beschrijven. De spanning die wordt aangeboden aan de ingang is een sinusvormig signaal en kan al bij grotere waarden ertoe leiden dat de uitgangsspanning geen lineaire versterking is van de ingangsspanning.
 
 De versterkingsfactor van de 2N2222 transistor is 75 \cite[p.~3]{epo2-non-linear}. Als er een bepaalde ingangsspanning wordt geleverd, kan het zo zijn dat de voedingsspanning van 9 V de versterking niet kan leveren. Hierdoor ontstaat er niet een sinusgrafiek met een grotere amplitude, maar bijvoorbeeld een blokgolf (de uitgangsspanning wordt geclipt).\\
 
@@ -81,7 +81,7 @@ V_o=V_{CC}-I_{C} \cdot R_{C}
 \end{equation}
 $$\Rightarrow V_o=9-10\times 10^{-3}\cdot 450=4.5 \: V$$
 
-\noindent Dus, het instelpunt van de schakeling is bij een collector stroom van 10 mA en een uitgangsspanning van 4.5 V.
+\noindent Dus, het instelpunt van de schakeling is bij een collectorstroom van 10 mA en een uitgangsspanning van 4.5 V.
 
 \chapter{Klein-signaal model en versterkingsfactor}
 
