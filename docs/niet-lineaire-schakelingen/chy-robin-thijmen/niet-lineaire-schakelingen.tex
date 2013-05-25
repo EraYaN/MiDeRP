@@ -1,14 +1,15 @@
-\documentclass{article}
+\documentclass{report}
 \input{../../library/preamble}
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
 
-\title{Niet lineaire schakelingen: versterking met een BPT}
+\title{Niet-lineaire schakelingen: versterking met een BPT}
 \author{Robin Hes; Chy Lau; Tijmen Witte}
 \begin{document}
 \maketitle
+\tableofcontents
 
-\section*{Inleiding}
+\chapter{Inleiding}
 
 Tijdens de Just-in-time training van 24-04-2013 was het bedoeling dat we meer inzicht zouden krijgen in niet-lineaire elektronische componenten. Hierdoor 
 zijn we beter voorbereid om een ontwerp te maken voor een mogelijke mijndetecterende sensor voor de robot. Bij deze opdrachten zouden we gebruik maken van verschillende simulatieprogramma's (Falstad en SPICE) om een eerste schatting van bepaalde waarden te verkrijgen en vervolgens om een precies gedrag van componenten te verkrijgen.
@@ -23,7 +24,11 @@ zijn we beter voorbereid om een ontwerp te maken voor een mogelijke mijndetecter
 \noindent
 In dit verslag behandelen we een versterker op basis van een bipolaire NPN-transistor met een terugkoppelcircuit van twee weerstanden. Als eerste bepalen we geschikte waarden voor de twee weerstanden, vervolgens komt het groot-signaal model aan bod en als laatst bespreken we het klein-signaal model.
 
-\section*{Weerstandswaarden $R_1$, $R_2$}
+\chapter{Weerstandswaarden $R_1$, $R_2$}
+De waarde van $R_1$ wordt door middel van het groot-signaalmodel berekend. Hierbij wordt de wet van Ohm toegepast om de weerstandswaarden te berekenen. 
+\begin{equation}
+V = I \cdot R 
+\end{equation}
 
 \begin{equation}
 \frac{V_{CC}-V_{BE}}{R_1}=I_B 
@@ -38,19 +43,15 @@ I_C=I_B \cdot \beta
 $$\Rightarrow I_B=\frac{I_C}{\beta}$$
 $$\Rightarrow I_B=\frac{10 \: mA}{75}=1.3\times 10^{-4}A$$
 
-\noindent Alle waarden in formule 1 invullen geeft,
+\noindent Alle waarden in formule 2.2 invullen geeft,
 $$\Rightarrow R_1=\frac{9\: V-0.7\: V}{1.3\times 10^{-4}A}$$
 $$\Rightarrow R_1=63.8 \: k  \Omega$$
 
 \noindent Om de waarden van $R_2$ te berekenen, veronderstellen we dat de collector spanning $V_C$ gelijk is aan 4.5 V. Een spanning van 4.5 V geeft het meeste bereik naar de aarde en naar de voedingsspanning $V_{CC}$ van 9 V. 
 
-\begin{equation}
-V = I \cdot R 
-\end{equation}
-
 $$R_2 = \frac{V_{CC}-V_C}{I_C} = \frac{9\:V-4.5\:V}{10\:mA}=450\: \Omega$$
 
-\section*{Groot-signaal model en instelpunt}
+\chapter{Groot-signaal model en instelpunt}
 
 Het groot-signaal equivalent circuit maakt het mogelijk om de niet-lineaire schakeling te beschrijven. De spanning die wordt aangeboden aan de ingang is een sinusvormig signaal en kan al bij grotere waarden ertoe leiden dat de uitgangsspanning geen lineaire versterking is van de ingangsspanning.
 
@@ -82,7 +83,7 @@ $$\Rightarrow V_o=9-10\times 10^{-3}\cdot 450=4.5 \: V$$
 
 \noindent Dus, het instelpunt van de schakeling is bij een collector stroom van 10 mA en een uitgangsspanning van 4.5 V.
 
-\section*{Klein-signaal model en versterkingsfactor}
+\chapter{Klein-signaal model en versterkingsfactor}
 
 \begin{figure}[H]
 	\centering
@@ -117,18 +118,20 @@ Hierin is $I_C$ de collector stroom bij het instelpunt en $V_T$ de thermische sp
 
 $$\Rightarrow g_m=\frac{9.7\times 10^{-3}A}{25\times 10^{-3}V}= 0.39 \: S$$
 
-Nu alle waarden berekend zijn, kan alles in de formule worden ingevuld:
+\noindent Nu alle waarden berekend zijn, kan alles in de formule worden ingevuld:
 
 $$A_v= -0.39 \: S\cdot 450 \: \Omega\approx -176 $$
 
-\section*{Conclusie}
+\chapter{Conclusie}
 Het werken met de spanningsversterker circuit met behulp van een NPN-transistor geeft ons inzicht in de werking van niet-lineaire elektrische componenten. Bovendien wordt er ook inzicht verkregen in het verschil tussen groot-signaal en klein-signaal gedrag.
-Om het circuit te laten werken, werden de waarden van de weerstanden bepaald door middel van de Falstad simulator en daarna door middel van een berekening.
-Met het groot-signaalmodel wordt het instelpunt van de transistor bepaald. Bovendien wordt er met het instelpunt de waarde van $R_2$ berekend. Verder is de versterkingsfactor met het klein-signaalmodel te berekenen. 
-Om het gedrag van de spanningsversterker circuit met behulp van een NPN-transistor te analyseren, moet er dus gebruik worden gemaakt van simulaties, groot-signaalmodel en klein-signaalmodel.
 
+Om het circuit te laten werken, werden de waarden van de weerstanden bepaald door middel van de Falstad simulator en daarna door middel van een berekening.
+
+Met het groot-signaalmodel wordt het instelpunt van de transistor bepaald. Bovendien wordt er met het instelpunt de waarde van $R_2$ berekend. Verder is de versterkingsfactor met het klein-signaalmodel te berekenen. 
+
+Om het gedrag van de spanningsversterker circuit met behulp van een NPN-transistor te analyseren, moet er dus gebruik worden gemaakt van simulaties, groot-signaalmodel en klein-signaalmodel.
 Met de opgedane kennis konden de volgende waarden worden berekend voor de spanningsversterker:
-$$R_{1} = 63.8 \mathrm{k}\Omega \quad R_{2} = 450 \Omega \quad A_{v} = -176$$
+$$R_{1} = 63.8 \: \mathrm{k}\Omega \quad R_{2} = 450\: \Omega \quad A_{v} = -176$$
 
 \newpage
 \printbibliography
