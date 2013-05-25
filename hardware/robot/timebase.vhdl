@@ -3,7 +3,9 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity counter is
-	port (	clk		: in	std_logic;
+	port
+	(	
+		clk		: in	std_logic;
 		reset		: in	std_logic;
 
 		count_out	: out	unsigned (19 downto 0)
@@ -24,14 +26,13 @@ begin
 			else
 				count	<= new_count;
 			end if;
-		--NO ELSE HERE!
 		end if;
 	end process;
 
 	-- Dit process berekent de nieuwe count-waarde
 	process (count)
 	begin
-		new_count	<= count + 1;		-- alleen optellen als enable = '1'
+		new_count	<= count + 1;
 	end process;
 
 	-- Met deze regel wordt de count-waarde naar buiten gebracht
