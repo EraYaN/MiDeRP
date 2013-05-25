@@ -11,6 +11,7 @@
 \newpage
 \pagenumbering{roman}
 
+%----DEEL INTRO
 \subimport{versieoverzicht/}{design-report-versieoverzicht}
 \subimport{inleiding/}{design-report-inleiding}
 \tableofcontents
@@ -18,10 +19,20 @@
 \newpage
 \pagenumbering{arabic}
 
+%----DEEL OVERZICHT
 \subimport{probleemstelling/}{design-report-probleemstelling}
 \subimport{systeemoverzicht/}{design-report-overzicht}
+%----DEEL ROBOT
+\subimport{lijnvolger/}{design-report-lijnvolger}
 \subimport{mijndetector/}{design-report-mijndetector}
+\subimport{servo/}{design-report-servo}
+\subimport{zigbee/}{design-report-zigbee}
+\subimport{sseg/}{design-report-sseg}
+\subimport{controller/}{design-report-controller}
+%----DEEL PC
 \subimport{routeplanner-c/}{design-report-route}
+\subimport{director}{design-report-director}
+%----DEEL AFSLUITING
 \subimport{discussie-reflectie-conclusie/}{design-report-discussie}
 \subimport{discussie-reflectie-conclusie/}{design-report-reflectie}
 \subimport{discussie-reflectie-conclusie/}{design-report-afsluiting}
@@ -29,6 +40,7 @@
 \newpage
 \pagenumbering{Roman}
 
+%----DEEL BRONNEN EN BIJLAGEN
 \printbibliography
 \subimport{bijlagen/}{design-report-bijlagen}
 

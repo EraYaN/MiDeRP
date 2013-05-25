@@ -1,0 +1,14 @@
+\documentclass{report}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{EPO-2: Mid-term Design Report - Director}
+\author{}
+
+\begin{document}
+
+\chapter{Director}
+\label{ch:director}
+
+\end{document}
