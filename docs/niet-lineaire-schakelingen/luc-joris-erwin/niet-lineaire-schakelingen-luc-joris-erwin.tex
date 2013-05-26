@@ -1,0 +1,31 @@
+\documentclass{report}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{EPO-2: Design Report}
+\author{Joris Blom \and Luc Does \and Erwin de Haan}
+
+\begin{document}
+\maketitle
+\newpage
+\pagenumbering{roman}
+
+%----DEEL INTRO
+%\subimport{}{niet-lineaire-schakelingen-inleiding}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+
+%----DEEL OVERZICHT
+\subimport{}{niet-lineaire-schakelingen-waarden-bepalen}
+
+%\newpage
+%\pagenumbering{Roman}
+
+%----DEEL BRONNEN EN BIJLAGEN
+\printbibliography
+%\subimport{bijlagen/}{design-report-bijlagen}
+
+\end{document}

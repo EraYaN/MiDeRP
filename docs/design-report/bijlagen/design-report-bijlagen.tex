@@ -48,32 +48,22 @@
 \subcaption{Protocol Rev. C}
 \label{tab:comProtocol}
 \centering
-\begin{tabular}{|c|c|c|}
-\hline
+\begin{tabular}{@{}lll@{}}
+\toprule
 \textbf{Commando} & \textbf{hex} & \textbf{2-way} \\
-\hline
+\midrule
 Forward				& 0x46 	& to robot only\\
-\hline
 Stop 					& 0x53 	& to robot only\\
-\hline
 Right 					& 0x52 	& to robot only\\
-\hline
 Left 					& 0x4C 	& to robot only\\
-\hline
 Turn					& 0x54 	& to robot only\\
-\hline
 Continue				& 0x01	& to robot only\\
-\hline
 Done 					& 0x04	& to robot only\\
-\hline
 Acknowledge 			& 0x06	& both ways\\
-\hline
 Negative Acknowledge 		& 0x15	& both ways \\
-\hline
 Enquiry 				& 0x05	& to pc only\\
-\hline
 Mine 					& 0x07	& to pc only\\
-\hline
+\bottomrule
 \end{tabular}
 \end{subtable}
 \quad
@@ -81,22 +71,17 @@ Mine 					& 0x07	& to pc only\\
 \subcaption{xBee Settings van de twee modules. Master is de Robot.}
 \label{tab:xBeeSettings}
 \centering
-\begin{tabular}{|c|c|c|}
-\hline
+\begin{tabular}{@{}ccc@{}}
+\toprule
 \textbf{Setting} & \textbf{master}& \textbf{slave} \\
-\hline
+\midrule
 Channel				& 0x1A 	& 0x1A\\
-\hline
 Pan ID				& 0x1337 	& 0x1337\\
-\hline
 Destination High			& 0x0000	& 0x0000\\
-\hline
 Destination Low			& 0x8564 	& 0x4658\\
-\hline
 My Address				& 0x4658 	& 0x8564\\
-\hline
 *		 			& (default)	&(default)\\
-\hline
+\bottomrule
 \end{tabular}
 \end{subtable}
 \end{table}

@@ -20,47 +20,34 @@ Beide geven een 2-bit responscode, waarvan de ene bit een response aangeeft en d
 In Tabel \ref{tab:xBeeSettings} in Sectie \ref{sec:communicatie} staan de gekozen instellingen van de xBee modules.
 \begin{figure}
 \centering
-\caption{De FSM's op de FPGA}
-\begin{subfigure}{0.23\linewidth}
-\subcaption{FSM van de receiver.}
-\label{fig:fsmReceiver}
-\includegraphics[width=\linewidth]{FSMReceiver}
-\end{subfigure}
-\quad
-\begin{subfigure}{0.46\linewidth}
-\subcaption{FSM van het hoofd systeem.}
-\label{fig:fsmMain}
-\includegraphics[width=\linewidth]{FSMMain}
-\end{subfigure}
-\quad
-\begin{subfigure}{0.23\linewidth}
-\subcaption{FSM van de sender.}
-\label{fig:fsmSender}
-\includegraphics[width=\linewidth]{FSMSender}
-\end{subfigure}
-\end{figure}
-\begin{figure}
-\centering
 \caption{Het blokschema van het Systeem.}
 \label{fig:topLevelSystem}
 \includegraphics[width=\textwidth]{top-level-system}
 \end{figure}
 \section{Robot FPGA}
-De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden.
+De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden. Ook telt de FPGA continue de lengte van de pulsen uit de mijndetector.
 Deze stuurt ook de motoren aan, door een PWM signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
 Op de FPGA wordt ook de communicatie met de xBee afgehandeld, via een UART interface.
 De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender} allen in sectie \ref{sec:statemachines}.
 
 \section{Director}
-We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall).
-Hetzelfde geldt voor de dll met de seriële interface. Deze is lichtelijk aangepast, zodat hij gemakkelijker in een andere applicatie gebruikt kan worden.
-Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met WPF (een UI framework gebaseerd op XAML UI's).
-Dit geeft een vriendelijkere ontwikkelomgeving, managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
-Het is ook mogelijk om alleen een van de dll's te vervangen, zodat iemand daar los aan kan werken.
-Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel fijn voor de seriële communicatie.
-Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ code gehouden. Al halen we misschien de seriële communicatie naar C\#, omdat je hierin een veel simpelere asynchrone afhandeling van input hebt.
+Ons programma reageert alleen op vragen van de robot, met als uitzondering het 'continue' signaal. Zodra de robot op een kruispunt is aangekomen vraagt hij aan de software waar hij heen moet. Als de software van mening is dat we zijn aan gekomen stuurt het inplaats van een richting het 'done' signaal zodat de robot stopt. De director bestaat uit 4 hoofdonderdelen:
+\begin{itemize}
+\item De pathfinder op basis van het A* algoritme
+\item De event-driven seriële implentatie
+\item De controller
+\item De gebruikersinterface en visualizatie
+\end{itemize}
+Een uitgebreide beschrijving van de director is te vinden in hoofdtsuk \ref{ch:director}.
+%We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall).
+%Hetzelfde geldt voor de dll met de seriële interface. Deze is lichtelijk aangepast, zodat hij gemakkelijker in een andere applicatie gebruikt kan worden.
+%Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met WPF (een UI framework gebaseerd op XAML UI's).
+%Dit geeft een vriendelijkere ontwikkelomgeving, managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
+%Het is ook mogelijk om alleen een van de dll's te vervangen, zodat iemand daar los aan kan werken.
+%Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel fijn voor de seriële communicatie.
+%Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ code gehouden. Al halen we misschien de seriële communicatie naar C\#, omdat je hierin een veel simpelere asynchrone afhandeling van input hebt.
 
-De director moet nu nog adequaat reageren op de bytes van de robot.
-Hiervoor laten we een thread constant checken of er een nieuwe byte in de input buffer zit. Zodra deze er is, geven we een event af zodat de main thread op de byte kan reageren.
+%De director moet nu nog adequaat reageren op de bytes van de robot.
+%Hiervoor laten we een thread constant checken of er een nieuwe byte in de input buffer zit. Zodra deze er is, geven we een event af zodat de main thread op de byte kan reageren.
 
 \end{document}
