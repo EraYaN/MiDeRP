@@ -34,7 +34,7 @@ end entity controller;
 
 architecture b of controller is	
 	subtype byte is std_logic_vector (7 downto 0);
-	--protocol
+	--protocol Rev. C
 	constant p_forward	: byte := x"46"; -- 'F'
 	constant p_stop		: byte := x"53"; -- 'S'
 	constant p_left		: byte := x"4C"; -- 'L'

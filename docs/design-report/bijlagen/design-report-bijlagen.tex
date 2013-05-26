@@ -4,7 +4,7 @@
 \addbibresource{../../library/bibliography.bib}
 
 \title{EPO-2: Mid-term Design Report - Bijlagen}
-\author{Robin Hes}
+\author{Robin Hes \and Erwin de Haan}
 
 \begin{document}
 
@@ -38,4 +38,89 @@
 \label{ssec:pseudocode-astar}
 \cite{pseudocode-astar}
 
+\newpage
+\section{Communicatie}
+\label{sec:communicatie}
+\begin{table}[H]
+\centering
+\caption{}
+\begin{subtable}{0.48\textwidth}
+\subcaption{Protocol Rev. C}
+\label{tab:comProtocol}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Commando} & \textbf{hex} & \textbf{2-way} \\
+\hline
+Forward				& 0x46 	& to robot only\\
+\hline
+Stop 					& 0x53 	& to robot only\\
+\hline
+Right 					& 0x52 	& to robot only\\
+\hline
+Left 					& 0x4C 	& to robot only\\
+\hline
+Turn					& 0x54 	& to robot only\\
+\hline
+Continue				& 0x01	& to robot only\\
+\hline
+Done 					& 0x04	& to robot only\\
+\hline
+Acknowledge 			& 0x06	& both ways\\
+\hline
+Negative Acknowledge 		& 0x15	& both ways \\
+\hline
+Enquiry 				& 0x05	& to pc only\\
+\hline
+Mine 					& 0x07	& to pc only\\
+\hline
+\end{tabular}
+\end{subtable}
+\quad
+\begin{subtable}{0.48\textwidth}
+\subcaption{xBee Settings van de twee modules. Master is de Robot.}
+\label{tab:xBeeSettings}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Setting} & \textbf{master}& \textbf{slave} \\
+\hline
+Channel				& 0x1A 	& 0x1A\\
+\hline
+Pan ID				& 0x1337 	& 0x1337\\
+\hline
+Destination High			& 0x0000	& 0x0000\\
+\hline
+Destination Low			& 0x8564 	& 0x4658\\
+\hline
+My Address				& 0x4658 	& 0x8564\\
+\hline
+*		 			& (default)	&(default)\\
+\hline
+\end{tabular}
+\end{subtable}
+\end{table}
+\section{Finite State Machines}
+\label{sec:statemachines}
+\begin{figure}[H]
+\centering
+\caption{De FSM's op de FPGA}
+\begin{subfigure}{0.20\linewidth}
+\subcaption{FSM van de receiver.}
+\label{fig:fsmReceiver}
+\includegraphics[width=\linewidth]{FSMReceiver}
+\end{subfigure}
+\quad
+\begin{subfigure}{0.50\linewidth}
+\subcaption{FSM van het hoofd systeem.}
+\label{fig:fsmMain}
+\includegraphics[width=\linewidth]{FSMMain}
+\end{subfigure}
+\quad
+\begin{subfigure}{0.20\linewidth}
+\subcaption{FSM van de sender.}
+\label{fig:fsmSender}
+\includegraphics[width=\linewidth]{FSMSender}
+\end{subfigure}
+\end{figure}
 \end{document}

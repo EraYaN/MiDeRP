@@ -3,76 +3,21 @@
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
 
-\title{EPO-2: Mid-term Design Report - Routeplanner in C}
-\author{Robin Hes}
+\title{EPO-2: Design Report - Systeemoverzicht}
+\author{Erwin de Haan}
 
 \begin{document}
 \chapter{Systeemoverzicht}
 \label{ch:systeem}
-Het systeem bestaat uit drie hoofdonderdelen, de twee xBee modules voor de communicatie, de FPGA met de logica erop en het Director programma dat op de PC draait.
+Het systeem bestaat uit drie hoofdonderdelen, de twee xBee modules voor de communicatie, de robot met de FPGA, de reflectiesensors en de mijnendetector en het Director programma dat op de PC draait.
 In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem te zien, hierin is de robot nog verder opgedeeld. 
 \section{Communicatie}
 De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet bereikt worden.
-De eerste versie van het communicatie protocol staat in tabel \ref{tab:comProtocol}.
-Op de robot is een losse state machine geïmplementeerd (zie Figuur \ref{fig:fsmReceiver}) om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofd systeem deze op de correcte tijd op kan pikken.
-Ook is er een losse state machine (zie Figuur \ref{fig:fsmSender}) om het versturen van een byte naar de pc af te handelen geïmplementeerd.
+De eerste versie van het communicatie protocol staat in tabel \ref{tab:comProtocol} in Sectie \ref{sec:communicatie}.
+Op de robot is een losse state machine geïmplementeerd (zie Figuur \ref{fig:fsmReceiver} in Sectie \ref{sec:statemachines}) om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofd systeem deze op de correcte tijd op kan pikken.
+Ook is er een losse state machine (zie Figuur \ref{fig:fsmSender} in Sectie \ref{sec:statemachines}) om het versturen van een byte naar de pc af te handelen geïmplementeerd.
 Beide geven een 2-bit responscode, waarvan de ene bit een response aangeeft en de andere aangeeft of de operatie succesvol was.
-In Tabel \ref{tab:xBeeSettings} staan de gekozen instellingen van de xBee modules.
-\begin{table}
-\centering
-\caption{}
-\begin{subtable}{0.48\textwidth}
-\subcaption{Com. Protocol Versie A}
-\label{tab:comProtocol}
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Commando} & \textbf{hex} & \textbf{2-way} \\
-\hline
-Forward				& 0x46 	& to robot only\\
-\hline
-Stop 					& 0x53 	& to robot only\\
-\hline
-Right 				& 0x52 	& to robot only\\
-\hline
-Left 					& 0x4C 	& to robot only\\
-\hline
-Acknowledge 			& 0x06	& to pc only\\
-\hline
-Negative Acknowledge 	& 0x15	& to pc only\\
-\hline
-Enquiry 				& 0x05	& to pc only\\
-\hline
-Mine 					& 0x07	& to pc only\\
-\hline
-Done 				& 0x04	& to robot only\\
-\hline
-\end{tabular}
-\end{subtable}
-\quad
-\begin{subtable}{0.48\textwidth}
-\subcaption{xBee Settings van de twee modules. Master is de Director.}
-\label{tab:xBeeSettings}
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Setting} & \textbf{master}& \textbf{slave} \\
-\hline
-Channel				& 0x1A 	& 0x1A\\
-\hline
-Pan ID				& 0x1337 	& 0x1337\\
-\hline
-Destination High			& 0x0000	& 0x0000\\
-\hline
-Destination Low			& 0x8564 	& 0x4658\\
-\hline
-My Address			& 0x4658 	& 0x8564\\
-\hline
-*		 			& (default)	&(default)\\
-\hline
-\end{tabular}
-\end{subtable}
-\end{table}
+In Tabel \ref{tab:xBeeSettings} in Sectie \ref{sec:communicatie} staan de gekozen instellingen van de xBee modules.
 \begin{figure}
 \centering
 \caption{De FSM's op de FPGA}
@@ -104,7 +49,7 @@ My Address			& 0x4658 	& 0x8564\\
 De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden.
 Deze stuurt ook de motoren aan, door een PWM signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
 Op de FPGA wordt ook de communicatie met de xBee afgehandeld, via een UART interface.
-De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender}.
+De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender} allen in sectie \ref{sec:statemachines}.
 
 \section{Director}
 We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall).
