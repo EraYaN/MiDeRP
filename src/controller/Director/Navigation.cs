@@ -10,9 +10,12 @@ namespace MiDeRP
         public List<NodeConnection> mines = new List<NodeConnection>();
         public NodeConnection currentPos;
         public List<NodeConnection> path = new List<NodeConnection>();
-        //TODO static dll import all function from c dll pathfinder.dll
-        //Import all functions
-        /// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
+		public List<uint> targetCPs = new List<uint>((int)Data.numControlPosts);
+		public int currentPath = 0;
+		public List<NodeConnection>[] paths;
+
+		#region DLL imports
+		/// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
         /// </summary>
         [DllImport("navigation.dll")]
         static extern int initNavigation(uint m, uint n);
@@ -37,8 +40,9 @@ namespace MiDeRP
 
         [DllImport("navigation.dll")]
         static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
+		#endregion
 
-        public Navigation()
+		public Navigation()
         {
             //constructor
             initNavigation(Data.M, Data.N);
@@ -50,7 +54,57 @@ namespace MiDeRP
             closeNavigation();
         }
 
-        public int SetMinesInDLL(){
+		#region Path planning
+		public void InitChallenge()
+		{
+			if (Data.challenge == Challenge.FindPath)
+			{
+				makePaths();
+			}
+			if (Data.challenge == Challenge.FindTreasure)
+			{
+				findTreasure();
+			}
+		}
+
+		public void makePaths()
+		{
+			if (targetCPs.Count < 1)
+				return; //exception maybe?
+
+			paths = new List<NodeConnection>[targetCPs.Count];
+
+			for (int i = 0; i < targetCPs.Count; i++)
+			{
+				currentPath = i;
+				if (i == 0)
+				{
+					updateCurrentPath(currentPos.To, new Coord(targetCPs[0]));
+				}
+				else
+				{
+					updateCurrentPath(new Coord(targetCPs[i - 1]), new Coord(targetCPs[i]));
+				}
+			}
+
+			currentPath = 0;
+		}
+
+		public void updateCurrentPath(Coord entry, Coord exit)
+		{
+			int res = updatePath(entry.Id, exit.Id);
+			getPath();
+			paths[currentPath] = path;
+		}
+
+		private void findTreasure()
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
+
+		#region Pathfinder
+		public int SetMinesInDLL(){
             if (clearMines() != 0)
             {
                 //error
@@ -110,6 +164,15 @@ namespace MiDeRP
             int res = updatePath(entry.Id, exit.Id);
             getPath();
             return res;
-        }
-    }
+		}
+		#endregion
+
+		public void updateCP(uint id)
+		{
+			if (targetCPs.Contains(id))
+				targetCPs.Remove(id);
+			else
+				targetCPs.Add(id);
+		}
+	}
 }

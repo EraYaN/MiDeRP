@@ -35,10 +35,11 @@ namespace MiDeRP
             Data.vis.DrawField();            
         }
 
-        private void findPathButton_Click(object sender, RoutedEventArgs e)
+        private void startChallengeButton_Click(object sender, RoutedEventArgs e)
         {
             Data.nav.SetMinesInDLL();
             int res;
+			Data.nav.InitChallenge();
             if ((res = Data.nav.findPath()) != 0)
             {
                 MessageBox.Show("Error during path finding. #" + res, "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -77,7 +78,8 @@ namespace MiDeRP
             {
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-			
+
+			Data.challenge = (Challenge)challengeComboBox.SelectedIndex;
 			Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
@@ -85,7 +87,7 @@ namespace MiDeRP
             Data.db.UpdateProperty("SerialPortStatusColor");
             Data.db.UpdateProperty("CurrentPosText");
             //enable buttons
-            findPathButton.IsEnabled = true;
+            startChallengeButton.IsEnabled = true;
             TestDrawButton.IsEnabled = true;
             startInitButton.IsEnabled = false;
             destroyButton.IsEnabled = true;
@@ -104,13 +106,13 @@ namespace MiDeRP
             }
 
             //Enable controller
-            Data.ctr.Enable();
+            Data.ctr.EnableRobotControl();
             startRobotButton.IsEnabled = false;
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
         {
-            findPathButton.IsEnabled = false;
+            startChallengeButton.IsEnabled = false;
             TestDrawButton.IsEnabled = false;
             startInitButton.IsEnabled = true;
             destroyButton.IsEnabled = false;
@@ -151,7 +153,7 @@ namespace MiDeRP
 
 			if (Data.ctr != null)
 			{
-                Data.ctr.Reset();
+                Data.ctr.ResetRobotControl();
                 startRobotButton.IsEnabled = true;
 			}
 

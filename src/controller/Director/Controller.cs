@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiDeRP    
+namespace MiDeRP
 {
-	public enum StatusByteCode : byte { 
+    #region Shared enums
+    public enum StatusByteCode : byte { 
 		Unknown = 0x00,
         Continue = 0x01,
 		Forward = 0x46, 
@@ -30,8 +31,9 @@ namespace MiDeRP
 		Down,
 		Unknown
 	};
+    #endregion
 
-	public class Controller
+    public class Controller
 	{
 		private bool _sentDirectiveIsUnacknowledged = false;
 		private StatusByteCode _receivedByte;
@@ -41,24 +43,25 @@ namespace MiDeRP
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 		private int _i = 0;
 
-        private bool _isEnabled;
-        public bool IsEnabled
+        private bool _robotControlIsEnabled;
+        public bool RobotControlIsEnabled
         {
             get
             {
-                return _isEnabled;
+                return _robotControlIsEnabled;
             }
         }
 		
 		public Controller()
 		{
 			Data.com.SerialDataEvent += com_SerialDataEvent;
-            _isEnabled = false;
+            _robotControlIsEnabled = false;
 		}
 
+		#region Robot control
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
-            if (!_isEnabled)
+            if (!_robotControlIsEnabled)
                 return;
 			
             _receivedByte = e.DataByte.ToStatusByteCode();
@@ -88,7 +91,7 @@ namespace MiDeRP
 				{
                     getNextDirective();
 					Data.com.SendByte((byte)_nextDirective);
-                    if (_i == (Data.nav.path.Count - 1))
+                    if (_i == (Data.nav.paths[Data.nav.currentPath].Count - 1))
                     {
                         _i++;
                         getNextDirective();
@@ -102,7 +105,7 @@ namespace MiDeRP
                         return;
 
 					//Detected mine, add to list
-					Data.nav.mines.Add(Data.nav.path[_i - 1]);
+					Data.nav.mines.Add(Data.nav.paths[Data.nav.currentPath][_i - 1]);
 					Data.nav.SetMinesInDLL();
 
 					recalculatePath();
@@ -122,13 +125,21 @@ namespace MiDeRP
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			if (Data.nav.path.Count > 0 && Data.nav.path.Count > _i)
+			if (Data.nav.paths[Data.nav.currentPath].Count > 0 && Data.nav.paths[Data.nav.currentPath].Count > _i)
 			{
-				_nextNodeConnection = Data.nav.path[_i];
+				_nextNodeConnection = Data.nav.paths[Data.nav.currentPath][_i];
 			}
-			else if (Data.nav.path.Count==_i)
+			else if (Data.nav.paths[Data.nav.currentPath].Count == _i)
 			{
-				_nextDirective = StatusByteCode.Done;
+				if (Data.nav.currentPath == Data.nav.paths.Count())
+					_nextDirective = StatusByteCode.Done;
+				else
+				{
+					//continue to next CP
+					_nextDirective = StatusByteCode.Continue;
+					Data.nav.currentPath++;
+					_i = 0;
+				}
                 return;
 			}
 			else
@@ -139,7 +150,7 @@ namespace MiDeRP
 			}
 
 			//Exit point
-			if (_i == Data.nav.path.Count - 1)
+			if (_i == Data.nav.paths[Data.nav.currentPath].Count - 1)
 			{
 				if (Data.exitCP > (Data.numControlPosts - (Data.N - 2)))
 				{
@@ -280,22 +291,23 @@ namespace MiDeRP
 			_i = 0;
 			Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
 			_robotDirection = (Direction)(((int)_robotDirection + 2) % 4); //Bacon flips
-			Data.nav.findPath();
+			Data.nav.updateCurrentPath(Data.nav.currentPos.To, new Coord(Data.nav.targetCPs[Data.nav.currentPath]));
 		}
 
-        public void Enable()
+        public void EnableRobotControl()
         {
-            _isEnabled = true;
+            _robotControlIsEnabled = true;
         }
-
-		public void Reset()
+		
+		public void ResetRobotControl()
 		{
-            _isEnabled = false;
+            _robotControlIsEnabled = false;
 			_sentDirectiveIsUnacknowledged = false;
 			_nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
 			_robotDirection = Direction.Unknown; //current direction the robot is pointing in
 			_nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 			_i = 0;
 		}
+		#endregion
 	}
 }

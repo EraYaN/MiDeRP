@@ -134,7 +134,7 @@ namespace MiDeRP
                 {
                     cpt.Background = entryBrush;
                 }
-                else if ((2 * (Data.M - 2) + (Data.N - 2)) - (x - 1) == Data.exitCP)
+				else if (Data.nav.targetCPs.Contains((uint)((2 * (Data.M - 2) + (Data.N - 2)) - (x - 1))) || (2 * (Data.M - 2) + (Data.N - 2)) - (x - 1) == Data.exitCP)
                 {
                     cpt.Background = exitBrush;
                 }
@@ -392,6 +392,7 @@ namespace MiDeRP
                 //exit
                 //MessageBox.Show("CP #" + id + " clicked.\n Made exit.");
                 Data.exitCP = id;
+				Data.nav.updateCP(id);
             }            
             Data.vis.DrawField();
         }
@@ -407,10 +408,6 @@ namespace MiDeRP
                 {
                     Data.nav.mines.Remove(ml);
                 }
-				//else if (Data.nav.mines.Contains(ml)) //WTF IS THE DIFFERENCE
-				//{
-				//	Data.nav.mines.Remove(ml2);
-				//}
                 else
                 {
                     Data.nav.mines.Add(ml);
@@ -423,10 +420,6 @@ namespace MiDeRP
                 {
                     Data.nav.currentPos = ml2;
                 }
-				//else if (Data.nav.currentPos == ml) //WTF IS THE DIFFERENCE
-				//{
-				//	Data.nav.currentPos = ml;
-				//}
                 else
                 {
                     Data.nav.currentPos = ml;
