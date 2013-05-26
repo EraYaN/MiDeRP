@@ -10,12 +10,13 @@
 
 \chapter{Waarden voor $R_c$ en Vc bepalen}
 \label{ch:Waarden voor $R_c$ en Vc bepalen}
-
+Voor het bepalen van de equivalente weerstand te bepalen voor weerstanden die parallel staan wordt de deze formule gebruikt:
 \begin{equation}
 \label{eq:resR}
 R' = R_1||R_2||R_3... = \frac{1}{\frac{1}{R_1}+\frac{1}{R_2}+\frac{1}{R_3}...}
 \end{equation}
 
+\noindent Voor het bepalen van de spanning tussen 2 weerstanden die in serie staan wordt deze formule gebruikt:
 \begin{equation}
 \label{eq:overdracht}
 V_o =V_i\cdot \frac{R_1}{R_1+R_2}
@@ -29,14 +30,15 @@ V_o =V_i\cdot \frac{R_1}{R_1+R_2}
 
 \caption{klein-signaal model}
 \end{figure}
-Hierboven is het klein-signaal model weergeven van de spanningsgestuurde spanningsdeler. Als de waarde van $R_c$ te klein is dan zal er een grotere wisselspanning staan over de $100\Omega$ weerstand en dus is de spanning aan de uitgang lager. Hierdoor is ook het bereik van de spanningsgestuurde spanningsdeler ook kleiner. Als de waarde van $R_c$ te groot is dan zal er een kleinere wisselspanning over de $100\Omega$ weerstand staan, waardoor de uitgangsspanning groter is. Er is gekozen om een $1k\Omega$ weerstand te gebruiken voor $R_c$. Met behulp van vergelijking \ref{eq:resR} en \ref{eq:overdracht} is de maximale uitgangsspanning bepaald, vergelijking \ref{eq:maximaalVoltage}.
+Hierboven is het klein-signaal model weergeven van de spanningsgestuurde spanningsdeler. Als de waarde van $R_c$ te klein is dan zal er een grotere wisselspanning staan over de $100\Omega$ weerstand en dus is de spanning aan de uitgang lager. Hierdoor zal de maximale uitgangsspanning van de spanningsgestuurde spanningsdeler ook kleiner worden. Als de waarde van $R_c$ te groot is dan zal er een kleinere wisselspanning over de $100\Omega$ weerstand staan, waardoor de maximale uitgangsspanning groter is. Er is gekozen om een $1k\Omega$ weerstand te gebruiken voor $R_c$. Met behulp van vergelijking \ref{eq:resR} en \ref{eq:overdracht} is de maximale uitgangsspanning bepaald.
 
-\begin{equation}
+
+$$
 \label{eq:maximaalVoltage}
 V_{max} = V_i * \frac{R_c||R_l}{R_c||R_l + 100} = 4.32 mV
-\end{equation}
+$$
 
-
+Een 1N4007 diode kan maximaal 1 watt aan vermogen dissiperen. Als Vc boven de 1000 volt komt, is het vermogen dat de diode dissipeert ongeveer 1 watt. Spanningen van 0 tot 1000 volt zijn dus bruikbaar.
 
 
 
