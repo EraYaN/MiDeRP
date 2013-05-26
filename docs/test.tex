@@ -1,0 +1,19 @@
+\documentclass{report}
+\input{library/preamble}
+\input{library/style}
+\addbibresource{library/bibliography.bib}
+
+\title{EPO-2: Test Code}
+\author{Erwin de Haan \and Others}
+
+
+\begin{document}
+\includecode[xaml]{../src/controller/Director/MainWindow.xaml}
+\newpage
+\includecode[csharp]{../src/controller/Communication/SerialInterface.cs}
+\newpage
+\includecode[cpp]{../src/controller/navigation/path.c}
+\newpage
+\includecode[vhdl]{../hardware/robot/controller.vhdl}
+   
+\end{document}

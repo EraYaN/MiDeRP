@@ -23,4 +23,6 @@ bibencoding=utf8,
     language=auto
 ]{biblatex}
 \usepackage[dutch]{babel}
+\usepackage{listings}
+\newcommand{\includecode}[2][cpp]{\lstinputlisting[caption=#2, escapechar=, style=#1]{#2}}
 \usepackage[hidelinks]{hyperref} %<--------ALTIJD ALS LAATSTE
