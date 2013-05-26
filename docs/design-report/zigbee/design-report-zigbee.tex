@@ -10,36 +10,36 @@
 
 \chapter{Draadloze Communicatie met ZigBee Module}
 
-Een van de opdrachten van het project is om de robot te begeleiden via een C-programma. Het was de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot lieten communiceren met de computer. Dit werd gedaan door één Xbee-module aan te sluiten aan de computer en deze te laten communiceren met de andere Xbee-module die al gemonteerd zat op het FPGA-bord van de robot.
+Een van de opdrachten van het project is om de robot te begeleiden via een C-programma. Het was de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot lieten communiceren met de computer. Dit werd gedaan door één XBee-module aan te sluiten aan de computer en deze te laten communiceren met de andere XBee-module die al gemonteerd zat op het FPGA-bord van de robot.
 \newline
 
-X-bee modules zijn in feite niks anders dan digitale Wifi systemen die op een 2.4 Ghz bandbreedte werken. Ze hebben een bereik van circa 30 tot 60 meter, waardoor ze makkelijk met andere apparaten kunnen communiceren die ook op een 2.4Ghz bandbreedte zitten. Daarnaast wordt de X-bee module aangestuurd door een 3.3 Voltage, verder kan het aantal signaalwisselingen per seconde nog worden ingesteld, hier wordt later nog verder op ingegaan.
+XBee modules zijn in feite niks anders dan digitale Wifi systemen die op een 2.4 Ghz bandbreedte werken. Ze hebben een bereik van circa 30 tot 60 meter, waardoor ze makkelijk met andere apparaten kunnen communiceren die ook op een 2.4Ghz bandbreedte zitten. Daarnaast wordt de XBee module aangestuurd door een 3.3 Voltage, verder kan het aantal signaalwisselingen per seconde nog worden ingesteld, hier wordt later nog verder op ingegaan.
 \newline
 
 \section{Eisen}
 
-Voordat de X-bee modules met ekaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben. Als dit niet wordt gedaan is het mogelijk dat andere X-bee modules gaan communiceren met die van jou, wat ongewenste gevolgen met zich mee kan brengen. 
+Voordat de XBee modules met ekaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben. Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met die van jou, wat ongewenste gevolgen met zich mee kan brengen. 
 \newline
-De X-bee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende X-bee modules. De belangrijkste hiervan zullen verder uitgelicht worden;
+De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende XBee modules. De belangrijkste hiervan zullen verder uitgelicht worden;
 \newline
 
 \textbf{Channel settings;}
 \newline
-De X-bee modules kunnen op zestien verschillende frequentiebreedtes werken, van 11(0x0B) tot 26 (0x1A). Als er onderscheid moet worden gemaakt tussen X-bee modules in de omgeving is het handig om deze op een andere frequentiebreedte te zetten.
+De XBee modules kunnen op zestien verschillende frequentiebreedtes werken, van 11(0x0B) tot 26 (0x1A). Als er onderscheid moet worden gemaakt tussen XBee modules in de omgeving is het handig om deze op een andere frequentiebreedte te zetten.
 \newline
 
 \textbf{Pan-Id;}
 \newline
-Als er meerdere X-bee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de X-bee modules door middel van \textit{Pan-ID}. Deze bestaat uit een 16-bit nummer. Door op beide X-bee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de X-bee modules die hetzelfde \textit{Pan-ID} hebben.
+Als er meerdere XBee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de XBee modules door middel van \textit{Pan-ID}. Deze bestaat uit een 16-bit nummer. Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de XBee modules die hetzelfde \textit{Pan-ID} hebben.
 \newline
 
 \textbf{My-ID;}
 \newline
-Het kan mogelijk zijn dat er meerdere X-bee modules hetzelfde\textit{ Pan-Id} hebben. Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de X-bee modules met hetzelfde \textit{Pan-Id}. Dit kan worden gedaan door \textit{My-Id} van de ene X-bee modules, in te stellen in \textit{DL} van de andere X-bee module, als je dit ook voor de andere X-bee module doet, kan er alleen nog maar gecommuniceerd worden tussend deze X-bees.
+Het kan mogelijk zijn dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben. Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}. Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussend deze XBees.
 
 
 \section{Ontwerp}
-Voordat de X-bee modules met elkaar kunnen communiceren moet er eerst een VHDL-code ontworpen worden voor de X-bee module op de robot en een C-code voor de X-bee module die met de computer is verbonden.
+Voordat de XBee modules met elkaar kunnen communiceren moet er eerst een VHDL-code ontworpen worden voor de XBee module op de robot en een C-code voor de XBee module die met de computer is verbonden.
 \textbf{[afbeelding 3.1 van tutorial]}.
 \newline
 
@@ -80,19 +80,19 @@ Als voor de UART transmittor de flaf flip-flop aangeeft dat de buffer register d
 \end{itemize}
 De C-code dat voor de communicatie geschreven moest worden, moest er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
 \newline
-Voor de instellingen van de X-bee module konden we eigen waarden voor de verschillende instelpunten kiezen.
+Voor de instellingen van de XBee module konden we eigen waarden voor de verschillende instelpunten kiezen.
 
 \section{Implementatie}
 
-Voor de VHDL-code, de C-code en de instellingen van de X-bee module zie bijlage;
+Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage;
 
 \section{Test}
 
-Door te kijken of we bits van de computer naar de robot konden sturen en deze vervolgens in de juiste led volgorde op de robot verschenen en door daarna bits te sturen van de robot naar de computer en te kijken of deze met de juiste ASCII-karakters overeen kwam, is gebleken dat de draadloze communicatie tussen de X-bee module van de computer en de X-bee module van de robot goed werkte.
+Door te kijken of we bits van de computer naar de robot konden sturen en deze vervolgens in de juiste led volgorde op de robot verschenen en door daarna bits te sturen van de robot naar de computer en te kijken of deze met de juiste ASCII-karakters overeen kwam, is gebleken dat de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
 
 \section{Discussie}
 
-Het draadloos communiceren van de X-bee's werkte zeer goed. 
+Het draadloos communiceren van de XBee's werkte zeer goed. 
 Wat wellicht een probleem kan zijn, is dat toevallig mensen dezelfde instellingen hebben gekozen waardoor er tussen verschillende groepen gecommuniceerd wordt, wat zeker niet de bedoeling is. Dit is echter bij ons niet het geval geweest.
 
 \end{document}

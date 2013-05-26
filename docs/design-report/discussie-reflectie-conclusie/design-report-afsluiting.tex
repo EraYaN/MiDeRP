@@ -17,9 +17,9 @@ Om dit te realiseren moet een algoritme worden gebruikt om de kortste pad te bep
 Dit algoritme was niet onze eerste keuze. Het Lee algoritme was eerst uitgewerkt, omdat het eenvoudig te begrijpen en implementeren is. Echter geeft Lee niet altijd de snelste route, want het algoritme houdt geen rekening met het aantal bochten dat het doorloopt.\\
 
 %SYSTEEMOVERZICHT
-De routeplanner in C is maar een klein deel van het systeem. De drie hoofdblokken zijn de xBee modules, de FPGA en het Director programma. 
+De routeplanner in C is maar een klein deel van het systeem. De drie hoofdblokken zijn de XBee modules, de FPGA en het Director programma. 
 
-Om het doel te bereiken is communicatie tussen de robot en de director vereist. Met twee losse state machines en twee xBee modules dit gedaan. \'E\'en losse state die op de robot zit, zorgt ervoor dat het de commando's ontvangt en verwerkt. En de andere verstuurt de commando's naar de robot.
+Om het doel te bereiken is communicatie tussen de robot en de director vereist. Met twee losse state machines en twee XBee modules dit gedaan. \'E\'en losse state die op de robot zit, zorgt ervoor dat het de commando's ontvangt en verwerkt. En de andere verstuurt de commando's naar de robot.
 
 De FPGA is het component die alle directe acties afhandelt. Tijdens de projectmiddagen zijn we druk bezig geweest om de FPGA op de sensoren te laten reageren, zodat de robot een zwarte lijn zou volgen. 
 

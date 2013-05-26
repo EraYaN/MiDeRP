@@ -9,7 +9,7 @@
 \begin{document}
 \chapter{Systeemoverzicht}
 \label{ch:systeem}
-Het systeem bestaat uit drie hoofdonderdelen, de twee xBee modules voor de communicatie, de robot met de FPGA, de reflectiesensors en de mijnendetector en het Director programma dat op de PC draait.
+Het systeem bestaat uit drie hoofdonderdelen, de twee XBee modules voor de communicatie, de robot met de FPGA, de reflectiesensors en de mijnendetector en het Director programma dat op de PC draait.
 In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem te zien, hierin is de robot nog verder opgedeeld. 
 \section{Communicatie}
 De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet bereikt worden.
@@ -17,7 +17,7 @@ De eerste versie van het communicatie protocol staat in tabel \ref{tab:comProtoc
 Op de robot is een losse state machine geïmplementeerd (zie Figuur \ref{fig:fsmReceiver} in Sectie \ref{sec:statemachines}) om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofd systeem deze op de correcte tijd op kan pikken.
 Ook is er een losse state machine (zie Figuur \ref{fig:fsmSender} in Sectie \ref{sec:statemachines}) om het versturen van een byte naar de pc af te handelen geïmplementeerd.
 Beide geven een 2-bit responscode, waarvan de ene bit een response aangeeft en de andere aangeeft of de operatie succesvol was.
-In Tabel \ref{tab:xBeeSettings} in Sectie \ref{sec:communicatie} staan de gekozen instellingen van de xBee modules.
+In Tabel \ref{tab:XBeeSettings} in Sectie \ref{sec:communicatie} staan de gekozen instellingen van de XBee modules.
 \begin{figure}
 \centering
 \caption{Het blokschema van het Systeem.}
@@ -27,7 +27,7 @@ In Tabel \ref{tab:xBeeSettings} in Sectie \ref{sec:communicatie} staan de gekoze
 \section{Robot FPGA}
 De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden. Ook telt de FPGA continue de lengte van de pulsen uit de mijndetector.
 Deze stuurt ook de motoren aan, door een PWM signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
-Op de FPGA wordt ook de communicatie met de xBee afgehandeld, via een UART interface.
+Op de FPGA wordt ook de communicatie met de XBee afgehandeld, via een UART interface.
 De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender} allen in sectie \ref{sec:statemachines}.
 
 \section{Director}
@@ -39,15 +39,5 @@ Ons programma reageert alleen op vragen van de robot, met als uitzondering het '
 \item De gebruikersinterface en visualizatie
 \end{itemize}
 Een uitgebreide beschrijving van de director is te vinden in hoofdtsuk \ref{ch:director}.
-%We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall).
-%Hetzelfde geldt voor de dll met de seriële interface. Deze is lichtelijk aangepast, zodat hij gemakkelijker in een andere applicatie gebruikt kan worden.
-%Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met WPF (een UI framework gebaseerd op XAML UI's).
-%Dit geeft een vriendelijkere ontwikkelomgeving, managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
-%Het is ook mogelijk om alleen een van de dll's te vervangen, zodat iemand daar los aan kan werken.
-%Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel fijn voor de seriële communicatie.
-%Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de essentiële elementen (navigatie en communicatie) in pure C/C++ code gehouden. Al halen we misschien de seriële communicatie naar C\#, omdat je hierin een veel simpelere asynchrone afhandeling van input hebt.
-
-%De director moet nu nog adequaat reageren op de bytes van de robot.
-%Hiervoor laten we een thread constant checken of er een nieuwe byte in de input buffer zit. Zodra deze er is, geven we een event af zodat de main thread op de byte kan reageren.
 
 \end{document}
