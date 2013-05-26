@@ -10,6 +10,13 @@
 
 \chapter{Director}
 \label{ch:director}
+Het programma wat voor de besturing van de robot zorgt op de computer, door ons "Director" gedoopt, bestaat zoals eerst bescheven uit vier hoofdonderdelen. De laatste drie worden hier beschreven.
+\begin{itemize}
+\item De pathfinder op basis van het A* algoritme
+\item De event-driven seriële implentatie
+\item De controller
+\item De gebruikersinterface en visualizatie
+\end{itemiize}
 \section{Implementatie}
 \label{sec:dirImplementatie}
 We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall).
@@ -21,7 +28,10 @@ Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel f
 Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de navigatie in pure C/C++ code gehouden.
 De communicatie is eveneens geïmplementeerd in C\#, dit gaf het voordeel van een event-driven model.
 
-De director moet nu nog adequaat reageren op de bytes van de robot.
-Hiervoor laten we een thread constant checken of er een nieuwe byte in de input buffer zit. Zodra deze er is, geven we een event af zodat de main thread op de byte kan reageren.
-
+\subsection{Communicatie}
+TODO: Data.com module latex
+\subsection{Controller}
+TODO: Data.ctr module latex
+\subsection{Gebruikersinterface en visualizatie}
+TODO: Data.vis module latex
 \end{document}
