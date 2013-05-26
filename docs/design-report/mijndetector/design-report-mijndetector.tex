@@ -26,12 +26,52 @@ De mijn-detecterende sensor moet aan de volgende eisen voldoen:
 
 \section{Ontwerp}
 \label{sec:ontwerp}
-De schakeling van de inductieve sensor is zoals die van de JIT: Inductieve sensoren. Het is overbodig om de schakeling te veranderen, want de originele schakeling levert geen problemen op. In figuur ** staat de oscillator op basis van de inductieve sensor.
+De schakeling van de inductieve sensor is zoals die van de JIT: Inductieve sensoren. Het is overbodig om de schakeling te veranderen, want de originele schakeling levert geen problemen op. In figuur \ref{fig:schakeling_sensor} staat de oscillator op basis van de inductieve sensor.
 
 \subsection{Werkingsprincipe}
 \label{ssec:werking}
 Over het algmeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
 
-Voor de sensor geldt de eerste werkingsprincipe. Er zal een verschil van permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. 
+Voor de sensor geldt de eerste werkingsprincipe. Er zal een verschil van permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. De magnetische veldlijnen uit de spoel zullen veranderd worden wanneer ze door het metaal heen gaan. Dit leidt ertoe dat de inductiviteit van de spoel verandert. Deze verandering kan worden weergegeven in een periodiek signaal.
+
+\newpage
+\subsection{Werking}
+
+Het circuit dat gebruikt wordt voor de inductieve sensor is een LC-circuit. Hiermee kan de resonantiefrequentie veranderd worden, zodat het uitgangssignaal van de schakeling ook verandert.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{inductieve_sensor.png}
+\caption{Schakeling van de inductieve sensor.}
+\label{fig:schakeling_sensor}
+\end{figure}
+
+\subsubsection{LC-circuit}
+Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om de $f_res$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die wordt gebruikt in het circuit. Met de volgende formule kan de $f_{res}$ worden berekend:
+
+\begin{equation}
+f_{res}=\frac{1}{2\pi\sqrt{LC}}
+\end{equation}
+
+\subsubsection{Comparator}
+De comparator is een essentieel onderdeel van de schakeling. Het zorgt ervoor dat er op een uitgang een blokgolf komt te staan. Zo een blokgolf kan dan getransformeerd worden in een logisch signaal van '0' en '1'. De comparator werkt als volgt:
+
+\begin{equation}
+Als \;V_+>V_- \Rightarrow V_{out}\approx V_{CC}
+\end{equation}
+\begin{equation}
+Als \; V_+<V_- \Rightarrow V_{out}\approx V_{EE}
+\end{equation}
+
+Dit leidt ertoe dat de uitgangsspanning een zeer positieve- en negatieve waarde kan hebben. Deze schommeling van positief en negatief geeft uiteindelijk een blokgolf.\\
+
+Dus doordat de resonantiefrequentie verandert wanneer de magnetische veldlijnen door het metaal heen gaan (L krijgt dan een andere waarde), zal ook de frequentie van het bloksignaal veranderen. 
+
+\section{Implementatie}
+
+\section{Test}
+
+\section{Discussie}
+
 
 \end{document}
