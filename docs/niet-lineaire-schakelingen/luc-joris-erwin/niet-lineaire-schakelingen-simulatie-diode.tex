@@ -1,0 +1,29 @@
+\documentclass{report}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{EPO-2: Niet-lineaire schakelingen - Simulatie van een diode}
+\author{Luc Does}
+
+\begin{document}
+
+\chapter{Simulatie van een diode}
+\label{ch: Simulatie van een diode}
+
+Met behulp van het CircuitLab voeren wij een DC-sweep uit voor V1. Door de spanning over de diode te delen door de stroom die erdoorheen loopt kunnen wij de differentiële weerstand bepalen. Deze differentiële weerstand staat geplot in figuur \ref{fig:rdv}. Op ons instelpunt van 1.1V bedraagt de differentiële weerstand $971.4k\Omega$
+\begin{figure}[H] 
+	\centering
+	\includegraphics[width=0.8\textwidth]{iv.png}
+	\caption{$iv$-karakteristiek van de schakeling}
+	\label{fig:iv}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{RdV.png}
+	\caption{$r_dv$-karakteristiek van de schakeling}
+	\label{fig:rdv}
+\end{figure}
+
+\end{document}
