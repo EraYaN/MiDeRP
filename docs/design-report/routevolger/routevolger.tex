@@ -1,0 +1,40 @@
+\documentclass{report}
+\input{../../library/preamble}
+\input{../../library/style}
+\addbibresource{../../library/bibliography.bib}
+
+\title{EPO-2: Mid-term Design Report - routevolger}
+\author{Tijmen Witte}
+
+\begin{document}
+
+\chapter{Routevolger}
+\label{ch:probleem}
+
+Als er naar het grid wordt gekeken in bijlage \textbf{??} kan men zien dat er meer komt kijken dan alleen het volgen van een lijn, zoals in het vorige hoofdstuk beschreven is. Doordat er kruispunten aanwezig zijn, ontstaan er drie mogelijke wegen die de robot kan nemen. Bij het volgen van route moet de robot rekening houden met de kortste route en hier op inspelen. Mochten er mijnen op de route liggen dan moet de robot op het moment dat hij deze herkend, direct omdraaien zodat de lichtsensoren voor het kruispunt alweer op de lijn zitten. Is dit niet het geval dan slaat hij het kruispunt over, waardoor hij letterlijk de weg kwijt is.
+
+\section{Eisen}
+De robot moet een kruispunt kunnen herkennen en vervolgens de keuze kunnen maken welke weg hij ingaat. Deze keuze is afhankelijk van de kortste route die de robot kan nemen. Als de robot van startpunt 1 naar eindpunt 6 gaat, is het onlogisch om bij het eerste kruispunt naar links te gaan, aangezien de robot dan verder van het eindpunt wegrijdt. Verder moet de robot op zijn plaats $180^\circ$ kunnen draaien.
+
+\section{Ontwerp}
+Het ontwerp van de routevolger is een aanvulling op de code van de lijnvolger. Zo moet er in de VHDL-code extra worden weergegeven wanneer de robot op een kruispunt staat. Dit is gedaan door te zeggen dat wanneer de lichtsensoren '000' doorgeven er gezegd wordt dat de mijn op een kruispunt staat. Verder moet de robot bochten kunnen maken wat te maken heeft met de VHDL-code van de servo-motoren.
+
+\section{Implementatie}
+Voor de precieze weergave van de VHDL-code van de routevolger, zie bijlage\textbf{ ??}
+
+\section{Test}
+We hebben een eigen testveld gemaakt, waarop we de robot hebben kunnen testen. Dit veld is te zien in afbeelding \ref{fig:testfield}. Door de robot van punt $1_A$ naar punt $3_B$ te laten rijden, hebben we kunnen testen of de robot de kruispunten herkende en of hij de bochten in de juiste richting nam. Nadat de mijnendetector was aangesloten, hebben we mijnen geplaatst op de middenstukken en konden we testen of de robot op het juiste moment $180^\circ$ draaide als hij een mijn had gedetecteerd, waardoor de lichtsensoren weer voor het kruispunt  recht op de lijn kwamen te zitten.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{d-2_test_field.png}
+	\caption{Zelf gemaakte testfield  bij EPO-2}
+	\label{fig:testfield}
+\end{figure}
+
+\section{Discussie}
+Bij het testen met het detecteren van de mijnen en het vervolgens keren van de robot, zijn we er achter gekomen dat de lichtsensoren meestal op het kruispunt terecht kwamen. Dit was natuurlijk niet de bedoeling. We hebben dit aangepast door de mijnendetector dichter bij het wiel te zetten, waardoor de mijn later werd gedetecteerd en bij het draaien van de robot, de lichtsensoren precies voor het kruispunt uitkwamen. Ook hebben we om dezelfde reden de lichtsensoren dichterbij het draaipunt van de robot geplaatst.
+
+
+
+\end{document}
