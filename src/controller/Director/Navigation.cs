@@ -103,6 +103,7 @@ namespace MiDeRP
 
 		public void updateCurrentPath(Coord entry, Coord exit)
 		{
+			setMinesInDLL();
 			if (updatePath(entry.Id, exit.Id) != 0)
 				throw new Exception();
 			paths[currentPath] = getPath();
@@ -133,9 +134,7 @@ namespace MiDeRP
         public List<NodeConnection> getPath()
         {
        		List<NodeConnection> path = new List<NodeConnection>();
-			setMinesInDLL();
-
-            uint len = getPathLength();
+			uint len = getPathLength();
             IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
             int[] stage1 = new int[len+1];
             int res = extractPath(ptr);
@@ -165,6 +164,9 @@ namespace MiDeRP
 						prev = c;
 					}
 				}
+				if (currentPath > 0)
+					path.Insert(0, new NodeConnection(new Coord(targetCPs[(int)(currentPath - 1)]), false));
+				path.Add(new NodeConnection(new Coord(currentExitCP), true));
 			}
              //Update UI
             Data.db.UpdateProperty("PathLength");

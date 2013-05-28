@@ -259,6 +259,7 @@ namespace MiDeRP
                     arr.Y1 = c.ActualHeight - N1.Y;
                     arr.Y2 = c.ActualHeight - N2.Y;
                     arr.Stroke = pathBrush;
+					arr.StrokeEndLineCap = PenLineCap.Round;
                     arr.HeadHeight = pathArrowHeadHeight;
                     arr.HeadWidth = pathArrowHeadWidth;
                     arr.StrokeThickness = pathArrowThickness;
@@ -358,6 +359,7 @@ namespace MiDeRP
                 }
                 
                 arr.Stroke = currentPosBrush;
+				arr.StrokeEndLineCap = PenLineCap.Round;
                 arr.HeadHeight = currentPosArrowHeadHeight;
                 arr.HeadWidth = currentPosArrowHeadWidth;
                 arr.StrokeThickness = currentPosArrowThickness;

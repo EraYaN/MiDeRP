@@ -84,6 +84,8 @@ namespace MiDeRP
             baudRateComboBox.IsEnabled = false;
             if (Data.ctr != null)
 			    startRobotButton.IsEnabled = true;
+
+			Data.vis.DrawField();
         }
 
         private void startRobotButton_Click(object sender, RoutedEventArgs e)
