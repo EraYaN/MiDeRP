@@ -134,10 +134,10 @@ begin
 									next_passedminesite:='1';
 								end if;
 							end if;						
-						when "001" => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(100,8);
+						when "001" => motor_l_speed <= to_signed(20,8); motor_r_speed <= to_signed(100,8);
 						when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
 						when "011" => motor_l_speed <= to_signed(-50,8); motor_r_speed <= to_signed(100,8);
-						when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(0,8);
+						when "100" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(20,8);
 						when "101" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);
 						when "110" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(-50,8);
 						when "111" => motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8); next_state:=arewedone;

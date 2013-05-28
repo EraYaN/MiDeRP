@@ -7,8 +7,8 @@
 	-	Meet -en simulatieresultaten PWM-generator bijvoegen (Robin)
 	-	Routevolger (Tijmen)
 	-	Mijndetector onderdeel afmaken (Chy)
-	-	7-seg display onderdeel bijvoegen
-	-	Controller onderdeel bijvoegen
+	-	7-seg display onderdeel bijvoegen (Joris)
+	-	Controller onderdeel bijvoegen (Chy)
 	-	GUI/comm onderdeel bijvoegen
 	-	Test onderdeel bijvoegen
 	-	Afsluiting bijwerken
