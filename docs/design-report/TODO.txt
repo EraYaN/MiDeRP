@@ -4,9 +4,8 @@
 	-	Inleiding updaten (Robin)
 	-	Verder commentaar de Graaf verwerken
 	-	Systeemoverzicht bijwerken (Erwin)
-	-	Zigbee onderdeel afmaken (Tijmen)
 	-	Meet -en simulatieresultaten PWM-generator bijvoegen (Robin)
-	-	Lijnvolger onderdeel afmaken (Luc)
+	-	Routevolger (Tijmen)
 	-	Mijndetector onderdeel afmaken (Chy)
 	-	7-seg display onderdeel bijvoegen
 	-	Controller onderdeel bijvoegen
