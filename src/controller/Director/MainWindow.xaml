@@ -40,24 +40,26 @@
                     </ComboBox>
                 </StackPanel>
             </GroupBox>
+            <GroupBox Header="Initialization">
+				<StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+					<Label Target="{Binding ElementName=challengeComboBox}" Content="Challenge:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
+					<ComboBox x:Name="challengeComboBox" Height="20" Margin="2" Padding="4,0,0,0" VerticalContentAlignment="Center">
+						<ComboBoxItem Content="Find path" IsSelected="True"/>
+						<ComboBoxItem Content="Find treasure"/>
+					</ComboBox>
+					<Button x:Name="startInitButton" Content="Start Init" Margin="2" Click="startInitButton_Click" IsDefault="True"/>
+					<Button x:Name="destroyButton" Content="Destroy" Margin="2" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
+				</StackPanel>
+            </GroupBox>
             <GroupBox Header="Path Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Button x:Name="startInitButton" Content="Start Init" Margin="2" Click="startInitButton_Click" IsDefault="True"/>
                     <Button x:Name="TestDrawButton" Content="Draw Field" Margin="2" Click="TestDrawButton_Click" IsEnabled="False"/>
-                    <Button x:Name="findPathButton" Content="Find Path" Margin="2" IsEnabled="False" Click="findPathButton_Click"/>
-                    <Button x:Name="destroyButton" Content="Destroy" Margin="2" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
+                    <Button x:Name="startChallengeButton" Content="Start Challenge" Margin="2" IsEnabled="False" Click="startChallengeButton_Click"/>
                     <Button x:Name="resetButton" Content="Reset" Margin="2" Click="resetButton_Click"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Robot Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Label Target="{Binding ElementName=challengeComboBox}" Content="Challenge:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
-                    <ComboBox x:Name="challengeComboBox" Height="20" Margin="2" Padding="4,0,0,0" VerticalContentAlignment="Center">
-                        <ComboBoxItem Content="None" IsSelected="True"/>
-                        <ComboBoxItem Content="A"/>
-                        <ComboBoxItem Content="B"/>
-                        <ComboBoxItem Content="C"/>
-                    </ComboBox>
                     <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click" IsEnabled="False"/>
                 </StackPanel>
             </GroupBox>

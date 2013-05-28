@@ -9,10 +9,21 @@ namespace MiDeRP
     {
         public List<NodeConnection> mines = new List<NodeConnection>();
         public NodeConnection currentPos;
-        public List<NodeConnection> path = new List<NodeConnection>();
-        //TODO static dll import all function from c dll pathfinder.dll
-        //Import all functions
-        /// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
+        public List<NodeConnection> fullPath = new List<NodeConnection>();
+		public List<uint> targetCPs = new List<uint>((int)Data.numControlPosts);
+		public int currentPath = 0;
+		public List<NodeConnection>[] paths;
+
+		public uint currentExitCP
+		{
+			get
+			{
+				return targetCPs[currentPath];
+			}
+		}
+
+		#region DLL imports
+		/// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
         /// </summary>
         [DllImport("navigation.dll")]
         static extern int initNavigation(uint m, uint n);
@@ -37,8 +48,9 @@ namespace MiDeRP
 
         [DllImport("navigation.dll")]
         static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
+		#endregion
 
-        public Navigation()
+		public Navigation()
         {
             //constructor
             initNavigation(Data.M, Data.N);
@@ -50,26 +62,82 @@ namespace MiDeRP
             closeNavigation();
         }
 
-        public int SetMinesInDLL(){
-            if (clearMines() != 0)
-            {
-                //error
-                return -1;
-            }
-            foreach(NodeConnection m in mines){
-                setMineC(m.To.X, m.To.Y, m.From.X, m.From.Y, 1);
-            }
-            return 0;
-        }
+		#region Path planning
+		public void InitChallenge()
+		{
+			if (Data.challenge == Challenge.FindPath)
+			{
+				makePaths();
+			}
+			if (Data.challenge == Challenge.FindTreasure)
+			{
+				findTreasure();
+			}
+		}
 
-        public int getPath()
+		private void makePaths()
+		{
+			if (targetCPs.Count < 1)
+				return; //exception maybe?
+
+			paths = new List<NodeConnection>[targetCPs.Count];
+			fullPath.Clear();
+
+			for (int i = 0; i < targetCPs.Count; i++)
+			{
+				currentPath = i;
+				if (i == 0)
+				{
+					updateCurrentPath(currentPos.To, new Coord(targetCPs[0]));
+				}
+				else
+				{
+					updateCurrentPath(new Coord(targetCPs[i - 1]), new Coord(targetCPs[i]));
+				}
+				fullPath.AddRange(paths[currentPath]);
+			}
+
+			currentPath = 0;
+			Data.vis.DrawField();
+		}
+
+		public void updateCurrentPath(Coord entry, Coord exit)
+		{
+			setMinesInDLL();
+			if (updatePath(entry.Id, exit.Id) != 0)
+				throw new Exception();
+			paths[currentPath] = getPath();
+			Data.vis.DrawField();
+		}
+
+		private void findTreasure()
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
+
+		#region Pathfinder
+		private int setMinesInDLL()
+		{
+			if (clearMines() != 0)
+			{
+				//error
+				return -1;
+			}
+			foreach (NodeConnection m in mines)
+			{
+				setMineC(m.To.X, m.To.Y, m.From.X, m.From.Y, 1);
+			}
+			return 0;
+		}
+
+        public List<NodeConnection> getPath()
         {
-            //TODO             
-            uint len = getPathLength();
+       		List<NodeConnection> path = new List<NodeConnection>();
+			uint len = getPathLength();
             IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
             int[] stage1 = new int[len+1];
             int res = extractPath(ptr);
-			Data.nav.path.Clear();
 
 			if (res == 0 && len > 0 && ptr != null)
 			{
@@ -96,20 +164,22 @@ namespace MiDeRP
 						prev = c;
 					}
 				}
-				Data.nav.path.Add(new NodeConnection(new Coord(Data.exitCP), true));
+				if (currentPath > 0)
+					path.Insert(0, new NodeConnection(new Coord(targetCPs[(int)(currentPath - 1)]), false));
+				path.Add(new NodeConnection(new Coord(currentExitCP), true));
 			}
              //Update UI
             Data.db.UpdateProperty("PathLength");
-            return res;
+			return path;
         }
+		#endregion
 
-        public int findPath()
-        {
-            Coord entry = currentPos.To;
-            Coord exit = new Coord(Data.exitCP);
-            int res = updatePath(entry.Id, exit.Id);
-            getPath();
-            return res;
-        }
-    }
+		public void updateCP(uint id)
+		{
+			if (targetCPs.Contains(id))
+				targetCPs.Remove(id);
+			else
+				targetCPs.Add(id);
+		}
+	}
 }

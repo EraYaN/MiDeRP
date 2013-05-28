@@ -35,27 +35,17 @@ namespace MiDeRP
             Data.vis.DrawField();            
         }
 
-        private void findPathButton_Click(object sender, RoutedEventArgs e)
+        private void startChallengeButton_Click(object sender, RoutedEventArgs e)
         {
-            Data.nav.SetMinesInDLL();
-            int res;
-            if ((res = Data.nav.findPath()) != 0)
-            {
-                MessageBox.Show("Error during path finding. #" + res, "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //TODO exception
-            }
-            else
-            {
-                //MessageBox.Show("Path found!", "Path Found!", MessageBoxButton.OK, MessageBoxImage.Information);
-                Data.vis.DrawField();
-            }
+			Data.nav.InitChallenge();
         }
 
         private void startInitButton_Click(object sender, RoutedEventArgs e)
         {
             //Init classes
+			Data.nav = new Navigation();
             Data.vis = new Visualization(fieldmapcanvas);
-            Data.nav = new Navigation();
+            
             if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
             {
                 Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
@@ -77,7 +67,8 @@ namespace MiDeRP
             {
                 MessageBox.Show("No COM Port or Baud Rate chosen.", "SerialInterface Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-			
+
+			Data.challenge = (Challenge)challengeComboBox.SelectedIndex;
 			Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
             Data.db.UpdateProperty("MineCount");
             Data.db.UpdateProperty("PathLength");
@@ -85,7 +76,7 @@ namespace MiDeRP
             Data.db.UpdateProperty("SerialPortStatusColor");
             Data.db.UpdateProperty("CurrentPosText");
             //enable buttons
-            findPathButton.IsEnabled = true;
+            startChallengeButton.IsEnabled = true;
             TestDrawButton.IsEnabled = true;
             startInitButton.IsEnabled = false;
             destroyButton.IsEnabled = true;
@@ -93,24 +84,26 @@ namespace MiDeRP
             baudRateComboBox.IsEnabled = false;
             if (Data.ctr != null)
 			    startRobotButton.IsEnabled = true;
+
+			Data.vis.DrawField();
         }
 
         private void startRobotButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
+			if (Data.nav == null || Data.nav.fullPath == null || Data.nav.fullPath.Count == 0)
             {
                 MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             //Enable controller
-            Data.ctr.Enable();
+            Data.ctr.EnableRobotControl();
             startRobotButton.IsEnabled = false;
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
         {
-            findPathButton.IsEnabled = false;
+            startChallengeButton.IsEnabled = false;
             TestDrawButton.IsEnabled = false;
             startInitButton.IsEnabled = true;
             destroyButton.IsEnabled = false;
@@ -146,12 +139,14 @@ namespace MiDeRP
 			{
 				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
 				Data.nav.mines.Clear();
-				Data.nav.path.Clear();
+				Data.nav.fullPath.Clear();
+				if (Data.nav.paths != null)
+					Array.Clear(Data.nav.paths, 0, Data.nav.paths.Length);
 			}
 
 			if (Data.ctr != null)
 			{
-                Data.ctr.Reset();
+                Data.ctr.ResetRobotControl();
                 startRobotButton.IsEnabled = true;
 			}
 

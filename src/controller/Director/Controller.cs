@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiDeRP    
+namespace MiDeRP
 {
-	public enum StatusByteCode : byte { 
+    #region Shared enums
+    public enum StatusByteCode : byte { 
 		Unknown = 0x00,
         Continue = 0x01,
 		Forward = 0x46, 
@@ -30,10 +31,13 @@ namespace MiDeRP
 		Down,
 		Unknown
 	};
+    #endregion
 
-	public class Controller
+    public class Controller
 	{
 		private bool _sentDirectiveIsUnacknowledged = false;
+		private bool _done = false;
+		private bool _continue = false;
 		private StatusByteCode _receivedByte;
 		private NodeConnection _nextNodeConnection;
 		private Direction _nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
@@ -41,24 +45,25 @@ namespace MiDeRP
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 		private int _i = 0;
 
-        private bool _isEnabled;
-        public bool IsEnabled
+        private bool _robotControlIsEnabled;
+        public bool RobotControlIsEnabled
         {
             get
             {
-                return _isEnabled;
+                return _robotControlIsEnabled;
             }
         }
 		
 		public Controller()
 		{
 			Data.com.SerialDataEvent += com_SerialDataEvent;
-            _isEnabled = false;
+            _robotControlIsEnabled = false;
 		}
 
+		#region Robot control
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
-            if (!_isEnabled)
+            if (!_robotControlIsEnabled)
                 return;
 			
             _receivedByte = e.DataByte.ToStatusByteCode();
@@ -67,6 +72,9 @@ namespace MiDeRP
 			{
 				if (_sentDirectiveIsUnacknowledged)
 				{
+					if (_done == true)
+						DisableRobotControl();
+
 					_i++; //Advance to next item in path
 					_robotDirection = _nextAbsoluteDirection;
 					Data.nav.currentPos = _nextNodeConnection;
@@ -88,12 +96,18 @@ namespace MiDeRP
 				{
                     getNextDirective();
 					Data.com.SendByte((byte)_nextDirective);
-                    if (_i == (Data.nav.path.Count - 1))
-                    {
-                        _i++;
-                        getNextDirective();
-                        Data.com.SendByte((byte)_nextDirective);
-                    }
+
+					if (_done == true)
+					{
+						Data.com.SendByte((byte)StatusByteCode.Done);
+					}
+
+					if (_continue == true)
+					{
+						Data.com.SendByte((byte)StatusByteCode.Done);
+						Data.com.SendByte((byte)StatusByteCode.Continue);
+						_continue = false;
+					}
 					_sentDirectiveIsUnacknowledged = true;
 				}
 				else if (_receivedByte == StatusByteCode.MineDetected)
@@ -102,9 +116,7 @@ namespace MiDeRP
                         return;
 
 					//Detected mine, add to list
-					Data.nav.mines.Add(Data.nav.path[_i - 1]);
-					Data.nav.SetMinesInDLL();
-
+					Data.nav.mines.Add(Data.nav.paths[Data.nav.currentPath][_i - 1]);
 					recalculatePath();
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 				}
@@ -122,49 +134,56 @@ namespace MiDeRP
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			if (Data.nav.path.Count > 0 && Data.nav.path.Count > _i)
+			if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
 			{
-				_nextNodeConnection = Data.nav.path[_i];
-			}
-			else if (Data.nav.path.Count==_i)
-			{
-				_nextDirective = StatusByteCode.Done;
-                return;
-			}
-			else
-			{
-				//No path
-				_nextDirective = StatusByteCode.Unknown;
-				return;
+				_nextNodeConnection = Data.nav.fullPath[_i];
 			}
 
-			//Exit point
-			if (_i == Data.nav.path.Count - 1)
+			if ((Data.nav.fullPath.Count - 1) == _i)
 			{
-				if (Data.exitCP > (Data.numControlPosts - (Data.N - 2)))
+				_done = true;
+			}
+			else if (Data.nav.fullPath[_i].FromCPoint == true)
+			{
+				//TargetCP visited
+				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
+				_nextDirective = StatusByteCode.Turn;
+				Data.nav.currentPath++;
+				return;
+			}
+			
+			if (Data.nav.fullPath[_i].ToCPoint == true)
+			{
+				//TargetCP reached
+				if (Data.nav.currentExitCP > (Data.numControlPosts - (Data.N - 2)))
 				{
-					//exitCP is at left side
+					//nav.currentExitCP is at left side
 					_nextAbsoluteDirection = Direction.Left;
 				}
-				else if (Data.exitCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
 				{
-					//exitCP is at top side
+					//nav.currentExitCP is at top side
 					_nextAbsoluteDirection = Direction.Up;
 				}
-				else if (Data.exitCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
 				{
-					//exitCP is at right side
+					//nav.currentExitCP is at right side
 					_nextAbsoluteDirection = Direction.Right;
 				}
-				else if (Data.exitCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
+				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
 				{
-					//exitCP is at bottom side
+					//nav.currentExitCP is at bottom side
 					_nextAbsoluteDirection = Direction.Down;
 				}
 				else
 				{
 					_nextAbsoluteDirection = Direction.Unknown;
 				}
+
+				if ((Data.nav.fullPath.Count - 1) != _i)
+				{
+					_continue = true;
+				} 
 			}
 			else
 			{
@@ -280,22 +299,29 @@ namespace MiDeRP
 			_i = 0;
 			Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
 			_robotDirection = (Direction)(((int)_robotDirection + 2) % 4); //Bacon flips
-			Data.nav.findPath();
+			Data.nav.updateCurrentPath(Data.nav.currentPos.To, new Coord(Data.nav.targetCPs[Data.nav.currentPath]));
 		}
 
-        public void Enable()
-        {
-            _isEnabled = true;
-        }
-
-		public void Reset()
+		public void DisableRobotControl()
 		{
-            _isEnabled = false;
+			_robotControlIsEnabled = false;
+		}
+
+        public void EnableRobotControl()
+        {
+            _robotControlIsEnabled = true;
+        }
+		
+		public void ResetRobotControl()
+		{
+			_done = false;
+            _robotControlIsEnabled = false;
 			_sentDirectiveIsUnacknowledged = false;
 			_nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
 			_robotDirection = Direction.Unknown; //current direction the robot is pointing in
 			_nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 			_i = 0;
 		}
+		#endregion
 	}
 }
