@@ -18,6 +18,7 @@
 \definecolor{redstrings}{rgb}{0.9,0,0}
 \definecolor{purpleidentifiers}{rgb}{0.01,0,0.01}
 \usepackage[scaled]{beramono}
+
 \lstdefinestyle{csharp}{
 language=[Sharp]C,
 showspaces=false,
@@ -31,8 +32,9 @@ keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{redstrings},
 identifierstyle=\color{purpleidentifiers},
 basicstyle=\ttfamily\small}
-\lstdefinestyle{cpp}{
-language=[Visual]C++,
+
+\lstdefinestyle{c}{
+language=C,
 showspaces=false,
 showtabs=false,
 breaklines=true,
@@ -44,6 +46,7 @@ keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{bluestrings},
 identifierstyle=\color{purpleidentifiers}
 l}
+
 \lstdefinestyle{vhdl}{
 language=VHDL,
 showspaces=false,
@@ -57,6 +60,7 @@ keywordstyle=\color{bluekeywords}\bfseries,
 stringstyle=\color{redstrings},
 identifierstyle=\color{purpleidentifiers}
 }
+
 \lstdefinestyle{xaml}{
 language=XML,
 showspaces=false,
@@ -73,6 +77,7 @@ morestring=[b]",
   morecomment=[s]{<?}{?>},
   morekeywords={xmlns,version,typex:AsyncRecords,x:Arguments,x:Boolean,x:Byte,x:Char,x:Class,x:ClassAttributes,x:ClassModifier,x:Code,x:ConnectionId,x:Decimal,x:Double,x:FactoryMethod,x:FieldModifier,x:Int16,x:Int32,x:Int64,x:Key,x:Members,x:Name,x:Object,x:Property,x:Shared,x:Single,x:String,x:Subclass,x:SynchronousMode,x:TimeSpan,x:TypeArguments,x:Uid,x:Uri,x:XData,Grid.Column,Grid.ColumnSpan,Click,ClipToBounds,Content,DropDownOpened,FontSize,Foreground,Header,Height,HorizontalAlignment,HorizontalContentAlignment,IsCancel,IsDefault,IsEnabled,IsSelected,Margin,MinHeight,MinWidth,Padding,SnapsToDevicePixels,Target,TextWrapping,Title,VerticalAlignment,VerticalContentAlignment,Width,WindowStartupLocation,Binding,Mode,OneWay,xmlns:x}
 }
+
 %defaults
 \lstset{
 basicstyle=\ttfamily\small,
