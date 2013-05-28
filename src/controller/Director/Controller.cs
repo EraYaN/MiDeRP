@@ -106,8 +106,6 @@ namespace MiDeRP
 
 					//Detected mine, add to list
 					Data.nav.mines.Add(Data.nav.paths[Data.nav.currentPath][_i - 1]);
-					Data.nav.SetMinesInDLL();
-
 					recalculatePath();
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 				}
@@ -152,24 +150,24 @@ namespace MiDeRP
 			//Exit point
 			if (_i == Data.nav.paths[Data.nav.currentPath].Count - 1)
 			{
-				if (Data.exitCP > (Data.numControlPosts - (Data.N - 2)))
+				if (Data.nav.currentExitCP > (Data.numControlPosts - (Data.N - 2)))
 				{
-					//exitCP is at left side
+					//nav.currentExitCP is at left side
 					_nextAbsoluteDirection = Direction.Left;
 				}
-				else if (Data.exitCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
 				{
-					//exitCP is at top side
+					//nav.currentExitCP is at top side
 					_nextAbsoluteDirection = Direction.Up;
 				}
-				else if (Data.exitCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
 				{
-					//exitCP is at right side
+					//nav.currentExitCP is at right side
 					_nextAbsoluteDirection = Direction.Right;
 				}
-				else if (Data.exitCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
+				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
 				{
-					//exitCP is at bottom side
+					//nav.currentExitCP is at bottom side
 					_nextAbsoluteDirection = Direction.Down;
 				}
 				else

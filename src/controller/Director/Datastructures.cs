@@ -167,9 +167,9 @@ namespace MiDeRP
             {
 				if (Data.nav == null)
 					return "No Path";
-				if (Data.nav.path != null&&Data.nav.path.Count > 0)
+				if (Data.nav.fullPath != null&&Data.nav.fullPath.Count > 0)
                 {
-                    return "Path length: "+Data.nav.path.Count.ToString();
+                    return "Path length: "+Data.nav.fullPath.Count.ToString();
                 }
                 else
                 {
@@ -282,7 +282,7 @@ namespace MiDeRP
         public const uint numNodes = M*N;
         public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
         public static uint entryCP = 1;
-        public static uint exitCP = (M-2)+(N-2);
+        //public static uint exitCP = (M-2)+(N-2);
 		public static Challenge challenge = Challenge.FindPath;
         static public Visualization vis;
         static public Navigation nav;

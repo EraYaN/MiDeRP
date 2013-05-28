@@ -37,26 +37,15 @@ namespace MiDeRP
 
         private void startChallengeButton_Click(object sender, RoutedEventArgs e)
         {
-            Data.nav.SetMinesInDLL();
-            int res;
 			Data.nav.InitChallenge();
-            if ((res = Data.nav.findPath()) != 0)
-            {
-                MessageBox.Show("Error during path finding. #" + res, "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //TODO exception
-            }
-            else
-            {
-                //MessageBox.Show("Path found!", "Path Found!", MessageBoxButton.OK, MessageBoxImage.Information);
-                Data.vis.DrawField();
-            }
         }
 
         private void startInitButton_Click(object sender, RoutedEventArgs e)
         {
             //Init classes
+			Data.nav = new Navigation();
             Data.vis = new Visualization(fieldmapcanvas);
-            Data.nav = new Navigation();
+            
             if (comPortsComboBox.SelectedItem != null && baudRateComboBox.SelectedItem != null)
             {
                 Data.ComPort = (string)((ComboBoxItem)comPortsComboBox.SelectedItem).Content;
@@ -99,7 +88,7 @@ namespace MiDeRP
 
         private void startRobotButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Data.nav == null || Data.nav.path == null || Data.nav.path.Count == 0)
+			if (Data.nav == null || Data.nav.fullPath == null || Data.nav.fullPath.Count == 0)
             {
                 MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -148,7 +137,9 @@ namespace MiDeRP
 			{
 				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
 				Data.nav.mines.Clear();
-				Data.nav.path.Clear();
+				Data.nav.fullPath.Clear();
+				if (Data.nav.paths != null)
+					Array.Clear(Data.nav.paths, 0, Data.nav.paths.Length);
 			}
 
 			if (Data.ctr != null)

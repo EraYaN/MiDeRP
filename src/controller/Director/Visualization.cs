@@ -49,11 +49,6 @@ namespace MiDeRP
             drawField = DrawField;
         }
 
-        ~Visualization()
-        {
-            //c.Children.Clear(); kan niet. verkeerde thread
-        }
-
         private void DrawMines(uint xlim, uint ylim, double xstep, double ystep)
         {
             for (uint x = 0; x < xlim; x++)
@@ -84,7 +79,7 @@ namespace MiDeRP
                     ml.From = N2;
                     ml2.To = N2;
                     ml2.From = N1;
-                    if (Data.nav.mines.Contains(ml) || Data.nav.mines.Contains(ml2)) //method the takes position and returns true if there is a mine
+                    if (Data.nav != null && (Data.nav.mines.Contains(ml) || Data.nav.mines.Contains(ml2))) //method the takes position and returns true if there is a mine
                     {
                         //mine
                         mine.Fill = mineBrush;
@@ -134,18 +129,18 @@ namespace MiDeRP
                 {
                     cpt.Background = entryBrush;
                 }
-				else if (Data.nav.targetCPs.Contains((uint)((2 * (Data.M - 2) + (Data.N - 2)) - (x - 1))) || (2 * (Data.M - 2) + (Data.N - 2)) - (x - 1) == Data.exitCP)
+				else if (Data.nav.targetCPs.Contains((uint)((2 * (Data.M - 2) + (Data.N - 2)) - (x - 1))))
                 {
                     cpt.Background = exitBrush;
                 }
-                if (x == Data.entryCP)
-                {
-                    cpb.Background = entryBrush;
-                }
-                else if (x == Data.exitCP)
-                {
-                    cpb.Background = exitBrush;
-                }
+				if (x == Data.entryCP)
+				{
+					cpb.Background = entryBrush;
+				}
+				else if (Data.nav.targetCPs.Contains((uint)x))
+				{
+					cpb.Background = exitBrush;
+				}
                 cpbt.FontSize = cptt.FontSize = controlpointsize - 4;
                 cpbt.Foreground = cptt.Foreground = Brushes.White;
                 cpbt.Text = x.ToString();
@@ -178,18 +173,18 @@ namespace MiDeRP
                 {
                     cpr.Background = entryBrush;
                 }
-                else if ((Data.M - 2) + y == Data.exitCP)
-                {
-                    cpr.Background = exitBrush;
-                }
+				else if (Data.nav.targetCPs.Contains((uint)((Data.M - 2) + y)))
+				{
+					cpr.Background = exitBrush;
+				}
                 if ((2 * (Data.M - 2) + 2 * (Data.N - 2)) - (y - 1) == Data.entryCP)
                 {
                     cpl.Background = entryBrush;
                 }
-                else if ((2 * (Data.M - 2) + 2 * (Data.N - 2)) - (y - 1) == Data.exitCP)
-                {
-                    cpl.Background = exitBrush;
-                }
+				else if (Data.nav.targetCPs.Contains((uint)((2 * (Data.M - 2) + 2 * (Data.N - 2)) - (y - 1))))
+				{
+					cpl.Background = exitBrush;
+				}
                 cprt.FontSize = cplt.FontSize = controlpointsize - 4;
                 cprt.Foreground = cplt.Foreground = Brushes.White;
                 cprt.Text = ((Data.M - 2) + y).ToString();
@@ -211,9 +206,9 @@ namespace MiDeRP
 
         private void DrawPath(double xstep, double ystep)
         {            
-            if (Data.nav.path.Count>0)
+            if (Data.nav.fullPath.Count>0)
             {
-                foreach (NodeConnection nc in Data.nav.path)
+                foreach (NodeConnection nc in Data.nav.fullPath)
                 {
                     Arrow arr = new Arrow();
                     Point N1, N2;
@@ -385,13 +380,8 @@ namespace MiDeRP
             uint id = Convert.ToUInt32(((TextBlock)cp.Child).Text); 
             if (e.ChangedButton == MouseButton.Left)
             {
-                //entry
-                //MessageBox.Show("CP #" + id + " clicked.\n Made entry.");
                 Data.entryCP = id;
             } else if(e.ChangedButton == MouseButton.Right){
-                //exit
-                //MessageBox.Show("CP #" + id + " clicked.\n Made exit.");
-                Data.exitCP = id;
 				Data.nav.updateCP(id);
             }            
             Data.vis.DrawField();
