@@ -10,15 +10,15 @@
 
 \chapter{Draadloze Communicatie met ZigBee Module}
 
-Een van de opdrachten van het project is om de robot te begeleiden via een C-programma. Het was de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot lieten communiceren met de computer. Dit werd gedaan door één XBee-module aan te sluiten aan de computer en deze te laten communiceren met de andere XBee-module die al gemonteerd zat op het FPGA-bord van de robot.
+Een van de opdrachten van het project is om de robot te begeleiden via een C-programma. Het is de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot laten communiceren met de computer. Dit wordt gedaan door één XBee-module aan te sluiten op een computer en deze te laten communiceren met een andere XBee-module die  gemonteerd zit op het robot utility board.
 \newline
 
-XBee modules zijn in feite niks anders dan digitale Wifi systemen die op een 2.4 Ghz bandbreedte werken. Ze hebben een bereik van circa 30 tot 60 meter, waardoor ze makkelijk met andere apparaten kunnen communiceren die ook op een 2.4Ghz bandbreedte zitten. Daarnaast wordt de XBee module aangestuurd door een 3.3 Voltage, verder kan het aantal signaalwisselingen per seconde nog worden ingesteld, hier wordt later nog verder op ingegaan.
+\noindent XBee modules zijn in feite niks anders dan digitale ontvang/zend systemen die op een 2.4 Ghz bandbreedte werken. Ze hebben een bereik van circa 30 tot 60 meter, waardoor ze makkelijk met andere apparaten kunnen communiceren die ook op een 2.4Ghz bandbreedte zitten. Daarnaast wordt de XBee module gevoed door een 3.3V spanning, verder kan het aantal signaalwisselingen per seconde nog worden ingesteld. Hier gaan we later  verder op in.
 \newline
 
 \section{Eisen}
 
-Voordat de XBee modules met ekaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben. Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met die van jou, wat ongewenste gevolgen met zich mee kan brengen. 
+Voordat de XBee modules met elkaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben. Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met andere modules terwijl dit niet de bedoeling is.
 \newline
 De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende XBee modules. De belangrijkste hiervan zullen verder uitgelicht worden;
 \newline
@@ -30,12 +30,12 @@ De XBee modules kunnen op zestien verschillende frequentiebreedtes werken, van 1
 
 \textbf{Pan-Id;}
 \newline
-Als er meerdere XBee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de XBee modules door middel van \textit{Pan-ID}. Deze bestaat uit een 16-bit nummer. Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de XBee modules die hetzelfde \textit{Pan-ID} hebben.
+Als er meerdere XBee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de XBee modules door middel van \textit{Pan-ID}. Deze bestaat uit een 16-bits nummer. Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de XBee modules die hetzelfde \textit{Pan-ID} hebben.
 \newline
 
 \textbf{My-ID;}
 \newline
-Het kan mogelijk zijn dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben. Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}. Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussend deze XBees.
+Het is mogelijk dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben. Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}. Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
 
 
 \section{Ontwerp}
@@ -48,7 +48,7 @@ De VHDL-code bestaat uit een Top-entity en Sub-entities;
 
 \textbf{Top-entity}.
 \newline
-We willen ervoor zorgen dat de ontvangen bits worden getoond op de LEDs en de bits die verzonden moeten worden door de robot, verzonden worden door middel van de switchen. De bits die worden verzonden en ontvangen worden gebufferd in een 8-bit register en met behulp van flag flip-flops wordt de status van de 8-bit register bijgehouden. Het verzenden van de bits begint als de write-data '1' is. De ontvangen bits worden verwijderd als read-data '1' is. Verder is er nog een 50MHz klok aanwezig.
+We willen ervoor zorgen dat de ontvangen bits worden getoond op de LEDs en de bits die verzonden moeten worden door de robot, verzonden worden door middel van de switches. De bits die worden verzonden en ontvangen worden gebufferd in een 8-bit register en met behulp van flag flip-flops wordt de status van de 8-bit register bijgehouden. Het verzenden van de bits begint als de write-data '1' is. De ontvangen bits worden verwijderd als read-data '1' is. Verder is er nog een 50MHz klok aanwezig.
 \newline
 
 \textbf{Sub-entities;}
@@ -57,30 +57,30 @@ Er zijn vier sub-entities, namelijk;
 \begin{itemize}
 \item  \textbf{Baud rate generator;}
 \newline
-De baud rate generator zorgt ervoor dat er nauwekeurig wordt bijgehouden welke bits er binnen komen.
+De baud rate generator zorgt ervoor dat er nauwkeurig wordt bijgehouden welke bits er binnenkomen.
 
-\item \textbf{UART reciever}
+\item \textbf{UART receiver}
 \newline 
-De UART reciever bevat een FSM die bestaat uit vier statussen namelijk; idle, start, data en stop.
+De UART receiver bevat een FSM die bestaat uit vier statussen namelijk; idle, start, data en stop.
 Hoe de FSM werkt, is afhankelijk van de kloksignalen die deze binnenkrijgt van de baud rate generator en de status van het 'rx' signaal.
-De FSM begint in de idle status als 'rx' signaal 1 heeft. Als rx vervolgens signaal 0 krijgt, gaat de FSM in de start status en begint het de pulsen te tellen. Er zijn twee soorten tellers, \textit{n} en \textit{s} de ene houdt het aantal pulsen bij, de andere het ontvangen aantal data bits. De ontvangen bits worden verplaatst naar een 8-bit register. Als alles is gebeurd, wordt het ontvangen bit gekopieerd naar de buffer register, waar op hetzelfde moment de flag flip-flop wordt ingesteld.
+De FSM begint in de idle status als 'rx' signaal 1 heeft. Als rx vervolgens signaal 0 krijgt, gaat de FSM in de start status en begint het de pulsen te tellen. Er zijn twee soorten tellers, \textit{n} en \textit{s}. De eerste houdt het aantal pulsen bij, de tweede het ontvangen aantal data bits. De ontvangen bits worden verplaatst naar een 8-bit register. Als alles is afgerond, wordt het ontvangen bit gekopieerd naar de buffer register, waar op hetzelfde moment de flag flip-flop wordt ingesteld.
  
- \item \textbf{UART transmittor}
+ \item \textbf{UART transmitter}
  \newline
- De UART transmittor is een register die data bits op een bepaald tempo verplaatst. Dit tempo wordt beïnvloed door de pulsen van de baud rate generator. Als het overdracht proces van één data status is voltooid, wordt de flag flip-flop hierdoor gereset
+ De UART transmitter is een register die data bits op een bepaald tempo verplaatst. Dit tempo wordt beïnvloed door de pulsen van de baud rate generator. Als het overdracht proces van één data status is voltooid, wordt de flag flip-flop hierdoor gereset
  
  \item \textbf{Buffer register met flag flip-flops}
  \newline
- De buffer register zorgt voor een link tussen de UART sub-systeem en het hoofd systeem. Een flag flip-flop houdt bij of de buffer register, vol of leeg is.
+ De buffer register zorgt voor een link tussen het UART sub-systeem en het hoofdsysteem. Een flag flip-flop houdt bij of de buffer register, vol of leeg is.
 \newline
-Als de UART reciever de ontvangen bit doorgeeft, geeft de flag flip-flop weer dat de buffer register gelezen is door het hoofd systeem en dat die nu opnieuw ingesteld kan worden.
+Als de UART receiver de ontvangen bit doorgeeft, geeft de flag flip-flop weer dat de buffer register gelezen is door het hoofdsysteem en dat die nu opnieuw ingesteld kan worden.
 \newline
-Als voor de UART transmittor de flaf flip-flop aangeeft dat de buffer register de juiste data bevat om verzonden te worden, dan zal de UART transmittor op de actieve status van de flip-flop reageren en beginnen met verzenden. De data van de buffer register wordt gekopieerd naar de UART transmittor en als deze vervolgens klaar is met het proces zal de flag flip-flop gereset worden, waarna er weer nieuwe data kan worden ontvangen 
+Als voor de UART transmitter de flag flip-flop aangeeft dat de buffer register de juiste data bevat om verzonden te worden, dan zal de UART transmitter op de actieve status van de flip-flop reageren en beginnen met verzenden. De data van de buffer register wordt gekopieerd naar de UART transmitter en als deze vervolgens klaar is met het proces zal de flag flip-flop gereset worden, waarna er weer nieuwe data kan worden ontvangen 
  
 \end{itemize}
-De C-code dat voor de communicatie geschreven moest worden, moest er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
+De C-code die voor de communicatie geschreven moest worden, moet er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
 \newline
-Voor de instellingen van de XBee module konden we eigen waarden voor de verschillende instelpunten kiezen.
+Voor de instellingen van de XBee module konden we zelf waarden voor de verschillende instelpunten kiezen.
 
 \section{Implementatie}
 
