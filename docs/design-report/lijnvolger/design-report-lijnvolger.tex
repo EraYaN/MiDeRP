@@ -16,10 +16,19 @@ De basiseis waaraan de robot moet voldoen is het volgen van een zwarte lijn. Het
 
 \begin{itemize}
 \item Zwarte lijn detecteren
-\item Onderscheid maken tussen lijn en knooppunten
-
-
+\item Afwijkingen van het pad corrigeren
 \end{itemize}
 
+\section{Ontwerp}
+Het ontwerp van de lijnvolger is een simpele maar doeltreffende opzet. Een printplaat met daarop drie lichtsensoren is aangesloten op een FPGA. Deze printplaat is onder de robot bevestigd, waarbij de alle sensoren bij startpositie boven de lijn hangen. Binnen de FPGA is een logische schakeling aanwezig die bepaald welke sensoren wel of niet op de lijn staan. Aan de hand van deze uitlezing wordt bepaald hoe de servomotoren aangestuurd worden.
 
+\section{Implementatie}
+Om de draaihoek van de lijnvolger bij rechte hoeken te verbeteren is de sensorplaat op het draaipunt van de robot geplaatst. De schakeling binnen de FPGA is beschreven met een stuk VHDL. Deze VHDL-code is terug te vinden in de bijlagen: !!TODO!! Om de robot werkelijk de lijn te laten volgen wordt met behulp van de motorcontroller een PWM-puls doorgezonden naar de servomotoren. De duur van deze pulsen wordt bepaald aan de hand van de uitlezing van de sensoren. In de VHDL-code
+van de lijnvolger is dit te zien aan de verschillende combinaties van sensorwaardes die de linker- en rechtermotorsnelheden bepalen.
+
+\section{Test}
+De lijnvolger is de basis van de Smart Robot Challenge. Het is dus van het groot belang dat dit onderdeel feilloos functioneert. Om er zeker van te zijn dat de lijnvolger naar behoren werkt heeft de TU Delft ons een aantal testvelden geleverd. Wij hebben de robot uitgebreid getest op elk veld en de robot wist deze foutloos te doorlopen. Een opvallende bijzaak is wel dat de robot een lichte afwijking heeft, dit terwijl beide servomotoren hetzelfde signaal toegestuurd krijgen.
+
+\section{Discussie}
+De lijnvolger werkt haast perfect op de lichte afwijking na. Aangezien de robot deze afwijking moet corrigeren zal dit mankement tijd kosten tijdens de wedstrijd. Om dit probleem op te lossen zouden wij het PWM-signaal van de linker servo lichtelijk aanpassen van die van de rechter servo en zo de wielen synchroon laten draaien. Maar aangezien het oplossen van dit probleem tijd kost, welke beter geïnvesteerd kan worden in problemen die belangrijker zijn, hebben wij besloten dit niet te doen.
 \end{document}
