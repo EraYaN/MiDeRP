@@ -1,6 +1,7 @@
 % Include all project wide packages here.
 \usepackage{fullpage}
-\usepackage[utf8]{inputenc}
+\usepackage{polyglossia}
+\setmainlanguage{dutch}
 \usepackage{csquotes}
 \usepackage{graphicx}
 \usepackage{pdfpages}
@@ -14,7 +15,10 @@
 \usepackage{authblk}
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{xkeyval}
+\usepackage{xunicode}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage[]{unicode-math}
 \usepackage[
     backend=bibtexu,
 	texencoding=utf8,
@@ -23,7 +27,6 @@ bibencoding=utf8,
     sortlocale=nl_NL,
     language=auto
 ]{biblatex}
-\usepackage[dutch]{babel}
 \usepackage{listings}
 \newcommand{\includecode}[3][c]{\lstinputlisting[caption=#2, escapechar=, style=#1]{#3}}
 \newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
