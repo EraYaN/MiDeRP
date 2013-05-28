@@ -4,11 +4,18 @@
 \addbibresource{../../library/bibliography.bib}
 
 \title{EPO-2: Design Report - Controller}
-\author{}
+\author{Chy Lau}
 
 \begin{document}
 
 \chapter{Controller}
 \label{ch:controller}
 
+\section{FSM-states}
+
+\subsection{Delay-state}
+In de delay-state staat een delay-counter die ervoor zorgt dat er tijdens de delay geen signaal naar de computer wordt gestuurd. Dit is handig, want de robot zal bij een rechte lijn niet steeds vragen waar hij heen moet. De robot zal dan vloeiend rechtdoor rijden in plaats van een stutter beweging maken. 
+
+\subsection{Followline}
+De main state waar de robot in begint nadat de reset wordt ingedrukt is Followline. 
 \end{document}
