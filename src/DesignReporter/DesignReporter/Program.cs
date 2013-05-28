@@ -43,27 +43,29 @@ namespace DesignReporter
                 string ext = fi.Extension;
                 string caption = fi.Directory.Name + @"/" + fi.Name;
 				caption = caption.Replace("_","\\_");
+				string filename = fi.Name;
+				filename = filename.Replace("_", "\\_");
 				string pathescaped = fi.FullName.Replace(outputPath.Directory.FullName+"\\", "").Replace('\\', '/');
                 if (ext == ".cs")
                 {
                     //caption = fi.Directory.Name+@"\"+fi.Name;
-                    file.WriteLine(String.Format(@"\includecode[csharp]{{{1}}}{{{0}}}\newpage", pathescaped, caption));
+					file.WriteLine(String.Format(@"\subsection{{{2}}}\includecode[csharp]{{{1}}}{{{0}}}", pathescaped, caption, filename));
                 }
                 else if (ext == ".c" || ext == ".h")                
                 {
                     //caption = Path.GetDirectoryName(f) + Path.GetFileName(f);
-					file.WriteLine(String.Format(@"\includecode[c]{{{1}}}{{{0}}}\newpage", pathescaped, caption));
+					file.WriteLine(String.Format(@"\subsection{{{2}}}\includecode[c]{{{1}}}{{{0}}}", pathescaped, caption, filename));
                 }
                 else if (ext == ".vhdl" || ext == ".vhd")
                 {
                     //caption = Path.GetDirectoryName(f) + Path.GetFileName(f);
-					file.WriteLine(String.Format(@"\includecode[vhdl]{{{1}}}{{{0}}}\newpage", pathescaped, caption));
+					file.WriteLine(String.Format(@"\subsection{{{2}}}\includecode[vhdl]{{{1}}}{{{0}}}", pathescaped, caption, filename));
                     
                 }
                 else if (ext == ".xaml")
                 {
                     //caption = Path.GetDirectoryName(f) + Path.GetFileName(f);
-					file.WriteLine(String.Format(@"\includecode[xaml]{{{1}}}{{{0}}}\newpage", pathescaped, caption));
+					file.WriteLine(String.Format(@"\subsection{{{2}}}\includecode[xaml]{{{1}}}{{{0}}}", pathescaped, caption, filename));
 
                 }
             }
