@@ -223,3 +223,6 @@ work/
 #sublime text shit
 *.sublime-workspace
 
+#Visual Micro shit
+"[Vv]isual [Mm]icro/"
+
