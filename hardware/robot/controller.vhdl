@@ -62,7 +62,7 @@ architecture b of controller is
 	signal rresponse, sresponse : std_logic_vector (1 downto 0) := "00";
 	signal passedminesite : std_logic;
 	--signal turnprocessed : std_logic;
-	signal isdone : std_logic;
+	signal isdone, continue : std_logic;
 begin
 	
 	bin_seg(15 downto 12)<="0000";
@@ -99,16 +99,16 @@ begin
 				debugid:=to_unsigned(11,4);
 				if isdone = '1' then
 					next_state:=done;
-				else 
+				else if continue = '1' then
+					next_state:=callforinput;
+					continue = '0';
+				else
 					next_state:=followline;
 				end if;
 			elsif state = done then
 				debugid:=to_unsigned(10,4);
 				motor_l_speed <= to_signed(0,8);
 				motor_r_speed <= to_signed(0,8);
-				if isdone= '0' then
-					next_state:=callforinput;
-				end if;
 			elsif state = followline then
 				debugid:=to_unsigned(1,4);			
 				--follow line
@@ -311,7 +311,7 @@ begin
 			elsif uart_receive = p_cont then
 				--cont
 				response(0):='0';
-				isdone <= '0';
+				continue <= '1';
 				nextturn<=to_unsigned(3,3);			
 			elsif uart_receive = p_done then
 				--done

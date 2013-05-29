@@ -104,7 +104,6 @@ namespace MiDeRP
 
 					if (_continue == true)
 					{
-						Data.com.SendByte((byte)StatusByteCode.Done);
 						Data.com.SendByte((byte)StatusByteCode.Continue);
 						_continue = false;
 					}
