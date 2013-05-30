@@ -5,10 +5,7 @@
 	-	Verder commentaar de Graaf verwerken
 	-	Systeemoverzicht bijwerken (Erwin)
 	-	Meet -en simulatieresultaten PWM-generator bijvoegen (Robin)
-	-	Routevolger (Tijmen)
-	-	Mijndetector onderdeel afmaken (Chy)
 	-	7-seg display onderdeel bijvoegen (Joris)
-	-	Controller onderdeel bijvoegen (Chy)
 	-	GUI/comm onderdeel bijvoegen
-	-	Test onderdeel bijvoegen
+	-	Test onderdeel bijvoegen(Tijmen)
 	-	Afsluiting bijwerken
