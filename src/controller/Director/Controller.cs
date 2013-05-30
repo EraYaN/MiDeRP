@@ -77,7 +77,7 @@ namespace MiDeRP
 						DisableRobotControl();
 
 					_i++; //Advance to next item in path
-					//_robotDirection = _nextAbsoluteDirection;
+					_robotDirection = _nextAbsoluteDirection;
 					Data.nav.currentPos = _nextNodeConnection;
 					_sentDirectiveIsUnacknowledged = false;
 				}
@@ -297,7 +297,7 @@ namespace MiDeRP
 		private void recalculatePath()
 		{
 			_i = 0;
-			//Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
+			Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
 			//_robotDirection = (Direction)(((int)_robotDirection + 2) % 4); //Bacon flips
 			Data.nav.makePaths();
 		}

@@ -1,5 +1,7 @@
 enum StatusByteCode { 
 		Unknown = 0x00,
+        Continue = 0x01,
+		Back = 0x42,
 		Forward = 0x46, 
 		Stop = 0x53, 
 		Left = 0x4c, 
