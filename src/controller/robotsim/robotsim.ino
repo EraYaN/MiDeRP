@@ -1,5 +1,6 @@
 enum StatusByteCode { 
 		Unknown = 0x00,
+        Continue = 0x01,
 		Forward = 0x46, 
 		Stop = 0x53, 
 		Left = 0x4c, 
@@ -28,12 +29,6 @@ void setup()
 }
 void loop()
 {
-	/*if(!started){
-		if(Serial.available()>0){		
-			if(Serial.readBytes(buff,1)>0){
-				if(Start == (StatusByteCode)buff[1])
-					started = true;
-	}*/
 	if(!done){
 		if(Serial.available()>0){		
 			if(Serial.readBytes(buff,1)>0){
