@@ -99,7 +99,8 @@ begin
 				debugid:=to_unsigned(11,4);
 				if isdone = '1' then
 					next_state:=done;
-				else if continue = '1' then
+				elsif continue = '1' then
+					next_passedminesite:='1';
 					next_state:=callforinput;
 				else
 					next_state:=followline;
@@ -208,7 +209,7 @@ begin
 				uart_send <= p_mine;
 				next_sending:='1';	
 				if sresponse = "10" then
-					next_delaycounter:=20000000;
+					next_delaycounter:=10000000;
 					next_state:=fullturn;	
 					next_sending:='0';					
 				end if;	
@@ -310,7 +311,6 @@ begin
 			elsif uart_receive = p_cont then
 				--cont
 				response(0):='0';
-				continue <= '1';
 				nextturn<=to_unsigned(3,3);			
 			elsif uart_receive = p_done then
 				--done
@@ -324,7 +324,7 @@ begin
 
 			if uart_receive = p_cont then
 				continue <= '1';
-			else
+			elsif state = arewedone then
 				continue <= '0';
 			end if;
 
