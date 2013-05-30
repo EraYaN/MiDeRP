@@ -11,31 +11,51 @@
 \label{ch:controller}
 
 \section{Werkingsprincipe}
-De robot volgt na het indrukken van de reset knop een rechte lijn. Er wordt pas naar een andere state gegaan wanneer de robot: een kruispunt, een wit oppervlak of een mijn detecteert. 
+De robot volgt na het indrukken van de reset knop een rechte lijn.
+Er wordt pas naar een andere state gegaan wanneer de robot: een kruispunt, een wit oppervlak of een mijn detecteert.
 
-Bij een kruispunt vraagt de robot welke kant hij op moet, dit is afhankelijk van de kortste route. Het vragen en ontvangen van een signaal moet eerst worden goedgekeurd voordat de state volgt waar de robot een koers krijgt. 
 
-Bij een wit oppervlak vraagt de robot of hij klaar is met het rijden van de route. Als dat wel het geval is, stopt de robot met rijden. Zo niet, dan blijft de robot vooruit rijden.
+Bij een kruispunt vraagt de robot welke kant hij op moet, dit is afhankelijk van de kortste route.
+Het vragen en ontvangen van een signaal moet eerst worden goedgekeurd voordat de state volgt waar de robot een koers krijgt.
 
-Als er een mijn wordt gedetecteerd, dan wordt er doorgegeven aan de computer dat er een mijn op het wedstrijdveld is. Daarna maakt de robot een rotatie van 180$^\circ$ en volgt de lijn.
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{FSMMain.png}
-\caption{De finite-state machine van de controller.}
-\label{fig:fsmmain}
-\end{figure}
+Bij een wit oppervlak vraagt de robot of hij klaar is met het rijden van de route.
+Als dat wel het geval is, stopt de robot met rijden.
+Zo niet, dan blijft de robot vooruit rijden.
+
+Als er een mijn wordt gedetecteerd, dan wordt er doorgegeven aan de computer dat er een mijn op het wedstrijdveld is.
+Daarna maakt de robot een rotatie van 180$^\circ$ en volgt de lijn.
+De finite-state machine is bijgevoegd in de Bijlagen (Sectie \ref{sec:statemachines}, Figuur \ref{fig:fsmMain})
+
+%\begin{figure}
+%\centering
+%\includegraphics[scale=0.5]{FSMMain.png}
+%\caption{De finite-state machine van de controller.}
+%\label{fig:fsmmain}
+%\end{figure}
 
 \section{DebugID}
-Om te zien of de robot alle states goed doorloopt is de DebugID ge\"{i}mplementeerd. Iedere state is een nummer toegewezen, wat op het 7-segment display wordt weergegeven. Stel dat de robot de verkeerde beweging maakt tijdens het rijden op het wedstrijdveld, dan kan er gekeken worden naar welke state de robot is gegaan tijdens het maken van de verkeerde beweging. Dit maakt het oplossen van problemen eenvoudiger en sneller. 
+Om te zien of de robot alle states goed doorloopt is de DebugID ge\"{i}mplementeerd.
+Iedere state is een nummer toegewezen, dat op het 7-segment display wordt weergegeven.
+Stel dat de robot de verkeerde beweging maakt tijdens het rijden op het wedstrijdveld, dan kan er gekeken worden naar welke state de robot is gegaan tijdens het maken van de verkeerde beweging.
+Dit maakt het oplossen van problemen eenvoudiger en sneller.
+
 
 \section{FSM-states}
 
 \subsection{Delay-state}
-In de delay-state staat een delay-counter die ervoor zorgt dat er tijdens de delay geen signaal naar de computer wordt gestuurd. Dit is handig, want de robot zal bij een rechte lijn niet steeds aan de computer vragen waar hij heen moet. De robot zal daardoor vloeiend rechtdoor rijden in plaats van een stutter beweging maken. Er is voor de delay-counter een bepaalde waarde gekozen en zal na iedere opgaande klokflank met 1 verminderen. Als de delay-counter dan op 0 komt te staan, wordt er een nieuwe state gevraagd. In principe zorgt de delay-state ervoor dat het interval van het vragen van een nieuwe state wordt vergroot. 
+In de delay-state staat een delay-counter die ervoor zorgt dat er tijdens de delay geen signaal naar de computer wordt gestuurd.
+Dit is handig, want de robot zal bij een rechte lijn niet steeds aan de computer vragen waar hij heen moet.
+De robot zal daardoor vloeiend rechtdoor rijden in plaats van een stutter beweging maken.
+Er is voor de delay-counter een bepaalde waarde gekozen en zal na iedere opgaande klokflank met 1 verminderen.
+Als de delay-counter dan op 0 komt te staan, wordt er een nieuwe state gevraagd.
+In principe zorgt de delay-state ervoor dat het interval van het vragen van een nieuwe state wordt vergroot.
+
 
 \subsection{Followline-state}
-De main state waar de robot in begint nadat de reset wordt ingedrukt is Followline. De robot volgt de lijn op het wedstrijdveld en als er afwijkingen zijn, wordt de baan door middel van de sensoren gecorrigeerd. Tijdens het volgen van de lijn kunnen de volgende states voorkomen: 
+De main state waar de robot in begint nadat de reset wordt ingedrukt is Followline.
+De robot volgt de lijn op het wedstrijdveld en als er afwijkingen zijn, wordt de baan door middel van de sensoren gecorrigeerd.
+Tijdens het volgen van de lijn kunnen de volgende states voorkomen: 
 \begin{itemize}
 \item De robot staat op het kruispunt en wacht op het volgende commando;
 \item De robot ziet een witte lijn en vraagt of dit het einde is van de route;
@@ -43,21 +63,33 @@ De main state waar de robot in begint nadat de reset wordt ingedrukt is Followli
 \end{itemize}
 
 \subsection{Callforinput-state}
-Wanneer de robot bij een kruising komt (de sensoren registeren alle drie zwart) en de delay-counter is gelijk aan nul, dan gaat de robot naar de Callforinput-state. In deze state wordt er aan de computer gevraagd wat de robot moet doen. Als het vragen naar een input aangekomen en goedgekeurd is, dan wacht de robot op een commando. Gaat deze stap goed, dan volgt de Processnextturn-state, zo niet, dan vraagt de robot weer aan de computer om een input.
+Wanneer de robot bij een kruising komt (de sensoren registeren alle drie zwart) en de delay-counter is gelijk aan nul, dan gaat de robot naar de Callforinput-state.
+In deze state wordt er aan de computer gevraagd wat de robot moet doen.
+Als het vragen naar een input aangekomen en goedgekeurd is, dan wacht de robot op een commando.
+Gaat deze stap goed, dan volgt de Processnextturn-state, zo niet, dan vraagt de robot weer aan de computer om een input.
 
 \subsection{Processnextturn-state}
-In de Processnextturn-state wordt de ontvangen input ge\"{e}valueerd. Afhankelijk van de input gaat de robot naar de volgende states:
+In de Processnextturn-state wordt de ontvangen input ge\"{e}valueerd.
+Afhankelijk van de input gaat de robot naar de volgende states:
 \begin{itemize}
 \item Leftturn-state: de robot maakt een bocht naar links, totdat de sensoren een rechte lijn detecteren, dan volgt de robot de rechte lijn;
 \item Followline-state: de robot gaat in deze state wanneer er een direct commando is gegeven om de rechte lijn te volgen of wanneer de robot klaar is met maken van een bocht/draaiing;
 \item Rightturn-state: analoog aan de Leftturn-state;
 \item Fullturn-state: de robot maakt een draai van 180$^\circ$, daarna volgt hij een rechte lijn;
-\item Callforinput-state: er wordt gevraagd aan de computer wat het volgende commando is. Dit leidt ertoe dat de robot steeds blijft vragen wat het volgende commando is, oftewel het resultaat is dat de robot stopt. Bovendien wordt de UART-receiver gereset;
+\item Callforinput-state: er wordt gevraagd aan de computer wat het volgende commando is.
+Dit leidt ertoe dat de robot steeds blijft vragen wat het volgende commando is, oftewel het resultaat is dat de robot stopt.
+Bovendien wordt de UART-receiver gereset;
 \end{itemize} 
 
 \subsection{Sendmine-state}
-De robot gaat naar de Sendmine-state wanneer hij tijdens het volgen van een lijn een mijn detecteert. In deze state stop de robot met rijden en wordt er aan de computer doorgegeven dat er een mijn ligt. Als dat is goedgekeurd, gaat de robot naar de Fullturn-state en maakt een rotatie.
+De robot gaat naar de Sendmine-state wanneer hij tijdens het volgen van een lijn een mijn detecteert.
+In deze state stop de robot met rijden en wordt er aan de computer doorgegeven dat er een mijn ligt.
+Als dat is goedgekeurd, gaat de robot naar de Fullturn-state en maakt een rotatie.
 
 \subsection{Arewedone-state}
-De Arewedone-state volgt na het detecteren van een wit oppervlak. Er wordt gevraagd of het bepaalde punt het einde is van de route. Als dat zo is, volgt de Done-state en stopt de robot. Zo niet, dan volgt de Followline-state. Bovendien is er in de Done-state nog een mogelijkheid om de robot de laten rijden nadat hij stilstaat.
+De Arewedone-state volgt na het detecteren van een wit oppervlak.
+Er wordt gevraagd of het bepaalde punt het einde is van de route.
+Als dat zo is, volgt de Done-state en stopt de robot.
+Zo niet, dan volgt de Followline-state.
+Bovendien is er in de Done-state nog een mogelijkheid om de robot de laten rijden nadat hij stilstaat.
 \end{document}
