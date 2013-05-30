@@ -101,7 +101,6 @@ begin
 					next_state:=done;
 				else if continue = '1' then
 					next_state:=callforinput;
-					continue = '0';
 				else
 					next_state:=followline;
 				end if;
@@ -321,7 +320,14 @@ begin
 			else
 				response(0):='1';
 				--discard				
-			end if;	
+			end if;
+
+			if uart_receive = p_cont then
+				continue <= '1';
+			else
+				continue <= '0';
+			end if;
+
 			next_state := runsetread;
 
 		end if;		
