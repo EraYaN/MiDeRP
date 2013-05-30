@@ -4,11 +4,33 @@
 \addbibresource{../../library/bibliography.bib}
 
 \title{EPO-2: Mid-term Design Report - Zeven segmentendisplay}
-\author{}
+\author{Joris Blom}
 
 \begin{document}
 
 \chapter{7-segmentendisplay}
 \label{ch:sseg}
+\section{Eisen}
+\label{sec:Eisen}
+Het 7-segmentdisplay moet aan de volgende eisen voldoen: 
+\begin{itemize}
+\item Het 7-segmentendisplay moet doormiddel van een 16 bits input de hexadecimale cijfers 0 t/m F op het elk 7-segmenten-display kunnen weergeven.
+\item Het 7-segmentendislplay moet doormiddel van een 4 bits input de punten van elk 7-segmentendisplay los kunnen aansturen.
+\end{itemize}
+\section{Ontwerp}
+De controller stuurt een 16 bits vector en een 4 bits vector naar de displayaansturing. De 16 bits vector stuurt de 7 segmenten aan en de 4 bits vector de punt onder het 7-segmentendisplay. De eerste 4 bits van de 16 bits vector.
+
+Alle leds per 7-segmentendisplay hebben een gezamenlijke voedingsspanning, dus alle 8 anodes per display zijn elektrisch verbonden. Hierdoor kan elk 7-segmentendisplay afzonderlijk aan en uit worden geschakeld. De kathodes van de 
+\begin{figure}[H]
+\centering
+\includegraphics{7_segment_display_schematic.png}
+
+\caption{7-segmentendislplay}
+\end{figure}
+
+
+\section{Implementatie}
+\section{Test}
+\section{Discussie}
 
 \end{document}
