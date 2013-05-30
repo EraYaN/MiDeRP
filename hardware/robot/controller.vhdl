@@ -34,12 +34,13 @@ end entity controller;
 
 architecture b of controller is	
 	subtype byte is std_logic_vector (7 downto 0);
-	--protocol Rev. C
+	--protocol Rev. E
 	constant p_forward	: byte := x"46"; -- 'F'
 	constant p_stop		: byte := x"53"; -- 'S'
 	constant p_left		: byte := x"4C"; -- 'L'
 	constant p_right	: byte := x"52"; -- 'R'
 	constant p_turn		: byte := x"54"; -- 'T'
+	constant p_back		: byte := x"42"; -- 'B'
 	constant p_cont		: byte := x"01"; -- SOH
 	constant p_ack		: byte := x"06"; -- ACK
 	constant p_nak		: byte := x"15"; -- NAK
@@ -48,7 +49,7 @@ architecture b of controller is
 	constant p_done		: byte := x"04"; -- EOT
 	constant p_unknown	: byte := x"00"; -- NULL
 	
-	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, callforinput, sendmine, waitforinput, sendok, sendfail, arewedone, done);
+	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, turnback, callforinput, sendmine, waitforinput, sendok, sendfail, arewedone, done);
 	type sender_state is (swaiting, ssending, ssetwrite, sunsetwrite);
 	type receiver_state is (rwaiting, rreceiving, rsetread, runsetread);
 	signal state : sys_state := followline;
@@ -148,35 +149,55 @@ begin
 				debugid:=to_unsigned(2,4);
 				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);			
 					if nextturn = 0 then
+						next_delaycounter:=10000000;
 						next_state:=leftturn; --left
 					elsif nextturn = 1 then
 						next_state:=followline; --forward (line)
 					elsif nextturn = 2 then
+						next_delaycounter:=10000000;
 						next_state:=rightturn; --right
 					elsif nextturn = 3 then
 						next_state:=callforinput; --stop (wait for input)
 					elsif nextturn = 4 then
 						next_state:=fullturn; --turn
+					elsif nextturn = 5 then
+						next_state:=turnback; --back
 					end if;
 				
 			elsif state = leftturn then
 				debugid:=to_unsigned(3,4);
 				--left
-				motor_l_speed <= to_signed(-25,8);
-				motor_r_speed <= to_signed(100,8);
-				case sensor is			  			  
-				  when "101" => next_state:=followline;
-				  when others => --nothing
-			   end case;
+				if delaycounter > 0 then
+					debugid:=to_unsigned(12,4);
+					next_delaycounter:=delaycounter-1;
+					motor_l_speed <= to_signed(100,8);
+					motor_r_speed <= to_signed(100,8);
+				end if;
+				if delaycounter = 0	then
+					motor_l_speed <= to_signed(-50,8);
+					motor_r_speed <= to_signed(100,8);
+					case sensor is			  			  
+					  when "101" => next_state:=followline;
+					  when others => --nothing
+				    end case;
+			   end if;
 			elsif state = rightturn then
 				debugid:=to_unsigned(4,4);
-				--right
-				motor_l_speed <= to_signed(100,8);
-				motor_r_speed <= to_signed(-25,8);
-				case sensor is			  			  
-				  when "101" => next_state:=followline;
-				  when others => --nothing
-			   end case;			   
+				--left
+				if delaycounter > 0 then
+					debugid:=to_unsigned(12,4);
+					next_delaycounter:=delaycounter-1;
+					motor_l_speed <= to_signed(100,8);
+					motor_r_speed <= to_signed(100,8);
+				end if;
+				if delaycounter = 0	then
+					motor_l_speed <= to_signed(100,8);
+					motor_r_speed <= to_signed(-50,8);
+					case sensor is			  			  
+					  when "101" => next_state:=followline;
+					  when others => --nothing
+				    end case;
+			    end if;
 			elsif state = fullturn then
 				debugid:=to_unsigned(9,4);
 				--full turn
@@ -186,9 +207,33 @@ begin
 					debugid:=to_unsigned(12,4);
 					next_delaycounter:=delaycounter-1;
 				end if;
+				if delaycounter = 0	then	
+					case sensor is	
+						when "101" => next_state:=followline;
+						when others => --nothing
+					end case;
+				end if;			   
+			elsif state = turnback then
+				debugid:=to_unsigned(14,4);
+				--backtrack
+				case sensor is
+						when "000" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);											
+						when "001" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-20,8);
+						when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
+						when "011" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(50,8);
+						when "100" => motor_l_speed <= to_signed(-20,8); motor_r_speed <= to_signed(-100,8);
+						when "101" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
+						when "110" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(100,8);
+						when "111" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
+						when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
+				   end case;
+				if delaycounter > 0 then
+					debugid:=to_unsigned(12,4);
+					next_delaycounter:=delaycounter-1;
+				end if;
 				if delaycounter = 0	then			
 					case sensor is															
-					  when "101" => next_state:=followline;
+					  when "000" => next_state:=callforinput;
 					  when others => --nothing
 				   end case;
 			   end if;
@@ -210,7 +255,7 @@ begin
 				next_sending:='1';	
 				if sresponse = "10" then
 					next_delaycounter:=10000000;
-					next_state:=fullturn;	
+					next_state:=turnback;	
 					next_sending:='0';					
 				end if;	
 			elsif state = waitforinput then
@@ -308,6 +353,10 @@ begin
 				--turn
 				response(0):='0';
 				nextturn<=to_unsigned(4,3);
+			elsif uart_receive = p_back then
+				--back
+				response(0):='0';
+				nextturn<=to_unsigned(5,3);
 			elsif uart_receive = p_cont then
 				--cont
 				response(0):='0';
