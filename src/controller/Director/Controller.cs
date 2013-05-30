@@ -17,7 +17,7 @@ namespace MiDeRP
 		Left = 0x4c, 
 		Right = 0x52,
 		Turn = 0x54,
-		Acknowledged = 0x06, 
+		Acknowledged = 0x06,
 		NotAcknowledged = 0x15,
 		Enquiry = 0x05,
 		MineDetected = 0x07,
