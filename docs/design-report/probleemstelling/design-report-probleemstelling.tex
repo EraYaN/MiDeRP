@@ -13,22 +13,50 @@
 
 \section{Projectopgave: Mijnen-ontwijkende robot}
 
-Het is de bedoeling dat er tijdens het EPO-2 project “Smart Robot Challange” een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond. Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst, die de robot dient te ontwijken. Als laatste wordt er nog één mijn toegevoegd, die op dat moment gevonden moet worden en dienst doet als schat. Dit alles dient te worden voltooid door middel van zelfgemaakte VHDL en C-codes, die de directe besturing van de robot realiseren. 
+Het is de bedoeling dat er tijdens het EPO-2 project “Smart Robot Challenge” een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond. Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst, die de robot dient te ontwijken. Als laatste wordt er nog één mijn toegevoegd, die op dat moment gevonden moet worden en dienst doet als schat. Dit alles dient te worden voltooid door middel van zelfgemaakte VHDL en C-codes, die de directe besturing van de robot realiseren. 
 
 \section{Beschikbare infrastructuur}
 \subsection{Spartan-3 robotplatform}
 
-De basisvorm van de robot is van te voren gebouwd en bestaat uit een plateau waarop één Xilinx BASYS2 Spartan3E FPGA-bord is gemonteerd. Op de FPGA worden hardwaremodules (de mijndetector) geimplementeerd die door ons worden ontworpen. Voor communicatie is er een XBee-module aanwezig. Deze vormen samen de digitale besturing van de servomotoren die aan de onderkant van het plateau zitten. Verder zijn er aan de onderkant ook nog lichtgevoelige sensors die de lijn detecteren, zodat deze gevolgd kan worden door de robot. 
+De basisvorm van de robot is van te voren gebouwd en bestaat uit een plateau waarop één Xilinx BASYS2 Spartan3E FPGA-bord is gemonteerd. Op de FPGA worden hardwaremodules (de mijndetector) geïmplementeerd die door ons worden ontworpen. Voor communicatie is er een XBee-module aanwezig. Deze vormen samen de digitale besturing van de servomotoren die aan de onderkant van het plateau zitten. Verder zijn er aan de onderkant ook nog lichtgevoelige sensors die de lijn detecteren, zodat deze gevolgd kan worden door de robot. 
+\textbf{plaatje robot}
 
 \subsection{Eigenschappen mijnenveld}
 
-Het veld dat gebruikt wordt voor de robotcompetitie bestaat uit een zwart-wit geprint papiervel, dat bevestigd is op een houten bord met afmetingen 244 cm x 244 cm. Het zwarte patroon wordt gevormd door een 4 bij 4 rooster van wegen en kruispunten. De wegen zijn aangegeven als een zwarte strip van 15 mm breend, één wegsegment is 48cm lang. In het midden van elk wegsegment zit een zwarte stip met een diameter van 30mm, deze dienen als de plaats waar de mijnen op komen te liggen. De mijnen zijn gemaakt van een zwartgeverfde verzinkte stalen ring. Aan elke zijde van het vierkante veld zijn er drie ingangswegen (16 cm lang) die aangegeven worden met de getallen 1 t/m 12. Het veld is te vinden in bijlage. \ref{sec:field}.
+Het veld dat gebruikt wordt voor de robotcompetitie bestaat uit een zwart-wit geprint papiervel, dat bevestigd is op een houten bord met afmetingen 244 cm x 244 cm. Het zwarte patroon wordt gevormd door een 4 bij 4 rooster van wegen en kruispunten. De wegen zijn aangegeven als een zwarte strip van 15 mm breed, één wegsegment is 48cm lang. In het midden van elk wegsegment zit een zwarte stip met een diameter van 30mm, deze dienen als de plaats waar de mijnen op komen te liggen. De mijnen zijn gemaakt van een zwartgeverfde verzinkte stalen ring. Aan elke zijde van het vierkante veld zijn er drie ingangswegen (16 cm lang) die aangegeven worden met de getallen 1 t/m 12.
+
+\section{Wedstrijdveld}
+\label{sec:field}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{competitionField2440x2440-rc.pdf}
+	\caption{Het wedstrijdveld te gebruiken bij EPO-2}
+	\label{fig:field}
+\end{figure}
+
+\textbf{plaatje mijnenveld}
 
 \subsection{Functionele eisen}
 
-Het is de bedoeling dat er met behulp van de hardware beschrijvingstaal VHDL op de FPGA een VHDL-beschrijving wordt gemaakt, zodat de informatie afkomstig van de sensoren kan worden gebruikt om de servomotoren op de juiste manier aan te sturen. Verder moet er een routeplanner algoritme in een C-programma worden geïmplementeerd die het kortste pad zoekt op het wedstrijdveld. Daarnaast moeten er sensoren ontworpen en gebouwd worden om de mijnen te detecteren in het mijnenveld. Hierbij kan er gekozen worden uit twee soorten sensoren, namelijk een capacitieve sensor of een inductieve sensor. Het projectteam kan zelf bepalen welke het kiest. 
-\newline
-De communicatie tussen FPGA en de computer waar het C-programma op draait dient draadloos te verlopen via de XBee-module.
+Aan de volgende functionele eisen moet de robot voldoen;
+
+\begin{itemize}
+
+\item
+De robot moet een lijn kunnen volgen. 
+
+\item 
+De robot moet een route kunnen volgen.
+
+\item
+De robot moet een mijn kunnen detecteren, onthouden waar deze ligt en vervolgens de mijn ontwijken.
+
+\item 
+De robot moet kunnen communiceren met de computer en andersom.
+
+\end{itemize}
+
 
 \subsection{Randvoorwaarden}
 
@@ -65,15 +93,15 @@ twee XBee modules,
 De FPGA-chip kan alleen werken met een VHDL-geschreven code.
 
 \item
-Het niet toegestaan om in het besturingsproggama in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen 
+Het niet toegestaan om in het besturingsprogramma in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen 
 
 \item
-De robot  moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld.
+De robot moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld.
 
 \end{itemize}
 
 \subsection{Plan van aanpak}
 
-Aan de hand van verschillende Just-in-time trainingen worden in de loop van het project de onderdelen voor de robot beter bestudeerd en vervolgens ontworpen en gemaakt. Daarnaast zijn er nog tutorials waarin benodigde kennis wordt uitgelegd. Een uitgebreid plan van aanpak is te vinden in bijlage \ref{sec:pva}.
+Er is door zes personen aan het Epo-2 project “Smart Robot Challenge” gewerkt, dit gebeurde in zaal 1.060 aan de drebbelweg 5. Aan de hand van verschillende Just-in-time trainingen worden in de loop van het project de onderdelen voor de robot beter bestudeerd en vervolgens ontworpen en gemaakt. Daarnaast zijn er nog tutorials waarin benodigde kennis wordt uitgelegd. Een uitgebreid plan van aanpak is te vinden in bijlage \ref{sec:pva}.
 
 \end{document}
