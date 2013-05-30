@@ -10,6 +10,7 @@
 
 \chapter{Mijndetector}
 \label{ch:mijn}
+%take out why inductive over capacitive
 Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beiden?
 
 Wij hebben uiteindelijk voor de inductieve sensor gekozen. De inductieve sensor gebruikt minder componenten dan de capacitieve sensor. Dus de inductieve sensor heeft qua opbouw het meest eenvoudige circuit. De werking van deze sensor is dan ook makkelijker te verklaren. 
@@ -17,6 +18,7 @@ Wij hebben uiteindelijk voor de inductieve sensor gekozen. De inductieve sensor 
 \section{Eisen}
 \label{sec:eisen}
 De mijn-detecterende sensor moet aan de volgende eisen voldoen: 
+%More specific i.e. between 5 V and 0 V.
 \begin{itemize}
 \item De mijndetector moet een metalen ring detecteren op het wedstrijdveld;
 \item De sensor mag geen contact maken met de metalen ring;
@@ -26,17 +28,20 @@ De mijn-detecterende sensor moet aan de volgende eisen voldoen:
 
 \section{Ontwerp}
 \label{sec:ontwerp}
+%dezelfde configuratie als JIT, maar andere waarden
+%Add why inductive sensor
 De schakeling van de inductieve sensor is zoals die van de JIT: Inductieve sensoren. Het is overbodig om de schakeling te veranderen, want de originele schakeling levert geen problemen op. In figuur \ref{fig:schakeling_sensor} staat de oscillator op basis van de inductieve sensor.
 
 \subsection{Werkingsprincipe}
 \label{ssec:werking}
-Over het algmeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
+Over het algemeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
 
 Voor de sensor geldt de eerste werkingsprincipe. Er zal een verschil van permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. De magnetische veldlijnen uit de spoel zullen veranderd worden wanneer ze door het metaal heen gaan. Dit leidt ertoe dat de inductiviteit van de spoel verandert. Deze verandering kan worden weergegeven in een periodiek signaal.
 
 \newpage
 \subsection{Werking}
 
+%resonatie circuit ->permeabiliteit verandert van %spoel->frequentie verandert
 Het circuit dat gebruikt wordt voor de inductieve sensor is een LC-circuit. Hiermee kan de resonantiefrequentie veranderd worden, zodat het uitgangssignaal van de schakeling ook verandert.
 
 \begin{figure}[H]
@@ -47,6 +52,7 @@ Het circuit dat gebruikt wordt voor de inductieve sensor is een LC-circuit. Hier
 \end{figure}
 
 \subsubsection{LC-circuit}
+%Good!
 Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om de $f_{res}$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die wordt gebruikt in het circuit. Met de volgende formule kan de $f_{res}$ worden berekend:
 
 \begin{equation}
@@ -54,6 +60,7 @@ f_{res}=\frac{1}{2\pi\sqrt{LC}}
 \end{equation}
 
 \subsubsection{Comparator}
+%Good!
 De comparator is een essentieel onderdeel van de schakeling. Het zorgt ervoor dat er op een uitgang een blokgolf komt te staan. Zo een blokgolf kan dan getransformeerd worden in een logisch signaal van '0' en '1'. De comparator werkt als volgt:
 
 \begin{equation}
@@ -63,11 +70,12 @@ Als \;V_+>V_- \Rightarrow V_{out}\approx V_{CC}
 Als \; V_+<V_- \Rightarrow V_{out}\approx V_{EE}
 \end{equation}
 
-Dit leidt ertoe dat de uitgangsspanning een zeer positieve- en negatieve waarde kan hebben. Deze schommeling van positief en negatief geeft uiteindelijk een blokgolf.\\
+Dit leidt ertoe dat de uitgangsspanning een positieve- en negatieve waarde kan hebben. Deze schommeling van positief en negatief geeft uiteindelijk een blokgolf. In het circuit voor de mijnendetector schommelt de blokgolf tussen de 5 V en 0 V.\\
 
 Dus doordat de resonantiefrequentie verandert wanneer de magnetische veldlijnen door het metaal heen gaan (L krijgt dan een andere waarde), zal ook de frequentie van het bloksignaal veranderen. 
 
 \section{Implementatie}
+%Gemeten waarden
 Om het ontwerp van de inductieve sensor schakeling in realiteit te brengen, werd de schakeling eerst op een breadboard gemaakt. Stel dat er problemen zijn met het ontwerp, dan is het mogelijk om de schakeling te wijzigen. Als er meteen gesoldeerd wordt, is er een grote kans dat de schakeling het niet meteen doet.\\ 
 
 \noindent Voor het circuit zijn de volgende componenten gebruikt:
