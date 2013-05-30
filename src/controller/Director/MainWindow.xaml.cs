@@ -90,15 +90,19 @@ namespace MiDeRP
 
         private void startRobotButton_Click(object sender, RoutedEventArgs e)
         {
-			if (Data.nav == null || Data.nav.fullPath == null || Data.nav.fullPath.Count == 0)
-            {
-                MessageBox.Show("No path, robot will not start", "Path Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+			if (Data.nav.targetCPs.Count == 0)
+			{
+				MessageBox.Show("Please choose one or more control points...", "No control points selected", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (Data.nav.fullPath.Count == 0)
+				Data.nav.InitChallenge();
 
             //Enable controller
             Data.ctr.EnableRobotControl();
             startRobotButton.IsEnabled = false;
+			resetRobotButton.IsEnabled = true;
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
@@ -142,6 +146,8 @@ namespace MiDeRP
 				Data.nav.fullPath.Clear();
 				if (Data.nav.paths != null)
 					Array.Clear(Data.nav.paths, 0, Data.nav.paths.Length);
+				if (Data.nav.targetCPs != null)
+					Data.nav.targetCPs.Clear();
 			}
 
 			if (Data.ctr != null)
@@ -164,5 +170,23 @@ namespace MiDeRP
 				Data.db.UpdateProperty("CurrentPosText");
 			}
         }
+
+		private void resetRobotButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (Data.nav != null)
+			{
+				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
+				Data.nav.mines.Clear();
+			}
+
+			if (Data.ctr != null)
+			{
+				Data.ctr.ResetRobotControl();
+				startRobotButton.IsEnabled = true;
+			}
+
+			Data.vis.DrawField();
+			resetButton.IsEnabled = false;
+		}
     }
 }

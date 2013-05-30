@@ -75,7 +75,7 @@ namespace MiDeRP
 			}
 		}
 
-		private void makePaths()
+		public void makePaths()
 		{
 			if (targetCPs.Count < 1)
 				return; //exception maybe?

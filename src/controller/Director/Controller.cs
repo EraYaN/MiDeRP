@@ -115,7 +115,7 @@ namespace MiDeRP
                         return;
 
 					//Detected mine, add to list
-					Data.nav.mines.Add(Data.nav.paths[Data.nav.currentPath][_i - 1]);
+					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
 					recalculatePath();
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 				}
@@ -126,7 +126,7 @@ namespace MiDeRP
 				return;
             }
             Data.vis.DrawField();
-            System.Diagnostics.Debug.WriteLine("Serial byte received: {0}", e.DataByte);
+            System.Diagnostics.Debug.WriteLine("Serial byte received: {0:X}", e.DataByte);
 
         }
 
@@ -298,7 +298,7 @@ namespace MiDeRP
 			_i = 0;
 			Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
 			_robotDirection = (Direction)(((int)_robotDirection + 2) % 4); //Bacon flips
-			Data.nav.updateCurrentPath(Data.nav.currentPos.To, new Coord(Data.nav.targetCPs[Data.nav.currentPath]));
+			Data.nav.makePaths();
 		}
 
 		public void DisableRobotControl()

@@ -61,6 +61,7 @@
             <GroupBox Header="Robot Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click" IsEnabled="False"/>
+                    <Button x:Name="resetRobotButton" Content="Reset Robot" Margin="2" Click="resetRobotButton_Click" IsEnabled="False"/>
                 </StackPanel>
             </GroupBox>
 
