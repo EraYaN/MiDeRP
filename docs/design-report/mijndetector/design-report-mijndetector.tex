@@ -10,34 +10,40 @@
 
 \chapter{Mijndetector}
 \label{ch:mijn}
+%DONE: take out why inductive over capacitive
 Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beiden?
-
-Wij hebben uiteindelijk voor de inductieve sensor gekozen. De inductieve sensor gebruikt minder componenten dan de capacitieve sensor. Dus de inductieve sensor heeft qua opbouw het meest eenvoudige circuit. De werking van deze sensor is dan ook makkelijker te verklaren. 
 
 \section{Eisen}
 \label{sec:eisen}
 De mijn-detecterende sensor moet aan de volgende eisen voldoen: 
+%DONE: More specific i.e. between 5 V and 0 V.
+%DONE: Detection range: ~2.15 cm
 \begin{itemize}
-\item De mijndetector moet een metalen ring detecteren op het wedstrijdveld;
+\item De mijndetector moet een metalen ring van 3 cm \diameter op een afstand van ~2 cm detecteren op het wedstrijdveld;
 \item De sensor mag geen contact maken met de metalen ring;
-\item De sensor moet compatibel met de batterij op de robot zijn; 
-\item Het uitgangssignaal van de sensor is een blokgolf;
+\item De sensor moet op een voedingsspanning van 5 V en 0 V werken;
+\item Het uitgangssignaal van de sensor is een blokgolf met een maximum waarde van 5 V en een minimum waarde van 0 V;
 \end{itemize}
 
 \section{Ontwerp}
 \label{sec:ontwerp}
-De schakeling van de inductieve sensor is zoals die van de JIT: Inductieve sensoren. Het is overbodig om de schakeling te veranderen, want de originele schakeling levert geen problemen op. In figuur \ref{fig:schakeling_sensor} staat de oscillator op basis van de inductieve sensor.
+%DONE: dezelfde configuratie als JIT, maar andere waarden
+%DONE: Add why inductive sensor
+We hadden eerst voor een capacitieve sensor gekozen. Echter toen werkte de schakeling van de sensor niet; de oscilloscoop gaf geen signaal weer. Dus hebben we voor de inductieve sensor gekozen.
+
+De schakeling van de inductieve sensor is op basis van de JIT: Inductieve sensoren gemaakt. De configuratie is hetzelfde, maar er zijn andere waarden voor de componenten gebruikt. In figuur \ref{fig:schakeling_sensor} staat de oscillator op basis van de inductieve sensor.
 
 \subsection{Werkingsprincipe}
 \label{ssec:werking}
-Over het algmeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
+Over het algemeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
 
 Voor de sensor geldt de eerste werkingsprincipe. Er zal een verschil van permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. De magnetische veldlijnen uit de spoel zullen veranderd worden wanneer ze door het metaal heen gaan. Dit leidt ertoe dat de inductiviteit van de spoel verandert. Deze verandering kan worden weergegeven in een periodiek signaal.
 
 \newpage
 \subsection{Werking}
 
-Het circuit dat gebruikt wordt voor de inductieve sensor is een LC-circuit. Hiermee kan de resonantiefrequentie veranderd worden, zodat het uitgangssignaal van de schakeling ook verandert.
+%DONE:resonatie circuit ->permeabiliteit verandert van spoel->frequentie verandert
+Het circuit dat gebruikt wordt voor de inductieve sensor is resonantie circuit. Wanneer de permeabiliteit verandert, zal ook de inductantie van de spoel veranderen. Hierdoor wijzigt de resonantiefrequentie en dus ook het uitgangssignaal.
 
 \begin{figure}[H]
 \centering
@@ -47,6 +53,7 @@ Het circuit dat gebruikt wordt voor de inductieve sensor is een LC-circuit. Hier
 \end{figure}
 
 \subsubsection{LC-circuit}
+%Good!
 Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om de $f_{res}$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die wordt gebruikt in het circuit. Met de volgende formule kan de $f_{res}$ worden berekend:
 
 \begin{equation}
@@ -54,6 +61,7 @@ f_{res}=\frac{1}{2\pi\sqrt{LC}}
 \end{equation}
 
 \subsubsection{Comparator}
+%Good!
 De comparator is een essentieel onderdeel van de schakeling. Het zorgt ervoor dat er op een uitgang een blokgolf komt te staan. Zo een blokgolf kan dan getransformeerd worden in een logisch signaal van '0' en '1'. De comparator werkt als volgt:
 
 \begin{equation}
@@ -63,27 +71,34 @@ Als \;V_+>V_- \Rightarrow V_{out}\approx V_{CC}
 Als \; V_+<V_- \Rightarrow V_{out}\approx V_{EE}
 \end{equation}
 
-Dit leidt ertoe dat de uitgangsspanning een zeer positieve- en negatieve waarde kan hebben. Deze schommeling van positief en negatief geeft uiteindelijk een blokgolf.\\
-
-Dus doordat de resonantiefrequentie verandert wanneer de magnetische veldlijnen door het metaal heen gaan (L krijgt dan een andere waarde), zal ook de frequentie van het bloksignaal veranderen. 
+Dit leidt ertoe dat de uitgangsspanning een positieve- en negatieve waarde kan hebben. Deze schommeling van positief en negatief geeft uiteindelijk een blokgolf. In het circuit voor de mijnendetector schommelt de blokgolf tussen de 5 V en 0 V.\\
 
 \section{Implementatie}
+%Gemeten waarden
 Om het ontwerp van de inductieve sensor schakeling in realiteit te brengen, werd de schakeling eerst op een breadboard gemaakt. Stel dat er problemen zijn met het ontwerp, dan is het mogelijk om de schakeling te wijzigen. Als er meteen gesoldeerd wordt, is er een grote kans dat de schakeling het niet meteen doet.\\ 
 
 \noindent Voor het circuit zijn de volgende componenten gebruikt:
 \begin{itemize}
-\item 1$\times$ spoel: 4.7 H;
+\item 1$\times$ spoel: 4.7 mH;
 \item 1$\times$ condensator: 30 $\mu$F;
 \item 1$\times$ op-amp: LM358;
 \item 1$\times$ weerstand: 820$\: \Omega$;
 \end{itemize}
+De waarden zijn bepaald door middel van trial and error. Voor de weerstand in de feedback-configuratie is er van uit gegaan dat de waarden niet te groot kan zijn, want dan loopt er geen stroom meer terug om de oscillatie in stand te houden. Een waarde van 10 k$\Omega$ zou te groot zijn; het moest rond de 1 k$\Omega$ zijn.
 
-De sensor output, een blokgolf, wordt met VHDL-code omgezet in een bit-signaal. Hierbij is het '0' wanneer er een lage spanning op de uitgang staat en '1' wanneer er een hoge spanning op de uitgang staat. De code voor de VHDL-implementatie staat in de bijlage.
+De afmeting van de spoel was het belangrijkste om rekening mee te houden. Er is gekozen voor een spoel met ongeveer dezelfde diameter, zodat de sensor ongeveer een detectie afstand van 2 cm heeft. De gemeten afstand is 2.15 cm \pm 0.05 cm (van middelpunt spoel naar middelpunt munt).
+
+De sensor output, een blokgolf van 5 V - 0 V, wordt met VHDL-code omgezet in een bit-signaal. Hierbij is het '0' wanneer er een lage spanning op de uitgang staat en '1' wanneer er een hoge spanning op de uitgang staat. De code voor de VHDL-implementatie staat in de bijlage.
 
 \section{Test}
 De inductieve sensor schakeling is als eerste getest. Deze is daarvoor op de oscilloscoop aangesloten met twee probes (1:10) aan de klemmen TP1 en TP2. Bovendien is de aardklem van de oscilloscoop aangesloten op klem TP3. De voeding van de op-amp is op een spanning van +5 V en GND aangesloten. Er kan geen negatieve spanning over de inverterende-ingang van de op-amp worden aangesloten, omdat de batterij op de robot dit niet kan leveren. 
 
 Op de display van de oscilloscoop moet er een blokgolf worden weergegeven. Als het uitgangssignaal geen blokgolf is, kan er meteen vanuit worden gegaan dat er iets mis is met de schakeling, voeding of de instellingen van de oscilloscoop.\\
+De berekende waarde van de resonantie frequentie:
+$f_{res}=\frac{1}{2\pi \sqrt{4.7\times 10^{-3}\cdot 30\times 10^{-6}}}= 424 \:Hz$
+
+\noindent De gemeten waarde van de resonantie frequentie:
+$f_{res}\approx400\:Hz$\\
 
 \noindent Het tweede deel van de test-sessie is de implementatie met VHDL. De VHDL-code voor de mijndetector wordt eerst gesimuleerd met behulp van een testbench en daarna gesynthetiseerd zodat het op de FPGA geprogrammeerd kan worden. 
 
