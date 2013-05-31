@@ -41,6 +41,7 @@ architecture b of controller is
 	constant p_right	: byte := x"52"; -- 'R'
 	constant p_turn		: byte := x"54"; -- 'T'
 	constant p_back		: byte := x"42"; -- 'B'
+	constant p_half		: byte := x"86"; -- 'H'
 	constant p_cont		: byte := x"01"; -- SOH
 	constant p_ack		: byte := x"06"; -- ACK
 	constant p_nak		: byte := x"15"; -- NAK
@@ -49,7 +50,7 @@ architecture b of controller is
 	constant p_done		: byte := x"04"; -- EOT
 	constant p_unknown	: byte := x"00"; -- NULL
 	
-	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, turnback, callforinput, sendmine, waitforinput, sendok, sendfail, arewedone, done);
+	type sys_state is (followline, processnextturn, leftturn, rightturn, fullturn, turnback, callforinput, sendmine, sendhalf, waitforinput, sendok, sendfail, arewedone, done);
 	type sender_state is (swaiting, ssending, ssetwrite, sunsetwrite);
 	type receiver_state is (rwaiting, rreceiving, rsetread, runsetread);
 	signal state : sys_state := followline;
@@ -133,6 +134,7 @@ begin
 								else
 									next_delaycounter:=20000000;
 									next_passedminesite:='1';
+									next_state:=sendhalf;
 								end if;
 							end if;						
 						when "001" => motor_l_speed <= to_signed(20,8); motor_r_speed <= to_signed(100,8);
@@ -233,7 +235,8 @@ begin
 				end if;
 				if delaycounter = 0	then			
 					case sensor is															
-					  when "000" => next_state:=callforinput;
+					  when "000" => 
+					  	next_state := callforinput;
 					  when others => --nothing
 				   end case;
 			   end if;
@@ -256,6 +259,16 @@ begin
 				if sresponse = "10" then
 					next_delaycounter:=10000000;
 					next_state:=turnback;	
+					next_sending:='0';					
+				end if;
+			elsif state = sendhalf then
+				debugid:=to_unsigned(14,4);			
+				motor_l_speed <= to_signed(50,8);
+				motor_r_speed <= to_signed(50,8);
+				uart_send <= p_half;
+				next_sending:='1';	
+				if sresponse = "10" then
+					next_state:=followline;	
 					next_sending:='0';					
 				end if;	
 			elsif state = waitforinput then

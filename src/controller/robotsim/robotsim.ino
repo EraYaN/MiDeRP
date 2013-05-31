@@ -9,6 +9,7 @@ enum StatusByteCode {
 		Turn = 0x54,
 		Acknowledged = 0x06, 
 		NotAcknowledged = 0x15,
+		Halfway = 0x68,
 		Enquiry = 0x05,
 		MineDetected = 0x07,
 		Done = 0x04
@@ -30,12 +31,6 @@ void setup()
 }
 void loop()
 {
-	/*if(!started){
-		if(Serial.available()>0){		
-			if(Serial.readBytes(buff,1)>0){
-				if(Start == (StatusByteCode)buff[1])
-					started = true;
-	}*/
 	if(!done){
 		if(Serial.available()>0){		
 			if(Serial.readBytes(buff,1)>0){
@@ -44,6 +39,8 @@ void loop()
 					case Forward:
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
 					case Stop:
 						Serial.write(Acknowledged);
@@ -51,18 +48,32 @@ void loop()
 					case Left:
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
 					case Right:
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
 					case Turn:
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
+					case Back:
+						Serial.write(Acknowledged);
+						minehere = false;
 					case Done:
 						Serial.write(Acknowledged);
 						done = true;
+					break;
+					case Continue:
+						Serial.write(Acknowledged);
+					break;
+					case Acknowledged:
 					break;
 					default:
 						Serial.write(NotAcknowledged);
@@ -80,7 +91,7 @@ void loop()
 			}
 		}
 	}
-	delay(1000);
+	delay(500);
 	if(led){
 		digitalWrite(LED_BUILTIN,LOW);
 		led=false;

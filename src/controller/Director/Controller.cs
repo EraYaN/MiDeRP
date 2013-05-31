@@ -23,6 +23,7 @@ namespace MiDeRP
 		Acknowledged = 0x06, p
 >>>>>>> 62dea6ae2c6892a2ba80beff36c1c21e84bfdcf9
 		NotAcknowledged = 0x15,
+		Halfway = 0x68,
 		Enquiry = 0x05,
 		MineDetected = 0x07,
 		Done = 0x04
@@ -46,9 +47,26 @@ namespace MiDeRP
 		private StatusByteCode _receivedByte;
 		private NodeConnection _nextNodeConnection;
 		private Direction _nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
-		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
-		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
+		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot	
 		private int _i = 0;
+
+		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
+		public Direction RobotDirection
+		{
+			get
+			{
+				return _robotDirection;
+			}
+		}
+
+		private bool _halfway = false;
+		public bool Halfway
+		{
+			get
+			{
+				return _halfway;
+			}
+		}
 
         private bool _robotControlIsEnabled;
         public bool RobotControlIsEnabled
@@ -80,9 +98,20 @@ namespace MiDeRP
 					if (_done == true)
 						DisableRobotControl();
 
-					_i++; //Advance to next item in path
-					_robotDirection = _nextAbsoluteDirection;
-					Data.nav.currentPos = _nextNodeConnection;
+					if (_nextDirective == StatusByteCode.Back)
+					{
+						Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, true);
+						_halfway = true;
+						_continue = false;
+					}
+					else
+					{
+						_halfway = false;
+						_robotDirection = _nextAbsoluteDirection;
+						Data.nav.currentPos = _nextNodeConnection;
+					}
+
+					_i++; //Advance to next item in path					
 					_sentDirectiveIsUnacknowledged = false;
 				}
 				else
@@ -99,6 +128,9 @@ namespace MiDeRP
 			{
 				if (_receivedByte == StatusByteCode.Enquiry)
 				{
+					if (_i > 0 && !_halfway && !Data.nav.fullPath[_i].FromCPoint)
+						return;
+
                     getNextDirective();
 					Data.com.SendByte((byte)_nextDirective);
 
@@ -108,20 +140,24 @@ namespace MiDeRP
 					}
 
 					if (_continue == true)
-					{
 						Data.com.SendByte((byte)StatusByteCode.Continue);
-						_continue = false;
-					}
+
 					_sentDirectiveIsUnacknowledged = true;
 				}
 				else if (_receivedByte == StatusByteCode.MineDetected)
 				{
-                    if (_i == 0)
+                    if (_i == 0 || _halfway)
                         return;
 
 					//Detected mine, add to list
 					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
 					recalculatePath();
+					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
+					_halfway = true;
+				}
+				else if (_receivedByte == StatusByteCode.Halfway)
+				{
+					_halfway = true;
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 				}
 			}
@@ -131,8 +167,6 @@ namespace MiDeRP
 				return;
             }
             Data.vis.DrawField();
-            System.Diagnostics.Debug.WriteLine("Serial byte received: {0:X}", e.DataByte);
-
         }
 
 		private void getNextDirective()
@@ -302,7 +336,6 @@ namespace MiDeRP
 		{
 			_i = 0;
 			Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
-			//_robotDirection = (Direction)(((int)_robotDirection + 2) % 4); //Bacon flips
 			Data.nav.makePaths();
 		}
 
@@ -319,6 +352,7 @@ namespace MiDeRP
 		public void ResetRobotControl()
 		{
 			_done = false;
+			_halfway = false;
             _robotControlIsEnabled = false;
 			_sentDirectiveIsUnacknowledged = false;
 			_nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
