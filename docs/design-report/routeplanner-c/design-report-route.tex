@@ -12,16 +12,18 @@
 \label{ch:route}
 
 Een belangrijk onderdeel van het probleem is het vinden van een pad van begin naar eind. De mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing komen die zelf het beste pad berekent. Dit zou met de FPGA kunnen, maar de schakeling en rekenkracht die daarvoor benodigd is zou dit vrij complex maken. Bij het EPO-2-project is er dan ook voor gekozen het pad te laten berekenen door een programma geschreven in de C-programmeertaal. Dit programma draait op een normale computer.
-\\
 
-\noindent
+\section{Eisen}
+\label{route-eisen}
+
 We kunnen voor het programma de volgende eisen opstellen:
 
-\begin{enumerate}
+\begin{itemize}
 	\item Het programma moet geschreven zijn in C
 	\item Het programma moet de snelste route vinden van punt naar punt over het wedstrijdveld
 	\item Het programma moet obstakels (mijnen) kunnen ontwijken (geen onderdeel van eerste opdracht)
-\end{enumerate}
+	\item Het programma moet door de robot gedetecteerde mijnen kunnen opslaan
+\end{itemize}
 
 \section{Ontwerp en implementatie}
 \label{sec:ontwerp-impl}
@@ -88,15 +90,15 @@ Nadat dit proces zich voor ieder aanliggende node heeft herhaald (vier maal dus)
 \\
 
 \noindent
-Simpel gezegd gaat het algoritme zo hard mogelijk richting het eindpunt, waarbij het er dus op neer komt dat telkens de eerste node uit de openlist een onderdeel van het pad wordt. Dit gaat zo door totdat er een obstakel voorkomt, in dit geval valt het algoritme terug op de laatst bekende node die nog beschikbare aanliggende nodes heeft, vanuit daar gaat het algoritme op dezelfde manier verder, totdat het eindpunt gevonden is.
+Simpel gezegd gaat het algoritme zo hard mogelijk richting het eindpunt, waarbij het er dus op neer komt dat telkens de eerste node uit de openlist een onderdeel van het pad wordt. Dit gaat zo door totdat er een obstakel voorkomt, in dit geval valt het algoritme terug op de laatst bekende node die nog beschikbare aanliggende nodes heeft. Vanuit daar gaat het algoritme op dezelfde manier verder, totdat het eindpunt gevonden is.
 \\
 
 \noindent
-Om mijnen te ontwijken kan simpelweg een check ingebouwd worden tijdens het evalueren van de aanliggende nodes; wanneer er een mijn ligt tussen de huidige en aanliggende node, wordt deze simpelweg overgeslagen en kan hij dus niet aangemerkt worden als ``vorige''.
-Ook het vermijden van bochten is gemakkelijk in te bouwen, in onze implementatie wordt tijdens het bepalen van de voorwaardelijke g-score bijvoorbeeld 2 opgeteld bij de g-score, als er een bocht gemaakt moet worden om bij de desbetreffende aanliggende node te komen. Deze hogere g-score zal dus resulteren in een node die verder naar achteren in de openlist komt te staan en het dus minder waarschijnlijk wordt dat hij gekozen wordt als onderdeel van het pad.
+Om mijnen te ontwijken is simpelweg een check ingebouwd, tijdens het evalueren van de aanliggende nodes; wanneer er een mijn ligt tussen de huidige en aanliggende node, wordt deze gewoon overgeslagen en kan hij dus niet aangemerkt worden als ``vorige'' en komt zo niet in het uiteindelijke pad terecht. Het bestaan van mijnen wordt per node opgeslagen in een array. Voor elke mogelijke richting (links, rechts, boven, beneden) is er een index die een 1 of een 0 bevat.
+Ook het vermijden van bochten is gemakkelijk in gebouwd, in onze implementatie wordt tijdens het bepalen van de voorwaardelijke g-score 2 opgeteld bij de g-score, als er een bocht gemaakt moet worden om bij de desbetreffende aanliggende node te komen. Deze hogere g-score zal dus resulteren in een node die verder naar achteren in de openlist komt te staan en daarom is het dus minder waarschijnlijk dat hij gekozen wordt als onderdeel van het pad.
 \\
 
 \noindent
-De flexibiliteit en efficiëntie ten opzichte van Lee's algoritme hebben er toe geleid dat er ook nog een implementatie van het A*-algoritme is gemaakt, die inderdaad een stuk sneller is met minder geheugengebruik, uiteraard pas waarneembaar bij absurde waarden. Ook aan de eisen ``mijnen ontwijken'' en ``bochten vermijden'' is voldaan, dus de keuze is gevallen op A* voor verder gebruik bij het project.
+De flexibiliteit en efficiëntie ten opzichte van Lee's algoritme hebben er toe geleid dat er ook nog een implementatie van het A*-algoritme is gemaakt, die inderdaad een stuk sneller is met minder geheugengebruik, uiteraard pas waarneembaar bij absurde dimensies. Ook aan de eisen ``mijnen ontwijken'', ``mijnen opslaan'' en ``bochten vermijden'' is voldaan, dus de keuze is gevallen op A* voor verder gebruik bij het project. De gebruikte C-implementatie is te vinden in de bijlagen onder \cite{sec:code-navigation}
 
 \end{document}
