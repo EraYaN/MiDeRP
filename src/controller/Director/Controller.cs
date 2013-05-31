@@ -17,11 +17,7 @@ namespace MiDeRP
 		Left = 0x4c, 
 		Right = 0x52,
 		Turn = 0x54,
-<<<<<<< HEAD
 		Acknowledged = 0x06,
-=======
-		Acknowledged = 0x06, p
->>>>>>> 62dea6ae2c6892a2ba80beff36c1c21e84bfdcf9
 		NotAcknowledged = 0x15,
 		Halfway = 0x68,
 		Enquiry = 0x05,
