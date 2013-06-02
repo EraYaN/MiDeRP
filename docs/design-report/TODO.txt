@@ -7,12 +7,12 @@
 	-	GUI/comm onderdeel bijvoegen (Started)
 	-	Test onderdeel bijvoegen(Tijmen)
 	-	Afsluiting bijwerken
-	-	Fix refs (sec:servo[undef],
-		sec:vhdl-controller[undef],
-		fig:7-segmentendisplay schematic[undef],
-		ssec:vhdl-controller[undef],
-		ssec:vhdl-motorcontrol[undef],
-		ssec:vhdl-timebase[undef],
-		ch:probleem[multi def],
+	-	Zigbee embedded TODO lijstje afwerken
+	-	Fix refs (sec:servo[undef-fixed],
+		sec:vhdl-controller[undef-fixed],
+		fig:7-segmentendisplay schematic[undef-fixed],
+		ssec:vhdl-controller[undef-fixed],
+		ssec:vhdl-motorcontrol[undef-fixed],
+		ssec:vhdl-timebase[undef-fixed]		
  			-> LaTeX Warning: There were undefined references. LaTeX Warning: There were multiply-defined labels.)
-	- 	Fix Cites (LaTeX Warning: Citation 'sec:code-navigation' on page 25 undefined on input line 102. [routeplanner]
+	- 	Fix Cites (LaTeX Warning: Citation 'sec:code-navigation' on page 25 undefined on input line 102.) [routeplanner]
