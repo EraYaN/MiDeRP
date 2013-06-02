@@ -1,11 +1,11 @@
 	-	BRONNEN BITCHES (iedereen)
 	-	Pseudocode routeplanners toevoegen (Robin)
-	-	Gehele codebase bijvoegen, pygments (Erwin)
 	-	Inleiding updaten (Robin)
 	-	Verder commentaar de Graaf verwerken
-	-	Systeemoverzicht bijwerken (Erwin)
 	-	Meet -en simulatieresultaten PWM-generator bijvoegen (Robin)
 	-	7-seg display onderdeel bijvoegen (Joris)
-	-	GUI/comm onderdeel bijvoegen
+	-	GUI/comm onderdeel bijvoegen (Started)
 	-	Test onderdeel bijvoegen(Tijmen)
 	-	Afsluiting bijwerken
+	-	Fix refs (sec:servo[undef],sec:vhdl-controller[undef],fig:7-segmentendisplay schematic[undef],ssec:vhdl-controller[undef],ssec:vhdl-motorcontrol[undef],ssec:vhdl-timebase[undef],ch:probleem[multi def], -> LaTeX Warning: There were undefined references. LaTeX Warning: There were multiply-defined labels.)
+	- 	Fix Cites (LaTeX Warning: Citation 'sec:code-navigation' on page 25 undefined on input line 102. [routeplanner]
