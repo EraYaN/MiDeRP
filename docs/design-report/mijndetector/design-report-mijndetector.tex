@@ -19,7 +19,7 @@ De mijn-detecterende sensor moet aan de volgende eisen voldoen:
 %DONE: More specific i.e. between 5 V and 0 V.
 %DONE: Detection range: ~2.15 cm
 \begin{itemize}
-\item De mijndetector moet een metalen ring van 3 cm \diameter op een afstand van ~2 cm detecteren op het wedstrijdveld;
+\item De mijndetector moet een metalen ring van 3 cm \diameter op een afstand van \~2 cm detecteren op het wedstrijdveld;
 \item De sensor mag geen contact maken met de metalen ring;
 \item De sensor moet op een voedingsspanning van 5 V en 0 V werken;
 \item Het uitgangssignaal van de sensor is een blokgolf met een maximum waarde van 5 V en een minimum waarde van 0 V;
@@ -54,7 +54,7 @@ Het circuit dat gebruikt wordt voor de inductieve sensor is resonantie circuit. 
 
 \subsubsection{LC-circuit}
 %Good!
-Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om de $f_{res}$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die wordt gebruikt in het circuit. Met de volgende formule kan de $f_{res}$ worden berekend:
+Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om de $f_{res}$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die worden gebruikt in het circuit. Met de volgende formule kan de $f_{res}$ worden berekend:
 
 \begin{equation}
 f_{res}=\frac{1}{2\pi\sqrt{LC}}
@@ -71,19 +71,22 @@ Als \;V_+ > V_- \rightarrow V_{out}\approx V_{CC}
 Als \; V_+ < V_- \rightarrow V_{out}\approx V_{EE}
 \end{equation}
 
-Dit leidt ertoe dat de uitgangsspanning een positieve- en negatieve waarde kan hebben. Deze schommeling van positief en negatief geeft uiteindelijk een blokgolf. In het circuit voor de mijnendetector schommelt de blokgolf tussen de 5 V en 0 V.\\
+\nonindent
+Dit leidt ertoe dat de uitgangsspanning clampt aan twee waarden, de voedingsspanningen van de op-amp, resulterend in een blokgolf. In het circuit voor de mijnendetector variëert de blokgolf dus tussen de 5 V en 0 V.\\
 
 \section{Implementatie}
 %Gemeten waarden
-Om het ontwerp van de inductieve sensor schakeling in realiteit te brengen, werd de schakeling eerst op een breadboard gemaakt. Stel dat er problemen zijn met het ontwerp, dan is het mogelijk om de schakeling te wijzigen. Als er meteen gesoldeerd wordt, is er een grote kans dat de schakeling het niet meteen doet.\\ 
+Om het ontwerp van de inductieve sensor schakeling te realiseren, werd de schakeling eerst op een breadboard gemaakt. Stel dat er problemen zijn met het ontwerp, dan is het mogelijk om de schakeling te wijzigen. Als er meteen gesoldeerd wordt, is er een grote kans dat de schakeling het niet meteen doet, wat resulteert in desolderen of het weggooien van werkende componenten.\\ 
 
 \noindent Voor het circuit zijn de volgende componenten gebruikt:
 \begin{itemize}
-\item 1$\times$ spoel: 4.7 mH;
-\item 1$\times$ condensator: 30 $\mu$F;
+\item 1$\times$ spoel: $4.7 \mathrm{mH}$;
+\item 1$\times$ condensator: $30 \mu \mathrm{F}$;
 \item 1$\times$ op-amp: LM358;
-\item 1$\times$ weerstand: 820$\: \Omega$;
+\item 1$\times$ weerstand: $820 \Omega$;
 \end{itemize}
+
+\noindent
 De waarden zijn bepaald door middel van trial and error. Voor de weerstand in de feedback-configuratie is er van uit gegaan dat de waarden niet te groot kan zijn, want dan loopt er geen stroom meer terug om de oscillatie in stand te houden. Een waarde van 10 k$\Omega$ zou te groot zijn; het moest rond de 1 k$\Omega$ zijn.
 
 De afmeting van de spoel was het belangrijkste om rekening mee te houden. Er is gekozen voor een spoel met ongeveer dezelfde diameter, zodat de sensor ongeveer een detectie afstand van 2 cm heeft. De gemeten afstand is 2.15 cm \pm 0.05 cm (van middelpunt spoel naar middelpunt munt).
@@ -95,16 +98,16 @@ De inductieve sensor schakeling is als eerste getest. Deze is daarvoor op de osc
 
 Op de display van de oscilloscoop moet er een blokgolf worden weergegeven. Als het uitgangssignaal geen blokgolf is, kan er meteen vanuit worden gegaan dat er iets mis is met de schakeling, voeding of de instellingen van de oscilloscoop.\\
 De berekende waarde van de resonantie frequentie:
-$f_{res}=\frac{1}{2\pi \sqrt{4.7\times 10^{-3}\cdot 30\times 10^{-6}}}= 424 \:Hz$
+$f_{res}=\frac{1}{2\pi \sqrt{4.7\times 10^{-3}\cdot 30\times 10^{-6}}}= 424 \mathrm{Hz}$
 
 \noindent De gemeten waarde van de resonantie frequentie:
-$f_{res}\approx400\:Hz$\\
+$f_{res}\approx400 \mathrm{Hz}$\\
 
 \noindent Het tweede deel van de test-sessie is de implementatie met VHDL. De VHDL-code voor de mijndetector wordt eerst gesimuleerd met behulp van een testbench en daarna gesynthetiseerd zodat het op de FPGA geprogrammeerd kan worden. 
 
 \section{Discussie}
 Er is tijdens de projectmiddag veel tijd besteed aan het bouwen van de schakeling. Op de oscilloscoop was het uitgangssignaal van de sensor geen blokgolf. Na enkele keren zorgvuldig de schakeling te hebben gebouwd, is het gelukt om een blokgolf te krijgen. Het probleem werd veroorzaakt doordat de draden niet goed in contact waren met het breadboard.
 
-Verder was het trial and error om de juiste waarde van de gevoeligheid te bepalen. Dit werd gedaan door een metalen munt onder de sensor te schuiven en daarna de gevoeligheid te tweaken.
+Verder was het trial and error om de juiste waarde van de gevoeligheid te bepalen. Dit werd gedaan door een metalen munt onder de sensor te schuiven en daarna de gevoeligheid te tweaken, totdat de threshold in de VHDL-code hoog genoeg lag om alleen bij een munt tot een detectie te leiden.
 
 \end{document}
