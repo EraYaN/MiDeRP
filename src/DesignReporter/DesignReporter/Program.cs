@@ -42,9 +42,9 @@ namespace DesignReporter
             {
                 string ext = fi.Extension;
                 string caption = fi.Directory.Name + @"/" + fi.Name;
-				caption = caption.Replace("_","\\_");
+				caption = caption.Replace("_","-");
 				string filename = fi.Name;
-				filename = filename.Replace("_", "\\_");
+				filename = filename.Replace("_", "-");
 				string pathescaped = fi.FullName.Replace(outputPath.Directory.FullName+"\\", "").Replace('\\', '/');
                 if (ext == ".cs")
                 {
