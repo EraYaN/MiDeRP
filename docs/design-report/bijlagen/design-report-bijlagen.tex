@@ -35,7 +35,7 @@
 \centering
 \caption{}
 \begin{subtable}{0.48\textwidth}
-\subcaption{Protocol Rev. C}
+\subcaption{Protocol Rev. F}
 \label{tab:comProtocol}
 \centering
 \begin{tabular}{@{}lll@{}}
@@ -47,12 +47,15 @@ Stop 					& 0x53 	& to robot only\\
 Right 					& 0x52 	& to robot only\\
 Left 					& 0x4C 	& to robot only\\
 Turn					& 0x54 	& to robot only\\
+Back					& 0x42 	& to robot only\\
+Half					& 0x86 	& to robot only\\
 Continue				& 0x01	& to robot only\\
 Done 					& 0x04	& to robot only\\
 Acknowledge 			& 0x06	& both ways\\
 Negative Acknowledge 		& 0x15	& both ways \\
 Enquiry 				& 0x05	& to pc only\\
 Mine 					& 0x07	& to pc only\\
+Unknown 				& 0x00	& both ways\\
 \bottomrule
 \end{tabular}
 \end{subtable}
