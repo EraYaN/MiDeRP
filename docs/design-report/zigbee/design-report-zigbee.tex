@@ -8,64 +8,21 @@
 
 \begin{document}
 
-%TODO
-
-%computer robot uart wireless zigbee
-%verbinding tussen computer en robot
-
-%eisen verderop
-
-%command structuur 
-
-%test
-
-
-
-\chapter{Draadloze Communicatie met ZigBee Module}
+\section{Draadloze Communicatie met ZigBee Module}
 
 Een van de opdrachten van het project is om de robot te begeleiden via een C-programma.
 Het is de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot laten communiceren met de computer.
 Dit wordt gedaan door één XBee-module aan te sluiten op een computer en deze te laten communiceren met een andere XBee-module die  gemonteerd zit op het robot utility board.
 \newline
-
-\noindent XBee modules zijn in feite niks anders dan digitale ontvang/zend systemen die op een 2.4 Ghz bandbreedte werken.
-Ze hebben een bereik van circa 30 tot 60 meter, waardoor ze makkelijk met andere apparaten kunnen communiceren die ook op een 2.4Ghz bandbreedte zitten.
-Daarnaast wordt de XBee module gevoed door een 3.3V spanning, verder kan het aantal signaalwisselingen per seconde nog worden ingesteld.
-Hier gaan we later  verder op in.
-\newline
+\textbf{De Xbee-module werkt door middel van een UART, deze VHDL-code zorgt voor een verbinding tussen de computer en de robot. Door de reciever op het FPGA-bordje van de robot te zetten en de transmitter te verbinden met de computer, wordt er een link tussen beide gevormd.}
 
 
+\subsection{Eisen}
 
-\section{Eisen}
-
-Voordat de XBee modules met elkaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben.
-Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met andere modules terwijl dit niet de bedoeling is.
-\newline
-De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende XBee modules.
-De belangrijkste hiervan zullen verder uitgelicht worden;
-\newline
-
-\textbf{Channel settings;}
-\newline
-De XBee modules kunnen op zestien verschillende frequentiebreedtes werken, van 11(0x0B) tot 26 (0x1A).
-Als er onderscheid moet worden gemaakt tussen XBee modules in de omgeving is het handig om deze op een andere frequentiebreedte te zetten.
-\newline
-
-\textbf{Pan-Id;}
-\newline
-Als er meerdere XBee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de XBee modules door middel van \textit{Pan-ID}.
-Deze bestaat uit een 16-bits nummer.
-Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de XBee modules die hetzelfde \textit{Pan-ID} hebben.
-\newline
-
-\textbf{My-ID;}
-\newline
-Het is mogelijk dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben.
-Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}.
-Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
+Er moet via de Xbee module gecommuniceerd worden vanaf de computer naar de robot en andersom.
 
 
-\section{Ontwerp}
+\subsection{Ontwerp}
 Voordat de XBee modules met elkaar kunnen communiceren moet er eerst een VHDL-code ontworpen worden voor de XBee module op de robot en een C-code voor de XBee module die met de computer is verbonden.
 \textbf{[afbeelding 3.1 van tutorial]}.
 \newline
@@ -85,6 +42,7 @@ Verder is er nog een 50MHz klok aanwezig.
 \textbf{Sub-entities;}
 \newline
 Er zijn vier sub-entities, namelijk;
+
 \begin{itemize}
 \item  \textbf{Baud rate generator;}
 \newline
@@ -120,17 +78,45 @@ De data van de buffer register wordt gekopieerd naar de UART transmitter en als 
 \end{itemize}
 De C-code die voor de communicatie geschreven moest worden, moet er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
 \newline
-Voor de instellingen van de XBee module konden we zelf waarden voor de verschillende instelpunten kiezen.
+Via de 7-segmentdisplayer kan er gezien worden wat er vanaf de computer naar de robot wordt verzonden. Éen uitgebreide uitleg hierover staat in hoofdstuk \ref{•}.
 
-\section{Implementatie}
 
-Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage;
+\subsection{Implementatie}
+Voordat de XBee modules met elkaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben.
+Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met andere modules terwijl dit niet de bedoeling is.
+\newline
+De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende XBee modules.
+De belangrijkste hiervan zullen verder uitgelicht worden;
+\newline
 
-\section{Test}
+\textbf{Channel settings;}
+\newline
+De XBee modules kunnen op zestien verschillende frequentiebreedtes werken, van 11(0x0B) tot 26 (0x1A).
+Als er onderscheid moet worden gemaakt tussen XBee modules in de omgeving is het handig om deze op een andere frequentiebreedte te zetten.
+\newline
 
-Door te kijken of we bits van de computer naar de robot konden sturen en deze vervolgens in de juiste led volgorde op de robot verschenen en door daarna bits te sturen van de robot naar de computer en te kijken of deze met de juiste ASCII-karakters overeen kwam, is gebleken dat de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
+\textbf{Pan-Id;}
+\newline
+Als er meerdere XBee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de XBee modules door middel van \textit{Pan-ID}.
+Deze bestaat uit een 16-bits nummer.
+Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de XBee modules die hetzelfde \textit{Pan-ID} hebben.
+\newline
 
-\section{Discussie}
+\textbf{My-ID;}
+\newline
+Het is mogelijk dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben.
+Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}.
+Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
+
+Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage; \ref{•}
+
+\subsection{Test}
+
+We hebben de draadloze verbinding tussen de computer en de robot kunnen testen door te kijken of we ASCII-karakters(elk ASCII-karakter heeft zijn eigen 7-bit code) van de computer naar de robot konden sturen en vervolgens te kijken of deze in de juiste led volgorde op de robot verschenen. De meest rechter led indiceert de eerste bit. Vervolgens hebben we geprobeerd om vanaf de robot naar de computer bits te sturen, waarna er op de computer ASCII-karakters verschenen.
+\newline 
+Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref. Door deze bit te verzenden naar de robot en te aanschouwen of deze daadwerkelijk zou gaan vooruitrijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
+
+\subsection{Discussie}
 
 Het draadloos communiceren van de XBee's werkte zeer goed.
 
