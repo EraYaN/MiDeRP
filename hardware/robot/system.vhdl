@@ -17,6 +17,7 @@ entity system is
 		seg: out std_logic_vector (7 downto 0);
 		led: out std_logic_vector (7 downto 0);
 		an: out std_logic_vector (3 downto 0);
+		sw					: in std_logic_vector (7 downto 0);	
 		--uart
 		rx: in std_logic;
 		tx: out std_logic	
@@ -45,7 +46,8 @@ architecture structural of system is
 			
 			bin_seg					: out std_logic_vector (15 downto 0);
 			dpoint_seg					: out std_logic_vector(3 downto 0);
-			led					: out std_logic_vector (7 downto 0);			
+			led					: out std_logic_vector (7 downto 0);	
+			sw					: in std_logic_vector (7 downto 0);				
 			
 			uart_send				: out std_logic_vector(7 downto 0);
 			uart_receive			: in std_logic_vector(7 downto 0);
@@ -180,6 +182,7 @@ begin
 		
 		bin_seg=>bin_seg,		
 		led=>led,
+		sw=>sw,
 		dpoint_seg=>dpoint_seg,
 
 		motor_r_reset => m_reset_r,
