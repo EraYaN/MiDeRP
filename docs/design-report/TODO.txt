@@ -16,3 +16,4 @@
 		ssec:vhdl-timebase[undef-fixed]		
  			-> LaTeX Warning: There were undefined references. LaTeX Warning: There were multiply-defined labels.)
 	- 	Fix Cites (LaTeX Warning: Citation 'sec:code-navigation' on page 25 undefined on input line 102.) [routeplanner]
+	-	Lijnvolger 3 regels op een enkele pagina (Luc)
