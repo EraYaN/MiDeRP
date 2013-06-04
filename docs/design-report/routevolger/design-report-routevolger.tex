@@ -11,7 +11,7 @@
 \chapter{Routevolger}
 \label{ch:routevolger}
 
-Als er naar het grid wordt gekeken in bijlage \textbf{??} kan men zien dat er meer komt kijken dan alleen het volgen van een lijn, zoals in het vorige hoofdstuk beschreven is.
+Als er naar het grid wordt gekeken in hoofdstuk \rev{ch:probleemstelling} kan men zien dat er meer komt kijken dan alleen het volgen van een lijn, zoals in het vorige hoofdstuk beschreven is.
 Doordat er kruispunten aanwezig zijn, ontstaan er drie mogelijke wegen die de robot kan nemen.
 Bij het volgen van de route moet de robot rekening houden met de kortste route en hier op inspelen.
 Mochten er mijnen op de route liggen dan moet de robot op het moment dat hij deze herkend terugrijden, zodat de lichtsensoren weer voor het kruispunt zitten.
@@ -36,17 +36,24 @@ Onze implementatie van de lijnvolger is te vinden in bijlage \ref{ssec:controlle
 We hebben een eigen testveld gemaakt, waarop we de robot hebben kunnen testen.
 Dit veld is te zien in afbeelding \ref{fig:testfield}.
 Door de robot van punt $1_A$ naar punt $3_B$ te laten rijden, hebben we kunnen testen of de robot de kruispunten herkende en of hij de bochten in de juiste richting nam.
-Nadat de mijnendetector was aangesloten, hebben we mijnen geplaatst op de middenstukken en konden we testen of de robot op het juiste moment $180^\circ$ draaide als hij een mijn had gedetecteerd, waardoor de lichtsensoren weer voor het kruispunt  recht op de lijn kwamen te zitten.
+Nadat de mijnendetector was aangesloten, hebben we mijnen geplaatst op de middenstukken en konden we testen of de robot op het juiste moment terugreed als hij een mijn had gedetecteerd. Na het terugrijden zouden de lichtsensoren weer voor het kruispunt recht op de lijn moeten zitten.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{d-2_test_field.png}
-	\caption{Zelf gemaakte testfield  bij EPO-2}
+	\caption{Zelf gemaakt testveld voor EPO-2}
 	\label{fig:testfield}
 \end{figure}
 
 \section{Discussie}
 
-??
+
+Bij het testen met het detecteren van de mijnen en het vervolgens laten terugrijden van de robot, kwamen we er achter dat de robot stopte nadat hij terug op het vorige kruispunt was. Dit was natuurlijk niet de bedoeling.
+Door goed te kijken naar de VHDL-code, hebben we de fout kunnen vinden en deze weten te verhelpen.
+
+%zijn we er achter gekomen dat de lichtsensoren meestal op het kruispunt terecht kwamen.
+%Dit was natuurlijk niet de bedoeling.
+%We hebben dit aangepast door de mijnendetector dichter bij het wiel te zetten, waardoor de mijn later werd gedetecteerd en bij het draaien van de robot, de lichtsensoren precies voor het kruispunt uitkwamen.
+%Ook hebben we om dezelfde reden de lichtsensoren dichterbij het draaipunt van de robot geplaatst.
 
 \end{document}

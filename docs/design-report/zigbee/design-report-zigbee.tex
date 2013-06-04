@@ -13,9 +13,10 @@
 
 Een van de opdrachten van het project is om de robot te begeleiden via een C-programma.
 Het is de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot laten communiceren met de computer.
-Dit wordt gedaan door één XBee-module aan te sluiten op een computer en deze te laten communiceren met een andere XBee-module die  gemonteerd zit op het robot utility board.
+Dit wordt gedaan door één XBee-module aan te sluiten op een computer en deze te laten communiceren met een andere XBee-module die gemonteerd zit op het robot utility board.
 \newline
-\textbf{De Xbee-module werkt door middel van een UART, deze VHDL-code zorgt voor een verbinding tussen de computer en de robot. Door de reciever op het FPGA-bordje van de robot te zetten en de transmitter te verbinden met de computer, wordt er een link tussen beide gevormd.}
+
+De Xbee-module werkt door middel van een UART, deze VHDL-code zorgt voor een verbinding tussen de computer en de robot. Aan beide kanten van de Xbee-modules zit een reciever en een transmitter van de UART, waardoor de reciever van de ene communiceert met de transmitter van de andere, hierdoor wordt er een link tussen beide gevormd.
 
 
 \section{Eisen}
@@ -25,7 +26,18 @@ Er moet via de Xbee module gecommuniceerd worden vanaf de computer naar de robot
 
 \section{Ontwerp}
 Voordat de XBee modules met elkaar kunnen communiceren moet er eerst een VHDL-code ontworpen worden voor de XBee module op de robot en een C-code voor de XBee module die met de computer is verbonden.
-\textbf{[afbeelding 3.1 van tutorial]}.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.65\textwidth]{zigbee.png}
+	\caption{Verbinding tussen computer en robot}
+	\label{fig:zigbee}
+\end{figure}
+
+
+
+
 \newline
 
 De VHDL-code bestaat uit een Top-entity en Sub-entities;
@@ -79,7 +91,7 @@ De data van de buffer register wordt gekopieerd naar de UART transmitter en als 
 \end{itemize}
 De C-code die voor de communicatie geschreven moest worden, moet er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
 \newline
-Via de 7-segmentdisplayer kan er gezien worden wat er vanaf de computer naar de robot wordt verzonden. Éen uitgebreide uitleg hierover staat in hoofdstuk \ref{•}.
+Via de 7-segmentdisplayer kan er gezien worden wat er vanaf de computer naar de robot wordt verzonden. Éen uitgebreide uitleg hierover staat in hoofdstuk \ref{ch:sseg}.
 
 
 \section{Implementatie}
@@ -108,14 +120,15 @@ Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stelle
 Het is mogelijk dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben.
 Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}.
 Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
+\newline
 
-Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage; \ref{•}
+Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage; \ref{sec:communicatie}
 
 \section{Test}
 
 We hebben de draadloze verbinding tussen de computer en de robot kunnen testen door te kijken of we ASCII-karakters(elk ASCII-karakter heeft zijn eigen 7-bit code) van de computer naar de robot konden sturen en vervolgens te kijken of deze in de juiste led volgorde op de robot verschenen. De meest rechter led indiceert de eerste bit. Vervolgens hebben we geprobeerd om vanaf de robot naar de computer bits te sturen, waarna er op de computer ASCII-karakters verschenen.
 \newline 
-Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref. Door deze bit te verzenden naar de robot en te aanschouwen of deze daadwerkelijk zou gaan vooruitrijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
+Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref{tab:comProtocol}Door deze bit te verzenden naar de robot en te aanschouwen of deze daadwerkelijk zou gaan vooruitrijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
 
 \section{Discussie}
 
