@@ -177,10 +177,9 @@ namespace MiDeRP
 			{
 				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
 				Data.nav.mines.Clear();
+				Data.nav.fullPath.Clear();
 				if (Data.nav.paths != null)
 					Array.Clear(Data.nav.paths, 0, Data.nav.paths.Length);
-				if (Data.nav.targetCPs != null)
-					Data.nav.targetCPs.Clear();
 			}
 
 			if (Data.ctr != null)

@@ -117,7 +117,6 @@ namespace MiDeRP
 					{
 						Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, true);
 						_halfway = true;
-						_continue = false;
 					}
 					else
 					{
@@ -143,7 +142,7 @@ namespace MiDeRP
 			{
 				if (_receivedByte == StatusByteCode.Enquiry)
 				{
-					if (_i > 0 && !_halfway && !Data.nav.fullPath[_i].FromCPoint)
+					if (_i > 0 && (!_halfway && _nextDirective != StatusByteCode.Turn) && !Data.nav.fullPath[_i].FromCPoint)
 						return;
 
 					getNextDirective();
@@ -156,6 +155,7 @@ namespace MiDeRP
 
 					if (_continue == true)
 						Data.com.SendByte((byte)StatusByteCode.Continue);
+					_continue = false;
 
 					_sentDirectiveIsUnacknowledged = true;
 				}
@@ -198,8 +198,8 @@ namespace MiDeRP
 			else if (Data.nav.fullPath[_i].FromCPoint == true)
 			{
 				//TargetCP visited
+				_nextDirective = StatusByteCode.Turn;
 				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
-				_nextDirective = StatusByteCode.Back;
 				Data.nav.currentPath++;
 				return;
 			}
@@ -349,7 +349,11 @@ namespace MiDeRP
 		private void recalculatePath()
 		{
 			_i = 0;
-			Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
+			if (!Data.nav.currentPos.ToCPoint)
+				Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
+			else
+				Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, false);
+
 			Data.nav.makePaths();
 		}
 
