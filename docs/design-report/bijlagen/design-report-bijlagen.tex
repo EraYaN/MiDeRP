@@ -7,29 +7,27 @@
 \author{Robin Hes \and Erwin de Haan}
 
 \begin{document}
+\renewcommand{\chapternumber}{\appendixname\;\thechapter}
+\begin{appendices}
 
-\chapter{Bijlagen}
-\label{ch:bijlagen}
-
-\newpage
-\section{Plan van aanpak}
-\label{sec:pva}
+\chapter{Plan van aanpak}
+\label{app:pva}
 
 \includepdf[pages={1-10}]{plan-van-aanpak-rc.pdf}
 
-\section{Routeplanner Pseudocode}
+\chapter{Routeplanner Pseudocode}
 \label{sec:pseudocode}
 
-\subsection{Lee}
+\section{Lee}
 \label{ssec:pseudocode-lee}
 \cite{pseudocode-lee}
 
-\subsection{A*}
+\section{A*}
 \label{ssec:pseudocode-astar}
 \cite{pseudocode-astar}
 
 \newpage
-\section{Communicatie}
+\chapter{Communicatie}
 \label{sec:communicatie}
 \begin{table}[H]
 \centering
@@ -78,7 +76,8 @@ My Address				& 0x4658 	& 0x8564\\
 \end{tabular}
 \end{subtable}
 \end{table}
-\section{Finite State Machines}
+
+\chapter{Finite State Machines}
 \label{sec:statemachines}
 \begin{figure}[H]
 \centering
@@ -102,6 +101,7 @@ My Address				& 0x4658 	& 0x8564\\
 \includegraphics[width=0.8\linewidth]{FSMMain}
 \end{figure}
 
-\section{Broncode}
+\chapter{Broncode}
 \subimport{../../../}{sourceBijlage}
+\end{appendices}
 \end{document}

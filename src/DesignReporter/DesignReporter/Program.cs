@@ -49,23 +49,23 @@ namespace DesignReporter
                 if (ext == ".cs")
                 {
                     //caption = fi.Directory.Name+@"\"+fi.Name;
-                    file.WriteLine(String.Format("\\subsection{{{2}}}\r\n\\label{{ssec:{2}}}\r\n\\includecode[csharp]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
+                    file.WriteLine(String.Format("\\section{{{2}}}\r\n\\label{{appsec:{2}}}\r\n\\includecode[csharp]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
                 }
                 else if (ext == ".c" || ext == ".h")                
                 {
                     //caption = Path.GetDirectoryName(f) + Path.GetFileName(f);
-                    file.WriteLine(String.Format("\\subsection{{{2}}}\r\n\\label{{ssec:{2}}}\r\n\\includecode[c]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
+                    file.WriteLine(String.Format("\\section{{{2}}}\r\n\\label{{appsec:{2}}}\r\n\\includecode[c]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
                 }
                 else if (ext == ".vhdl" || ext == ".vhd")
                 {
                     //caption = Path.GetDirectoryName(f) + Path.GetFileName(f);
-                    file.WriteLine(String.Format("\\subsection{{{2}}}\r\n\\label{{ssec:{2}}}\r\n\\includecode[vhdl]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
+					file.WriteLine(String.Format("\\section{{{2}}}\r\n\\label{{appsec:{2}}}\r\n\\includecode[vhdl]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
                     
                 }
                 else if (ext == ".xaml")
                 {
                     //caption = Path.GetDirectoryName(f) + Path.GetFileName(f);
-                    file.WriteLine(String.Format("\\subsection{{{2}}}\r\n\\label{{ssec:{2}}}\r\n\\includecode[xaml]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
+					file.WriteLine(String.Format("\\section{{{2}}}\r\n\\label{{appsec:{2}}}\r\n\\includecode[xaml]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
 
                 }
             }

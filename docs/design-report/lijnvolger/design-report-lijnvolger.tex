@@ -30,7 +30,7 @@ Aan de hand van deze uitlezing wordt bepaald hoe de servomotoren aangestuurd wor
 
 \section{Implementatie}
 De schakeling binnen de FPGA is beschreven in VHDL.
-Deze VHDL-code is terug te vinden in de bijlagen, sectie \ref{ssec:motorcontrol.vhdl}.
+Deze VHDL-code is terug te vinden in de bijlagen, sectie \ref{appsec:motorcontrol-vhdl}.
 Om de robot werkelijk de lijn te laten volgen wordt met behulp van de motorcontroller (Hoofdstuk \ref{ch:servo}) een PWM-signaal doorgezonden naar de servomotoren.
 De duur van deze pulsen wordt bepaald aan de hand van de uitlezing van de sensoren.
 In de VHDL-code van de lijnvolger is dit te zien aan de verschillende combinaties van sensorwaarden die de linker- en rechtermotorsnelheden bepalen.
