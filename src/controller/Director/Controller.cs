@@ -201,6 +201,7 @@ namespace MiDeRP
 				_nextDirective = StatusByteCode.Turn;
 				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
 				Data.nav.currentPath++;
+				Data.nav.targetCPs.Remove(Data.nav.fullPath[_i].From.Id);
 				return;
 			}
 			
