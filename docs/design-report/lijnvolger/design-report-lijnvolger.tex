@@ -23,13 +23,12 @@ Om dit klaar te spelen zal de geïmplementeerde lijnvolger aan een aantal eisen 
 
 \section{Ontwerp}
 Het ontwerp van de lijnvolger is een simpele maar doeltreffende opzet.
-Een printplaat met daarop drie lichtsensoren is aangesloten op een FPGA.
-Deze printplaat is onder de robot bevestigd, waarbij de alle sensoren bij startpositie boven de lijn hangen.
+Een printplaat met daarop drie reflectiesensoren is aangesloten op een FPGA.
+Deze printplaat is onder de robot bevestigd, waarbij de sensoren bij startpositie boven de lijn hangen, de twee buitenste sensoren vallen buiten de lijn en de middelste staat op de lijn.
 Binnen de FPGA is een logische schakeling aanwezig die bepaalt welke sensoren wel of niet op de lijn staan.
 Aan de hand van deze uitlezing wordt bepaald hoe de servomotoren aangestuurd worden.
 
 \section{Implementatie}
-Om de draaihoek van de lijnvolger bij rechte hoeken te verbeteren is de sensorplaat op het draaipunt van de robot geplaatst.
 De schakeling binnen de FPGA is beschreven in VHDL.
 Deze VHDL-code is terug te vinden in de bijlagen, sectie \ref{ssec:motorcontrol.vhdl}.
 Om de robot werkelijk de lijn te laten volgen wordt met behulp van de motorcontroller (Hoofdstuk \ref{ch:servo}) een PWM-signaal doorgezonden naar de servomotoren.
@@ -39,9 +38,9 @@ In de VHDL-code van de lijnvolger is dit te zien aan de verschillende combinatie
 \section{Test}
 De lijnvolger is de basis van de Smart Robot Challenge.
 Het is dus van het groot belang dat dit onderdeel feilloos functioneert.
-Om er zeker van te zijn dat de lijnvolger naar behoren werkt heeft de TU Delft ons een aantal testvelden geleverd.
-Wij hebben de robot uitgebreid getest op elk veld en de robot wist deze foutloos te doorlopen.
-Een opvallende bijzaak is wel dat de robot een lichte afwijking heeft, dit terwijl beide servomotoren hetzelfde signaal toegestuurd krijgen.
+Om er zeker van te zijn dat de lijnvolger naar behoren werkt heeft de TU Delft ons een aantal testlijnen geleverd.
+Wij hebben de robot uitgebreid getest op elke lijn en de robot wist deze foutloos te volgen.
+Een opvallende bijzaak is wel dat de robot een lichte afwijking heeft, dit terwijl beide servomotoren hetzelfde PWM-signaal toegestuurd krijgen.
 
 \section{Discussie}
 De lijnvolger werkt haast perfect op een lichte in één van de servomotoren afwijking na.
