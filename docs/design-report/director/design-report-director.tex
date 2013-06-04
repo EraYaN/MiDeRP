@@ -10,18 +10,18 @@
 
 \chapter{Director}
 \label{ch:director}
-Het programma wat voor de besturing van de robot zorgt op de computer, door ons ``Director'' gedoopt, bestaat zoals eerst bescheven uit vier hoofdonderdelen. De laatste drie worden hier beschreven.
+Het programma wat voor de besturing van de robot zorgt op de computer, door ons ``Director'' gedoopt, bestaat zoals eerst beschreven uit vier hoofdonderdelen. De laatste drie worden hier beschreven.
 \begin{itemize}
 \item De pathfinder op basis van het A* algoritme
-\item De event-driven seriële implentatie
+\item De event-driven seriële implementatie
 \item De controller
-\item De gebruikersinterface en visualizatie
+\item De gebruikersinterface en visualisatie
 \end{itemize}
 \section{Implementatie}
 \label{sec:dirImplementatie}
-We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compilen we naar een standaard C dll (stdcall).
+We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen voor een routeplanner gebaseerd op A*. Deze compileren we naar een standaard C dll (stdcall).
 
-Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met Windows Presentation Foundation of WPF, een UI framework waarin de gebruikers interface beschreven word in XAML (Extensible Application Markup Language).
+Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met Windows Presentation Foundation of WPF, een UI framework waarin de gebruikers interface beschreven wordt in XAML (Extensible Application Markup Language).
 XAML is een taal die heel erg lijkt op XML.
 Dit geeft een vriendelijkere ontwikkelomgeving, managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
 Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel fijn voor de seriële communicatie.
@@ -30,23 +30,23 @@ De communicatie is eveneens geïmplementeerd in C\#, dit gaf het voordeel van ee
 
 \subsection{Navigatie}
 Om de A* implementatie te gebruiken was er een "brug" nodig tussen de managed omgeving en de unmanaged omgeving.
-Omdat deze heel erg verschillen moeten er speciale functies geschrven worden zodat de unmanaged code aangeroepen kan worden en data uitgewisseld.
+Omdat deze heel erg verschillen moeten er speciale functies geschreven worden zodat de unmanaged code aangeroepen kan worden en data uitgewisseld.
 Wij hebben dit gedaan via Interop (voor de functie aanroepen [DllImport]) en de Marshaller (voor de equivalenten van malloc en free).
 \subsection{Communicatie}
-De communicatie met de XBee module verloopt via een Serieële poort. Deze is gemakkelijk te gebruiken in .NET. Er is een event waar men zich op kan abboneren om zo op de hoogte gesteld te worden als er data gearriveerd is. Wij hebben een protocol gemaakt om de communicatie tussen de controller en de robot te bewerkstellingen. (zie sectie \ref{sec:communicatie} voor de specificaties)
+De communicatie met de XBee module verloopt via een Seriële poort. Deze is gemakkelijk te gebruiken in .NET. Er is een event waar men zich op kan abonneren om zo op de hoogte gesteld te worden als er data gearriveerd is. Wij hebben een protocol gemaakt om de communicatie tussen de controller en de robot te bewerkstelligen. (zie sectie \ref{sec:communicatie} voor de specificaties)
 
 \subsection{Controller}
-De controller regelt de reacties op de serieële events, deze krijgt dus een byte binnen vanuit de robot. Bijvoorbeeld een "Enquiry" (Waar moet ik heen), de controller gaat dan kijken waar hij denk dat de robot is en wat de volgende actie zou moeten zijn om het pad te volgen.
+De controller regelt de reacties op de seriële events, deze krijgt dus een byte binnen vanuit de robot. Bijvoorbeeld een "Enquiry" (Waar moet ik heen), de controller gaat dan kijken waar hij denk dat de robot is en wat de volgende actie zou moeten zijn om het pad te volgen.
 Dit stuurt hij dan terug naar de robot, zodat deze weer verder kan rijden.
 Als de controller van mening is dat we aangekomen zijn op het punt van bestemming stuurt ie een "Done" naar de robot. Deze stopt dan aan het eind van de lijn.
-Zo ook als de robot een mijn detecteert en de pc ontvangt deze wordt deze aan de lijst met mijnen toegevoegd en naar het unmanaged geheuegen gekopieerd zodat er een nieuw pad berekend kan worden.
+Zo ook als de robot een mijn detecteert en de pc ontvangt deze wordt deze aan de lijst met mijnen toegevoegd en naar het unmanaged geheugen gekopieerd zodat er een nieuw pad berekend kan worden.
 In de tussentijd is de robot dan al weer teruggereden naar het kruispunt en vraagt hij daar aangekomen weer welke richting hij moet nemen.
-Zo worden alle control points die geselecteerd waren afgereist.
+Zo worden alle control points die geselecteerd waren afgereisd.
 \subsection{Gebruikersinterface en visualizatie}
 De gebruikersinterface is opgebouwd uit twee onderdelen, een plattegrond en de besturing.
 De besturing bevat knoppen voor functies als verbinden met de XBee module het initialiseren het het selecteren van de challenge.
-De plattegrond wordt getekend doormiddel van een canvas element, hierop kan met vormen tekenen zoals cirkels en lijnen. We hebben een classe voor een pijl moeten maken omdat deze niet aanwezig was in WPF.
-De plattegrond word live geupdate met informtie die binnen komt op de serieële poort.
-Er kan op de control posts geklikt worden om deze aantewijzen als te bezoeken of als start aan te geven.
+De plattegrond wordt getekend door middel van een canvas element, hierop kan met vormen tekenen zoals cirkels en lijnen. We hebben een klasse voor een pijl moeten maken omdat deze niet aanwezig was in WPF.
+De plattegrond word live geupdate met informatie die binnen komt op de seriële poort.
+Er kan op de control posts geklikt worden om deze aan te wijzen als te bezoeken of als start aan te geven.
 De mijnen kunnen geplaatst worden en verwijderd.
 \end{document}
