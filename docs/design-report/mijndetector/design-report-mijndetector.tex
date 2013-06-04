@@ -11,7 +11,11 @@
 \chapter{Mijndetector}
 \label{ch:mijn}
 %DONE: take out why inductive over capacitive
-Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beiden?
+Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beiden? 
+
+Een inductieve sensor werkt op basis van de verandering van permeabiliteit. De inductantie van de spoel verandert, wat leidt tot een verandering van de resonantiefrequentie.
+
+Een capacitieve sensor werkt op basis van de verandering van capaciteit. Door de positie van de mijn verandert de capaciteit, wat leidt tot een verandering van de spanning. 
 
 \section{Eisen}
 \label{sec:eisen}
@@ -19,10 +23,10 @@ De mijn-detecterende sensor moet aan de volgende eisen voldoen:
 %DONE: More specific i.e. between 5 V and 0 V.
 %DONE: Detection range: ~2.15 cm
 \begin{itemize}
-\item De mijndetector moet een metalen ring van 3 cm \diameter op een afstand van \~2 cm detecteren op het wedstrijdveld;
-\item De sensor mag geen contact maken met de metalen ring;
-\item De sensor moet op een voedingsspanning van 5 V en 0 V werken;
-\item Het uitgangssignaal van de sensor is een blokgolf met een maximum waarde van 5 V en een minimum waarde van 0 V;
+\item De mijndetector moet een metalen ring van 3 cm \diameter op een afstand van \~2 cm detecteren op het wedstrijdveld
+\item De sensor mag geen contact maken met de metalen ring
+\item De sensor moet op een voedingsspanning van 5 V en 0 V werken
+\item Het uitgangssignaal van de sensor is een blokgolf met een maximum waarde van 5 V en een minimum waarde van 0 V
 \end{itemize}
 
 \section{Ontwerp}
@@ -80,10 +84,10 @@ Om het ontwerp van de inductieve sensor schakeling te realiseren, werd de schake
 
 \noindent Voor het circuit zijn de volgende componenten gebruikt:
 \begin{itemize}
-\item 1$\times$ spoel: $4.7 \mathrm{mH}$;
-\item 1$\times$ condensator: $30 \mu \mathrm{F}$;
-\item 1$\times$ op-amp: LM358;
-\item 1$\times$ weerstand: $820 \Omega$;
+\item 1$\times$ spoel: $4.7 \mathrm{mH}$
+\item 1$\times$ condensator: $30 \mu \mathrm{F}$
+\item 1$\times$ op-amp: LM358
+\item 1$\times$ weerstand: $820 \Omega$
 \end{itemize}
 
 \noindent

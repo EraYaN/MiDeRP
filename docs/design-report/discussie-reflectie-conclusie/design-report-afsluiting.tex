@@ -18,13 +18,17 @@ Om dit te realiseren moet een algoritme worden gebruikt om de kortste pad te bep
 Dit algoritme was niet onze eerste keuze. Het Lee algoritme was eerst uitgewerkt, omdat het eenvoudig te begrijpen en implementeren is. Echter geeft Lee niet altijd de snelste route, want het algoritme houdt geen rekening met het aantal bochten dat het doorloopt.\\
 
 %SYSTEEMOVERZICHT
-De routeplanner in C is maar een klein deel van het systeem. De drie hoofdblokken zijn de XBee modules, de FPGA en het Director programma. 
+De routeplanner in C is maar een klein deel van het systeem. De twee hoofdblokken van het systeem zijn: het programma dat op de computer draait en het programma op de robot.  
 
 Om het doel te bereiken is communicatie tussen de robot en de director vereist. Met twee losse state machines en twee XBee modules dit gedaan. \'E\'en losse state die op de robot zit, zorgt ervoor dat het de commando's ontvangt en verwerkt. En de andere verstuurt de commando's naar de robot.
 
 De FPGA is het component die alle directe acties afhandelt. Tijdens de projectmiddagen zijn we druk bezig geweest om de FPGA op de sensoren te laten reageren, zodat de robot een zwarte lijn zou volgen. 
 
 Voor het Director programma wordt voornamelijk C\# en WPF gebruikt, wat zorgt voor een gebruikersvriendelijke interface. Echter, gebruiken we wel C/C++ om de navigatie en de communicatie te coderen.\\
+
+%DIRECTOR: CONTROLLER
+Om een mijn te detecteren wordt een inductieve sensor gebruikt. 
+Wanneer de robot een mijn detecteert, wordt de positie van de mijn toegevoegd aan de lijst in de unmanaged geheugen.
 
 %PLAN VAN AANPAK
 Om alle taken te kunnen volbrengen is het noodzakelijk om taken in te delen. Hierbij hebben we een plan van aanpak gemaakt, waar de taakverdelingen en deadlines instaan. Bovendien cre\"eert het een gestructureerde manier van denken voor elk projectlid.

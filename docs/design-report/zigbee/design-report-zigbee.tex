@@ -13,9 +13,9 @@
 
 Een van de opdrachten van het project is om de robot te begeleiden via een C-programma.
 Het is de bedoeling dat we door middel van het draadloze communicatie systeem van ZigBee de robot laten communiceren met de computer.
-Dit wordt gedaan door één XBee-module aan te sluiten op een computer en deze te laten communiceren met een andere XBee-module die  gemonteerd zit op het robot utility board.
-\newline
-\textbf{De Xbee-module werkt door middel van een UART, deze VHDL-code zorgt voor een verbinding tussen de computer en de robot. Door de reciever op het FPGA-bordje van de robot te zetten en de transmitter te verbinden met de computer, wordt er een link tussen beide gevormd.}
+Dit wordt gedaan door één XBee-module aan te sluiten op een computer en deze te laten communiceren met een andere XBee-module die gemonteerd zit op het robot utility board.
+
+De Xbee-module werkt door middel van een UART, deze VHDL-code zorgt voor een verbinding tussen de computer en de robot. Aan beide kanten van de Xbee-modules zit een reciever en een transmitter van de UART, waardoor de reciever van de ene communiceert met de transmitter van de andere, hierdoor wordt er een link tussen beide gevormd.
 
 
 \section{Eisen}
@@ -25,32 +25,37 @@ Er moet via de Xbee module gecommuniceerd worden vanaf de computer naar de robot
 
 \section{Ontwerp}
 Voordat de XBee modules met elkaar kunnen communiceren moet er eerst een VHDL-code ontworpen worden voor de XBee module op de robot en een C-code voor de XBee module die met de computer is verbonden.
-\textbf{[afbeelding 3.1 van tutorial]}.
-\newline
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.65\textwidth]{zigbee.png}
+	\caption{Verbinding tussen computer en robot}
+	\label{fig:zigbee}
+\end{figure}
 
 De VHDL-code bestaat uit een Top-entity en Sub-entities;
-\newline
 
-\textbf{Top-entity}.
-\newline
+
+\subsection{Top-entity}.
+
 We willen ervoor zorgen dat de ontvangen bits worden getoond op de LEDs en de bits die verzonden moeten worden door de robot, verzonden worden door middel van de switches.
 De bits die worden verzonden en ontvangen worden gebufferd in een 8-bit register en met behulp van flag flip-flops wordt de status van de 8-bit register bijgehouden.
 Het verzenden van de bits begint als de write-data '1' is.
 De ontvangen bits worden verwijderd als read-data '1' is.
 Verder is er nog een 50MHz klok aanwezig.
-\newline
 
-\textbf{Sub-entities;}
-\newline
+\subsection{Sub-entities;}
+
 Er zijn vier sub-entities, namelijk;
 
 \begin{itemize}
-\item  \textbf{Baud rate generator;}
+\item  \textbf{Baud rate generator}\\
 \newline
 De baud rate generator zorgt ervoor dat er nauwkeurig wordt bijgehouden welke bits er binnenkomen.
 
-\item \textbf{UART receiver}
-\newline 
+\item \textbf{UART receiver}\\
+
 De UART receiver bevat een FSM die bestaat uit vier statussen namelijk; idle, start, data en stop.
 Hoe de FSM werkt, is afhankelijk van de kloksignalen die deze binnenkrijgt van de baud rate generator en de status van het 'rx' signaal.
 De FSM begint in de idle status als 'rx' signaal 1 heeft.
@@ -60,62 +65,56 @@ De eerste houdt het aantal pulsen bij, de tweede het ontvangen aantal data bits.
 De ontvangen bits worden verplaatst naar een 8-bit register.
 Als alles is afgerond, wordt het ontvangen bit gekopieerd naar de buffer register, waar op hetzelfde moment de flag flip-flop wordt ingesteld.
  
- \item \textbf{UART transmitter}
- \newline
+ \item \textbf{UART transmitter}\\
+
  De UART transmitter is een register die data bits op een bepaald tempo verplaatst.
 Dit tempo wordt beïnvloed door de pulsen van de baud rate generator.
 Als het overdracht proces van één data status is voltooid, wordt de flag flip-flop hierdoor gereset
  
- \item \textbf{Buffer register met flag flip-flops}
- \newline
+ \item \textbf{Buffer register met flag flip-flops}\\
+
  De buffer register zorgt voor een link tussen het UART sub-systeem en het hoofdsysteem.
-Een flag flip-flop houdt bij of de buffer register, vol of leeg is.
-\newline
-Als de UART receiver de ontvangen bit doorgeeft, geeft de flag flip-flop weer dat de buffer register gelezen is door het hoofdsysteem en dat die nu opnieuw ingesteld kan worden.
-\newline
+Een flag flip-flop houdt bij of de buffer register, vol of leeg is.\\
+
+Als de UART receiver de ontvangen bit doorgeeft, geeft de flag flip-flop weer dat de buffer register gelezen is door het hoofdsysteem en dat die nu opnieuw ingesteld kan worden.\\
+
 Als voor de UART transmitter de flag flip-flop aangeeft dat de buffer register de juiste data bevat om verzonden te worden, dan zal de UART transmitter op de actieve status van de flip-flop reageren en beginnen met verzenden.
 De data van de buffer register wordt gekopieerd naar de UART transmitter en als deze vervolgens klaar is met het proces zal de flag flip-flop gereset worden, waarna er weer nieuwe data kan worden ontvangen 
  
 \end{itemize}
 De C-code die voor de communicatie geschreven moest worden, moet er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
-\newline
-Via de 7-segmentdisplayer kan er gezien worden wat er vanaf de computer naar de robot wordt verzonden. Éen uitgebreide uitleg hierover staat in hoofdstuk \ref{•}.
+Via de 7-segmentdisplay kan er gezien worden wat er vanaf de computer naar de robot wordt verzonden. Éen uitgebreide uitleg hierover staat in hoofdstuk \ref{ch:sseg}.
 
 
 \section{Implementatie}
 Voordat de XBee modules met elkaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben.
 Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met andere modules terwijl dit niet de bedoeling is.
-\newline
+
 De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende XBee modules.
 De belangrijkste hiervan zullen verder uitgelicht worden;
-\newline
 
-\textbf{Channel settings;}
-\newline
+\subsection{Channel settings}
 De XBee modules kunnen op zestien verschillende frequentiebreedtes werken, van 11(0x0B) tot 26 (0x1A).
-Als er onderscheid moet worden gemaakt tussen XBee modules in de omgeving is het handig om deze op een andere frequentiebreedte te zetten.
-\newline
+Als er onderscheid moet worden gemaakt tussen XBee modules in de omgeving is het handig om deze op een andere frequentiebreedte te zetten.\\
 
-\textbf{Pan-Id;}
-\newline
+\subsection{Pan-Id}
 Als er meerdere XBee modules op dezelfde frequentiebreedte zitten kan er nog steeds onderscheid worden gemaakt tussen de XBee modules door middel van \textit{Pan-ID}.
 Deze bestaat uit een 16-bits nummer.
 Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stellen, kan er alleen nog maar gecommuniceerd worden met de XBee modules die hetzelfde \textit{Pan-ID} hebben.
-\newline
 
-\textbf{My-ID;}
-\newline
+\subsection{My-ID;}
 Het is mogelijk dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben.
 Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}.
 Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
 
-Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage; \ref{•}
+
+Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage; \ref{app:communicatie}
 
 \section{Test}
 
 We hebben de draadloze verbinding tussen de computer en de robot kunnen testen door te kijken of we ASCII-karakters(elk ASCII-karakter heeft zijn eigen 7-bit code) van de computer naar de robot konden sturen en vervolgens te kijken of deze in de juiste led volgorde op de robot verschenen. De meest rechter led indiceert de eerste bit. Vervolgens hebben we geprobeerd om vanaf de robot naar de computer bits te sturen, waarna er op de computer ASCII-karakters verschenen.
-\newline 
-Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref. Door deze bit te verzenden naar de robot en te aanschouwen of deze daadwerkelijk zou gaan vooruitrijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
+
+Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref{tab:comProtocol}Door deze bit te verzenden naar de robot en te aanschouwen of deze daadwerkelijk zou gaan vooruitrijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
 
 \section{Discussie}
 

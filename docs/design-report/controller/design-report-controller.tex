@@ -26,8 +26,8 @@ Zo niet, dan blijft de robot vooruit rijden.
 Als er een mijn wordt gedetecteerd, dan wordt er doorgegeven aan de computer dat er een mijn op het wedstrijdveld is. 
 Afhankelijk van de kortste route maakt de robot twee verschillende bewegingen na het detecteren van een mijn:
 \begin{itemize}
-\item Als de robot naar links of rechts moet bij het net bezochte kruispunt, dan rijdt hij achteruit;
-\item Als de robot rechtdoor moet bij het net bezochte kruispunt, dan maakt hij een rotatie van 180$^\circ$;
+\item Als de robot naar links of rechts moet bij het net bezochte kruispunt, dan rijdt hij achteruit
+\item Als de robot rechtdoor moet bij het net bezochte kruispunt, dan maakt hij een rotatie van 180$^\circ$
 \end{itemize}
 
 De finite-state machine is bijgevoegd in de Bijlagen (Sectie \ref{sec:statemachines}, Figuur \ref{fig:fsmMain})
@@ -62,9 +62,9 @@ De main state waar de robot in begint nadat de reset wordt ingedrukt is Followli
 De robot volgt de lijn op het wedstrijdveld en als er afwijkingen zijn, wordt de baan door middel van de sensoren gecorrigeerd.
 Tijdens het volgen van de lijn kunnen de volgende states voorkomen: 
 \begin{itemize}
-\item De robot staat op het kruispunt en wacht op het volgende commando;
-\item De robot ziet een witte lijn en vraagt of dit het einde is van de route;
-\item De robot detecteert een mijn en maakt een draai van 180$^\circ$ of hij rijdt achteruit totdat de sensoren een kruispunt detecteren;
+\item De robot staat op het kruispunt en wacht op het volgende commando
+\item De robot ziet een witte lijn en vraagt of dit het einde is van de route
+\item De robot detecteert een mijn en maakt een draai van 180$^\circ$ of hij rijdt achteruit totdat de sensoren een kruispunt detecteren
 \end{itemize}
 
 \subsection{Callforinput-state}
@@ -77,14 +77,12 @@ Gaat deze stap goed, dan volgt de Processnextturn-state, zo niet, dan vraagt de 
 In de Processnextturn-state wordt de ontvangen input ge\"{e}valueerd.
 Afhankelijk van de input gaat de robot naar de volgende states:
 \begin{itemize}
-\item Leftturn-state: de robot maakt een bocht naar links, totdat de sensoren een rechte lijn detecteren, dan volgt de robot de rechte lijn;
-\item Followline-state: de robot gaat in deze state wanneer er een direct commando is gegeven om de rechte lijn te volgen of wanneer de robot klaar is met maken van een bocht/draaiing;
-\item Rightturn-state: analoog aan de Leftturn-state;
-\item Fullturn-state: de robot maakt een draai van 180$^\circ$, daarna volgt hij een rechte lijn;
-\item Back-state: de robot rijdt achteruit totdat de sensor bij het kruispunt is en maakt een bocht naar links of rechts;
-\item Callforinput-state: er wordt gevraagd aan de computer wat het volgende commando is;
-Dit leidt ertoe dat de robot steeds blijft vragen wat het volgende commando is, oftewel het resultaat is dat de robot stopt.
-Bovendien wordt de UART-receiver gereset;
+\item Leftturn-state: de robot maakt een bocht naar links, totdat de sensoren een rechte lijn detecteren, dan volgt de robot de rechte lijn
+\item Followline-state: de robot gaat in deze state wanneer er een direct commando is gegeven om de rechte lijn te volgen of wanneer de robot klaar is met maken van een bocht/draaiing
+\item Rightturn-state: analoog aan de Leftturn-state
+\item Fullturn-state: de robot maakt een draai van 180$^\circ$, daarna volgt hij een rechte lijn
+\item Back-state: de robot rijdt achteruit totdat de sensor bij het kruispunt is en maakt een bocht naar links of rechts
+\item Callforinput-state: de robot blijft steeds vragen om een commando, hierdoor stopt de robot met rijden
 \end{itemize} 
 
 \subsection{Sendmine-state}
