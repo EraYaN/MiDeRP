@@ -1,8 +1,8 @@
 #ifndef _VSARDUINO_H_
 #define _VSARDUINO_H_
-//Board = Arduino Uno
-#define __AVR_ATmega328P__
-#define ARDUINO 105
+//Board = Arduino Mega 2560 or Mega ADK
+#define __AVR_ATmega2560__
+#define ARDUINO 104
 #define __AVR__
 #define F_CPU 16000000L
 #define __cplusplus
@@ -29,7 +29,7 @@ extern "C" void __cxa_pure_virtual() {;}
 //
 //
 
-#include "D:\Program Files (x86)\Arduino\hardware\arduino\variants\standard\pins_arduino.h" 
-#include "D:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
-#include "D:\Users\Robin\Documents\GitHub\MiDeRP\src\controller\robotsim\robotsim.ino"
+#include "F:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
+#include "F:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
+#include "F:\Users\Erwin\GitHub\MiDeRP\src\controller\robotsim\robotsim.ino"
 #endif

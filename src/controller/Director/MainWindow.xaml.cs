@@ -82,6 +82,7 @@ namespace MiDeRP
             destroyButton.IsEnabled = true;
             comPortsComboBox.IsEnabled = false;
             baudRateComboBox.IsEnabled = false;
+			challengeComboBox.IsEnabled = false;
             if (Data.ctr != null)
 			    startRobotButton.IsEnabled = true;
 
@@ -90,7 +91,7 @@ namespace MiDeRP
 
         private void startRobotButton_Click(object sender, RoutedEventArgs e)
         {
-			if (Data.nav.targetCPs.Count == 0)
+			if (Data.nav.targetCPs.Count == 0&&Data.challenge == Challenge.FindPath)
 			{
 				MessageBox.Show("Please choose one or more control points...", "No control points selected", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -114,6 +115,7 @@ namespace MiDeRP
             comPortsComboBox.IsEnabled = true;
             baudRateComboBox.IsEnabled = true;
 			startRobotButton.IsEnabled = false;
+			challengeComboBox.IsEnabled = true;
             Data.nav = null;
             Data.com = null;
             Data.vis = null;

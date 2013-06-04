@@ -7,33 +7,7 @@ using System.Threading.Tasks;
 
 namespace MiDeRP
 {
-    #region Shared enums
-    public enum StatusByteCode : byte { 
-		Unknown = 0x00,
-        Continue = 0x01,
-		Back = 0x42,
-		Forward = 0x46, 
-		Stop = 0x53, 
-		Left = 0x4c, 
-		Right = 0x52,
-		Turn = 0x54,
-		Acknowledged = 0x06,
-		NotAcknowledged = 0x15,
-		Halfway = 0x48,
-		Enquiry = 0x05,
-		MineDetected = 0x07,
-		Done = 0x04
-	};
-
-	public enum Direction
-	{
-		Left,
-		Up,
-		Right,
-		Down,
-		Unknown
-	};
-    #endregion
+    
 
     public class Controller
 	{
@@ -45,6 +19,8 @@ namespace MiDeRP
 		private Direction _nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot	
 		private int _i = 0;
+
+		public List<NodeConnection> treasureSearchList = new List<NodeConnection>();
 
 		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
 		public Direction RobotDirection
@@ -158,8 +134,10 @@ namespace MiDeRP
                 {
                     if (_i == 0)
                         return;
-
+					if (!treasureSearchList.Remove(Data.nav.currentPos))
+						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
                     //Detected mine, add to list
+					
                     Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
                     recalculatePathTreasure();
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
@@ -168,6 +146,8 @@ namespace MiDeRP
                 else if (_receivedByte == StatusByteCode.Halfway)
                 {
                     _halfway = true;
+					if (!treasureSearchList.Remove(Data.nav.currentPos))
+						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
                 }
             }
@@ -180,12 +160,14 @@ namespace MiDeRP
 
         private void getNextDirectiveTreasure()
         {
-            throw new NotImplementedException();
+			getNextDirective();
         }
 
         private void recalculatePathTreasure()
         {
-            throw new NotImplementedException();
+			_i = 0;
+			Data.nav.currentPos = Data.nav.currentPos.Flipped;
+			Data.nav.findTreasure();
         }
 
 		private void findPathEvent()
@@ -284,8 +266,10 @@ namespace MiDeRP
 				//TargetCP visited
 				_nextDirective = StatusByteCode.Turn;
 				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
+				//Data.nav.currentPath++;
+				if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
+					Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
 				Data.nav.currentPath++;
-				Data.nav.targetCPs.Remove(Data.nav.fullPath[_i].From.Id);
 				return;
 			}
 			
@@ -434,11 +418,7 @@ namespace MiDeRP
 		private void recalculatePath()
 		{
 			_i = 0;
-			if (!Data.nav.currentPos.ToCPoint)
-				Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, Data.nav.currentPos.To);
-			else
-				Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, false);
-
+			Data.nav.currentPos = Data.nav.currentPos.Flipped;	
 			Data.nav.makePaths();
 		}
 
@@ -462,6 +442,7 @@ namespace MiDeRP
 			_robotDirection = Direction.Unknown; //current direction the robot is pointing in
 			_nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot
 			_i = 0;
+			Data.nav.currentPath = 0;
 		}
 		#endregion
 	}

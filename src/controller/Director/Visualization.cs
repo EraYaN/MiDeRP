@@ -55,31 +55,22 @@ namespace MiDeRP
             {
                 for (uint y = 0; y < ylim; y++)
                 {
-                    //Add mines (circles) on horizontal lines
+                    //Add mines (circles) on lines
                     Ellipse mine = new Ellipse();
                     Coord N1 = new Coord();
                     Coord N2 = new Coord();
                     NodeConnection ml = new NodeConnection();
-                    NodeConnection ml2 = new NodeConnection();
-                    if (xlim == Data.M && ylim != Data.N)
-                    {
-                        N1.X = x;
-                        N1.Y = y;
-                        N2.X = x;
-                        N2.Y = y + 1;
-                    }
-                    else
-                    {
-                        N1.X = x;
-                        N1.Y = y;
-                        N2.X = x+1;
-                        N2.Y = y;
-                    }
+					N1.X = x;
+					N1.Y = y;
+					N2.X = x;
+					N2.Y = y;
+					if (xlim == Data.M && ylim != Data.N)
+						N2.Y++;
+					else
+						N2.X++;	
                     ml.To = N1;
                     ml.From = N2;
-                    ml2.To = N2;
-                    ml2.From = N1;
-                    if (Data.nav != null && (Data.nav.mines.Contains(ml) || Data.nav.mines.Contains(ml2))) //method the takes position and returns true if there is a mine
+                    if (Data.nav != null && (Data.nav.mines.Contains(ml) || Data.nav.mines.Contains(ml.Flipped))) //method the takes position and returns true if there is a mine
                     {
                         //mine
                         mine.Fill = mineBrush;
