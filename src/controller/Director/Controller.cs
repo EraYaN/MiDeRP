@@ -101,8 +101,92 @@ namespace MiDeRP
 
 		private void findTreasureEvent()
 		{
-			throw new NotImplementedException();
-		}
+            if (_receivedByte == StatusByteCode.Acknowledged)
+            {
+                if (_sentDirectiveIsUnacknowledged)
+                {
+                    if (_done == true)
+                        DisableRobotControl();
+
+                    if (_nextDirective == StatusByteCode.Back)
+                    {
+                        Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, true);
+                        _halfway = true;
+                        _continue = false;
+                    }
+                    else
+                    {
+                        _halfway = false;
+                        _robotDirection = _nextAbsoluteDirection;
+                        Data.nav.currentPos = _nextNodeConnection;
+                    }
+
+                    _i++; //Advance to next item in path					
+                    _sentDirectiveIsUnacknowledged = false;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else if (_receivedByte == StatusByteCode.NotAcknowledged)
+            {
+                //Resend directives
+                Data.com.SendByte((byte)_nextDirective);
+            }
+            else if (_sentDirectiveIsUnacknowledged == false)
+            {
+                if (_receivedByte == StatusByteCode.Enquiry)
+                {
+                    if (_i > 0 && !_halfway && !Data.nav.fullPath[_i].FromPoint)
+                        return;
+
+                    getNextDirectiveTreasure();
+                    Data.com.SendByte((byte)_nextDirective);
+
+                    if (_done == true)
+                    {
+                        Data.com.SendByte((byte)StatusByteCode.Done);
+                    }
+
+                    if (_continue == true)
+                        Data.com.SendByte((byte)StatusByteCode.Continue);
+
+                    _sentDirectiveIsUnacknowledged = true;
+                }
+                else if (_receivedByte == StatusByteCode.MineDetected)
+                {
+                    if (_i == 0)
+                        return;
+
+                    //Detected mine, add to list
+                    Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
+                    recalculatePathTreasure();
+                    Data.com.SendByte((byte)StatusByteCode.Acknowledged);
+                    _halfway = true;
+                }
+                else if (_receivedByte == StatusByteCode.Halfway)
+                {
+                    _halfway = true;
+                    Data.com.SendByte((byte)StatusByteCode.Acknowledged);
+                }
+            }
+            else
+            {
+                //Invalid bytecode or out of sync
+                return;
+            }
+        }
+
+        private void getNextDirectiveTreasure()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void recalculatePathTreasure()
+        {
+            throw new NotImplementedException();
+        }
 
 		private void findPathEvent()
 		{
@@ -142,7 +226,7 @@ namespace MiDeRP
 			{
 				if (_receivedByte == StatusByteCode.Enquiry)
 				{
-					if (_i > 0 && (!_halfway && _nextDirective != StatusByteCode.Turn) && !Data.nav.fullPath[_i].FromCPoint)
+					if (_i > 0 && (!_halfway && _nextDirective != StatusByteCode.Turn) && !Data.nav.fullPath[_i].FromPoint)
 						return;
 
 					getNextDirective();
@@ -195,7 +279,7 @@ namespace MiDeRP
 			{
 				_done = true;
 			}
-			else if (Data.nav.fullPath[_i].FromCPoint == true)
+			else if (Data.nav.fullPath[_i].FromPoint == true)
 			{
 				//TargetCP visited
 				_nextDirective = StatusByteCode.Turn;
@@ -205,7 +289,7 @@ namespace MiDeRP
 				return;
 			}
 			
-			if (Data.nav.fullPath[_i].ToCPoint == true)
+			if (Data.nav.fullPath[_i].ToPoint == true)
 			{
 				//TargetCP reached
 				if (Data.nav.currentExitCP > (Data.numControlPosts - (Data.N - 2)))
@@ -271,7 +355,7 @@ namespace MiDeRP
 			//Find initial direction
 			if (_robotDirection == Direction.Unknown)
 			{
-				if (Data.nav.currentPos.FromCPoint == true)
+				if (Data.nav.currentPos.FromPoint == true)
 				{
 					//Amount of control posts on horizontal sides is m - 2, on vertical sides n - 2, placing is counterclockwise, starting from bottom left (1)
 					if (Data.entryCP > (Data.numControlPosts - (Data.N - 2)))
@@ -299,7 +383,7 @@ namespace MiDeRP
 						_robotDirection = Direction.Unknown;
 					}
 				}
-				else if (Data.nav.currentPos.FromCPoint == false && Data.nav.currentPos.ToCPoint == false)
+				else if (Data.nav.currentPos.FromPoint == false && Data.nav.currentPos.ToPoint == false)
 				{
 					if (Data.nav.currentPos.From.Y > Data.nav.currentPos.To.Y)
 					{

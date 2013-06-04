@@ -91,24 +91,24 @@ namespace MiDeRP
     {
         public Coord To;
         public Coord From;
-        public bool FromCPoint;
-        public bool ToCPoint;
+        public bool FromPoint;
+        public bool ToPoint;
 
         public NodeConnection(Coord to, Coord from)
         {
             To = to;
             From = from;
-            FromCPoint = false;
-            ToCPoint = false;
+            FromPoint = false;
+            ToPoint = false;
         }
 
-        public NodeConnection(Coord to, bool _ToCPoint)
+        public NodeConnection(Coord to, bool _ToPoint)
         {
             //pos is on CP
             To = to;
             From = to;
-            ToCPoint = _ToCPoint;
-            FromCPoint = !_ToCPoint;
+            ToPoint = _ToPoint;
+            FromPoint = !_ToPoint;
         }
 
         public bool IsSame(NodeConnection other)
@@ -184,12 +184,12 @@ namespace MiDeRP
             {
 				if (Data.nav == null)
 					return "No Nav";
-				if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
+				if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToPoint || Data.nav.currentPos.FromPoint))
                 {
-                    if (Data.nav.currentPos.FromCPoint){
+                    if (Data.nav.currentPos.FromPoint){
                         return "CP -> (" + Data.nav.currentPos.To.X + "," + Data.nav.currentPos.To.Y + ")";
                     }
-                    else if (Data.nav.currentPos.ToCPoint)
+                    else if (Data.nav.currentPos.ToPoint)
                     {
                         return "(" + Data.nav.currentPos.From.X + "," + Data.nav.currentPos.From.Y + ") -> CP";
                     }

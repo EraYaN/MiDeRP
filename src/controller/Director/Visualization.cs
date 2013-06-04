@@ -215,7 +215,7 @@ namespace MiDeRP
                     N1 = getCanvasCoordinates(nc.From, xstep, ystep);
                     N2 = getCanvasCoordinates(nc.To, xstep, ystep);
                     double CPExtension = marginlarge - marginsmall-controlpointsize/2-1;
-                    if (nc.ToCPoint)
+                    if (nc.ToPoint)
                     {
                         if (nc.To.X == Data.M-1)
                         {
@@ -234,7 +234,7 @@ namespace MiDeRP
                             N2.Y += CPExtension;
                         }
                     }
-                    else if (nc.FromCPoint)
+                    else if (nc.FromPoint)
                     {
                         if (nc.From.X == Data.M-1)
                         {
@@ -271,13 +271,13 @@ namespace MiDeRP
 
         private void DrawCurrentPosition(double xstep, double ystep)
         {
-            if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
+            if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToPoint || Data.nav.currentPos.FromPoint))
             {
                 Arrow arr = new Arrow();
                 Point N1 = getCanvasCoordinates(Data.nav.currentPos.From, xstep, ystep);
                 Point N2 = getCanvasCoordinates(Data.nav.currentPos.To, xstep, ystep);
                 double CPExtension = (marginlarge - marginsmall - controlpointsize / 2 -1) ;
-				if (Data.nav.currentPos.ToCPoint && !Data.ctr.Halfway)
+				if (Data.nav.currentPos.ToPoint && !Data.ctr.Halfway)
 				{
 					if (Data.nav.currentPos.To.X == Data.M - 1)
 					{
@@ -300,7 +300,7 @@ namespace MiDeRP
 					arr.Y1 = c.ActualHeight - N1.Y;
 					arr.Y2 = c.ActualHeight - N2.Y;
 				}
-				else if (Data.nav.currentPos.FromCPoint)
+				else if (Data.nav.currentPos.FromPoint)
 				{
 					if (Data.nav.currentPos.From.X == Data.M - 1)
 					{
