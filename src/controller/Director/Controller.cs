@@ -19,7 +19,7 @@ namespace MiDeRP
 		Turn = 0x54,
 		Acknowledged = 0x06,
 		NotAcknowledged = 0x15,
-		Halfway = 0x68,
+		Halfway = 0x48,
 		Enquiry = 0x05,
 		MineDetected = 0x07,
 		Done = 0x04
@@ -87,6 +87,25 @@ namespace MiDeRP
 			
             _receivedByte = e.DataByte.ToStatusByteCode();
 
+			if (Data.challenge == Challenge.FindPath)
+			{
+				findPathEvent();
+			}
+			if (Data.challenge == Challenge.FindTreasure)
+			{
+				findTreasureEvent();
+			}
+
+            Data.vis.DrawField();
+        }
+
+		private void findTreasureEvent()
+		{
+			throw new NotImplementedException();
+		}
+
+		private void findPathEvent()
+		{
 			if (_receivedByte == StatusByteCode.Acknowledged)
 			{
 				if (_sentDirectiveIsUnacknowledged)
@@ -127,7 +146,7 @@ namespace MiDeRP
 					if (_i > 0 && !_halfway && !Data.nav.fullPath[_i].FromCPoint)
 						return;
 
-                    getNextDirective();
+					getNextDirective();
 					Data.com.SendByte((byte)_nextDirective);
 
 					if (_done == true)
@@ -142,8 +161,8 @@ namespace MiDeRP
 				}
 				else if (_receivedByte == StatusByteCode.MineDetected)
 				{
-                    if (_i == 0 || _halfway)
-                        return;
+					if (_i == 0)
+						return;
 
 					//Detected mine, add to list
 					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
@@ -161,9 +180,8 @@ namespace MiDeRP
 			{
 				//Invalid bytecode or out of sync
 				return;
-            }
-            Data.vis.DrawField();
-        }
+			}
+		}
 
 		private void getNextDirective()
 		{
