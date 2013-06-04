@@ -10,12 +10,12 @@
 \chapter{Systeemoverzicht}
 \label{ch:systeem}
 Het systeem bestaat uit twee hoofdonderdelen, het programma dat op de PC draait en de robot zelf.
-In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem te zien, hierin zijn de robot en het pc programma nog verder opgedeeld. 
+In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem te zien, hierin zijn de robot en het PC-programma nog verder opgedeeld. 
 \section{Communicatie}
 De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet bereikt worden.
-Wij hebben voor de communicatie een protocol gemaakt, zodat de robot en de pc elkaar kunnen "verstaan".
-Op de robot is een losse state machine geïmplementeerd om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofd systeem deze op de correcte tijd op kan pikken.
-Het zelfde geldt voor het versturen van bytes naar de pc.
+Wij hebben voor de communicatie een protocol gemaakt, zodat de robot en de PC elkaar kunnen "verstaan".
+Op de robot is een losse state machine geïmplementeerd om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofdsysteem deze op de correcte tijd op kan pikken.
+Het zelfde geldt voor het versturen van bytes naar de PC.
 De draadloze overdracht wordt gedaan door een paar XBee modules.
 Er wordt met de modules gecommuniceerd door middel van een Universal asynchronous receiver/transmitter of UART.
 \begin{figure}
@@ -25,9 +25,9 @@ Er wordt met de modules gecommuniceerd door middel van een Universal asynchronou
 \includegraphics[width=\textwidth]{top-level-system}
 \end{figure}
 \section{Robot}
-Het hart van de robot bestaat uit een FPGA.
+Het brein van de robot bestaat uit een FPGA.
 De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden.
-Ook telt de FPGA continue de lengte van de pulsen uit de mijndetector.
+Ook telt de FPGA continu de lengte van de pulsen uit de mijndetector.
 Deze stuurt ook de motoren aan, door een Pulse-Width Modulation of PWM signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
 Op de FPGA wordt ook de communicatie met de XBee afgehandeld, via een UART.
 
@@ -35,8 +35,8 @@ De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fi
 
 \section{Director}
 Ons programma reageert alleen op vragen van de robot, met als uitzondering het 'continue' signaal.
-Zodra de robot op een kruispunt is aangekomen vraagt hij aan de software waar hij heen moet.
-Als de software van mening is dat we zijn aan gekomen stuurt het inplaats van een richting het 'done' signaal zodat de robot stopt.
+Zodra de robot op een kruispunt is aangekomen vraagt de robot aan de software waar hij heen moet.
+Als de software van mening is dat we zijn aangekomen op de bestemming stuurt het in plaats van een richting het 'done' signaal zodat de robot stopt.
 De director bestaat uit 4 hoofdonderdelen:
 \begin{itemize}
 \item De pathfinder op basis van het A* algoritme
