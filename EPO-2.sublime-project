@@ -6,6 +6,9 @@
 		},
 		{
 			"path": "hardware"
+		},
+		{
+			"path": "docs/design-report"
 		}
 	]
 }

@@ -3,7 +3,7 @@
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
 
-\title{EPO-2: Mid-term Design Report - Zeven segmentendisplay}
+\title{EPO-2: Mid-term Design Report - 7-segment display}
 \author{Joris Blom}
 
 \begin{document}
@@ -12,25 +12,50 @@
 \label{ch:sseg}
 \section{Eisen}
 \label{sec:Eisen}
-Het 7-segmentdisplay moet aan de volgende eisen voldoen: 
+Het 7-segmentendisplay moet aan de volgende eisen voldoen: 
 \begin{itemize}
 \item Het 7-segmentendisplay moet doormiddel van een 16 bits input de hexadecimale cijfers 0 t/m F op het elk 7-segmenten-display kunnen weergeven.
-\item Het 7-segmentendislplay moet doormiddel van een 4 bits input de punten van elk 7-segmentendisplay los kunnen aansturen.
+\item Het 7-segmentendisplay moet doormiddel van een 4 bits input de punten van elk 7-segment display los kunnen aansturen.
+\item Het 7-segmentendisplay moet de state van de zender, ontvanger en het main-FSM kunnen weergeven.
 \end{itemize}
-\section{Ontwerp}
-De controller stuurt een 16 bits vector en een 4 bits vector naar de displayaansturing. De 16 bits vector stuurt de 7 segmenten aan en de 4 bits vector de punt onder het 7-segmentendisplay. De eerste 4 bits van de 16 bits vector.
-
-Alle leds per 7-segmentendisplay hebben een gezamenlijke voedingsspanning, dus alle 8 anodes per display zijn elektrisch verbonden. Hierdoor kan elk 7-segmentendisplay afzonderlijk aan en uit worden geschakeld. De kathodes van de 
-\begin{figure}[H]
-\centering
-\includegraphics{7_segment_display_schematic.png}
-
-\caption{7-segmentendislplay}
-\end{figure}
-
 
 \section{Implementatie}
-\section{Test}
-\section{Discussie}
+De 7-segmentendisplays worden gebruikt om verschillende states van de ontvanger, zender en het main-FSM weer te geven.
+Het meest linkse 7-segmentendisplay wordt niet gebruikt.
+Het 7-segmentendisplay rechts van het midden wordt gebruikt om de state van de zender te weergeven.
+Het display links van het midden wordt gebruikt om de state van de ontvanger te weergeven, en het meest linkse display wordt gebruikt om de state van de main-FSM te weergeven.
+De punten onder de displays hebben geen functie en staan altijd uit.
+\newpage
+\section{Werkingsprincipe}
+De controller stuurt een 16 bits vector en een 4 bits vector naar de displayaansturing.
+De het display wordt aangestuurd door de FPGA, die doormiddel van vhdl geprogrammeerd is.
+De 16 bits vector stuurt de 7 segmenten aan en de 4 bits vector de punt onder het 7-segmentendisplay.
+In de vhdl-code wordt de 16 bit vector opgedeeld in 4 bits-vectoren.
+Elk van deze 4 bits-vectoren wordt weergegeven op 1 van de displays als hexadecimale waarde.
+\begin{figure}[H]
+\centering
+\includegraphics{7_segment_display.png}
+
+\caption{7-segmentendisplay}
+\end{figure}
+Hierboven is een afbeelding te zien van \'{e}\'{e}n 7-segment display.
+Elke led is hier vernoemd naar een letter om de verschillende leds te kunnen onderscheiden.
+Hieronder is het complete schema te zien van de vier 7-segment displays, ook hier is elke led vernoemd naar een letter.
+
+Alle leds per 7-segmentendisplay hebben een gezamenlijke voedingsspanning, dus alle 8 anodes per display zijn elektrisch verbonden (zie figuur \ref{fig:ssegschematic}).
+Hierdoor kan elk 7-segmentendisplay afzonderlijk aan en uit worden geschakeld.
+Doormiddel van de kathodes kunnen de leds afzonderlijk aan en uit worden gezet.
+De kathodes van de leds met dezelfde letter zijn elektrische met elkaar verbonden (zie figuur \ref{fig:ssegschematic}).
+Er kan dus maar 1 letter of cijfer tegelijk op alle 4 de displays worden weergeven.
+Door de displays doormiddel van de anode om de beurt afzonderlijk aan en uit te zetten op een hoge frequentie kunnen alle 4 de displays apart aangestuurd worden.
+Door de hoge frequentie is het voor het menselijk oog niet te zien dat het display knippert.
+\begin{figure}[H]
+\centering
+\label{fig:ssegschematic}
+\includegraphics[width=0.7\textwidth]{7_segment_display_schematic.png}
+
+\caption{7-segmentendislplay schematic}
+\end{figure}
+
 
 \end{document}

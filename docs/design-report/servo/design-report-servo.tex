@@ -11,7 +11,14 @@
 \chapter{Aansturing Servomotoren}
 \label{ch:servo}
 
-De belangrijkste actuators in het ontwerp zijn de servomotoren die de wielen van de robot aandrijven. Zonder deze servo's zou de robot vanzelfsprekend niet van zijn plek af komen. Beide motoren worden onafhankelijk aangestuurd en verzorgen niet alleen de voortstuwing, maar ook de besturing van de robot. De servo's worden aangestuurd door de FPGA op de robot, middels een PWM-signaal. Dit signaal moet in de FPGA gegenereerd worden en aan de volgende eisen voldoen:
+De belangrijkste actuators in het ontwerp zijn de servomotoren die de wielen van de robot aandrijven.
+Zonder deze servo's zou de robot vanzelfsprekend niet van zijn plek af komen.
+Beide motoren worden onafhankelijk aangestuurd en verzorgen niet alleen de voortstuwing, maar ook de besturing van de robot.
+De servo's worden aangestuurd door de FPGA op de robot, middels een pulse-width modulation-signaal (PWM-signaal).
+Dit signaal moet in de FPGA gegenereerd worden en aan de volgende eisen voldoen:
+
+\section{Eisen}
+\label{sec:servo-eisen}
 
 \begin{itemize}
 	\item De frequentie van het signaal moet gelijk zijn aan 50 Hz
@@ -31,8 +38,15 @@ Verder geldt het volgende voor wat betreft de draairichting van de servo's:
 \section{Ontwerp en implementatie}
 \label{sec:servo-design}
 
-Er moet dus een pulsgenerator gebouwd worden die afhankelijk van de gewenste snelheid per wiel een geschikte pulslengte maakt. Een pulsgenerator als deze is vrij gemakkelijk te realiseren in een FPGA, door simpelweg het uitgangssignaal van de motorcontrol een bepaalde tijd op '1' te zetten (de puls) en daarna gedurende de rest van de periode van het PWM-signaal weer op '0''. De eerste stap is dan het bepalen van de pulswijdte. Als uitganspunt kan hiervoor de pulswijdte gebruikt worden waarop de servo stil staat: 1.5 ms. Deze tijdsduur staat gelijk aan $1.5 \cdot 10^{-3} \cdot 50 \cdot 10^{6} = 75000$ klokpulsen. Voor voor- en achteruit wijkt de pulslengte hier maximaal $\pm$ 0.5 ms van af, oftewel $0.5 \cdot 10^{-3} \cdot 50 \cdot 10^{6} = 25000$ klokpulsen. Voor het generen van een eenvoudig PWM-signaal met standen ``vooruit'', ``achteruit'' en ``stilstaan'' hoeven er dus alleen maar klokpulsen geteld te worden, waarna het uitgangssignaal (afhankelijk van de positie van de sensor) bij respectievelijk $75000 + 25000 = 100000$, $75000 - 25000 = 50000$ en $75000 + 0 = 75000$ klokpulsen op '0' gezet wordt, hiervoor was het signaal dan vanzelfsprekend '1'.
-Omdat het wenselijk is dat er ook snelheden tussen vol vooruit en vol achteruit aangehouden moeten kunnen worden werken wij met een basispulslengte van 75000 ticks, waar dan vervolgens een factor van 0-100 maal 250 bij opgeteld of van afgetrokken wordt. De formule voor het aantal klokpulsen waarvoor het signaal '1' is wordt dan:
+Er moet dus een pulsgenerator gebouwd worden die afhankelijk van de gewenste snelheid per wiel een geschikte pulswijdte maakt.
+Een pulsgenerator als deze is vrij gemakkelijk te realiseren in een FPGA, door simpelweg het uitgangssignaal van de motorcontrol een bepaalde tijd op '1' te zetten (de puls) en daarna gedurende de rest van de periode van het PWM-signaal weer op '0'.
+De eerste stap is dan het bepalen van de pulswijdte.
+Als uitganspunt kan hiervoor de pulswijdte gebruikt worden waarop de servo stil staat: 1.5 ms.
+Deze tijdsduur staat gelijk aan $1.5 \cdot 10^{-3} \cdot 50 \cdot 10^{6} = 75000$ klokpulsen.
+Voor voor- en achteruit wijkt de pulswijdte hier maximaal $\pm$ 0.5 ms van af, oftewel $0.5 \cdot 10^{-3} \cdot 50 \cdot 10^{6} = 25000$ klokpulsen.
+Voor het generen van een eenvoudig PWM-signaal met standen ``vooruit'', ``achteruit'' en ``stilstaan'' hoeven er dus alleen maar klokpulsen geteld te worden, waarna het uitgangssignaal (afhankelijk van de positie van de sensor) bij respectievelijk $75000 + 25000 = 100000$, $75000 - 25000 = 50000$ en $75000 + 0 = 75000$ klokpulsen op '0' gezet wordt, hiervoor was het signaal dan vanzelfsprekend '1'.
+Omdat het wenselijk is dat er ook snelheden tussen vol vooruit en vol achteruit aangehouden moeten kunnen worden werken wij met een basispulswijdte van 75000 klokpulsen, waar dan vervolgens een factor van 0-100 maal 250 bij opgeteld of van afgetrokken wordt.
+De formule voor het aantal klokpulsen waarvoor het signaal '1' is wordt dan:
 
 \begin{equation}
 	\label{eq:pulsewidth}
@@ -47,7 +61,9 @@ Een totaal overzicht van de aansturing van de servo kan schematisch als volgt wo
 	\caption{Schematisch overzicht van de motoraansturing}
 \end{figure}
 
-De architectuur voor de pulsteller die het aantal verstreken klokpulsen bijhoudt bevindt zich in \textit{timebase.vhdl} (zie bijlage \ref{ssec:vhdl-timebase}), de controller die de gewenste pulslengte vergelijkt met het aantal verstreken klokpulsen in \textit{motorcontrol.vhdl} (zie bijlage \ref{ssec:vhdl-motorcontrol}). Het klok- en resetsignaal (\textit{clk} en \textit{reset}) zijn inputs van buitenaf, de gewenste snelheid (\textit{speed}) en de motor (links of rechts) voor welke het signaal moet worden gegenereerd worden (\textit{motor}) aangeleverd door de overkoepelende controller (\textit{controller.vhdl}, zie bijlage \ref{ssec:vhdl-controller}) en het opgetelde aantal klokpulsen wordt door timebase aan motorcontrol geleverd middels het signaal \textit{count\_in}.
+De structurele opbouw van het motorsysteem is grotendeels overgenomen uit de gegeven vhdl-bestanden en ziet er als volgt uit:
+De architectuur voor de pulsenteller die het aantal verstreken klokpulsen bijhoudt, bevindt zich in \textit{timebase.vhdl} (zie bijlage \ref{ssec:timebase.vhdl}), de controller die de gewenste pulswijdte vergelijkt met het aantal verstreken klokpulsen in \textit{motorcontrol.vhdl} (zie bijlage \ref{ssec:motorcontrol.vhdl}).
+Het klok- en resetsignaal (\textit{clk} en \textit{reset}) zijn inputs van buitenaf, de gewenste snelheid (\textit{speed}) en de motor (links of rechts) voor welke het signaal moet worden gegenereerd worden (\textit{motor}) aangeleverd door de overkoepelende controller (\textit{controller.vhdl}, zie bijlage \ref{ssec:controller.vhdl}) en het opgetelde aantal klokpulsen wordt door timebase aan motorcontrol geleverd middels het signaal \textit{count\_in}.
 
 \section{Test}
 \label{sec:servo-test}
@@ -57,6 +73,8 @@ De architectuur voor de pulsteller die het aantal verstreken klokpulsen bijhoudt
 \section{Discussie}
 \label{sec:servo-disc}
 
-Het signaal wordt correct gegenereerd, met de juiste periode, pulslengten en spanningsniveau's. Daarnaast kunnen we de robot aansturen op een door ons gekozen snelheid. Ook wat betreft de gebruikte resources in de FPGA is de controller optimaal. Hiermee is de motoraansturing niet voor verbetering vatbaar.
+Het signaal wordt correct gegenereerd, met de juiste periode, pulswijdten en spanningsniveau's.
+Daarnaast kunnen we de robot aansturen op een door ons gekozen snelheid.
+Het ontwerp en onze implementatie van de servoaansturing is dus functioneel en voldoet aan alle gestelde eisen.
 
 \end{document}

@@ -9,29 +9,35 @@
 \begin{document}
 \chapter{Systeemoverzicht}
 \label{ch:systeem}
-Het systeem bestaat uit drie hoofdonderdelen, de twee XBee modules voor de communicatie, de robot met de FPGA, de reflectiesensors en de mijnendetector en het Director programma dat op de PC draait.
-In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem te zien, hierin is de robot nog verder opgedeeld. 
+Het systeem bestaat uit twee hoofdonderdelen, het programma dat op de PC draait en de robot zelf.
+In figuur \ref{fig:topLevelSystem} is een blokschema van het systeem te zien, hierin zijn de robot en het pc programma nog verder opgedeeld. 
 \section{Communicatie}
 De communicatie tussen de robot en de director is zeer belangrijk, anders kan het doel niet bereikt worden.
-De eerste versie van het communicatie protocol staat in tabel \ref{tab:comProtocol} in Sectie \ref{sec:communicatie}.
-Op de robot is een losse state machine geïmplementeerd (zie Figuur \ref{fig:fsmReceiver} in Sectie \ref{sec:statemachines}) om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofd systeem deze op de correcte tijd op kan pikken.
-Ook is er een losse state machine (zie Figuur \ref{fig:fsmSender} in Sectie \ref{sec:statemachines}) om het versturen van een byte naar de pc af te handelen geïmplementeerd.
-Beide geven een 2-bit responscode, waarvan de ene bit een response aangeeft en de andere aangeeft of de operatie succesvol was.
-In Tabel \ref{tab:XBeeSettings} in Sectie \ref{sec:communicatie} staan de gekozen instellingen van de XBee modules.
+Wij hebben voor de communicatie een protocol gemaakt, zodat de robot en de pc elkaar kunnen "verstaan".
+Op de robot is een losse state machine geïmplementeerd om de commando's onafhankelijk af te kunnen handelen en in een commando buffer te zetten, zodat het hoofd systeem deze op de correcte tijd op kan pikken.
+Het zelfde geldt voor het versturen van bytes naar de pc.
+De draadloze overdracht wordt gedaan door een paar XBee modules.
+Er wordt met de modules gecommuniceerd door middel van een Universal asynchronous receiver/transmitter of UART.
 \begin{figure}
 \centering
 \caption{Het blokschema van het Systeem.}
 \label{fig:topLevelSystem}
 \includegraphics[width=\textwidth]{top-level-system}
 \end{figure}
-\section{Robot FPGA}
-De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden. Ook telt de FPGA continue de lengte van de pulsen uit de mijndetector.
-Deze stuurt ook de motoren aan, door een PWM signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
-Op de FPGA wordt ook de communicatie met de XBee afgehandeld, via een UART interface.
+\section{Robot}
+Het hart van de robot bestaat uit een FPGA.
+De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden.
+Ook telt de FPGA continue de lengte van de pulsen uit de mijndetector.
+Deze stuurt ook de motoren aan, door een Pulse-Width Modulation of PWM signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
+Op de FPGA wordt ook de communicatie met de XBee afgehandeld, via een UART.
+
 De Finite State Machines zijn afgebeeld in de Figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender} allen in sectie \ref{sec:statemachines}.
 
 \section{Director}
-Ons programma reageert alleen op vragen van de robot, met als uitzondering het 'continue' signaal. Zodra de robot op een kruispunt is aangekomen vraagt hij aan de software waar hij heen moet. Als de software van mening is dat we zijn aan gekomen stuurt het inplaats van een richting het 'done' signaal zodat de robot stopt. De director bestaat uit 4 hoofdonderdelen:
+Ons programma reageert alleen op vragen van de robot, met als uitzondering het 'continue' signaal.
+Zodra de robot op een kruispunt is aangekomen vraagt hij aan de software waar hij heen moet.
+Als de software van mening is dat we zijn aan gekomen stuurt het inplaats van een richting het 'done' signaal zodat de robot stopt.
+De director bestaat uit 4 hoofdonderdelen:
 \begin{itemize}
 \item De pathfinder op basis van het A* algoritme
 \item De event-driven seriële implentatie
