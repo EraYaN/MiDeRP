@@ -14,9 +14,9 @@
 \label{sec:Eisen}
 Het 7-segmentendisplay moet aan de volgende eisen voldoen: 
 \begin{itemize}
-\item Het 7-segmentendisplay moet doormiddel van een 16 bits input de hexadecimale cijfers 0 t/m F op het elk 7-segmenten-display kunnen weergeven.
-\item Het 7-segmentendisplay moet doormiddel van een 4 bits input de punten van elk 7-segment display los kunnen aansturen.
-\item Het 7-segmentendisplay moet de state van de zender, ontvanger en het main-FSM kunnen weergeven.
+\item Het 7-segmentendisplay moet door middel van een 16 bits input de hexadecimale cijfers 0 t/m F op het elk 7-segmenten-display kunnen weergeven
+\item Het 7-segmentendisplay moet door middel van een 4 bits input de punten van elk 7-segment display los kunnen aansturen
+\item Het 7-segmentendisplay moet de state van de zender, ontvanger en het main-FSM kunnen weergeven
 \end{itemize}
 
 \section{Implementatie}
@@ -28,9 +28,9 @@ De punten onder de displays hebben geen functie en staan altijd uit.
 \newpage
 \section{Werkingsprincipe}
 De controller stuurt een 16 bits vector en een 4 bits vector naar de displayaansturing.
-De het display wordt aangestuurd door de FPGA, die doormiddel van vhdl geprogrammeerd is.
+De het display wordt aangestuurd door de FPGA, die door middel van VHDL geprogrammeerd is.
 De 16 bits vector stuurt de 7 segmenten aan en de 4 bits vector de punt onder het 7-segmentendisplay.
-In de vhdl-code wordt de 16 bit vector opgedeeld in 4 bits-vectoren.
+In de VHDL-code wordt de 16 bit vector opgedeeld in 4 bits-vectoren.
 Elk van deze 4 bits-vectoren wordt weergegeven op 1 van de displays als hexadecimale waarde.
 \begin{figure}[H]
 \centering
@@ -44,10 +44,10 @@ Hieronder is het complete schema te zien van de vier 7-segment displays, ook hie
 
 Alle leds per 7-segmentendisplay hebben een gezamenlijke voedingsspanning, dus alle 8 anodes per display zijn elektrisch verbonden (zie figuur \ref{fig:ssegschematic}).
 Hierdoor kan elk 7-segmentendisplay afzonderlijk aan en uit worden geschakeld.
-Doormiddel van de kathodes kunnen de leds afzonderlijk aan en uit worden gezet.
+Door middel van de kathodes kunnen de leds afzonderlijk aan en uit worden gezet.
 De kathodes van de leds met dezelfde letter zijn elektrische met elkaar verbonden (zie figuur \ref{fig:ssegschematic}).
 Er kan dus maar 1 letter of cijfer tegelijk op alle 4 de displays worden weergeven.
-Door de displays doormiddel van de anode om de beurt afzonderlijk aan en uit te zetten op een hoge frequentie kunnen alle 4 de displays apart aangestuurd worden.
+Door de displays door middel van de anode om de beurt afzonderlijk aan en uit te zetten op een hoge frequentie kunnen alle 4 de displays apart aangestuurd worden.
 Door de hoge frequentie is het voor het menselijk oog niet te zien dat het display knippert.
 \begin{figure}[H]
 \centering
