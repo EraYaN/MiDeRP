@@ -178,10 +178,10 @@ begin
 					motor_l_speed <= to_signed(100,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif (delaycounter < to_integer(unsigned(sw))*500000) and (delaycounter /= 0) then
-					motor_l_speed <= to_signed(-50,8);
+					motor_l_speed <= to_signed(-100,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif delaycounter = 0	then
-					motor_l_speed <= to_signed(-50,8);
+					motor_l_speed <= to_signed(-100,8);
 					motor_r_speed <= to_signed(100,8);
 					case sensor is			  			  
 					  when "101" => next_state:=followline;
@@ -201,10 +201,10 @@ begin
 					motor_r_speed <= to_signed(100,8);
 				elsif (delaycounter < to_integer(unsigned(sw))*500000) and (delaycounter /= 0) then
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(-50,8);
+					motor_r_speed <= to_signed(-100,8);
 				elsif delaycounter = 0	then
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(-50,8);
+					motor_r_speed <= to_signed(-100,8);
 					case sensor is			  			  
 					  when "101" => next_state:=followline;
 					 -- when "110" => next_state:=followline;
