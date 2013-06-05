@@ -152,16 +152,21 @@ begin
 				debugid:=to_unsigned(16#2#,8);
 				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);			
 					if nextturn = 0 then
-						--next_delaycounter:=to_integer(unsigned(sw))*1000000;
+						if delaycounter = 0 then
+							next_delaycounter:=30000000;
+						end if;
 						next_state:=leftturn; --left
 					elsif nextturn = 1 then
 						next_state:=followline; --forward (line)
-					elsif nextturn = 2 then
-						--next_delaycounter:=to_integer(unsigned(sw))*1000000;
+					elsif nextturn = 2 then	
+						if delaycounter = 0 then
+							next_delaycounter:=30000000;
+						end if;
 						next_state:=rightturn; --right
 					elsif nextturn = 3 then
 						next_state:=callforinput; --stop (wait for input)
 					elsif nextturn = 4 then
+						next_delaycounter:=100000000;
 						next_state:=fullturn; --turn
 					elsif nextturn = 5 then
 						next_state:=turnback; --back
@@ -174,14 +179,14 @@ begin
 					debugid:=to_unsigned(16#F#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter >= to_integer(unsigned(sw))*500000 then					
-					motor_l_speed <= to_signed(100,8);
+				if delaycounter >= 20000000 then					
+					motor_l_speed <= to_signed(50,8);
 					motor_r_speed <= to_signed(100,8);
-				elsif (delaycounter < to_integer(unsigned(sw))*500000) and (delaycounter /= 0) then
-					motor_l_speed <= to_signed(-100,8);
+				elsif (delaycounter < 20000000) and (delaycounter /= 0) then
+					motor_l_speed <= to_signed(-80,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif delaycounter = 0	then
-					motor_l_speed <= to_signed(-100,8);
+					motor_l_speed <= to_signed(-50,8);
 					motor_r_speed <= to_signed(100,8);
 					case sensor is			  			  
 					  when "101" => next_state:=followline;
@@ -196,15 +201,15 @@ begin
 					debugid:=to_unsigned(16#10#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter >= to_integer(unsigned(sw))*500000 then					
+				if delaycounter >= 20000000 then					
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(100,8);
-				elsif (delaycounter < to_integer(unsigned(sw))*500000) and (delaycounter /= 0) then
+					motor_r_speed <= to_signed(50,8);
+				elsif (delaycounter < 20000000) and (delaycounter /= 0) then
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(-100,8);
+					motor_r_speed <= to_signed(-80,8);
 				elsif delaycounter = 0	then
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(-100,8);
+					motor_r_speed <= to_signed(-50,8);
 					case sensor is			  			  
 					  when "101" => next_state:=followline;
 					 -- when "110" => next_state:=followline;
@@ -214,13 +219,19 @@ begin
 			elsif state = fullturn then
 				debugid:=to_unsigned(16#9#,8);
 				--full turn
-				motor_l_speed <= to_signed(100,8);
-				motor_r_speed <= to_signed(-100,8);
 				if delaycounter > 0 then
 					debugid:=to_unsigned(16#11#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter = 0	then	
+				if delaycounter >= 80000000 then					
+					motor_l_speed <= to_signed(100,8);
+					motor_r_speed <= to_signed(100,8);
+				elsif (delaycounter < 80000000) and (delaycounter /= 0) then
+					motor_l_speed <= to_signed(-100,8);
+					motor_r_speed <= to_signed(100,8);
+				elsif delaycounter = 0	then				
+					motor_l_speed <= to_signed(-100,8);
+					motor_r_speed <= to_signed(100,8);	
 					case sensor is	
 						when "101" => next_state:=followline;
 						when others => --nothing
@@ -230,15 +241,15 @@ begin
 				debugid:=to_unsigned(16#E#,8);
 				--backtrack
 				case sensor is
-						when "000" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);											
-						when "001" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-20,8);
-						when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
-						when "011" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(50,8);
-						when "100" => motor_l_speed <= to_signed(-20,8); motor_r_speed <= to_signed(-100,8);
-						when "101" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
-						when "110" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(100,8);
-						when "111" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
-						when others => motor_l_speed <= to_signed(0,8); motor_r_speed <= to_signed(0,8);
+						--when "000" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);											
+						--when "001" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-20,8);
+						--when "010" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(50,8);
+						--when "011" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(50,8);
+						--when "100" => motor_l_speed <= to_signed(-20,8); motor_r_speed <= to_signed(-100,8);
+						--when "101" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
+						--when "110" => motor_l_speed <= to_signed(50,8); motor_r_speed <= to_signed(100,8);
+						--when "111" => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
+						when others => motor_l_speed <= to_signed(-100,8); motor_r_speed <= to_signed(-100,8);
 				   end case;
 				if delaycounter > 0 then
 					debugid:=to_unsigned(16#12#,8);
@@ -247,7 +258,7 @@ begin
 				if delaycounter = 0	then			
 					case sensor is															
 					  when "000" => 
-						next_delaycounter:=to_integer(unsigned(sw))*1000000;
+						next_delaycounter:=30000000;
 					  	next_state := callforinput;
 					  when others => --nothing
 				   end case;
@@ -263,9 +274,7 @@ begin
 					next_sending:='0';					
 				end if;	
 			elsif state = sendmine then
-				debugid:=to_unsigned(16#D#,8);			
-				motor_l_speed <= to_signed(0,8);
-				motor_r_speed <= to_signed(0,8);
+				debugid:=to_unsigned(16#D#,8);
 				uart_send <= p_mine;
 				next_sending:='1';	
 				if sresponse = "10" then
@@ -274,9 +283,7 @@ begin
 					next_sending:='0';					
 				end if;
 			elsif state = sendhalf then
-				debugid:=to_unsigned(16#E#,8);			
-				motor_l_speed <= to_signed(50,8);
-				motor_r_speed <= to_signed(50,8);
+				debugid:=to_unsigned(16#E#,8);	
 				uart_send <= p_half;
 				next_sending:='1';	
 				if sresponse = "10" then
