@@ -71,19 +71,35 @@ int findPath (Node * entryNode, Node * exitNode)
 		{
 			neighbor = current->neighbors[i];
 
-			if (!neighbor || isMine (current, neighbor))
+			if (!neighbor)
 			{
 #ifdef _DEBUG
-				printf( "Neighbor does not exist or found mine\n");
+				printf( "Neighbor does not exist\n");
 #endif
 				continue; //neighbor does not exist
+			}
+
+			if (isMine (current, neighbor))
+			{
+#ifdef _DEBUG
+				printf( "Found mine to neighbor\n");
+#endif
+				continue; //neighbor does not exist
+			}
+			pre_g = current->g + 1;
+
+			if (isVisited (current, neighbor))
+			{
+#ifdef _DEBUG
+				printf( "Neighbor has been visited\n");
+#endif
+				pre_g = pre_g + 4;
 			}
 
 #ifdef _DEBUG
 			printf( "Now checking neighbor node %d\n", neighbor->id);
 #endif
 
-			pre_g = current->g + 1;
 			if (current->previousDir != -1 && current->previousDir != i)
 				pre_g = pre_g + 2;
 

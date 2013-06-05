@@ -136,6 +136,7 @@ namespace MiDeRP
                         return;
 					if (!treasureSearchList.Remove(Data.nav.currentPos))
 						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
+                    Data.nav.visited.Add(Data.nav.currentPos);
                     //Detected mine, add to list
 					
                     Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
@@ -148,6 +149,7 @@ namespace MiDeRP
                     _halfway = true;
 					if (!treasureSearchList.Remove(Data.nav.currentPos))
 						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
+                    Data.nav.visited.Add(Data.nav.currentPos);
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
                 }
             }
@@ -257,7 +259,7 @@ namespace MiDeRP
 				_nextNodeConnection = Data.nav.fullPath[_i];
 			}
 
-			if ((Data.nav.fullPath.Count - 1) == _i)
+            if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count==0)
 			{
 				_done = true;
 			}
@@ -269,7 +271,7 @@ namespace MiDeRP
 				//Data.nav.currentPath++;
 				if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
 					Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
-				Data.nav.currentPath++;
+				//Data.nav.currentPath++;
 				return;
 			}
 			

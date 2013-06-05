@@ -1,19 +1,19 @@
 ﻿<Window x:Name="mainWindow" x:Class="MiDeRP.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MiDeRP Director EPO2-D2" Height="500" Width="600" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" MinHeight="400" MinWidth="403">
+        Title="MiDeRP Director EPO2-D2" Height="564" Width="664" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" MinHeight="400" MinWidth="403">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400*"/>
             <ColumnDefinition Width="110*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="fieldmapcanvas" Margin="10,10,2.4,24.8" ClipToBounds="True"/>       
+        <Canvas x:Name="fieldmapcanvas" Margin="10,10,2.4,24.8" ClipToBounds="True"/>
         <StatusBar x:Name="statusBar" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
             <StatusBarItem Content="{Binding MineCount, Mode=OneWay}" Width="25" x:Name="statusBarMineNumber" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
             <StatusBarItem Width="40" Content="mines" x:Name="statusBarMineText" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
             <StatusBarItem Width="40" Content="{Binding SerialPortStatus, Mode=OneWay}" Foreground="{Binding SerialPortStatusColor, Mode=OneWay}" x:Name="statusBarComPort" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <StatusBarItem Content="{Binding PathLength, Mode=OneWay}" Width="97" x:Name="statusBarPathLength" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-            <StatusBarItem Content="{Binding CurrentPosText, Mode=OneWay}" Width="97" x:Name="statusBarRobotPos" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>            
+            <StatusBarItem Content="{Binding CurrentPosText, Mode=OneWay}" Width="97" x:Name="statusBarRobotPos" Margin="0,0,0,0" HorizontalAlignment="Left"  HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
         </StatusBar>
         <StackPanel Margin="1.8,2,1.6,82.4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
             <GroupBox Header="Serial Interface">
@@ -41,15 +41,15 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Initialization">
-				<StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-					<Label Target="{Binding ElementName=challengeComboBox}" Content="Challenge:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
-					<ComboBox x:Name="challengeComboBox" Height="20" Margin="2" Padding="4,0,0,0" VerticalContentAlignment="Center">
-						<ComboBoxItem Content="Find path" IsSelected="True"/>
-						<ComboBoxItem Content="Find treasure"/>
-					</ComboBox>
-					<Button x:Name="startInitButton" Content="Start Init" Margin="2" Click="startInitButton_Click" IsDefault="True"/>
-					<Button x:Name="destroyButton" Content="Destroy" Margin="2" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
-				</StackPanel>
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Label Target="{Binding ElementName=challengeComboBox}" Content="Challenge:" Height="16" Padding="0" Margin="0,0,0.2,0"/>
+                    <ComboBox x:Name="challengeComboBox" Height="20" Margin="2" Padding="4,0,0,0" VerticalContentAlignment="Center">
+                        <ComboBoxItem Content="Find path" IsSelected="True"/>
+                        <ComboBoxItem Content="Find treasure"/>
+                    </ComboBox>
+                    <Button x:Name="startInitButton" Content="Start Init" Margin="2" Click="startInitButton_Click" IsDefault="True"/>
+                    <Button x:Name="destroyButton" Content="Destroy" Margin="2" Click="destroyButton_Click" IsEnabled="False" IsCancel="True"/>
+                </StackPanel>
             </GroupBox>
             <GroupBox Header="Path Controls">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -62,17 +62,12 @@
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Button x:Name="startRobotButton" Content="Start Robot" Margin="2" Click="startRobotButton_Click" IsEnabled="False"/>
                     <Button x:Name="resetRobotButton" Content="Reset Robot" Margin="2" Click="resetRobotButton_Click" IsEnabled="False"/>
+                    <Button x:Name="softResetRobotButton" Content="Soft Reset Robot" Margin="2" IsEnabled="False" Click="softResetRobotButton_Click"/>
                 </StackPanel>
             </GroupBox>
 
 
         </StackPanel>
-        <TextBlock TextWrapping="Wrap" FontSize="9" Margin="0.4,0,0.6,25.4" Grid.Column="1" HorizontalAlignment="Stretch" Height="60" VerticalAlignment="Bottom">
-            Canvas controls:
-            <LineBreak/>
-            Mines: click = set/unset, rclick = set/unset Pos;
-            <LineBreak/>
-            Controlposts: click = set Entry, rclick = set Exit
-        </TextBlock>
+        <TextBlock TextWrapping="Wrap" FontSize="9" Margin="0.4,0,0.6,25.4" Grid.Column="1" HorizontalAlignment="Stretch" Height="60" VerticalAlignment="Bottom"><Run Text="Canvas controls:"/><LineBreak/><Run Text="Mines: click = set/unset, rclick = set/unset Pos;"/><LineBreak/><Run Text="Controlposts: click = set Entry, rclick = "/><Run Language="nl-nl" Text="add exit to list."/></TextBlock>
     </Grid>
 </Window>

@@ -104,6 +104,7 @@ namespace MiDeRP
             Data.ctr.EnableRobotControl();
             startRobotButton.IsEnabled = false;
 			resetRobotButton.IsEnabled = true;
+            softResetRobotButton.IsEnabled = true;
         }
 
         private void destroyButton_Click(object sender, RoutedEventArgs e)
@@ -179,6 +180,7 @@ namespace MiDeRP
 			{
 				Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
 				Data.nav.mines.Clear();
+                Data.nav.visited.Clear();
 				Data.nav.fullPath.Clear();
 				if (Data.nav.paths != null)
 					Array.Clear(Data.nav.paths, 0, Data.nav.paths.Length);
@@ -192,5 +194,26 @@ namespace MiDeRP
 
 			Data.vis.DrawField();
 		}
+
+        private void softResetRobotButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Data.nav != null)
+            {
+                Data.nav.currentPos = new NodeConnection(new Coord(Data.entryCP), false);
+                //Data.nav.mines.Clear();
+                Data.nav.visited.Clear();
+                Data.nav.fullPath.Clear();
+                if (Data.nav.paths != null)
+                    Array.Clear(Data.nav.paths, 0, Data.nav.paths.Length);
+            }
+
+            if (Data.ctr != null)
+            {
+                Data.ctr.ResetRobotControl();
+                startRobotButton.IsEnabled = true;
+            }
+
+            Data.vis.DrawField();
+        }
     }
 }
