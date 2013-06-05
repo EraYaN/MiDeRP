@@ -10,7 +10,6 @@ namespace MiDeRP
     public class Navigation
     {
         public List<NodeConnection> mines = new List<NodeConnection>();
-        public List<NodeConnection> visited = new List<NodeConnection>();
         public NodeConnection currentPos;
         public List<NodeConnection> fullPath = new List<NodeConnection>();
 		public List<uint> targetCPs = new List<uint>((int)Data.numControlPosts);
@@ -22,6 +21,14 @@ namespace MiDeRP
 			get
 			{
 				return targetCPs[currentPath];
+			}
+		}
+
+		public Coord currentExitCPCoord
+		{
+			get
+			{
+				return new Coord(currentExitCP);
 			}
 		}
 
@@ -47,16 +54,10 @@ namespace MiDeRP
         static extern int clearMines();
 
         [DllImport("navigation.dll")]
-        static extern int clearVisited();
-
-        [DllImport("navigation.dll")]
         static extern IntPtr extractPath();
 
         [DllImport("navigation.dll")]
         static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
-
-        [DllImport("navigation.dll")]
-        static extern int setVisitedC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
 		#endregion
 
 		public Navigation()
@@ -80,22 +81,18 @@ namespace MiDeRP
 			}
 			else if (Data.challenge == Challenge.FindTreasure)
 			{
-				Data.ctr.treasureSearchList.Clear();
-				addAllNodeConnections(Data.M - 1, Data.N);
-				addAllNodeConnections(Data.M, Data.N - 1);
-                Data.nav.visited.Clear();
 				findTreasure();
 			}
 			else
 			{
-				throw new NotImplementedException();
+				throw new ArgumentException("Invalid challenge...");
 			}
 		}
 
 		public void makePaths()
 		{
 			if (targetCPs.Count < 1)
-				return; //exception maybe?
+				throw new ArgumentOutOfRangeException("Need one or more controlposts");
 
 			paths = new List<NodeConnection>[targetCPs.Count];
 			fullPath.Clear();
@@ -121,8 +118,6 @@ namespace MiDeRP
 		public void updateCurrentPath(Coord entry, Coord exit)
 		{
             setMinesInDLL();
-            if (Data.challenge == Challenge.FindTreasure)
-                setVisitedInDLL();
             int res = updatePath(entry.Id, exit.Id);
             if (res != 0)
                 return;//throw new Exception();
@@ -137,123 +132,140 @@ namespace MiDeRP
             }
 		}
 
-		private void addAllNodeConnections(uint xlim, uint ylim)
-		{
-			for (uint x = 0; x < xlim; x++)
-			{
-				for (uint y = 0; y < ylim; y++)
-				{
-					Coord N1 = new Coord();
-					Coord N2 = new Coord();
-					NodeConnection ml = new NodeConnection();
-					N1.X = x;
-					N1.Y = y;
-					N2.X = x;
-					N2.Y = y;
-					if (xlim == Data.M && ylim != Data.N)					
-						N2.Y++;					
-					else
-						N2.X++;						
-					ml.To = N1;
-					ml.From = N2;
-					Data.ctr.treasureSearchList.Add(ml);
-				}
-
-			}
-		}
-
-        int getH (Coord node, Coord sourceNode)
-        {
-            return Math.Abs((int)sourceNode.X - (int)node.X) + Math.Abs((int)sourceNode.Y - (int)node.Y);           
-
-        }
-
 		public void findTreasure()
 		{
-			
-			fullPath.Clear();
-			
-			paths = new List<NodeConnection>[Data.ctr.treasureSearchList.Count];
-            List<Coord> nodes = new List<Coord>();
-            List<NodeConnection> visited = new List<NodeConnection>();
-            List<NodeConnection> open = new List<NodeConnection>();
+			int i;
+			bool entryCPIsVertical;
+			Coord currentNode, nextNode;
 
-            foreach (NodeConnection nc in Data.ctr.treasureSearchList)
-            {
-                if (!nodes.Contains(nc.To))
-                {
-                    nodes.Add(nc.To);
-                }
-                if (!nodes.Contains(nc.From))
-                {
-                    nodes.Add(nc.From);
-                }
-            }
-            var queryFarthestNode =
-                from c in Data.ctr.treasureSearchList
-                where !c.IsSame(Data.nav.currentPos) && !visited.Contains(c) && !visited.Contains(c.Flipped)
-                orderby getH(c.To,Data.nav.currentPos.To) descending
-                select c;
+			if (Data.entryCPCoord.X % (Data.M - 1) == 0)
+				entryCPIsVertical = true; //vertical axis
+			else
+				entryCPIsVertical = false; //horizontal axis
 
-            List<NodeConnection> tempVisited = Data.nav.visited;
-			/*for (int i = 0; i < Data.ctr.treasureSearchList.Count; i++)
+			currentNode = Data.entryCPCoord;
+			currentPath = 0;
+			paths = new List<NodeConnection>[Data.N * 2 + Data.M * 2 - 1];
+
+			if (entryCPIsVertical)
 			{
-				currentPath = i;
-				if (i == 0)
+				//Get to corner if not already
+				if (Data.entryCPCoord.Y % (Data.N - 1) != 0)
 				{
-					updateCurrentPath(currentPos.To, Data.ctr.treasureSearchList[i].To);
+					if (Data.entryCPCoord.Y > (Data.N / 2))
+						nextNode = new Coord(Data.entryCPCoord.X, Data.N - 1);
+					else
+						nextNode = new Coord(Data.entryCPCoord.X, 0);
+
+					updateCurrentPath(Data.entryCPCoord, nextNode);
+					fullPath.AddRange(paths[currentPath]);
 				}
 				else
 				{
-					updateCurrentPath(Data.ctr.treasureSearchList[i].To, Data.ctr.treasureSearchList[i].From);
+					nextNode = Data.entryCPCoord;
 				}
-				fullPath.AddRange(paths[currentPath]);
-			}*/
-            open.AddRange(queryFarthestNode);
-            
-            currentPath = 0;
-            NodeConnection cPos = currentPos;
-            Boolean first = true;
-            NodeConnection n;
-            while (open.Count()>0)
-            {
-                if (first)
-                {
-                    n = open.First();
-                }
-                else
-                {
-                    n = open.Last();
-                }
-                open.Remove(n);
-                Data.nav.visited = visited;
-                updateCurrentPath(cPos.To, n.To);
-                if (paths[currentPath] != null)
-                {
-                    fullPath.AddRange(paths[currentPath]);
-                    foreach (NodeConnection nc in paths[currentPath])
-                    {
-                        nodes.Remove(nc.To);
-                        nodes.Remove(nc.From);
-                        if (!visited.Contains(nc) && !visited.Contains(nc.Flipped))
-                        {
-                            visited.Add(nc);
-                        }
-                    }
-                    
-                    cPos = n;
-                    
-                    first = !first;
-                }
-                else
-                {
-                    break;
-                }
-                              
-            }            
+
+				nextNode = horizontalSweep(nextNode, 1);
+				verticalSweep(nextNode, (int)Data.N * 2);
+
+			}
+			else
+			{
+				//Get to corner if not already
+				if (Data.entryCPCoord.X % (Data.M - 1) != 0)
+				{
+					if (Data.entryCPCoord.X > (Data.M / 2))
+						nextNode = new Coord(Data.M - 1, Data.entryCPCoord.Y);
+					else
+						nextNode = new Coord(0, Data.entryCPCoord.Y);
+
+					updateCurrentPath(Data.entryCPCoord, nextNode);
+					fullPath.AddRange(paths[currentPath]);
+				}
+				else
+				{
+					nextNode = Data.entryCPCoord;
+				}
+
+				nextNode = verticalSweep(nextNode, 1);
+				horizontalSweep(nextNode, (int)Data.M * 2);
+			
+			}
+
 			currentPath = 0;
-            Data.nav.visited = tempVisited;
 			Data.vis.DrawField();
+		}
+
+		private Coord verticalSweep(Coord initialNode, int initialI)
+		{
+			int i;
+			Coord currentNode, nextNode;
+
+			currentNode = nextNode = initialNode;
+
+			for (i = initialI; i < (initialI + Data.M * 2 - 1); i++)
+			{
+				currentPath = i;
+
+				if ((i - (initialI - 1)) % 2 == 1)
+				{
+					//Cross over
+					if (currentNode.Y == 0)
+						nextNode = new Coord(currentNode.X, Data.N - 1);
+					else
+						nextNode = new Coord(currentNode.X, 0);
+				}
+				else
+				{
+					//Increase/decrease Y
+					if (initialNode.X > (Data.M / 2))
+						nextNode = new Coord(currentNode.X - 1, currentNode.Y);
+					else
+						nextNode = new Coord(currentNode.X + 1, currentNode.Y);
+				}
+
+				updateCurrentPath(currentNode, nextNode);
+				fullPath.AddRange(paths[currentPath]);
+				currentNode = nextNode;
+			}
+
+			return nextNode;
+		}
+
+		private Coord horizontalSweep(Coord initialNode, int initialI)
+		{
+			int i;
+			Coord currentNode, nextNode;
+
+			currentNode = nextNode = initialNode;
+
+			for (i = initialI; i < (initialI + Data.N * 2 - 1); i++)
+			{
+				currentPath = i;
+				
+				if ((i - (initialI - 1)) % 2 == 1)
+				{
+					//Cross over
+					if (currentNode.X == 0)
+						nextNode = new Coord(Data.M - 1, currentNode.Y);
+					else
+						nextNode = new Coord(0, currentNode.Y);
+				}
+				else
+				{
+					//Increase/decrease Y
+					if (initialNode.Y > (Data.N / 2))
+						nextNode = new Coord(currentNode.X, currentNode.Y - 1);
+					else
+						nextNode = new Coord(currentNode.X, currentNode.Y + 1);
+				}
+
+				updateCurrentPath(currentNode, nextNode);
+				fullPath.AddRange(paths[currentPath]);
+				currentNode = nextNode;
+			}
+
+			return nextNode;
 		}
 		#endregion
 
@@ -271,20 +283,6 @@ namespace MiDeRP
 			}
 			return 0;
 		}
-
-        private int setVisitedInDLL()
-        {
-            if (clearVisited() != 0)
-            {
-                //error
-                return -1;
-            }
-            foreach (NodeConnection m in visited)
-            {
-                setVisitedC(m.To.X, m.To.Y, m.From.X, m.From.Y, 1);
-            }
-            return 0;
-        }
 
         public List<NodeConnection> getPath()
         {

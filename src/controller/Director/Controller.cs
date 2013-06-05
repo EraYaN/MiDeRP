@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace MiDeRP
 {
-    
-
     public class Controller
 	{
 		private bool _sentDirectiveIsUnacknowledged = false;
@@ -19,8 +17,6 @@ namespace MiDeRP
 		private Direction _nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot	
 		private int _i = 0;
-
-		public List<NodeConnection> treasureSearchList = new List<NodeConnection>();
 
 		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
 		public Direction RobotDirection
@@ -134,11 +130,7 @@ namespace MiDeRP
                 {
                     if (_i == 0)
                         return;
-					if (!treasureSearchList.Remove(Data.nav.currentPos))
-						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
-                    Data.nav.visited.Add(Data.nav.currentPos);
-                    //Detected mine, add to list
-					
+										
                     Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
                     recalculatePathTreasure();
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
@@ -147,9 +139,7 @@ namespace MiDeRP
                 else if (_receivedByte == StatusByteCode.Halfway)
                 {
                     _halfway = true;
-					if (!treasureSearchList.Remove(Data.nav.currentPos))
-						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
-                    Data.nav.visited.Add(Data.nav.currentPos);
+
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
                 }
             }
@@ -278,22 +268,22 @@ namespace MiDeRP
 			if (Data.nav.fullPath[_i].ToPoint == true)
 			{
 				//TargetCP reached
-				if (Data.nav.currentExitCP > (Data.numControlPosts - (Data.N - 2)))
+				if (Data.nav.currentExitCPCoord.X == 0)
 				{
 					//nav.currentExitCP is at left side
 					_nextAbsoluteDirection = Direction.Left;
 				}
-				else if (Data.nav.currentExitCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCPCoord.Y == Data.N)
 				{
 					//nav.currentExitCP is at top side
 					_nextAbsoluteDirection = Direction.Up;
 				}
-				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCPCoord.X == Data.M)
 				{
 					//nav.currentExitCP is at right side
 					_nextAbsoluteDirection = Direction.Right;
 				}
-				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
+				else if (Data.nav.currentExitCPCoord.Y == 0)
 				{
 					//nav.currentExitCP is at bottom side
 					_nextAbsoluteDirection = Direction.Down;
@@ -344,22 +334,22 @@ namespace MiDeRP
 				if (Data.nav.currentPos.FromPoint == true)
 				{
 					//Amount of control posts on horizontal sides is m - 2, on vertical sides n - 2, placing is counterclockwise, starting from bottom left (1)
-					if (Data.entryCP > (Data.numControlPosts - (Data.N - 2)))
+					if (Data.entryCPCoord.X == 0)
 					{
 						//entryCP is at left side
 						_robotDirection = Direction.Right;
 					}
-					else if (Data.entryCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
+					else if (Data.entryCPCoord.Y == Data.N)
 					{
 						//entryCP is at top side
 						_robotDirection = Direction.Down;
 					}
-					else if (Data.entryCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
+					else if (Data.entryCPCoord.X == Data.M)
 					{
 						//entryCP is at right side
 						_robotDirection = Direction.Left;
 					}
-					else if (Data.entryCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
+					else if (Data.entryCPCoord.Y == 0)
 					{
 						//entryCP is at bottom side
 						_robotDirection = Direction.Up;
