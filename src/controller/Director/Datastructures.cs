@@ -91,24 +91,40 @@ namespace MiDeRP
     {
         public Coord To;
         public Coord From;
-        public bool FromCPoint;
-        public bool ToCPoint;
+        public bool FromPoint;
+        public bool ToPoint;
+
+		public NodeConnection Flipped
+		{
+			get
+			{
+				if (!ToPoint)
+				{
+					return new NodeConnection(From, To);
+				}
+				else
+				{
+					return new NodeConnection(To, false);
+				}
+
+			}
+		}
 
         public NodeConnection(Coord to, Coord from)
         {
             To = to;
             From = from;
-            FromCPoint = false;
-            ToCPoint = false;
+            FromPoint = false;
+            ToPoint = false;
         }
 
-        public NodeConnection(Coord to, bool _ToCPoint)
+        public NodeConnection(Coord to, bool _ToPoint)
         {
             //pos is on CP
             To = to;
             From = to;
-            ToCPoint = _ToCPoint;
-            FromCPoint = !_ToCPoint;
+            ToPoint = _ToPoint;
+            FromPoint = !_ToPoint;
         }
 
         public bool IsSame(NodeConnection other)
@@ -139,7 +155,7 @@ namespace MiDeRP
         public static bool operator !=(NodeConnection a, NodeConnection b)
         {
             return !(a == b);
-        }
+        }		
     }
 
     public class Databindings : INotifyPropertyChanged
@@ -184,12 +200,12 @@ namespace MiDeRP
             {
 				if (Data.nav == null)
 					return "No Nav";
-				if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
+				if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToPoint || Data.nav.currentPos.FromPoint))
                 {
-                    if (Data.nav.currentPos.FromCPoint){
+                    if (Data.nav.currentPos.FromPoint){
                         return "CP -> (" + Data.nav.currentPos.To.X + "," + Data.nav.currentPos.To.Y + ")";
                     }
-                    else if (Data.nav.currentPos.ToCPoint)
+                    else if (Data.nav.currentPos.ToPoint)
                     {
                         return "(" + Data.nav.currentPos.From.X + "," + Data.nav.currentPos.From.Y + ") -> CP";
                     }
@@ -271,6 +287,33 @@ namespace MiDeRP
 		FindPath,
 		FindTreasure
 	}
+
+	public enum StatusByteCode : byte
+	{
+		Unknown = 0x00,
+		Continue = 0x01,
+		Back = 0x42,
+		Forward = 0x46,
+		Stop = 0x53,
+		Left = 0x4c,
+		Right = 0x52,
+		Turn = 0x54,
+		Acknowledged = 0x06,
+		NotAcknowledged = 0x15,
+		Halfway = 0x48,
+		Enquiry = 0x05,
+		MineDetected = 0x07,
+		Done = 0x04
+	};
+
+	public enum Direction
+	{
+		Left,
+		Up,
+		Right,
+		Down,
+		Unknown
+	};
 
     public static class Data 
     {        

@@ -23,7 +23,7 @@ namespace MiDeRP
 		}
 
 		#region DLL imports
-		/// <summary><c>initPathfinder</c> is a method in the <c>Pathfinder</c> class. Imported at runtime from the pure C dll navigation.dll.
+		/// <summary><c>initNavigation</c> is a method in the navigation.c file. Imported at runtime from the pure C dll navigation.dll.
         /// </summary>
         [DllImport("navigation.dll")]
         static extern int initNavigation(uint m, uint n);
@@ -69,9 +69,16 @@ namespace MiDeRP
 			{
 				makePaths();
 			}
-			if (Data.challenge == Challenge.FindTreasure)
+			else if (Data.challenge == Challenge.FindTreasure)
 			{
+				Data.ctr.treasureSearchList.Clear();
+				addAllNodeConnections(Data.M - 1, Data.N);
+				addAllNodeConnections(Data.M, Data.N - 1);
 				findTreasure();
+			}
+			else
+			{
+				throw new NotImplementedException();
 			}
 		}
 
@@ -110,9 +117,54 @@ namespace MiDeRP
 			Data.vis.DrawField();
 		}
 
-		private void findTreasure()
+		private void addAllNodeConnections(uint xlim, uint ylim)
 		{
-			throw new NotImplementedException();
+			for (uint x = 0; x < xlim; x++)
+			{
+				for (uint y = 0; y < ylim; y++)
+				{
+					Coord N1 = new Coord();
+					Coord N2 = new Coord();
+					NodeConnection ml = new NodeConnection();
+					N1.X = x;
+					N1.Y = y;
+					N2.X = x;
+					N2.Y = y;
+					if (xlim == Data.M && ylim != Data.N)					
+						N2.Y++;					
+					else
+						N2.X++;						
+					ml.To = N1;
+					ml.From = N2;
+					Data.ctr.treasureSearchList.Add(ml);
+				}
+
+			}
+		}
+
+		public void findTreasure()
+		{
+			
+			fullPath.Clear();
+			
+			paths = new List<NodeConnection>[Data.ctr.treasureSearchList.Count];
+
+			for (int i = 0; i < Data.ctr.treasureSearchList.Count; i++)
+			{
+				currentPath = i;
+				if (i == 0)
+				{
+					updateCurrentPath(currentPos.To, Data.ctr.treasureSearchList[i].To);
+				}
+				else
+				{
+					updateCurrentPath(Data.ctr.treasureSearchList[i].To, Data.ctr.treasureSearchList[i].From);
+				}
+				fullPath.AddRange(paths[currentPath]);
+			}
+
+			currentPath = 0;
+			Data.vis.DrawField();
 		}
 		#endregion
 
@@ -164,9 +216,12 @@ namespace MiDeRP
 						prev = c;
 					}
 				}
-				if (currentPath > 0)
-					path.Insert(0, new NodeConnection(new Coord(targetCPs[(int)(currentPath - 1)]), false));
-				path.Add(new NodeConnection(new Coord(currentExitCP), true));
+				if (Data.challenge == Challenge.FindPath)
+				{
+					if (currentPath > 0)
+						path.Insert(0, new NodeConnection(new Coord(targetCPs[(int)(currentPath - 1)]), false));
+					path.Add(new NodeConnection(new Coord(currentExitCP), true));
+				}
 			}
              //Update UI
             Data.db.UpdateProperty("PathLength");
