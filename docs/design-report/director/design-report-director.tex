@@ -39,7 +39,7 @@ De communicatie met de XBee module verloopt via een Seriële poort. Deze is gema
 De controller regelt de reacties op de seriële events, deze krijgt dus een byte binnen vanuit de robot. Bijvoorbeeld een "Enquiry" (Waar moet ik heen), de controller gaat dan kijken waar hij denk dat de robot is en wat de volgende actie zou moeten zijn om het pad te volgen.
 Dit stuurt hij dan terug naar de robot, zodat deze weer verder kan rijden.
 Als de controller van mening is dat we aangekomen zijn op het punt van bestemming stuurt ie een "Done" naar de robot. Deze stopt dan aan het eind van de lijn.
-Zo ook als de robot een mijn detecteert en de pc ontvangt deze wordt deze aan de lijst met mijnen toegevoegd en naar het unmanaged geheugen gekopieerd zodat er een nieuw pad berekend kan worden.
+Zo ook als de robot een mijn detecteert en de PC ontvangt deze wordt deze aan de lijst met mijnen toegevoegd en naar het unmanaged geheugen gekopieerd zodat er een nieuw pad berekend kan worden.
 In de tussentijd is de robot dan al weer teruggereden naar het kruispunt en vraagt hij daar aangekomen weer welke richting hij moet nemen.
 Zo worden alle control points die geselecteerd waren afgereisd.
 \subsection{Gebruikersinterface en visualizatie}
