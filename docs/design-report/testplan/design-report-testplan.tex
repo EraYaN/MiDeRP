@@ -15,7 +15,19 @@ Voor challenge C is er namelijk een tijdlimiet van 120 seconden, in deze tijdsdu
 We hadden vooraf het vermoeden dat de robot onmogelijk binnen 120 seconden het hele veld kan aftasten, laat staan dat hij tegelijkertijd de mijnen kan waarnemen. 
 
 \section{Testplan}
+Over het algemeen geven meer metingen een betere schatting van de echte waarde. Een vuistregel voor het aantal metingen is tussen de 4-10 metingen. Om de robot te testen meten wij 5 keer. 
 
+%%EQUATIONS: in testplan of testresultaten
+De gemiddelde waarde van de metingen wordt als volgt berekend:
+\begin{equation}
+x_bar=\frac{\sum_{i=1}^{n}x_i}{n}
+\end{equation}
+
+De standaardafwijking geeft aan hoever de gemeten waarden van het gemiddelde staan. Deze spreiding geeft ons inzicht in de onzekerheid van de meting. Hoe minder verspreidt de metingen zijn van het gemiddelde, hoe beter de kwaliteit van de meting. De standaardafwijking wordt als volgt berekend:
+
+\begin{equation}
+s=\frac{\sum_{i=1}^{n}sqrt{(x_i-\bar{x}}}{n-1}
+\end{equation}
 
 \section{Testresultaten}
 
