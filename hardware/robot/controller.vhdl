@@ -57,6 +57,7 @@ architecture b of controller is
 	signal state : sys_state := followline;
 		
 	signal delaycounter : integer;
+	signal failsafecounter : integer;
 	signal sstate : sender_state := swaiting;
 	signal rstate : receiver_state := rwaiting;
 	signal uart_rw : std_logic_vector(1 downto 0);
@@ -81,6 +82,7 @@ begin
 		variable debugid : unsigned ( 7 downto 0);
 		variable next_sending :std_logic;
 		variable next_delaycounter : integer;
+		variable next_failsafecounter : integer;
 		variable next_passedminesite : std_logic;
 	begin	
 		if rising_edge(clk) then
@@ -119,6 +121,11 @@ begin
 					debugid:=to_unsigned(16#C#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
+				next_failsafecounter:=failsafecounter+1;
+				if failsafecounter > 100000000 then -- TODO estimate correct number.			
+					next_passedminesite:='1';
+					next_state:=sendhalf;				
+				end if;
 				if minedetected = '1' then
 					next_state:=sendmine;
 					next_passedminesite:= '0';
@@ -132,6 +139,7 @@ begin
 									next_delaycounter:=20000000;
 									next_state:=callforinput;
 									next_passedminesite:='0';
+									next_failsafecounter := 0;
 								else
 									next_delaycounter:=20000000;
 									next_passedminesite:='1';
@@ -322,6 +330,7 @@ begin
 			passedminesite<=next_passedminesite;
 			sending<=next_sending;
 			delaycounter<=next_delaycounter;
+			failsafecounter<=next_failsafecounter;
 			bin_seg(7 downto 0)<=std_logic_vector(debugid);
 		end if;
 	end process;
