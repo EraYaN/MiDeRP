@@ -11,11 +11,11 @@
 \chapter{Mijndetector}
 \label{ch:mijn}
 %DONE: take out why inductive over capacitive
-Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beiden? 
+Om een mijndetector op te bouwen, moet er eerst een keuze worden gemaakt tussen de verschillende soorten sensoren. Maken we gebruik van een inductieve sensor, capacitieve sensor of een combinatie van beide? 
 
-Een inductieve sensor werkt op basis van de verandering van permeabiliteit. De inductantie van de spoel verandert, wat leidt tot een verandering van de resonantiefrequentie.
+Een inductieve sensor werkt op basis van de verandering van magnetische permeabiliteit. De inductantie van de spoel verandert, wat leidt tot een verandering van de resonantiefrequentie van het bijbehorende circuit.
 
-Een capacitieve sensor werkt op basis van de verandering van capaciteit. Door de positie van de mijn verandert de capaciteit, wat leidt tot een verandering van de spanning. 
+Een capacitieve sensor werkt op basis van de verandering van capaciteit. Door de aanwezigheid van de mijn verandert de capaciteit van een condensator, wat leidt tot een verandering van de spanning. 
 
 \section{Eisen}
 \label{sec:eisen}
@@ -41,13 +41,13 @@ De schakeling van de inductieve sensor is op basis van de JIT: Inductieve sensor
 \label{ssec:werking}
 Over het algemeen zijn er twee mogelijke werkingsprincipes voor de inductieve sensor. De eerste werkt op basis van de verandering van permeabiliteit. De tweede werkt op basis van een pulserend veld. 
 
-Voor de sensor geldt de eerste werkingsprincipe. Er zal een verschil van permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. De magnetische veldlijnen uit de spoel zullen veranderd worden wanneer ze door het metaal heen gaan. Dit leidt ertoe dat de inductiviteit van de spoel verandert. Deze verandering kan worden weergegeven in een periodiek signaal.
+Voor de sensor geldt het eerste werkingsprincipe. Er zal een verschil van magnetische permeabiliteit gedetecteerd worden, omdat lucht een andere permeabiliteit heeft dan metaal. De magnetische veldlijnen uit de spoel zullen veranderd worden wanneer ze door het metaal heen gaan. Dit leidt ertoe dat de inductiviteit van de spoel verandert. Deze verandering kan worden weergegeven in een periodiek signaal.
 
 \newpage
 \subsection{Werking}
 
 %DONE:resonatie circuit ->permeabiliteit verandert van spoel->frequentie verandert
-Het circuit dat gebruikt wordt voor de inductieve sensor is resonantie circuit. Wanneer de permeabiliteit verandert, zal ook de inductantie van de spoel veranderen. Hierdoor wijzigt de resonantiefrequentie en dus ook het uitgangssignaal.
+De schakeling die gebruikt wordt voor de inductieve sensor is een resonant LC-circuit. Wanneer de permeabiliteit verandert, zal ook de inductantie van de spoel veranderen. Hierdoor wijzigt de resonantiefrequentie en dus ook het uitgangssignaal.
 
 \begin{figure}[H]
 \centering
@@ -58,7 +58,7 @@ Het circuit dat gebruikt wordt voor de inductieve sensor is resonantie circuit. 
 
 \subsubsection{LC-circuit}
 %Good!
-Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om de $f_{res}$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die worden gebruikt in het circuit. Met de volgende formule kan de $f_{res}$ worden berekend:
+Een belangrijke eigenschap van het circuit is de resonantiefrequentie. Om $f_{res}$ te begrijpen is het van belang om naar het gedrag van de elektronen te kijken. De elektronen schommelen steeds heen en weer, van de ene kant van de condensator-plaat naar de andere kant van de condensator-plaat. Hoe snel zo een schommeling gaat, wordt uitgedrukt als de resonantiefrequentie. Deze frequentie hangt af van de spoel en condensator die worden gebruikt in het circuit. Met de volgende formule kan$f_{res}$ worden berekend:
 
 \begin{equation}
 f_{res}=\frac{1}{2\pi\sqrt{LC}}
@@ -91,7 +91,7 @@ Om het ontwerp van de inductieve sensor schakeling te realiseren, werd de schake
 \end{itemize}
 
 \noindent
-De waarden zijn bepaald door middel van trial and error. Voor de weerstand in de feedback-configuratie is er van uit gegaan dat de waarden niet te groot kan zijn, want dan loopt er geen stroom meer terug om de oscillatie in stand te houden. Een waarde van 10 k$\Omega$ zou te groot zijn; het moest rond de 1 k$\Omega$ zijn.
+De waarden zijn bepaald door middel van trial and error. Voor de weerstand in de feedback-configuratie is ervan uitgegaan dat de waarde niet te groot mag zijn, want dan loopt er geen stroom meer terug om de oscillatie in stand te houden. Een waarde van 10 k$\Omega$ zou te groot zijn; het moest rond de 1 k$\Omega$ zijn.
 
 De afmeting van de spoel was het belangrijkste om rekening mee te houden. Er is gekozen voor een spoel met ongeveer dezelfde diameter, zodat de sensor ongeveer een detectie afstand van 2 cm heeft. De gemeten afstand is 2.15 cm \pm 0.05 cm (van middelpunt spoel naar middelpunt munt).
 
