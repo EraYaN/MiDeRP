@@ -69,7 +69,7 @@ architecture b of controller is
 	signal isdone, continue : std_logic;
 begin
 	
-	led(7 downto 0)<=std_logic_vector(to_unsigned(delaycounter, 8));
+	led(7 downto 0)<=std_logic_vector(to_unsigned(delaycounter, 32)(28 downto 21));
 	--led(4 downto 3)<=rresponse;
 	--led(5)<=minedetected;
 	--led(7 downto 6)<=uart_rw;	
@@ -152,16 +152,12 @@ begin
 				debugid:=to_unsigned(16#2#,8);
 				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);			
 					if nextturn = 0 then
-						if delaycounter = 0 then
-							next_delaycounter:=30000000;
-						end if;
+						next_delaycounter:=40000000;
 						next_state:=leftturn; --left
 					elsif nextturn = 1 then
 						next_state:=followline; --forward (line)
 					elsif nextturn = 2 then	
-						if delaycounter = 0 then
-							next_delaycounter:=30000000;
-						end if;
+						next_delaycounter:=40000000;
 						next_state:=rightturn; --right
 					elsif nextturn = 3 then
 						next_state:=callforinput; --stop (wait for input)
@@ -179,14 +175,14 @@ begin
 					debugid:=to_unsigned(16#F#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter >= 20000000 then					
-					motor_l_speed <= to_signed(50,8);
+				if delaycounter > 20000000 then					
+					motor_l_speed <= to_signed(100,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif (delaycounter < 20000000) and (delaycounter /= 0) then
-					motor_l_speed <= to_signed(-80,8);
+					motor_l_speed <= to_signed(-100,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif delaycounter = 0	then
-					motor_l_speed <= to_signed(-50,8);
+					motor_l_speed <= to_signed(-100,8);
 					motor_r_speed <= to_signed(100,8);
 					case sensor is			  			  
 					  when "101" => next_state:=followline;
@@ -201,15 +197,15 @@ begin
 					debugid:=to_unsigned(16#10#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter >= 20000000 then					
+				if delaycounter > 20000000 then					
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(50,8);
+					motor_r_speed <= to_signed(100,8);
 				elsif (delaycounter < 20000000) and (delaycounter /= 0) then
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(-80,8);
+					motor_r_speed <= to_signed(-100,8);
 				elsif delaycounter = 0	then
 					motor_l_speed <= to_signed(100,8);
-					motor_r_speed <= to_signed(-50,8);
+					motor_r_speed <= to_signed(-100,8);
 					case sensor is			  			  
 					  when "101" => next_state:=followline;
 					 -- when "110" => next_state:=followline;
@@ -258,7 +254,7 @@ begin
 				if delaycounter = 0	then			
 					case sensor is															
 					  when "000" => 
-						next_delaycounter:=30000000;
+						--next_delaycounter:=0000000;
 					  	next_state := callforinput;
 					  when others => --nothing
 				   end case;
