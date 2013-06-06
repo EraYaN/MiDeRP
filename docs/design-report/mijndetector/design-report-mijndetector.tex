@@ -97,6 +97,14 @@ De afmeting van de spoel was het belangrijkste om rekening mee te houden. Er is 
 
 De sensor output, een blokgolf van 5 V - 0 V, wordt met VHDL-code omgezet in een bit-signaal. Hierbij is het '0' wanneer er een lage spanning op de uitgang staat en '1' wanneer er een hoge spanning op de uitgang staat. De code voor de VHDL-implementatie staat in de bijlage.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{sensor-schakeling.jpg}
+	\caption{De sensor-schakeling in actie}
+	\label{fig:sensor-schakeling}
+\end{figure}
+
+
 \section{Test}
 De inductieve sensor schakeling is als eerste getest. Deze is daarvoor op de oscilloscoop aangesloten met twee probes (1:10) aan de klemmen TP1 en TP2. Bovendien is de aardklem van de oscilloscoop aangesloten op klem TP3. De voeding van de op-amp is op een spanning van +5 V en GND aangesloten. Er kan geen negatieve spanning over de inverterende-ingang van de op-amp worden aangesloten, omdat de batterij op de robot dit niet kan leveren. 
 
