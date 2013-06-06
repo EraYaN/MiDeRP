@@ -25,6 +25,11 @@ Node *newNode (unsigned int id)
 	node->mines[1] = 0;
 	node->mines[2] = 0;
 	node->mines[3] = 0;
+
+	node->visited[0] = 0;
+	node->visited[1] = 0;
+	node->visited[2] = 0;
+	node->visited[3] = 0;
 	
 	node->neighbors[0] = 0;
 	node->neighbors[1] = 0;
@@ -140,6 +145,21 @@ int setMineI(unsigned int id1, unsigned int id2, char mine)
 	return setMine (node1, node2, mine);	
 }
 
+int setVisitedI(unsigned int id1, unsigned int id2, char visited)
+{
+	Node *node1, *node2;
+	if (!nodes[id1])
+		node1 = newNode (id1);
+	else
+		node1 = getNodeI(id1);
+	if (!nodes[id2])
+		node2 = newNode (id2);
+	else
+		node2 = getNodeI(id2);
+
+	return setVisited (node1, node2, visited);	
+}
+
 int setMine(Node *node1, Node *node2, char mine)
 {
 	if (!node1 || !node2)
@@ -176,7 +196,49 @@ int setMine(Node *node1, Node *node2, char mine)
 	}
 	else
 	{
-		printf( "Error: mines are not neighbours!\n");
+		printf( "Error: nodes are not neighbours!\n");
+		return -2;
+	}
+	return 0;
+}
+
+int setVisited(Node *node1, Node *node2, char visited)
+{
+	if (!node1 || !node2)
+	{
+		printf( "Error: tried to create visited nodeconnection out of bounds\n");
+		return -1;
+	}
+
+	setNeighbors (node1);
+
+	if (node2 == node1->neighbors[0])
+	{
+		//Node2 is left of node1
+		node1->visited[0] = visited;
+		node2->visited[1] = visited;
+	}
+	else if (node2 == node1->neighbors[1])
+	{
+		//Node2 is right of node1
+		node1->visited[1] = visited;
+		node2->visited[0] = visited;
+	}
+	else if (node2 == node1->neighbors[2])
+	{
+		//Node2 is above node1
+		node1->visited[2] = visited;
+		node2->visited[3] = visited;
+	}
+	else if (node2 == node1->neighbors[3])
+	{
+		//Node2 is under node1
+		node1->visited[3] = visited;
+		node2->visited[2] = visited;
+	}
+	else
+	{
+		printf( "Error: nodes are not neighbours!\n");
 		return -2;
 	}
 	return 0;
@@ -206,6 +268,33 @@ char isMine (Node *node1, Node *node2)
 		}
 	}
 
-	printf( "Error: mines are not neighbours!\n");
+	printf( "Error: nodes are not neighbours!\n");
+	return -1;
+}
+
+char isVisited (Node *node1, Node *node2)
+{
+	int i;
+
+	if (!node1 || !node2)
+	{
+		printf( "Error: tried to check for non-existing visited nodes!\n");
+		return -1;
+	}
+
+	setNeighbors (node1);
+
+	for (i=0; i<4; i++)
+	{
+		if (node2 == node1->neighbors[i])
+		{
+			if (node1->visited[i])
+				return 1;
+			else
+				return 0;
+		}
+	}
+
+	printf( "Error: nodes are not neighbours!\n");
 	return -1;
 }

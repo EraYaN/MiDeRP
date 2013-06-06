@@ -57,18 +57,35 @@ Een totaal overzicht van de aansturing van de servo kan schematisch als volgt wo
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{resource/motor-control}
-	\label{fig:motorcontrol}
 	\caption{Schematisch overzicht van de motoraansturing}
+	\label{fig:motorcontrol}
 \end{figure}
 
 De structurele opbouw van het motorsysteem is grotendeels overgenomen uit de gegeven vhdl-bestanden en ziet er als volgt uit:
-De architectuur voor de pulsenteller die het aantal verstreken klokpulsen bijhoudt, bevindt zich in \textit{timebase.vhdl} (zie bijlage \ref{ssec:timebase.vhdl}), de controller die de gewenste pulswijdte vergelijkt met het aantal verstreken klokpulsen in \textit{motorcontrol.vhdl} (zie bijlage \ref{ssec:motorcontrol.vhdl}).
-Het klok- en resetsignaal (\textit{clk} en \textit{reset}) zijn inputs van buitenaf, de gewenste snelheid (\textit{speed}) en de motor (links of rechts) voor welke het signaal moet worden gegenereerd worden (\textit{motor}) aangeleverd door de overkoepelende controller (\textit{controller.vhdl}, zie bijlage \ref{ssec:controller.vhdl}) en het opgetelde aantal klokpulsen wordt door timebase aan motorcontrol geleverd middels het signaal \textit{count\_in}.
+De architectuur voor de pulsenteller die het aantal verstreken klokpulsen bijhoudt, bevindt zich in \textit{timebase.vhdl} (zie bijlage \ref{appsec:timebase.vhdl}), de controller die de gewenste pulswijdte vergelijkt met het aantal verstreken klokpulsen in \textit{motorcontrol.vhdl} (zie bijlage \ref{appsec:motorcontrol.vhdl}).
+Het klok- en resetsignaal (\textit{clk} en \textit{reset}) zijn inputs van buitenaf, de gewenste snelheid (\textit{speed}) en de motor (links of rechts) voor welke het signaal moet worden gegenereerd worden (\textit{motor}) aangeleverd door de overkoepelende controller (\textit{controller.vhdl}, zie bijlage \ref{appsec:controller.vhdl}) en het opgetelde aantal klokpulsen wordt door timebase aan motorcontrol geleverd middels het signaal \textit{count\_in}.
 
 \section{Test}
 \label{sec:servo-test}
 
-<simulatie- en scoopresultaten hier>
+Om de motoraansturing te toetsen aan de vereisten, hebben we eerst een testbench geschreven om mee te simuleren in modelsim. Deze testbench is te vinden in bijlage \ref{appsec:motorcontrol-tb.vhdl} 
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth]{resource/motor-control-sim}
+	\caption{Simulatie van de motoraansturing in Modelsim voor verschillende snelheden. Iedere kolom staat voor $10 \mathrm{ms}$, de rijen stellen van boven naar beneden de signalen \textit{reset}, \textit{pwm}, \textit{motor}, \textit{speed} voor.}
+	\label{fig:motorcontrol-sim}
+\end{figure}
+
+In figuur \ref{fig:motorcontrol-sim} is te zien dat de pulswijdte in de simulatie correct aangepast wordt wanneer de snelheid aangepast wordt. Ook is de periode gelijk aan $20 \mathrm{ms}$. Tot slot zien we dat bij de maximale snelheid van 100, de pulswijdte gelijk is aan $2.0 \mathrm{ms}$ en bij de minimale snelheid van -100, de pulswijdte gelijk is aan $1.0 \mathrm{ms}$. Hiermee worden de duty-cycle limieten niet overschreden en is dus aan alle eisen voldaan.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{resource/motor-control-scoop}
+	\caption{Test van de motoraansturing op de FPGA, bij een snelheid van 100}
+	\label{fig:motorcontrol-scoop}
+\end{figure}
+
+Vervolgens hebben we de VHDL op de FPGA geladen en een oscilloscoop aan de pin-out voor één van de servo's gehangen en de verschillende snelheden getest. Het resultaat van de test bij een snelheid van 100 (een periode van $2.0\mathrm{ms}$) is te vinden in figuur \ref{fig:motorcontrol-scoop}. Ook hier zijn de resultaten conform de eisen.
 
 \section{Discussie}
 \label{sec:servo-disc}

@@ -8,6 +8,10 @@
 \chapter{Conclusie}
 \label{ch:conclusie}
 %Werk de eisen uit (beantwoord eisen), see 3.2.3 (probleemstelling)
+%-De robot moet een lijn kunnen volgen.
+%-De robot moet een route kunnen volgen.
+%-De robot moet een mijn kunnen detecteren,   onthouden waar deze ligt en vervolgens de mijn ontwijken.
+%-De robot moet kunnen communiceren met de computer en andersom.
 
 %BACKGROUND INFO/PROBLEEM
 Het doel van het EPO-2 project is het ontwerpen van een autonoom mijndetecterende robot. In een vooraf bepaald veld moet de robot de mijnen in kaart brengen en ook ontwijken. 
@@ -17,14 +21,18 @@ Om dit te realiseren moet een algoritme worden gebruikt om de kortste pad te bep
 %SUPPORT VOOR OPLOSSING
 Dit algoritme was niet onze eerste keuze. Het Lee algoritme was eerst uitgewerkt, omdat het eenvoudig te begrijpen en implementeren is. Echter geeft Lee niet altijd de snelste route, want het algoritme houdt geen rekening met het aantal bochten dat het doorloopt.\\
 
-%SYSTEEMOVERZICHT
-De routeplanner in C is maar een klein deel van het systeem. De drie hoofdblokken zijn de XBee modules, de FPGA en het Director programma. 
+%SYSTEEM (regel 19 tm 22: eis - mijnen opslaan)
+De routeplanner in C is maar een klein deel van het systeem. De twee hoofdblokken van het systeem zijn: het programma dat op de computer draait en het programma op de robot.  
 
-Om het doel te bereiken is communicatie tussen de robot en de director vereist. Met twee losse state machines en twee XBee modules dit gedaan. \'E\'en losse state die op de robot zit, zorgt ervoor dat het de commando's ontvangt en verwerkt. En de andere verstuurt de commando's naar de robot.
+Op de computer zit de director wat voor de besturing van de robot zorgt. De robot stuurt een byte naar de computer, wat bijvoorbeeld het vragen om de volgende beweging kan zijn. In dat geval kan er door middel van de navigatie, het A*-algoritme, een route worden bepaald en vervolgens de volgende beweging naar de robot worden gestuurd. Wanneer de robot een mijn detecteert, wordt deze aan de lijst van mijnen toegevoegd en naar het unmanaged geheugen gekopieerd. Daarmee wordt er een nieuw pad berekend voor de robot.
 
-De FPGA is het component die alle directe acties afhandelt. Tijdens de projectmiddagen zijn we druk bezig geweest om de FPGA op de sensoren te laten reageren, zodat de robot een zwarte lijn zou volgen. 
+Op de robot zit de main FSM die voor de detectie en beweging zorgen. Door middel van de drie reflectiesensoren kan de robot een lijn volgen. In de FSM gaat de robot steeds naar een andere state, afhankelijk van de navigatie in de director. De robot vraagt de computer om een commando en wacht totdat hij weer een commando terug krijgt voordat hij gaat rijden. Deze commando's zijn voor de beweging van de robot. Als er een mijn wordt gedetecteerd door middel van de inductieve sensor, dan zal de robot achteruit rijden totdat hij bij een kruispunt komt en wacht dan weer op het volgende commando.
 
-Voor het Director programma wordt voornamelijk C\# en WPF gebruikt, wat zorgt voor een gebruikersvriendelijke interface. Echter, gebruiken we wel C/C++ om de navigatie en de communicatie te coderen.\\
+Om de computer en robot met elkaar te laten communiceren, wordt er gebruikt van XBee modules die werken door middel van UART. Op de computer en robot zitten deze modules en hiermee wordt een byte van het een naar het ander verzonden.
+\\
+
+%MIJNDETECTOR (eis - mijn detecteren)
+Om de mijnen op het wedstrijdveld te detecteren, wordt een inductieve sensor gebruikt. De inductieve sensor werkt op basis van de verandering van permeabiliteit. Wanneer de spoel 2.15 cm \pm 0.05 cm van de mijn is (center to center), dan wordt er een mijn gedetecteerd.\\
 
 %PLAN VAN AANPAK
 Om alle taken te kunnen volbrengen is het noodzakelijk om taken in te delen. Hierbij hebben we een plan van aanpak gemaakt, waar de taakverdelingen en deadlines instaan. Bovendien cre\"eert het een gestructureerde manier van denken voor elk projectlid.

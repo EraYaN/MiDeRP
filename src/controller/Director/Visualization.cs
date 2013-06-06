@@ -55,31 +55,22 @@ namespace MiDeRP
             {
                 for (uint y = 0; y < ylim; y++)
                 {
-                    //Add mines (circles) on horizontal lines
+                    //Add mines (circles) on lines
                     Ellipse mine = new Ellipse();
                     Coord N1 = new Coord();
                     Coord N2 = new Coord();
                     NodeConnection ml = new NodeConnection();
-                    NodeConnection ml2 = new NodeConnection();
-                    if (xlim == Data.M && ylim != Data.N)
-                    {
-                        N1.X = x;
-                        N1.Y = y;
-                        N2.X = x;
-                        N2.Y = y + 1;
-                    }
-                    else
-                    {
-                        N1.X = x;
-                        N1.Y = y;
-                        N2.X = x+1;
-                        N2.Y = y;
-                    }
+					N1.X = x;
+					N1.Y = y;
+					N2.X = x;
+					N2.Y = y;
+					if (xlim == Data.M && ylim != Data.N)
+						N2.Y++;
+					else
+						N2.X++;	
                     ml.To = N1;
                     ml.From = N2;
-                    ml2.To = N2;
-                    ml2.From = N1;
-                    if (Data.nav != null && (Data.nav.mines.Contains(ml) || Data.nav.mines.Contains(ml2))) //method the takes position and returns true if there is a mine
+                    if (Data.nav != null && (Data.nav.mines.Contains(ml) || Data.nav.mines.Contains(ml.Flipped))) //method the takes position and returns true if there is a mine
                     {
                         //mine
                         mine.Fill = mineBrush;
@@ -215,7 +206,7 @@ namespace MiDeRP
                     N1 = getCanvasCoordinates(nc.From, xstep, ystep);
                     N2 = getCanvasCoordinates(nc.To, xstep, ystep);
                     double CPExtension = marginlarge - marginsmall-controlpointsize/2-1;
-                    if (nc.ToCPoint)
+                    if (nc.ToPoint)
                     {
                         if (nc.To.X == Data.M-1)
                         {
@@ -234,7 +225,7 @@ namespace MiDeRP
                             N2.Y += CPExtension;
                         }
                     }
-                    else if (nc.FromCPoint)
+                    else if (nc.FromPoint)
                     {
                         if (nc.From.X == Data.M-1)
                         {
@@ -271,91 +262,100 @@ namespace MiDeRP
 
         private void DrawCurrentPosition(double xstep, double ystep)
         {
-            if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToCPoint || Data.nav.currentPos.FromCPoint))
+            if (Data.nav.currentPos.To != Data.nav.currentPos.From || (Data.nav.currentPos.ToPoint || Data.nav.currentPos.FromPoint))
             {
                 Arrow arr = new Arrow();
                 Point N1 = getCanvasCoordinates(Data.nav.currentPos.From, xstep, ystep);
                 Point N2 = getCanvasCoordinates(Data.nav.currentPos.To, xstep, ystep);
                 double CPExtension = (marginlarge - marginsmall - controlpointsize / 2 -1) ;
-                if (Data.nav.currentPos.ToCPoint)
-                {
-                    if (Data.nav.currentPos.To.X == Data.M - 1)
-                    {
-                        N2.X += CPExtension;                        
-                    }
-                    else if (Data.nav.currentPos.To.X == 0)
-                    {
-                        N2.X -= CPExtension;                        
-                    }
-                    else if (Data.nav.currentPos.To.Y == 0)
-                    {
-                        N2.Y -= CPExtension;
-                    }
-                    else if (Data.nav.currentPos.To.Y == Data.N - 1)
-                    {
-                        N2.Y += CPExtension;
-                    }
-                    arr.X1 = N1.X;
-                    arr.X2 = N2.X;
-                    arr.Y1 = c.ActualHeight - N1.Y;
-                    arr.Y2 = c.ActualHeight - N2.Y;
-                }
-                else if (Data.nav.currentPos.FromCPoint)
-                {
-                    if (Data.nav.currentPos.From.X == Data.M - 1)
-                    {
-                        N1.X += CPExtension;
-                    }
-                    else if (Data.nav.currentPos.From.X == 0)
-                    {
-                        N1.X -= CPExtension;
-                    }
-                    else if (Data.nav.currentPos.From.Y == 0)
-                    {
-                        N1.Y -= CPExtension;
-                    }
-                    else if (Data.nav.currentPos.From.Y == Data.N - 1)
-                    {
-                        N1.Y += CPExtension;
-                    }
-                    arr.X1 = N1.X;
-                    arr.X2 = N2.X;
-                    arr.Y1 = c.ActualHeight - N1.Y;
-                    arr.Y2 = c.ActualHeight - N2.Y;
-                }
+				if (Data.nav.currentPos.ToPoint && !Data.ctr.Halfway)
+				{
+					if (Data.nav.currentPos.To.X == Data.M - 1)
+					{
+						N2.X += CPExtension;
+					}
+					else if (Data.nav.currentPos.To.X == 0)
+					{
+						N2.X -= CPExtension;
+					}
+					else if (Data.nav.currentPos.To.Y == 0)
+					{
+						N2.Y -= CPExtension;
+					}
+					else if (Data.nav.currentPos.To.Y == Data.N - 1)
+					{
+						N2.Y += CPExtension;
+					}
+					arr.X1 = N1.X;
+					arr.X2 = N2.X;
+					arr.Y1 = c.ActualHeight - N1.Y;
+					arr.Y2 = c.ActualHeight - N2.Y;
+				}
+				else if (Data.nav.currentPos.FromPoint)
+				{
+					if (Data.nav.currentPos.From.X == Data.M - 1)
+					{
+						N1.X += CPExtension;
+					}
+					else if (Data.nav.currentPos.From.X == 0)
+					{
+						N1.X -= CPExtension;
+					}
+					else if (Data.nav.currentPos.From.Y == 0)
+					{
+						N1.Y -= CPExtension;
+					}
+					else if (Data.nav.currentPos.From.Y == Data.N - 1)
+					{
+						N1.Y += CPExtension;
+					}
+					arr.X1 = N1.X;
+					arr.X2 = N2.X;
+					arr.Y1 = c.ActualHeight - N1.Y;
+					arr.Y2 = c.ActualHeight - N2.Y;
+				}
                 else
                 {
-                    if (Data.nav.currentPos.From.X == Data.nav.currentPos.To.X)
-                    {
-                        arr.X1 = N1.X;
-                        arr.X2 = N2.X;
-                        if (N1.Y > N2.Y)
-                        {
-                            arr.Y1 = c.ActualHeight - N1.Y + ystep * currentPosArrowLength / 2;
-                            arr.Y2 = c.ActualHeight - N2.Y - ystep * currentPosArrowLength / 2;
-                        }
-                        else
-                        {
-                            arr.Y1 = c.ActualHeight - N1.Y - ystep * currentPosArrowLength / 2;
-                            arr.Y2 = c.ActualHeight - N2.Y + ystep * currentPosArrowLength / 2;
-                        }
-                    }
-                    else if (Data.nav.currentPos.From.Y == Data.nav.currentPos.To.Y)
-                    {
+					int M1, M2;
+					if (Data.ctr.Halfway)
+					{
+						M1 = 1;
+						M2 = 0;
+					}
+					else
+					{
+						M1 = 2;
+						M2 = 1;
+					}
 
-                        if (N1.X < N2.X)
-                        {
-                            arr.X1 = N1.X + xstep * currentPosArrowLength / 2;
-                            arr.X2 = N2.X - xstep * currentPosArrowLength / 2;
-                        }
-                        else
-                        {
-                            arr.X1 = N1.X - xstep * currentPosArrowLength / 2;
-                            arr.X2 = N2.X + xstep * currentPosArrowLength / 2;
-                        }
-                        arr.Y1 = c.ActualHeight - N1.Y;
-                        arr.Y2 = c.ActualHeight - N2.Y;
-                    }
+					if (Data.ctr.RobotDirection == Direction.Left)
+					{
+						arr.X1 = N2.X + xstep * currentPosArrowLength * M1;
+						arr.X2 = N2.X + xstep * currentPosArrowLength * M2;
+						arr.Y1 = arr.Y2 = c.ActualHeight - N2.Y;
+					}
+					else if (Data.ctr.RobotDirection == Direction.Right)
+					{
+						arr.X1 = N2.X - xstep * currentPosArrowLength * M1;
+						arr.X2 = N2.X - xstep * currentPosArrowLength * M2;
+						arr.Y1 = arr.Y2 = c.ActualHeight - N2.Y;
+					}
+					else if (Data.ctr.RobotDirection == Direction.Up)
+					{
+						arr.Y1 = c.ActualHeight - N2.Y + ystep * currentPosArrowLength * M1;
+						arr.Y2 = c.ActualHeight - N2.Y + ystep * currentPosArrowLength * M2;
+						arr.X1 = arr.X2 = N2.X;
+					}
+					else if (Data.ctr.RobotDirection == Direction.Down)
+					{
+						arr.Y1 = c.ActualHeight - N2.Y - ystep * currentPosArrowLength * M1;
+						arr.Y2 = c.ActualHeight - N2.Y - ystep * currentPosArrowLength * M2;
+						arr.X1 = arr.X2 = N2.X;
+					}
+					else
+					{
+						return;
+					}
                 }
                 
                 arr.Stroke = currentPosBrush;

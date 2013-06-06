@@ -39,7 +39,7 @@ De eerste stap bij het schrijven van zo een programma is het vinden van een gesc
 Hiervoor hebben we ons georiënteerd op de vele beschikbare algoritmen.
 Uiteindelijk is er door elk van de drie tweetallen binnen D-2 gekozen om Lee's algoritme uit te werken, omdat dit relatief eenvoudig te begrijpen en implementeren is en voor onze doeleinden prima geschikt was.
 Daarnaast levert Lee's algoritme per definitie het kortst mogelijke pad op.
-Pseudocode voor Lee's algoritme en het nog te bespreken A* algoritme is te vinden in bijlage \ref{sec:pseudocode}.
+Pseudocode voor Lee's algoritme en het nog te bespreken A* algoritme is te vinden in bijlage \ref{app:pseudocode}.
 
 \begin{figure}[H]
 	\centering
@@ -65,7 +65,7 @@ Pseudocode voor Lee's algoritme en het nog te bespreken A* algoritme is te vinde
 	\label{fig:lee}
 \end{figure}
 
-\noindent
+
 Lee's algoritme werkt als volgt (een schematische weergave is gegeven in figuur \ref{fig:lee}): als eerst wordt er aan elke \textit{node} (knooppunt) een waarde toegekend, beginnend bij het eindpunt.
 Het eindpunt krijgt de laagste waarde, bijvoorbeeld 0.
 Vervolgens krijgen alle nodes aangrenzend (niet diagonaal) aan het eindpunt een waarde 1, de nodes die op hun beurt weer grenzen aan deze nodes krijgen een waarde 2, enzovoorts.
@@ -76,9 +76,9 @@ Deze wordt dan opgenomen in het pad en zal vervolgens op dezelfde manier worden 
 Dit proces herhaalt zich totdat het eindpunt met waarde 0 is gevonden en het pad compleet is.
 Op deze wijze zijn er een aantal mogelijkheden om tot een pad te komen dat zo kort mogelijk is, dit is zichtbaar in figuur \ref{fig:lee-path}, waar drie mogelijke paden zijn gemarkeerd in rood, groen en blauw.
 De route die uiteindelijk berekend wordt, is afhankelijk van de manier waarop het algoritme geïmplementeerd wordt (hier komen we zo nog op terug).
-Mijnen kunnen in Lee's algoritme ontweken worden door tijdens de wave-expansion twee aangrenzende nodes, die van elkaar gescheiden zijn door een mijn, niet mee te tellen als buren en de aangrenzende node dus op dat moment over te slaan.\\
+Mijnen kunnen in Lee's algoritme ontweken worden door tijdens de wave-expansion twee aangrenzende nodes, die van elkaar gescheiden zijn door een mijn, niet mee te tellen als buren en de aangrenzende node dus op dat moment over te slaan.
+\\
 
-\noindent
 De op dit algoritme gebaseerde programma's waren allemaal in staat een pad te vinden over het wedstrijdveld en enkele konden hierbij ook al mijnen ontwijken.
 De implementatie van Lee's algoritme voldoet hiermee in principe aan alle drie de gestelde eisen en kan gebruikt worden om de robot aan te sturen.
 De berekende kortste route hoeft echter niet \textit{altijd} de snelste route te zijn.
@@ -105,7 +105,6 @@ Dat levert in potentie sneller resultaat op met minder geheugengebruik.
 Nu is het niet zo dat het berekenen van een pad over een grid van 5x5 een zeer intensieve taak is, maar het zijn hoe dan ook twee positieve eigenschappen.
 Daarnaast kan de complexiteit van de heuristische functie gevarieerd worden - dit is de functie die berekent hoe geschikt de node is voor het pad - om een optimaal pad, met zo min mogelijk bochten en zonder tussenkomst van mijnen, te berekenen.\\
 
-\noindent
 A* begint zijn zoektocht naar het kortste pad bij het startpunt.
 Vanaf het begin houdt het algoritme een \textit{openlist} bij, deze lijst bevat alle nodes die nog geëvalueerd kunnen worden en mogelijk een onderdeel van pad zijn.
 Vervolgens wordt er voor elk van de \textit{aanliggende nodes} aan deze \textit{huidige node} een zogenaamde \textit{voorwaardelijke g-score} bepaald: deze score is de afstand van de aanliggende node tot het startpunt.
@@ -122,7 +121,6 @@ Wanneer de voorwaardelijke g-score van de aanliggende node lager is dan de al op
 	\item De aanliggende node wordt toegevoegd aan de openlist aan de hand van zijn f-score, hoe hoger deze is, des te verder naar achter de node wordt ingedeeld
 \end{enumerate}
 
-\noindent
 Nadat dit proces zich voor ieder aanliggende node heeft herhaald (vier maal dus) zitten er dus een n-aantal nodes extra in de openlist.
 Vervolgens wordt de node met de laagste f-score, het eerste item van de openlist, ingesteld als huidige node en begint het proces opnieuw.
 Dit herhaalt zich totdat het eindpunt als huidige node wordt aangewezen.
@@ -131,13 +129,11 @@ Iedere node verwijst op die manier namelijk terug naar een andere, tot aan het s
 Wanneer de hiermee opgebouwde lijst dan tot slot wordt geïnverteerd, wordt het een pad van begin tot eind.
 \\
 
-\noindent
 Simpel gezegd gaat het algoritme zo hard mogelijk richting het eindpunt, waarbij het er dus op neer komt dat telkens de eerste node uit de openlist een onderdeel van het pad wordt.
 Dit gaat zo door totdat er een obstakel voorkomt, in dit geval valt het algoritme terug op de laatst bekende node die nog beschikbare aanliggende nodes heeft.
 Vanuit daar gaat het algoritme op dezelfde manier verder, totdat het eindpunt gevonden is.
 \\
 
-\noindent
 Om mijnen te ontwijken is simpelweg een check ingebouwd, tijdens het evalueren van de aanliggende nodes; wanneer er een mijn ligt tussen de huidige en aanliggende node, wordt deze gewoon overgeslagen en kan hij dus niet aangemerkt worden als ``vorige'' en komt zo niet in het uiteindelijke pad terecht.
 Het bestaan van mijnen wordt per node opgeslagen in een array.
 Voor elke mogelijke richting (links, rechts, boven, beneden) is er een index die een 1 of een 0 bevat.
@@ -145,9 +141,8 @@ Ook het vermijden van bochten is gemakkelijk in gebouwd, in onze implementatie w
 Deze hogere g-score zal dus resulteren in een node die verder naar achteren in de openlist komt te staan en daarom is het dus minder waarschijnlijk dat hij gekozen wordt als onderdeel van het pad.
 \\
 
-\noindent
 De flexibiliteit en efficiëntie ten opzichte van Lee's algoritme hebben er toe geleid dat er ook nog een implementatie van het A*-algoritme is gemaakt, die inderdaad een stuk sneller is met minder geheugengebruik, uiteraard pas waarneembaar bij absurde dimensies.
 Ook aan de eisen ``mijnen ontwijken'', ``mijnen opslaan'' en ``bochten vermijden'' is voldaan, dus de keuze is gevallen op A* voor verder gebruik bij het project.
-De gebruikte C-implementatie is te vinden in de bijlagen onder \cite{sec:code-navigation}
+De gebruikte C-implementatie is te vinden in bijlage \ref{appsec:main.c} tot en met bijlage \ref{appsec:util.h}.
 
 \end{document}

@@ -1,13 +1,15 @@
 enum StatusByteCode { 
 		Unknown = 0x00,
-        Continue = 0x01,
-		Forward = 0x46, 
-		Stop = 0x53, 
-		Left = 0x4c, 
+		Continue = 0x01,
+		Back = 0x42,
+		Forward = 0x46,
+		Stop = 0x53,
+		Left = 0x4c,
 		Right = 0x52,
 		Turn = 0x54,
-		Acknowledged = 0x06, 
+		Acknowledged = 0x06,
 		NotAcknowledged = 0x15,
+		Halfway = 0x48,
 		Enquiry = 0x05,
 		MineDetected = 0x07,
 		Done = 0x04
@@ -17,6 +19,7 @@ bool done;
 //bool started;
 bool minehere;
 bool led;
+bool waiting;
 void setup()
 {
   /* add setup code here */
@@ -25,6 +28,7 @@ void setup()
 	minehere = false;
 	//started = true; // TODO protocol add start instruction
 	led = false;
+	waiting = false;
 	pinMode(LED_BUILTIN,OUTPUT);
 }
 void loop()
@@ -37,25 +41,49 @@ void loop()
 					case Forward:
 						Serial.write(Acknowledged);
 						minehere = false;
+						waiting = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
 					case Stop:
+						waiting = false;
 						Serial.write(Acknowledged);
 					break;
 					case Left:
+						waiting = false;
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
 					case Right:
+						waiting = false;
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
 					case Turn:
+						waiting = false;
 						Serial.write(Acknowledged);
 						minehere = false;
+						delay(750);
+						Serial.write(Halfway);
 					break;
+					case Back:
+						waiting = false;
+						Serial.write(Acknowledged);
+						minehere = false;
 					case Done:
+						waiting = false;
 						Serial.write(Acknowledged);
 						done = true;
+					break;
+					case Continue:
+						waiting = false;
+						Serial.write(Acknowledged);
+					break;
+					case Acknowledged:
 					break;
 					default:
 						Serial.write(NotAcknowledged);
@@ -64,16 +92,18 @@ void loop()
 			}
 		} else {
 			//maybe a mine
-			if(random(0,100)<10&&!minehere){
+			if(random(0,100)<15&&!minehere){
 				Serial.write(MineDetected);
 				minehere = true;
 			} else {
-				Serial.write(Enquiry);
-				
+				if(!waiting){
+					Serial.write(Enquiry);	
+					waiting = true;
+				}
 			}
 		}
 	}
-	delay(1000);
+	delay(500);
 	if(led){
 		digitalWrite(LED_BUILTIN,LOW);
 		led=false;
