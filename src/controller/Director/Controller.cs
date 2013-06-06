@@ -17,6 +17,7 @@ namespace MiDeRP
 		private Direction _nextAbsoluteDirection = Direction.Unknown; //next direction in terms of the XY grid
 		private StatusByteCode _nextDirective = StatusByteCode.Unknown; //next directive to be sent to robot	
 		private int _i = 0;
+		private int _prevCorneri = 0;
 
 		private Direction _robotDirection = Direction.Unknown; //current direction the robot is pointing in
 		public Direction RobotDirection
@@ -80,6 +81,21 @@ namespace MiDeRP
                     if (_done == true)
                         DisableRobotControl();
 
+					if (RobotDirection != _nextAbsoluteDirection && (_i - _prevCorneri) > 1)
+					{
+						//Just advanced in X or Y direction
+						if ((_nextAbsoluteDirection == Direction.Right || _nextAbsoluteDirection == Direction.Left))
+						{
+							Data.nav.visitedYAxes.Add((int)Data.nav.currentPos.From.X);
+							_prevCorneri = _i;
+						}
+						else
+						{
+							Data.nav.visitedXAxes.Add((int)Data.nav.currentPos.From.Y);
+							_prevCorneri = _i;
+						}
+					}
+
                     if (_nextDirective == StatusByteCode.Back)
                     {
                         Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, true);
@@ -113,7 +129,7 @@ namespace MiDeRP
                     if (_i > 0 && !_halfway && !Data.nav.fullPath[_i].FromPoint)
                         return;
 
-                    getNextDirectiveTreasure();
+                    getNextDirective();
                     Data.com.SendByte((byte)_nextDirective);
 
                     if (_done == true)
@@ -132,7 +148,7 @@ namespace MiDeRP
                         return;
 										
                     Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
-                    recalculatePathTreasure();
+                    Data.nav.recalculatePath();
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
                     _halfway = true;
                 }
@@ -148,18 +164,6 @@ namespace MiDeRP
                 //Invalid bytecode or out of sync
                 return;
             }
-        }
-
-        private void getNextDirectiveTreasure()
-        {
-			getNextDirective();
-        }
-
-        private void recalculatePathTreasure()
-        {
-			_i = 0;
-			Data.nav.currentPos = Data.nav.currentPos.Flipped;
-			Data.nav.findTreasure();
         }
 
 		private void findPathEvent()
@@ -224,7 +228,8 @@ namespace MiDeRP
 
 					//Detected mine, add to list
 					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
-					recalculatePath();
+					Data.nav.recalculatePath();
+					_i = 0;
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 					_halfway = true;
 				}
@@ -405,13 +410,6 @@ namespace MiDeRP
 			{
 				_nextDirective = StatusByteCode.Forward;
 			}
-		}
-
-		private void recalculatePath()
-		{
-			_i = 0;
-			Data.nav.currentPos = Data.nav.currentPos.Flipped;	
-			Data.nav.makePaths();
 		}
 
 		public void DisableRobotControl()

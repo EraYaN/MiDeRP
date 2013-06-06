@@ -29,7 +29,7 @@ extern "C" void __cxa_pure_virtual() {;}
 //
 //
 
-#include "F:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
-#include "F:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
-#include "C:\Users\Erwin\Documents\GitHub\MiDeRP\src\controller\robotsim\robotsim.ino"
+#include "D:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
+#include "D:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
+#include "D:\Users\Robin\Documents\GitHub\MiDeRP\src\controller\robotsim\robotsim.ino"
 #endif

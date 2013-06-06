@@ -15,7 +15,8 @@ namespace MiDeRP
 		public List<uint> targetCPs = new List<uint>((int)Data.numControlPosts);
 		public int currentPath = 0;
 		public List<NodeConnection>[] paths;
-
+		public List<int> visitedYAxes = new List<int>(), visitedXAxes = new List<int>();
+	
 		public uint currentExitCP
 		{
 			get
@@ -134,7 +135,6 @@ namespace MiDeRP
 
 		public void findTreasure()
 		{
-			int i;
 			bool entryCPIsVertical;
 			Coord currentNode, nextNode;
 
@@ -166,6 +166,7 @@ namespace MiDeRP
 				}
 
 				nextNode = horizontalSweep(nextNode, 1);
+
 				verticalSweep(nextNode, (int)Data.N * 2);
 
 			}
@@ -192,7 +193,11 @@ namespace MiDeRP
 			
 			}
 
-			currentPath = 0;
+			if (paths[0] == null)
+				currentPath = 1;
+			else
+				currentPath = 0;
+
 			Data.vis.DrawField();
 		}
 
@@ -328,6 +333,39 @@ namespace MiDeRP
             Data.db.UpdateProperty("PathLength");
 			return path;
         }
+
+		public void recalculatePath()
+		{
+			if (Data.challenge == Challenge.FindPath)
+			{
+				currentPos = currentPos.Flipped;
+				Data.nav.makePaths();
+			}
+			else if (Data.challenge == Challenge.FindTreasure)
+			{
+
+				
+				updateCurrentPath(currentPos.From, currentPos.To);
+				
+				if (visitedXAxes.Count > 0 && visitedYAxes.Count == Data.M)
+				{
+					//Finished vertical sweep, in horizontal sweep
+					
+				}
+				else if (visitedYAxes.Count > 0 && visitedYAxes.Count == Data.N)
+				{
+					//Finished horizontal sweep, in vertical sweep
+				}
+				else if (visitedXAxes.Count > 0 && visitedYAxes.Count == 0)
+				{
+					//Vertical sweep not yet started, in horizontal sweep
+				}
+				else if (visitedYAxes.Count > 0 && visitedYAxes.Count == 0)
+				{
+					//Horizontal sweep not yet started, in vertical sweep
+				}
+			}
+		}
 		#endregion
 
 		public void updateCP(uint id)
