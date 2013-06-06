@@ -9,35 +9,40 @@
 \begin{document}
 
 \chapter{Testen van de robot}
-
+\label{ch:testen_robot}
 Voor het testen van de robot hebben we ervoor gekozen om de snelheid van de robot te bekijken.
 Voor challenge C is er namelijk een tijdlimiet van 120 seconden, in deze tijdsduur moet de robot het hele veld aflopen en ondertussen waarnemen waar de mijnen zich bevinden.
 We hadden vooraf het vermoeden dat de robot onmogelijk binnen 120 seconden het hele veld kan aftasten, laat staan dat hij tegelijkertijd de mijnen kan waarnemen. 
 
 \section{Testplan}
+\label{sec:testplan}
 Over het algemeen geven meer metingen een betere schatting van de echte waarde. Een vuistregel voor het aantal metingen is tussen de 4-10 metingen. Om de robot te testen meten wij 5 keer. 
 
 %%EQUATIONS: in testplan of testresultaten
 De gemiddelde waarde van de metingen wordt als volgt berekend:
 \begin{equation}
-x_bar=\frac{\sum_{i=1}^{n}x_i}{n}
+\label{gemidd}
+\bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}
 \end{equation}
 
 De standaardafwijking geeft aan hoever de gemeten waarden van het gemiddelde staan. Deze spreiding geeft ons inzicht in de onzekerheid van de meting. Hoe minder verspreidt de metingen zijn van het gemiddelde, hoe beter de kwaliteit van de meting. De standaardafwijking wordt als volgt berekend:
 
-\begin{equation}
-s=\frac{\sum_{i=1}^{n}sqrt{(x_i-\bar{x}}}{n-1}
+\begin{equation} 
+\label{eq:stddev}
+s=\sqrt{\frac{\sum_{i=1}^{n}{(x_i-\bar{x})^2}}{n-1}}
 \end{equation}
 
 %%EQUATION: snelheid
 \begin{equation}
+\label{snelheid}
 v=\frac{s}{t}
 \end{equation}
 
 \section{Testresultaten}
+\label{sec:testresultate}
+
 \begin{table}
 	\centering
-	\label{tab:measurementtime}
 	\begin{subtable}[H]{0.40\textwidth}
 		\centering
 			\begin{tabular}{| l| c|}
@@ -56,6 +61,7 @@ v=\frac{s}{t}
 		\hline
 		\end{tabular}
 		\subcaption{Punt 1 naar 9 (rechtdoor)}
+		\label{tab:timea}
 	\end{subtable}
 	\quad
 	\begin{subtable}[H]{0.40\textwidth}
@@ -76,10 +82,19 @@ v=\frac{s}{t}
 		\hline
 		\end{tabular}
 		\subcaption{Punt 1 naar 12 via 9 (met bocht)}
+		\label{tab:timeb}
 	\end{subtable}
 	\caption{Meetresultaten tijd van 2 routes}
+	\label{tab:measurementtime}
 \end{table}
 
+Het gemiddelde van de tijden in tabel ~\ref{tab:measurementtime} wordt met vergelijking ~\ref{gemidd} berekend:
+\begin{itemize}
+\item De gemiddelde tijd van tabel ~\ref{tab:timea} is 17.46 $\mathrm{s}$
+\item De gemiddelde tijd van tabel ~\ref{tab:timeb} is 34.24 $\mathrm{s}$
+\end{itemize}
+
 \section{Vergelijking gewenste en bereikte systeemspecificaties}
+\label{sec:vergelijking_specs}
 
 \end{document}
