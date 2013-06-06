@@ -16,7 +16,15 @@ We hadden vooraf het vermoeden dat de robot onmogelijk binnen 120 seconden het h
 
 \section{Testplan}
 \label{sec:testplan}
+De robot wordt op punt 1 gezet met de sensoren net op de zwarte lijn en hij moet parallel zijn aan de zwarte lijn. Tegelijkertijd wanneer de robot met begint met rijden, wordt ook de counter gestart. 
+
+Er worden twee routes gereden:
+\begin{itemize}
+\item Een rechte lijn van punt 1 naar punt 9
+\item Een koers met een bocht van punt 1 naar 12 via het dichtstbijzijnde kruispunt bij punt 9
+\end{itemize}
 Over het algemeen geven meer metingen een betere schatting van de echte waarde. Een vuistregel voor het aantal metingen is tussen de 4-10 metingen. Om de robot te testen meten wij 5 keer. 
+Bij deze metingen zijn er ook onzekerheden. Deze zitten in de gemeten grootheden en ook in het einduitkomst. Daar enkele stappen worden de onzekerheden berekend.\\ 
 
 %%EQUATIONS: in testplan of testresultaten
 De gemiddelde waarde van de metingen wordt als volgt berekend:
@@ -25,25 +33,39 @@ De gemiddelde waarde van de metingen wordt als volgt berekend:
 \bar{x}=\frac{\sum_{i=1}^{n}x_i}{n}
 \end{equation}
 
-De standaardafwijking geeft aan hoever de gemeten waarden van het gemiddelde staan. Deze spreiding geeft ons inzicht in de onzekerheid van de meting. Hoe minder verspreidt de metingen zijn van het gemiddelde, hoe beter de kwaliteit van de meting. De standaardafwijking wordt als volgt berekend:
+De standaardafwijking $\sigma$ geeft aan hoe ver de meetwaarden verspreid liggen rondom de gemiddelde waarde. Deze spreiding geeft ons inzicht in de onzekerheid van de meting. Hoe minder verspreidt de metingen zijn van het gemiddelde, hoe beter de kwaliteit van de meting. De schatting $\mathrm{s}$ van de standaardafwijking $\sigma$ wordt op de volgende manier berekend:
 
 \begin{equation} 
 \label{eq:stddev}
 s=\sqrt{\frac{\sum_{i=1}^{n}{(x_i-\bar{x})^2}}{n-1}}
 \end{equation}
 
-%%EQUATION: snelheid
+Verder wordt de geschatte standaard onzekerheid $u$ met de volgende formule berekend:
+\begin{equation}
+\label{eq:onzekerheid}
+u=\frac{s}{\sqrt{n}}
+\end{equation}
+
+De snelheid van de robot tijdens de twee routes wordt met de volgende formule berekend:
 \begin{equation}
 \label{snelheid}
 v=\frac{s}{t}
 \end{equation}
+Het doorwerken van onzekerheden in de einduitkomst $\mathrm{v}$ is van belang. Deze onzekerheden gelden voor de afstand $\mathrm{s}$ en de tijd $\mathrm{t}$. De onzekerheid van de snelheid $\mathrm{v}$ wordt berekend door:
+\begin{equation}
+\left(\frac{u(v)}{v}\right)^2=\left(\frac{u(s)}{s}\right)^2+\left(\frac{u(t)}{t}\right)^2
+\end{equation}
+\begin{equation}
+\label{eq:onzSnelheid}
+u(v)=v\cdot\sqrt{\left(\frac{u(s)}{s}\right)^2+\left(\frac{u(t)}{t}\right)^2}
+\end{equation}
 
 \section{Testresultaten}
-\label{sec:testresultate}
+\label{sec:testresultaten}
 
-\begin{table}
+\begin{table}[H]
 	\centering
-	\begin{subtable}[H]{0.40\textwidth}
+	\begin{subtable}{0.40\textwidth}
 		\centering
 			\begin{tabular}{| l| c|}
 		\hline
@@ -64,7 +86,7 @@ v=\frac{s}{t}
 		\label{tab:timea}
 	\end{subtable}
 	\quad
-	\begin{subtable}[H]{0.40\textwidth}
+	\begin{subtable}{0.40\textwidth}
 		\centering
 		\begin{tabular}{| l| c|}
 		\hline
@@ -81,20 +103,47 @@ v=\frac{s}{t}
 		   5& 34.0 \\
 		\hline
 		\end{tabular}
-		\subcaption{Punt 1 naar 12 via 9 (met bocht)}
+		\subcaption{Punt 1 naar 12 via kruispunt van 9)}
 		\label{tab:timeb}
 	\end{subtable}
 	\caption{Meetresultaten tijd van 2 routes}
 	\label{tab:measurementtime}
 \end{table}
 
-Het gemiddelde van de tijden in tabel ~\ref{tab:measurementtime} wordt met vergelijking ~\ref{gemidd} berekend:
-\begin{itemize}
-\item De gemiddelde tijd van tabel ~\ref{tab:timea} is 17.46 $\mathrm{s}$
-\item De gemiddelde tijd van tabel ~\ref{tab:timeb} is 34.24 $\mathrm{s}$
-\end{itemize}
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Formule & Formules uitkomst & Punt 1 naar 9 (rechtdoor) & Punt 1 naar 12 via k.p. 9 (met bocht) \\ 
+\hline
+- &	$\mathrm{s}$ 	& $224 \:\mathrm{cm}$ & $416 \:\mathrm{cm}$\\ 
+\hline
+\ref{gemidd} &	$\bar{x}(t)$ 	& $17.5 \:\mathrm{s}$ & $34.2 \:\mathrm{s}$ \\ 
+\hline 
+\ref{eq:stddev} &	$\mathrm{s}(t)$ & $0.114 \:\mathrm{s}$ & $0.358 \:\mathrm{s}$ \\ 
+\hline 
+\ref{eq:onzekerheid} &	$\mathrm{u(t)}$ & $0.0510 \:\mathrm{s}$ & $0.160 \:\mathrm{s}$ \\ 
+\hline 
+- &	$\mathrm{u(s)}$ & $0.5 \:\mathrm{cm}$ & $0.5 \:\mathrm{cm}$ \\ 
+\hline
+\ref{snelheid} &	$\mathrm{v}$ 	& $12.8 \:\mathrm{cm/s}$  & $12.2 \:\mathrm{cm/s}$\\
+\hline
+\ref{eq:onzSnelheid} &	$\mathrm{u(v)}$ & $0.0470 \:\mathrm{cm/s}$ & $0.0589 \:\mathrm{cm/s}$\\
+\hline
+\end{tabular} 
+\caption{Uitkomsten van de formules van twee routes}
+\label{tab:uitkomstform}
+\end{table}
 
+In tabel \ref{tab:measurementtime} staan de metingen van de tijden van de twee routes. Deze metingen zijn nodig om de uiteindelijke snelheden te berekenen en ook de onzekerheden.
+
+In tabel \ref{tab:uitkomstform} staan de uitkomsten van de gebruikte formules voor de twee routes. De metingen/berekeningen staan op volgorde van prioriteit, dat willen zeggen dat de eerste metingen/berekeningen nodig zijn om de volgende uitkomsten te bepalen. Bijvoorbeeld, de gemiddelde tijd is nodig om de geschatte standaardafwijking de berekenen.\\
+
+De snelheden van beide routes komen uit op
+$12.8 \: \mathrm{cm/s} \: \pm \: 0.0470 \:            \mathrm{cm/s}$ voor de eerste route en 
+$12.2 \: \mathrm{cm/s} \: \pm \: 0.0589 \:\mathrm{cm/s}$ voor de tweede route.
+
+\newpage
 \section{Vergelijking gewenste en bereikte systeemspecificaties}
-\label{sec:vergelijking_specs}
+\label{sec:vergelijkingSpecs}
 
 \end{document}
