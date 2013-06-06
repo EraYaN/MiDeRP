@@ -81,19 +81,26 @@ namespace MiDeRP
                     if (_done == true)
                         DisableRobotControl();
 
-					if (RobotDirection != _nextAbsoluteDirection && (_i - _prevCorneri) > 1)
+					if (RobotDirection != _nextAbsoluteDirection)
 					{
-						//Just advanced in X or Y direction
-						if ((_nextAbsoluteDirection == Direction.Right || _nextAbsoluteDirection == Direction.Left))
+						if ((_i - _prevCorneri) > 1)
 						{
-							Data.nav.visitedYAxes.Add((int)Data.nav.currentPos.From.X);
-							_prevCorneri = _i;
+							//Just advanced in X or Y direction
+							if ((_nextAbsoluteDirection == Direction.Right || _nextAbsoluteDirection == Direction.Left))
+							{
+								Data.nav.visitedYAxes.Add((int)Data.nav.currentPos.From.X);
+								_prevCorneri = _i;
+							}
+							else
+							{
+								Data.nav.visitedXAxes.Add((int)Data.nav.currentPos.From.Y);
+								_prevCorneri = _i;
+							}
 						}
-						else
-						{
-							Data.nav.visitedXAxes.Add((int)Data.nav.currentPos.From.Y);
-							_prevCorneri = _i;
-						}
+
+						if (_i > 0)
+							Data.nav.currentPath++;
+
 					}
 
                     if (_nextDirective == StatusByteCode.Back)

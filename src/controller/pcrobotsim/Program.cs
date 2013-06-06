@@ -47,10 +47,23 @@ namespace pcrobotsim
 			comPort = "COM" + Console.ReadLine();
 			comInit();
 
-			while (Console.ReadKey().Key != ConsoleKey.Escape)
+			while (true)
 			{
-				if (Console.ReadKey().Key == ConsoleKey.R)
-					com.SendByte((byte)StatusByteCode.Enquiry);
+				ConsoleKey key = Console.ReadKey().Key;
+
+				switch (key)
+				{
+					case ConsoleKey.R:
+						com.SendByte((byte)StatusByteCode.Enquiry);
+						break;
+					case ConsoleKey.M:
+						com.SendByte((byte)StatusByteCode.MineDetected);
+						break;
+					case ConsoleKey.Escape:
+						return;
+					default:
+						continue;
+				}
 			}
 
 		}
@@ -79,6 +92,9 @@ namespace pcrobotsim
 		{
 			StatusByteCode nextByte = new byte();
 			StatusByteCode _receivedByte = (StatusByteCode)e.DataByte;
+
+			if (_receivedByte == 0x00)
+				return;
 
 			switch (_receivedByte)
 			{

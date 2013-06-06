@@ -116,23 +116,6 @@ namespace MiDeRP
 			Data.vis.DrawField();
 		}
 
-		public void updateCurrentPath(Coord entry, Coord exit)
-		{
-            setMinesInDLL();
-            int res = updatePath(entry.Id, exit.Id);
-            if (res != 0)
-                return;//throw new Exception();
-            try
-            {
-                paths[currentPath] = getPath();
-                Data.vis.DrawField();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString());
-            }
-		}
-
 		public void findTreasure()
 		{
 			bool entryCPIsVertical;
@@ -275,6 +258,20 @@ namespace MiDeRP
 		#endregion
 
 		#region Pathfinder
+
+		public void updateCurrentPath(Coord entry, Coord exit)
+		{
+			try
+			{
+				paths[currentPath] = getPath(entry, exit);
+				Data.vis.DrawField();
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.ToString());
+			}
+		}
+
 		private int setMinesInDLL()
 		{
 			if (clearMines() != 0)
@@ -289,13 +286,18 @@ namespace MiDeRP
 			return 0;
 		}
 
-        public List<NodeConnection> getPath()
+		public List<NodeConnection> getPath(Coord entry, Coord exit)
         {
+			setMinesInDLL();
+			int res = updatePath(entry.Id, exit.Id);
+			if (res != 0)
+				throw new InvalidOperationException("No path found");
+
        		List<NodeConnection> path = new List<NodeConnection>();
 			uint len = getPathLength();
             IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
             int[] stage1 = new int[len+1];
-            int res = extractPath(ptr);
+            res = extractPath(ptr);
 
 			if (res == 0 && len > 0 && ptr != null)
 			{
@@ -343,27 +345,42 @@ namespace MiDeRP
 			}
 			else if (Data.challenge == Challenge.FindTreasure)
 			{
+				List<NodeConnection> tempPath = new List<NodeConnection>();
+				Coord from = currentPos.From;
+				Coord to = currentPos.To;
 
-				
-				updateCurrentPath(currentPos.From, currentPos.To);
-				
-				if (visitedXAxes.Count > 0 && visitedYAxes.Count == Data.M)
-				{
-					//Finished vertical sweep, in horizontal sweep
-					
-				}
-				else if (visitedYAxes.Count > 0 && visitedYAxes.Count == Data.N)
-				{
-					//Finished horizontal sweep, in vertical sweep
-				}
-				else if (visitedXAxes.Count > 0 && visitedYAxes.Count == 0)
-				{
-					//Vertical sweep not yet started, in horizontal sweep
-				}
-				else if (visitedYAxes.Count > 0 && visitedYAxes.Count == 0)
-				{
-					//Horizontal sweep not yet started, in vertical sweep
-				}
+				//Determine initial path piece
+				if (Data.ctr.RobotDirection == Direction.Left)
+					from = new Coord(Data.M - 1, currentPos.From.Y);
+				else if (Data.ctr.RobotDirection == Direction.Right)
+					from = new Coord(0, currentPos.From.Y);
+				else if (Data.ctr.RobotDirection == Direction.Up)
+					from = new Coord(currentPos.From.X, 0);
+				else if (Data.ctr.RobotDirection == Direction.Down)
+					from = new Coord(currentPos.From.X, Data.N - 1);
+
+				tempPath.AddRange(getPath(from, currentPos.From));
+
+				//Add mine evasion maneuver
+				tempPath.AddRange(getPath(currentPos.From, currentPos.To));
+
+				//Add final path piece
+				if (Data.ctr.RobotDirection == Direction.Left)
+					to = new Coord(0, currentPos.To.Y);
+				else if (Data.ctr.RobotDirection == Direction.Right)
+					to = new Coord(Data.M - 1, currentPos.To.Y);
+				else if (Data.ctr.RobotDirection == Direction.Up)
+					to = new Coord(currentPos.To.X, Data.N - 1);
+				else if (Data.ctr.RobotDirection == Direction.Down)
+					to = new Coord(currentPos.To.X, 0);
+
+				tempPath.AddRange(getPath(currentPos.To, to));
+
+				//Replace current path segment
+				paths[currentPath] = tempPath;
+				fullPath.Clear();
+				foreach (List<NodeConnection> path in paths)
+					fullPath.AddRange(path);
 			}
 		}
 		#endregion
