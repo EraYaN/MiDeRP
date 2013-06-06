@@ -109,9 +109,9 @@ Daarnaast kan de complexiteit van de heuristische functie gevarieerd worden - di
 A* begint zijn zoektocht naar het kortste pad bij het startpunt.
 Vanaf het begin houdt het algoritme een \textit{openlist} bij, deze lijst bevat alle nodes die nog geëvalueerd kunnen worden en mogelijk een onderdeel van pad zijn.
 Vervolgens wordt er voor elk van de \textit{aanliggende nodes} aan deze \textit{huidige node} een zogenaamde \textit{voorwaardelijke g-score} bepaald: deze score is de afstand van de aanliggende node tot het startpunt.
-Omdat alle afstanden in een grid als dat van ons altijd gelijk zijn aan 1 (of een andere constante), wordt de score van een aanliggende node altijd 1 hoger dan de hudige node.
+Omdat alle afstanden in een grid als dat van ons altijd gelijk zijn aan 1 (of een andere constante), wordt de score van een aanliggende node altijd 1 hoger dan de huidige node.
 In het geval van een aanliggende node die naast het startpunt ligt is de voorwaardelijke g-score dus gelijk aan 1.
-Vervolgens wordt deze voorwaardelijke g-score vergeleken met de g-score (niet voowaardelijk) van de aanliggende node.
+Vervolgens wordt deze voorwaardelijke g-score vergeleken met de g-score (niet voorwaardelijk) van de aanliggende node.
 Wanneer de voorwaardelijke g-score van de aanliggende node lager is dan de al opgeslagen g-score of de aanliggende node zich nog niet in de openlist bevindt volgen er een aantal stappen:
 
 \begin{enumerate}
@@ -126,7 +126,7 @@ Wanneer de voorwaardelijke g-score van de aanliggende node lager is dan de al op
 Nadat dit proces zich voor ieder aanliggende node heeft herhaald (vier maal dus) zitten er dus een n-aantal nodes extra in de openlist.
 Vervolgens wordt de node met de laagste f-score, het eerste item van de openlist, ingesteld als huidige node en begint het proces opnieuw.
 Dit herhaalt zich totdat het eindpunt als huidige node wordt aangewezen.
-Op dat moment is begint net als bij het algoritme van Lee een backtrace, maar ditmaal op basis van de ``vorige''-verwijzing die in iedere node is opgeslagen.
+Op dat moment begint net als bij het algoritme van Lee een backtrace, maar ditmaal op basis van de ''vorige''-verwijzing die in iedere node is opgeslagen.
 Iedere node verwijst op die manier namelijk terug naar een andere, tot aan het startpunt.
 Wanneer de hiermee opgebouwde lijst dan tot slot wordt geïnverteerd, wordt het een pad van begin tot eind.
 \\
