@@ -122,7 +122,7 @@ begin
 					next_delaycounter:=delaycounter-1;
 				end if;
 				next_failsafecounter:=failsafecounter+1;
-				if failsafecounter > 100000000 then -- TODO estimate correct number.			
+				if (failsafecounter > 100000000) and (passedminesite = '0') then -- TODO estimate correct number.			
 					next_passedminesite:='1';
 					next_state:=sendhalf;				
 				end if;
