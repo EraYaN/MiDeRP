@@ -32,7 +32,7 @@ Er wordt met deze modules gecommuniceerd door middel van een \textit{Universal A
 Het brein van de robot bestaat uit een FPGA.
 De FPGA handelt alle directe acties af, zoals reageren op sensoren, zodat een lijn gevolgd kan worden.
 Ook telt de FPGA continu de lengte van de pulsen uit de mijndetector.
-Deze stuurt ook de motoren aan, door een \textit{Pulse-Width Modulation} oftewel \textit{PWM}-signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
+De FPGA stuurt ook de motoren aan, door een \textit{Pulse-Width Modulation} oftewel \textit{PWM}-signaal te genereren waarvan de lengte van de pulsen proportioneel is met de gekozen snelheid.
 Op de FPGA wordt ook de communicatie met de XBee afgehandeld, via een UART.
 
 De Finite State Machines zijn afgebeeld in de figuren \ref{fig:fsmMain}, \ref{fig:fsmReceiver} en \ref{fig:fsmSender}, allemaal te vinden in bijlage \ref{sec:statemachines}.
@@ -40,7 +40,7 @@ De Finite State Machines zijn afgebeeld in de figuren \ref{fig:fsmMain}, \ref{fi
 \section{Director}
 Ons programma reageert alleen op vragen van de robot, met als uitzondering het 'continue'-signaal.
 Zodra de robot op een kruispunt is aangekomen vraagt de robot aan de software waar hij heen moet.
-Als de software van mening is dat we zijn aangekomen op de bestemming stuurt het in plaats van een richting het 'done' signaal zodat de robot stopt.
+Als de software van mening is dat we zijn aangekomen op de bestemming stuurt het in plaats van een richting het 'done' signaal, zodat de robot stopt.
 De director bestaat uit 4 hoofdonderdelen:
 
 \begin{itemize}
