@@ -17,16 +17,22 @@ Het is dan ook van groot belang dat de robot deze taak foutloos uit kan voeren.
 Om dit klaar te spelen zal de geïmplementeerde lijnvolger aan een aantal eisen moeten voldoen:
 
 \begin{itemize}
-\item Zwarte lijn detecteren
-\item Afwijkingen van het pad corrigeren
+\item Het detecteren van een zwarte lijn
+\item Het zichzelf corrigeren, wanneer er van het pad afgeweken wordt
 \end{itemize}
 
 \section{Ontwerp}
 Het ontwerp van de lijnvolger is een simpele maar doeltreffende opzet.
 Een printplaat met daarop drie reflectiesensoren is aangesloten op een FPGA.
-Deze printplaat is onder de robot bevestigd, waarbij de sensoren bij startpositie boven de lijn hangen, de twee buitenste sensoren vallen buiten de lijn en de middelste staat op de lijn.
-Binnen de FPGA is een logische schakeling aanwezig die bepaalt welke sensoren wel of niet op de lijn staan.
-Aan de hand van deze uitlezing wordt bepaald hoe de servomotoren aangestuurd worden.
+Deze reflectiesensoren bevinden zich onder de robot en geven een laag signaal wanneer ze zich boven een zwart gekleurd object bevinden en een laag signaal wanneer ze zich boven een wit object bevinden.
+De FPGA leest deze sensoren uit en bepaalt vervolgens hoe de snelheden van de linker- en rechterservomotor aangepast moeten worden om op de lijn te blijven.
+Dit proces kan als volgt worden beschreven:
+
+\begin{itemize}
+	\item Wanneer de middelste sensor zich boven zwart (de lijn) bevindt en de buitenste niet, is er niets aan de hand. De robot bevindt zich dan bijna recht boven de lijn
+	\item Wanneer de middelste en één van de buitenste sensoren boven zwart zit begint de robot af te wijken en wordt licht tegengestuurd
+	\item Wanneer de slechts een van de buitenste sensoren zich nog boven de lijn bevindt, moet harder gestuurd worden in tegengestelde richting
+\end{itemize}
 
 \section{Implementatie}
 De schakeling binnen de FPGA is beschreven in VHDL.
@@ -38,15 +44,14 @@ In de VHDL-code van de lijnvolger is dit te zien aan de verschillende combinatie
 
 \section{Test}
 De lijnvolger is de basis van de Smart Robot Challenge.
-Het is dus van het groot belang dat dit onderdeel feilloos functioneert.
+Het is dus van het grootste belang dat dit onderdeel feilloos functioneert.
 Om er zeker van te zijn dat de lijnvolger naar behoren werkt heeft de TU Delft ons een aantal testlijnen geleverd.
 Wij hebben de robot uitgebreid getest op elke lijn en de robot wist deze foutloos te volgen.
 Een opvallende bijzaak is wel dat de robot een lichte afwijking heeft, dit terwijl beide servomotoren hetzelfde PWM-signaal toegestuurd krijgen.
 
 \newpage
 \section{Discussie}
-De lijnvolger werkt haast perfect op een lichte in één van de servomotoren afwijking na.
+De lijnvolger werkt bijna perfect op een lichte in één van de servomotoren afwijking na. Dit is echter niet te wijten aan de lijnvolger maar de servo, maar kan wel worden opgelost door hiervoor te compenseren in de gebruikte servosnelheden, zodat beide servo's even hard draaien.
 Aangezien de robot deze afwijking moet corrigeren zal dit mankement tijd kosten tijdens de wedstrijd, of dit tijdsverlies significant is, is echter maar zeer de vraag.
-Om dit probleem op te lossen zouden wij het PWM-signaal van de linker servo lichtelijk aanpassen ten opzichte van het PWM-signaal van de rechter servo en zo de wielen synchroon laten draaien.
 Maar aangezien het oplossen van dit probleem tijd kost, welke beter geïnvesteerd kan worden in problemen die belangrijker zijn hebben wij besloten dit niet te doen.
 \end{document}

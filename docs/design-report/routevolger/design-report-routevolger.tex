@@ -44,6 +44,8 @@ Het proces wat zich afspeelt wanneer de robot een route volgt is vanzelfsprekend
 	\item Als de robot geen mijn detecteerde en doorreed komt hij bij het volgende kruispunt, waar hij om instructie vraagt en de cyclus opnieuw begint
 \end{itemize}
 
+Deze instructies zijn conform het gebruikte protocol, zoals te vinden in bijlage \ref{app:communicatie} tabel \ref{tab:comprotocol}.
+
 Het ontwerpen van de routevolger in zijn huidige staat was een moeizaam proces. Zo zijn we bijvoorbeeld tegen het probleem aan gelopen dat de robot zo scherp draaide dat hij de lijn waar hij naar toe moest miste en dus in feite $180\degree$ draaide. Na aanpassingen kwam het voor dat bochten goed gemaakt werden, alleen met een dusdanige zwaai dat eventuele mijnen gemist werden. De uiteindelijke oplossing was om de robot eerst een stuk vooruit te laten rijden door middel van een vertraging en hem daarna om zijn as te laten draaien door de motoren met maximale snelheid in tegengestelde richting te laten draaien. Het resultaat mocht er zijn.
 
 In eerste instantie hebben we ook gekozen om $180\degree$ te draaien op het moment dat de robot een mijn tegenkomt. Omdat dit vrij foutgevoelig bleek te zijn, is later overgestapt op een ontwerp waarin de robot niet omdraait, maar achteruit terugrijdt naar het vorige kruispunt. Omdat de robot hiervoor niet hoeft te roteren en de lineaire verplaatsing ook slechts enkele centimeters bedraagt is de kans dat er iets fout gaat waardoor de robot bijvoorbeeld de lijn niet meer volgt een stuk kleiner geworden.
