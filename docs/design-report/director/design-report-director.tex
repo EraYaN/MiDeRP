@@ -10,10 +10,19 @@
 
 \chapter{Director}
 \label{ch:director}
-Het programma wat voor de besturing van de robot zorgt op de computer, door ons ``Director'' gedoopt, bestaat zoals eerst beschreven uit vier hoofdonderdelen. De laatste drie worden hier beschreven. We kunnen hiervoor de volgende eisen opstellen:
+Het programma dat voor de besturing van de robot zorgt op de computer, door ons ``Director'' gedoopt, bestaat zoals eerst beschreven uit vier hoofdonderdelen. De laatste drie worden hier beschreven. We kunnen hiervoor de volgende eisen opstellen:
 
 \section{Eisen}
 \label{sec:dirEisen}
+\begin{itemize}
+\item Het programma moet kunnen reageren op de vragen van de robot.
+\item Het programma moet op basis van de instructies die het verzendt en ontvangt bij kunnen houden waar de robot zich bevindt.
+\item Het programma moet de kortste weg kunnen berekenen en daarbij rekening houden met de al gevonden mijnen.
+\item Het programma moet voor challenge C de beste routen kunnen berekenen om zo efficient mogelijk alle plaatsten op het veld te verkennen.
+\end{itemize}
+
+\section{Onderdelen}
+\label{sec:dirOnderdelen}
 \begin{itemize}
 \item De pathfinder op basis van het A* algoritme
 \item De event-driven seriële implementatie
@@ -27,7 +36,8 @@ We hebben uiteindelijk, zoals te lezen is in hoofdstuk \ref{ch:route}, gekozen v
 
 Ons hoofdproject wordt geschreven in C\# (.NET 4.5) en in combinatie met Windows Presentation Foundation of WPF, een UI framework waarin de gebruikers interface beschreven wordt in XAML (Extensible Application Markup Language).
 XAML is een taal die heel erg lijkt op XML.
-Dit geeft een vriendelijkere ontwikkelomgeving, managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
+Dit geeft een vriendelijkere ontwikkelomgeving.
+Managed talen zijn nu eenmaal wat vriendelijker voor de programmeur.
 Het hebben van een UI oogt prettiger en het gebruik van het eventmodel is heel fijn voor de seriële communicatie.
 Dit heeft deels met persoonlijke voorkeur te maken, maar om de code voor iedereen in de projectgroep duidelijk te houden, hebben we de navigatie in pure C/C++ code gehouden.
 De communicatie is eveneens geïmplementeerd in C\#, dit gaf het voordeel van een event-driven model, waarin direct gereageerd kan worden op inkomende seriële transmissies. Het uiteindelijke ontwerp is te zien in figuur \ref{fig:director}.
@@ -51,7 +61,7 @@ De communicatie is eveneens geïmplementeerd in C\#, dit gaf het voordeel van ee
 
 \subsection{Navigatie}
 Om de A* implementatie te gebruiken was er een "brug" nodig tussen de managed omgeving en de unmanaged omgeving.
-Omdat deze heel erg verschillen moeten er speciale functies geschreven worden zodat de unmanaged code aangeroepen kan worden en data uitgewisseld.
+Omdat deze heel erg verschillen moeten er speciale functies geschreven worden, zodat de unmanaged code aangeroepen kan worden en data uitgewisseld.
 Wij hebben dit gedaan via Interop (voor de functie aanroepen [DllImport]) en de Marshaller (voor de equivalenten van malloc en free).
 \subsection{Communicatie}
 De communicatie met de XBee module verloopt via een seriële poort. Deze is gemakkelijk te gebruiken in .NET. Er is een event waar men zich op kan abonneren om zo op de hoogte gesteld te worden als er data gearriveerd is. Wij hebben een protocol gemaakt om de communicatie tussen de controller en de robot te bewerkstelligen. (zie Bijlage \ref{app:communicatie} voor de specificaties)
@@ -61,20 +71,21 @@ De controller regelt de reacties op de seriële events, deze krijgt dus een byte
 Dit stuurt hij dan terug naar de robot, zodat deze weer verder kan rijden.
 
 Als de controller van mening is dat we aangekomen zijn op het punt van bestemming stuurt die een "Done" naar de robot. Deze stopt dan aan het eind van de lijn.
-Zo ook als de robot een mijn detecteert en de PC ontvangt deze dan wordt deze aan de lijst met mijnen toegevoegd en naar het unmanaged geheugen gekopieerd, zodat er een nieuw pad berekend kan worden.
+Als de robot een mijn detecteert en de PC ontvangt dit dan wordt deze aan de lijst met mijnen toegevoegd en naar het unmanaged geheugen gekopieerd, zodat er een nieuw pad berekend kan worden.
 In de tussentijd is de robot dan al weer teruggereden naar het kruispunt en vraagt hij, daar aangekomen, weer welke richting hij moet nemen.
 
-Zo worden alle control points die geselecteerd waren afgereisd.
+Zo worden alle control points die geselecteerd zijn afgereisd.
 
 \subsection{Gebruikersinterface en visualisatie}
 De gebruikersinterface is opgebouwd uit twee onderdelen, een plattegrond en de besturing.
 De besturing bevat knoppen voor functies als verbinden met de XBee module het initialiseren het het selecteren van de challenge.
-De plattegrond wordt getekend door middel van een canvas element, hierop kan met vormen, zoals cirkels en lijnen, getekend worden. We hebben een klasse voor een pijl moeten maken omdat deze niet aanwezig was in WPF.
-De plattegrond word live geupdate met informatie die binnen komt op de seriële poort, de pijl die de positie van de robot aangeeft verschuift dan ook realtime en mijnen zullen ook verschijnen.
+De plattegrond wordt getekend door middel van een canvas element.
+Hierop kan met vormen, zoals cirkels en lijnen, getekend worden. We hebben een klasse voor een pijl moeten maken omdat deze niet aanwezig was in WPF.
+De plattegrond word live geupdate met informatie die binnen komt op de seriële poort. De pijl die de positie van de robot aangeeft verschuift dan ook realtime en mijnen zullen ook verschijnen.
 Er kan op de control posts geklikt worden om deze aan te wijzen als te bezoeken of als start aan te geven.
 De mijnen kunnen geplaatst en weer verwijderd worden.
 
 \section{Discussie}
-Wij hebben met onze implementatie aan alle eisen zoals beschreven in sectie \ref{sec:dirEisen} voldaan. De software valt natuurlijk altijd te verbeteren, software is helaas nooit fout vrij.
+Wij hebben met onze implementatie aan alle eisen voldaan zoals beschreven in sectie \ref{sec:dirEisen}. De software valt natuurlijk te verbeteren, software is helaas nooit fout vrij.
 
 \end{document}
