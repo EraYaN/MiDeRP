@@ -14,7 +14,7 @@
 \section{Projectopgave: Mijnen-ontwijkende robot}
 
 Het is de bedoeling dat er tijdens het EPO-2 project ``Smart Robot Challenge'' een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond.
-Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst, die de robot dient te ontwijken.
+Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst. De robot dient deze te ontwijken.
 Als laatste wordt er nog één mijn toegevoegd, die op dat moment gevonden moet worden en dienst doet als schat.
 Dit alles dient te worden voltooid door middel van zelfgemaakte VHDL en C-codes, die de directe besturing van de robot realiseren.
 
@@ -23,9 +23,9 @@ Dit alles dient te worden voltooid door middel van zelfgemaakte VHDL en C-codes,
 \subsection{Spartan-3 robotplatform}
 
 De basisvorm van de robot is van te voren gebouwd en bestaat uit een plateau waarop één Xilinx BASYS2 Spartan3E FPGA-bord is gemonteerd.
-Op de FPGA worden hardwaremodules (de mijndetector) geïmplementeerd die door ons worden ontworpen.
+Op de FPGA worden hardwaremodules (de mijndetector) geïmplementeerd, die door ons  ontworpen moeten worden.
 Voor communicatie is er een XBee-module aanwezig.
-Deze vormen samen de digitale besturing van de servomotoren die aan de onderkant van het plateau zitten.
+Deze vormen samen de digitale besturing van de servomotoren, die aan de onderkant van het plateau zitten.
 Verder zijn er aan de onderkant ook nog lichtgevoelige sensors die de lijn detecteren, zodat deze gevolgd kan worden door de robot.
 
 \begin{figure}[H]
@@ -40,7 +40,7 @@ Verder zijn er aan de onderkant ook nog lichtgevoelige sensors die de lijn detec
 Het veld dat gebruikt wordt voor de robotcompetitie bestaat uit een zwart-wit geprint papiervel, dat bevestigd is op een houten bord met afmetingen 244 cm x 244 cm.
 Het zwarte patroon wordt gevormd door een 5 bij 5 rooster van wegen en kruispunten.
 De wegen zijn aangegeven als een zwarte strip van 15 mm breed, één wegsegment is 48cm lang.
-In het midden van elk wegsegment zit een zwarte stip met een diameter van 30mm, deze dienen als de plaats waar de mijnen op komen te liggen.
+In het midden van elk wegsegment zit een zwarte stip met een diameter van 30mm, deze stippen dienen als de plaats waar de mijnen op komen te liggen.
 De mijnen zijn gemaakt van zwartgeverfde verzinkte stalen ringen.
 Aan elke zijde van het vierkante veld zijn er drie ingangswegen (16 cm lang) die aangegeven worden met de getallen 1 t/m 12.
 
@@ -69,7 +69,7 @@ De robot moet een route kunnen volgen
 De robot moet een mijn kunnen detecteren, onthouden waar deze ligt en vervolgens de mijn ontwijken
 
 \item 
-De robot moet kunnen communiceren met de computer en andersom
+De robot moet onderling kunnen communiceren met de systeemonderdelen
 
 \end{itemize}
 
@@ -93,7 +93,7 @@ De aandrijving wordt gerealiseerd met behulp van elektromotoren en een batterij
 De batterij is de enige aanwezige energiebron op de robot
 
 \item
-De robotaansturing kan alleen worden gedaan via de beschikbare Basys2 ontwikkelbord, die bestaat uit:
+De robotaansturing kan alleen worden gedaan via het beschikbare Basys2 ontwikkelbord, dat bestaat uit:
 
 \begin{itemize}
 
@@ -104,7 +104,7 @@ De robotaansturing kan alleen worden gedaan via de beschikbare Basys2 ontwikkelb
 twee XBee modules
 
 \item
-één besturingsprogamma op een laptop dat geschreven is in de programmeertaal C
+één besturingsprogramma op een laptop dat geschreven is in de programmeertaal C
 
 
 \end{itemize}
@@ -113,7 +113,7 @@ twee XBee modules
 De FPGA-chip kan alleen werken met een VHDL-geschreven code
 
 \item
-Het niet toegestaan om in het besturingsprogramma in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen 
+Het is niet toegestaan om in het besturingsprogramma in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen 
 
 \item
 De robot moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld
@@ -124,7 +124,7 @@ De robot moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen
 
 Er is door zes personen aan het EPO-2 project ``Smart Robot Challenge'' gewerk, dit gebeurde in zaal 1.060 aan de Drebbelweg 5.
 Aan de hand van verschillende Just-in-time trainingen worden in de loop van het project de onderdelen voor de robot beter bestudeerd en vervolgens ontworpen en gemaakt.
-Daarnaast zijn er nog tutorials waarin benodigde kennis wordt uitgelegd.
+Daarnaast zijn er nog tutorials waarin benodigde stof wordt uitgelegd.
 Een uitgebreid plan van aanpak is te vinden in bijlage \ref{app:pva}.
 
 \end{document}
