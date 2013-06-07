@@ -84,7 +84,7 @@ Om het ontwerp van de inductieve sensor schakeling te realiseren, wordt de schak
 
 \noindent Voor het circuit zijn de volgende componenten gebruikt:
 \begin{itemize}
-\item 1$\times$ spoel: $4.7 \mathrm{mH}$
+\item 1$\times$ spoel: $4.7 \mathrm{mH}$ (dit was de originele waarde, aan de onder kant is de ferriet schijf afgebroken waar door de waarde significant daalt)
 \item 1$\times$ condensator: $30 \mu \mathrm{F}$
 \item 1$\times$ op-amp: LM358
 \item 1$\times$ weerstand: $820 \Omega$
@@ -114,7 +114,11 @@ $f_{res}=\frac{1}{2\pi \sqrt{4.7\times 10^{-3}\cdot 30\times 10^{-6}}}= 424 \mat
 \noindent De gemeten waarde van de resonantie frequentie:
 $f_{res}\approx620 \mathrm{Hz}$\\
 
-\noindent Het tweede deel van de test-sessie is de implementatie met VHDL. De VHDL-code voor de mijndetector wordt eerst gesimuleerd met behulp van een testbench en daarna gesynthetiseerd zodat het op de FPGA geprogrammeerd kan worden. De gebruikte VHDL is te vinden in de bijlage \ref{appsec:minedetector.vhdl}
+De gemeten waarde wijkt heel erg af omdat doordat de spoel beschadigd was de waarde niet meer correct is, het voordeel van de beschadiging is wel dat de uitslag bij een detectie nu veel en veel beter zichtbaar is.
+Het frequentie verschil ging van een magere 10 Hz (op $\approx$ 420 Hz) naar bijna 70 Hz (op $\approx$ 620 Hz). Dit maakt het later vele malen makkelijker om het verschil te detecteren.
+Hierom hebben we de spoel niet vervangen.
+De prestaties van het circuit waren immers verbeterd.
+Het tweede deel van de test-sessie is de implementatie met VHDL. De VHDL-code voor de mijndetector wordt eerst gesimuleerd met behulp van een testbench en daarna gesynthetiseerd zodat het op de FPGA geprogrammeerd kan worden. De gebruikte VHDL is te vinden in de bijlage \ref{appsec:minedetector.vhdl}
 
 \section{Discussie}
 Er is tijdens de projectmiddag veel tijd besteed aan het bouwen van de schakeling. Op de oscilloscoop was het uitgangssignaal van de sensor geen blokgolf. Na enkele keren zorgvuldig de schakeling opnieuw te hebben gebouwd, is het gelukt om een blokgolf te krijgen. De draden maakten niet goed contact met het breadboard.
