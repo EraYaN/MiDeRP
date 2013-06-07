@@ -12,7 +12,7 @@
 \label{ch:route}
 
 Een belangrijk onderdeel van het probleem is het vinden van een pad van begin naar eind.
-De mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing komen die zelf het beste pad berekent.
+De mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing gezocht worden voor het berekenen van het korste pad.
 Dit zou met de FPGA kunnen, maar de schakeling en rekenkracht die daarvoor benodigd is zou dit vrij complex maken.
 Bij het EPO-2-project is er dan ook voor gekozen het pad te laten berekenen door een programma geschreven in de C-programmeertaal.
 Dit programma draait op een normale computer.
@@ -35,9 +35,9 @@ We kunnen voor het programma de volgende eisen opstellen:
 \subsection{Lee}
 \label{ssec:lee}
 
-De eerste stap bij het schrijven van zo een programma is het vinden van een geschikt algoritme.
+De eerste stap bij het schrijven van zo'n programma is het vinden van een geschikt algoritme.
 Hiervoor hebben we ons georiënteerd op de vele beschikbare algoritmen.
-Uiteindelijk is er door elk van de drie tweetallen binnen D-2 gekozen om Lee's algoritme uit te werken, omdat dit relatief eenvoudig te begrijpen en implementeren is en voor onze doeleinden prima geschikt was.
+Uiteindelijk is er door elk van de drie tweetallen binnen D-2 gekozen om Lee's algoritme uit te werken, omdat dit relatief eenvoudig te begrijpen en implementeren is en voor onze doeleinden prima geschikt is.
 Daarnaast levert Lee's algoritme per definitie het kortst mogelijke pad op.
 Pseudocode voor Lee's algoritme en het nog te bespreken A* algoritme is te vinden in bijlage \ref{app:pseudocode}.
 
@@ -66,11 +66,11 @@ Pseudocode voor Lee's algoritme en het nog te bespreken A* algoritme is te vinde
 \end{figure}
 
 
-Lee's algoritme werkt als volgt (een schematische weergave is gegeven in figuur \ref{fig:lee}): als eerst wordt er aan elke \textit{node} (knooppunt) een waarde toegekend, beginnend bij het eindpunt.
+Lee's algoritme werkt als volgt (een schematische weergave is gegeven in figuur \ref{fig:lee}): als eerste wordt er aan elke \textit{node} (knooppunt) een waarde toegekend, beginnend bij het eindpunt.
 Het eindpunt krijgt de laagste waarde, bijvoorbeeld 0.
 Vervolgens krijgen alle nodes aangrenzend (niet diagonaal) aan het eindpunt een waarde 1, de nodes die op hun beurt weer grenzen aan deze nodes krijgen een waarde 2, enzovoorts.
 Door het patroon wat hierdoor ontstaat heet deze fase de \textit{wave-expansion} fase.
-Vervolgens begint de \textit{backtrace}; de waarde van het startpunt wordt geëvalueerd, deze is bijvoorbeeld gelijk aan 5.
+Vervolgens begint de \textit{backtrace} fase; de waarde van het startpunt wordt geëvalueerd, deze is bijvoorbeeld gelijk aan 5.
 Dan worden de waarden voor iedere aangrenzende node bekeken, tenminste één van deze zal een lagere waarde hebben dan het startpunt, de waarde 4, en is dus dichter bij het eindpunt.
 Deze wordt dan opgenomen in het pad en zal vervolgens op dezelfde manier worden geëvalueerd.
 Dit proces herhaalt zich totdat het eindpunt met waarde 0 is gevonden en het pad compleet is.
