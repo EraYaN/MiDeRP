@@ -86,6 +86,7 @@ namespace pcrobotsim
 			}
 
 			com.SendByte((byte)StatusByteCode.Enquiry);
+			System.Threading.Thread.Sleep(200);
 		}
 
 		private static void com_SerialDataEvent(object sender, SerialDataEventArgs e)
@@ -120,8 +121,8 @@ namespace pcrobotsim
 
 			if (nextByte != 0x00)
 				com.SendByte((byte)nextByte);
-			System.Threading.Thread.Sleep(500);
 
+			System.Threading.Thread.Sleep(500);
 			com.SendByte((byte)StatusByteCode.Halfway);
 			System.Threading.Thread.Sleep(500);
 

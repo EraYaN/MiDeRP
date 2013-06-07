@@ -81,27 +81,27 @@ namespace MiDeRP
                     if (_done == true)
                         DisableRobotControl();
 
-					if (RobotDirection != _nextAbsoluteDirection)
-					{
-						if ((_i - _prevCorneri) > 1)
-						{
-							//Just advanced in X or Y direction
-							if ((_nextAbsoluteDirection == Direction.Right || _nextAbsoluteDirection == Direction.Left))
-							{
-								Data.nav.visitedYAxes.Add((int)Data.nav.currentPos.From.X);
-								_prevCorneri = _i;
-							}
-							else
-							{
-								Data.nav.visitedXAxes.Add((int)Data.nav.currentPos.From.Y);
-								_prevCorneri = _i;
-							}
-						}
+					//if (RobotDirection != _nextAbsoluteDirection)
+					//{
+					//	if ((_i - _prevCorneri) > 1)
+					//	{
+					//		//Just advanced in X or Y direction
+					//		if ((_nextAbsoluteDirection == Direction.Right || _nextAbsoluteDirection == Direction.Left))
+					//		{
+					//			Data.nav.visitedYAxes.Add((int)Data.nav.currentPos.From.X);
+					//			_prevCorneri = _i;
+					//		}
+					//		else
+					//		{
+					//			Data.nav.visitedXAxes.Add((int)Data.nav.currentPos.From.Y);
+					//			_prevCorneri = _i;
+					//		}
+					//	}
 
-						if (_i > 0)
-							Data.nav.currentPath++;
+					//	//if (_i > 0)
+					//	//	Data.nav.currentPath++;
 
-					}
+					//}
 
                     if (_nextDirective == StatusByteCode.Back)
                     {
@@ -139,22 +139,14 @@ namespace MiDeRP
                     getNextDirective();
                     Data.com.SendByte((byte)_nextDirective);
 
-                    if (_done == true)
-                    {
-                        Data.com.SendByte((byte)StatusByteCode.Done);
-                    }
-
-                    if (_continue == true)
-                        Data.com.SendByte((byte)StatusByteCode.Continue);
-
                     _sentDirectiveIsUnacknowledged = true;
                 }
                 else if (_receivedByte == StatusByteCode.MineDetected)
                 {
-                    if (_i == 0)
+                    if (_i == 0 || !_halfway)
                         return;
 										
-                    Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
+                    Data.nav.mines.Add(Data.nav.paths[Data.nav.currentPath][_i - 1]);
                     Data.nav.recalculatePath();
                     Data.com.SendByte((byte)StatusByteCode.Acknowledged);
                     _halfway = true;
@@ -256,25 +248,50 @@ namespace MiDeRP
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
+			if (Data.challenge == Challenge.FindPath)
 			{
-				_nextNodeConnection = Data.nav.fullPath[_i];
-			}
+				if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
+				{
+					_nextNodeConnection = Data.nav.fullPath[_i];
+				}
 
-            if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count==0)
-			{
-				_done = true;
+				if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count == 0)
+				{
+					_done = true;
+				}
+				else if (Data.nav.fullPath[_i].FromPoint == true)
+				{
+					//TargetCP visited
+					_nextDirective = StatusByteCode.Turn;
+					_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
+
+					if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
+						Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
+					return;
+				}
 			}
-			else if (Data.nav.fullPath[_i].FromPoint == true)
+			else if (Data.challenge == Challenge.FindTreasure)
 			{
-				//TargetCP visited
-				_nextDirective = StatusByteCode.Turn;
-				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
-				//Data.nav.currentPath++;
-				if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
-					Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
-				//Data.nav.currentPath++;
-				return;
+				if (Data.nav.paths[Data.nav.currentPath].Count <= _i)
+				{
+					if (Data.nav.paths[Data.nav.currentPath].Count == _i || Data.nav.paths[Data.nav.currentPath].Count == 0)
+					{
+						if ((Data.nav.paths.Count() - 1) == Data.nav.currentPath)
+						{
+							//Completely finished
+							_nextDirective = StatusByteCode.Done;
+							return;
+						}
+						else
+						{
+							//Advance to new path
+							Data.nav.currentPath++;
+							_i = 0;
+						}
+					}
+				}
+				_nextNodeConnection = Data.nav.paths[Data.nav.currentPath][_i];
+				
 			}
 			
 			if (Data.nav.fullPath[_i].ToPoint == true)
@@ -283,22 +300,22 @@ namespace MiDeRP
 				if (Data.nav.currentExitCPCoord.X == 0)
 				{
 					//nav.currentExitCP is at left side
-					_nextAbsoluteDirection = Direction.Left;
+					_nextAbsoluteDirection = Direction.Right;
 				}
-				else if (Data.nav.currentExitCPCoord.Y == Data.N)
+				else if (Data.nav.currentExitCPCoord.Y == Data.N - 1)
 				{
 					//nav.currentExitCP is at top side
-					_nextAbsoluteDirection = Direction.Up;
+					_nextAbsoluteDirection = Direction.Down;
 				}
-				else if (Data.nav.currentExitCPCoord.X == Data.M)
+				else if (Data.nav.currentExitCPCoord.X == Data.M - 1)
 				{
 					//nav.currentExitCP is at right side
-					_nextAbsoluteDirection = Direction.Right;
+					_nextAbsoluteDirection = Direction.Left;
 				}
 				else if (Data.nav.currentExitCPCoord.Y == 0)
 				{
 					//nav.currentExitCP is at bottom side
-					_nextAbsoluteDirection = Direction.Down;
+					_nextAbsoluteDirection = Direction.Up;
 				}
 				else
 				{
@@ -351,12 +368,12 @@ namespace MiDeRP
 						//entryCP is at left side
 						_robotDirection = Direction.Right;
 					}
-					else if (Data.entryCPCoord.Y == Data.N)
+					else if (Data.entryCPCoord.Y == Data.N - 1)
 					{
 						//entryCP is at top side
 						_robotDirection = Direction.Down;
 					}
-					else if (Data.entryCPCoord.X == Data.M)
+					else if (Data.entryCPCoord.X == Data.M - 1)
 					{
 						//entryCP is at right side
 						_robotDirection = Direction.Left;

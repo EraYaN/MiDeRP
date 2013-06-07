@@ -176,11 +176,7 @@ namespace MiDeRP
 			
 			}
 
-			if (paths[0] == null)
-				currentPath = 1;
-			else
-				currentPath = 0;
-
+			currentPath = 0;
 			Data.vis.DrawField();
 		}
 
