@@ -13,6 +13,7 @@
 Het programma wat voor de besturing van de robot zorgt op de computer, door ons ``Director'' gedoopt, bestaat zoals eerst beschreven uit vier hoofdonderdelen. De laatste drie worden hier beschreven. We kunnen hiervoor de volgende eisen opstellen:
 
 \section{Eisen}
+\label{sec:dirEisen}
 \begin{itemize}
 \item De pathfinder op basis van het A* algoritme
 \item De event-driven seriële implementatie
@@ -53,7 +54,7 @@ Om de A* implementatie te gebruiken was er een "brug" nodig tussen de managed om
 Omdat deze heel erg verschillen moeten er speciale functies geschreven worden zodat de unmanaged code aangeroepen kan worden en data uitgewisseld.
 Wij hebben dit gedaan via Interop (voor de functie aanroepen [DllImport]) en de Marshaller (voor de equivalenten van malloc en free).
 \subsection{Communicatie}
-De communicatie met de XBee module verloopt via een seriële poort. Deze is gemakkelijk te gebruiken in .NET. Er is een event waar men zich op kan abonneren om zo op de hoogte gesteld te worden als er data gearriveerd is. Wij hebben een protocol gemaakt om de communicatie tussen de controller en de robot te bewerkstelligen. (zie sectie \ref{sec:communicatie} voor de specificaties)
+De communicatie met de XBee module verloopt via een seriële poort. Deze is gemakkelijk te gebruiken in .NET. Er is een event waar men zich op kan abonneren om zo op de hoogte gesteld te worden als er data gearriveerd is. Wij hebben een protocol gemaakt om de communicatie tussen de controller en de robot te bewerkstelligen. (zie Bijlage \ref{app:communicatie} voor de specificaties)
 
 \subsection{Controller}
 De controller regelt de reacties op de seriële events, deze krijgt dus een byte binnen vanuit de robot. Bijvoorbeeld een "Enquiry" (Waar moet ik heen), de controller gaat dan kijken waar hij denkt dat de robot is en wat de volgende actie zou moeten zijn om het pad te volgen.
@@ -72,5 +73,8 @@ De plattegrond wordt getekend door middel van een canvas element, hierop kan met
 De plattegrond word live geupdate met informatie die binnen komt op de seriële poort, de pijl die de positie van de robot aangeeft verschuift dan ook realtime en mijnen zullen ook verschijnen.
 Er kan op de control posts geklikt worden om deze aan te wijzen als te bezoeken of als start aan te geven.
 De mijnen kunnen geplaatst en weer verwijderd worden.
+
+\section{Discussie}
+Wij hebben met onze implementatie aan alle eisen zoals beschreven in sectie \ref{sec:dirEisen} voldaan. De software valt natuurlijk altijd te verbeteren, software is helaas nooit fout vrij.
 
 \end{document}
