@@ -12,7 +12,7 @@
 \label{ch:route}
 
 Een belangrijk onderdeel van het probleem is het vinden van een pad van begin naar eind.
-De mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing gezocht worden voor het berekenen van het korste pad.
+De mens is vrij gemakkelijk in staat een geschikt pad te onderscheiden, maar onze robot is autonoom en dus moet er een oplossing gezocht worden voor het berekenen van het kortste pad.
 Dit zou met de FPGA kunnen, maar de schakeling en rekenkracht die daarvoor benodigd is zou dit vrij complex maken.
 Bij het EPO-2-project is er dan ook voor gekozen het pad te laten berekenen door een programma geschreven in de C-programmeertaal.
 Dit programma draait op een normale computer.
@@ -106,7 +106,8 @@ Nu is het niet zo dat het berekenen van een pad over een grid van 5x5 een zeer i
 Daarnaast kan de complexiteit van de heuristische functie gevarieerd worden - dit is de functie die berekent hoe geschikt de node is voor het pad - om een optimaal pad, met zo min mogelijk bochten en zonder tussenkomst van mijnen, te berekenen.\\
 
 A* begint zijn zoektocht naar het kortste pad bij het startpunt.
-Vanaf het begin houdt het algoritme een \textit{openlist} bij, deze lijst bevat alle nodes die nog geëvalueerd kunnen worden en mogelijk een onderdeel van pad zijn.
+Vanaf het begin houdt het algoritme een \textit{openlist} bij.
+Deze lijst bevat alle nodes die nog geëvalueerd kunnen worden en mogelijk een onderdeel van pad zijn.
 Vervolgens wordt er voor elk van de \textit{aanliggende nodes} aan deze \textit{huidige node} een zogenaamde \textit{voorwaardelijke g-score} bepaald: deze score is de afstand van de aanliggende node tot het startpunt.
 Omdat alle afstanden in een grid als dat van ons altijd gelijk zijn aan 1 (of een andere constante), wordt de score van een aanliggende node altijd 1 hoger dan de huidige node.
 In het geval van een aanliggende node die naast het startpunt ligt is de voorwaardelijke g-score dus gelijk aan 1.
@@ -118,7 +119,7 @@ Wanneer de voorwaardelijke g-score van de aanliggende node lager is dan de al op
 	\item De voorwaardelijke g-score wordt bij de aanliggende node ingesteld als g-score en is dus niet langer voorwaardelijk
 	\item Er wordt een \textit{h-score}, waarbij de h staat voor heuristiek, berekend voor de aanliggende node, dit is de verwachte afstand tot het eindpunt
 	\item Er wordt een totale score, de \textit{f-score}, berekend voor de aanliggende node, deze score is gelijk aan de g-score + de h-score
-	\item De aanliggende node wordt toegevoegd aan de openlist aan de hand van zijn f-score, hoe hoger deze is, des te verder naar achter de node wordt ingedeeld
+	\item De aanliggende node wordt toegevoegd aan de openlist aan de hand van zijn f-score. Hoe hoger deze is, des te verder naar achter de node wordt ingedeeld
 \end{enumerate}
 
 Nadat dit proces zich voor ieder aanliggende node heeft herhaald (vier maal dus) zitten er dus een n-aantal nodes extra in de openlist.
