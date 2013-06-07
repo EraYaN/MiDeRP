@@ -55,7 +55,9 @@ architecture b of controller is
 	type sender_state is (swaiting, ssending, ssetwrite, sunsetwrite);
 	type receiver_state is (rwaiting, rreceiving, rsetread, runsetread);
 	signal state : sys_state := followline;
-		
+	signal turndelay : integer; 
+	signal fullturndelay : integer; 
+	signal failsafedelay : integer; 
 	signal delaycounter : integer;
 	signal failsafecounter : integer;
 	signal sstate : sender_state := swaiting;
@@ -66,16 +68,18 @@ architecture b of controller is
 	signal sending : std_logic := '0'; -- internal
 	signal rresponse, sresponse : std_logic_vector (1 downto 0) := "00";
 	signal passedminesite : std_logic;
+	signal fastmode : std_logic;
 	--signal turnprocessed : std_logic;
 	signal isdone, continue : std_logic;
 begin
 	
-	led(7 downto 0)<=std_logic_vector(to_unsigned(delaycounter, 32)(28 downto 21));
+	led(7 downto 0)<=std_logic_vector(to_unsigned(delaycounter, 32)(26 downto 19));
 	--led(4 downto 3)<=rresponse;
 	--led(5)<=minedetected;
 	--led(7 downto 6)<=uart_rw;	
 	dpoint_seg(3 downto 0)<="0000";
 	uart_rw_out<=uart_rw;	
+	fastmode<=sw(0);
 	
 	process (clk) is
 		variable next_state : sys_state;
@@ -93,12 +97,22 @@ begin
 			next_state:=state;
 			next_sending:='0';
 			next_passedminesite:=passedminesite;
+			if fastmode = '0' then
+				turndelay<=20000000;
+				fullturndelay<=80000000;
+				failsafedelay<=100000000;
+			else
+				turndelay<=13000000;
+				fullturndelay<=32000000;
+				failsafedelay<=66000000;
+			end if;
 			if reset = '1' then
 				uart_send <= p_unknown;
 				next_state:=followline;				
 				debugid:=to_unsigned(0,8);
 				next_delaycounter:=1000;
-				next_passedminesite:='1';				
+				next_passedminesite:='1';
+				next_failsafecounter := 0;				
 				--turnprocessed <= '1';				
 			elsif state = arewedone then
 				debugid:=to_unsigned(16#B#,8);
@@ -121,14 +135,17 @@ begin
 					debugid:=to_unsigned(16#C#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				next_failsafecounter:=failsafecounter+1;
-				if (failsafecounter > 100000000) and (passedminesite = '0') then -- TODO estimate correct number.			
+				if (passedminesite = '0') then	
+					next_failsafecounter:=failsafecounter+1;
+				end if;
+				if (failsafecounter > failsafedelay) and (passedminesite = '0') then -- TODO estimate correct number.			
 					next_passedminesite:='1';
 					next_state:=sendhalf;				
 				end if;
 				if minedetected = '1' then
 					next_state:=sendmine;
 					next_passedminesite:= '0';
+					next_failsafecounter := 0;
 				else				
 					case sensor is
 						when "000" => 
@@ -136,14 +153,23 @@ begin
 							motor_r_speed <= to_signed(100,8);
 							if delaycounter = 0 then
 								if passedminesite = '1' then
-									next_delaycounter:=20000000;
+									if fastmode = '1' then
+										next_delaycounter:=13000000;
+									else
+										next_delaycounter:=20000000;
+									end if;
 									next_state:=callforinput;
 									next_passedminesite:='0';
 									next_failsafecounter := 0;
 								else
-									next_delaycounter:=20000000;
+									if fastmode = '1' then
+										next_delaycounter:=13000000;
+									else
+										next_delaycounter:=20000000;
+									end if;
 									next_passedminesite:='1';
 									next_state:=sendhalf;
+									next_failsafecounter := 0;
 								end if;
 							end if;						
 						when "001" => motor_l_speed <= to_signed(20,8); motor_r_speed <= to_signed(100,8);
@@ -160,17 +186,29 @@ begin
 				debugid:=to_unsigned(16#2#,8);
 				motor_l_speed <= to_signed(100,8); motor_r_speed <= to_signed(100,8);			
 					if nextturn = 0 then
-						next_delaycounter:=40000000;
+						if fastmode = '1' then
+							next_delaycounter:=26000000;
+						else
+							next_delaycounter:=40000000;
+						end if;						
 						next_state:=leftturn; --left
 					elsif nextturn = 1 then
 						next_state:=followline; --forward (line)
 					elsif nextturn = 2 then	
-						next_delaycounter:=40000000;
+						if fastmode = '1' then
+							next_delaycounter:=26000000;
+						else
+							next_delaycounter:=40000000;
+						end if;							
 						next_state:=rightturn; --right
 					elsif nextturn = 3 then
 						next_state:=callforinput; --stop (wait for input)
 					elsif nextturn = 4 then
-						next_delaycounter:=100000000;
+						if fastmode = '1' then
+							next_delaycounter:=40000000;
+						else
+							next_delaycounter:=100000000;
+						end if;							
 						next_state:=fullturn; --turn
 					elsif nextturn = 5 then
 						next_state:=turnback; --back
@@ -183,10 +221,10 @@ begin
 					debugid:=to_unsigned(16#F#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter > 20000000 then					
+				if delaycounter > turndelay then					
 					motor_l_speed <= to_signed(100,8);
 					motor_r_speed <= to_signed(100,8);
-				elsif (delaycounter < 20000000) and (delaycounter /= 0) then
+				elsif (delaycounter < turndelay) and (delaycounter /= 0) then
 					motor_l_speed <= to_signed(-100,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif delaycounter = 0	then
@@ -205,10 +243,10 @@ begin
 					debugid:=to_unsigned(16#10#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter > 20000000 then					
+				if delaycounter > turndelay then					
 					motor_l_speed <= to_signed(100,8);
 					motor_r_speed <= to_signed(100,8);
-				elsif (delaycounter < 20000000) and (delaycounter /= 0) then
+				elsif (delaycounter < turndelay) and (delaycounter /= 0) then
 					motor_l_speed <= to_signed(100,8);
 					motor_r_speed <= to_signed(-100,8);
 				elsif delaycounter = 0	then
@@ -227,10 +265,10 @@ begin
 					debugid:=to_unsigned(16#11#,8);
 					next_delaycounter:=delaycounter-1;
 				end if;
-				if delaycounter >= 80000000 then					
+				if delaycounter >= fullturndelay then					
 					motor_l_speed <= to_signed(100,8);
 					motor_r_speed <= to_signed(100,8);
-				elsif (delaycounter < 80000000) and (delaycounter /= 0) then
+				elsif (delaycounter < fullturndelay) and (delaycounter /= 0) then
 					motor_l_speed <= to_signed(-100,8);
 					motor_r_speed <= to_signed(100,8);
 				elsif delaycounter = 0	then				
@@ -264,6 +302,7 @@ begin
 					  when "000" => 
 						--next_delaycounter:=0000000;
 					  	next_state := callforinput;
+						next_passedminesite := '0';
 					  when others => --nothing
 				   end case;
 			   end if;
@@ -282,7 +321,11 @@ begin
 				uart_send <= p_mine;
 				next_sending:='1';	
 				if sresponse = "10" then
-					next_delaycounter:=10000000;
+					if fastmode = '1' then
+						next_delaycounter:=6600000;
+					else
+						next_delaycounter:=10000000;
+					end if;
 					next_state:=turnback;	
 					next_sending:='0';					
 				end if;
