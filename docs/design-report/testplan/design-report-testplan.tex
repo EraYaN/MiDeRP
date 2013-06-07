@@ -146,16 +146,16 @@ $12.2 \: \mathrm{cm/s} \: \pm \: 0.0589 \:\mathrm{cm/s}$ voor de tweede route.
 \section{Vergelijking gewenste en bereikte systeemspecificaties}
 \label{sec:vergelijkingSpecs}
 
-Als er vervolgens gekeken wordt hoe lang de robot er gemiddeld over zou doen om het hele veld af te rijden zouden we uit komen op een tijdsduur van;
-\newline
+Om te berekenen of de robot binnen 120 seconden de hele route kan afrijden, wordt de route gemodelleerd als een rechte lijn. Met de snelheid voor de eerste route, kan dan berekend worden of de 120 seconden haalbaar is.
 
-\begin{equation}
-\frac{De lengte van het te rijden pad}{Gemiddelde snelheid}
-\end{equation}
+De lengte van de route van punt 1 naar de laatste overgebleven mijn is:
+$$\mathrm{s}=16\:\mathrm{cm}+47.5\cdot48\:\mathrm{cm}=2296\:\mathrm{cm}$$
 
-\begin{equation}
-\frac{23.04}{0.125} = 180 \mathrm{s}
-\end{equation}
+De snelheid bij het afrijden van een rechte lijn is:
+$$\mathrm{v}=12.8\:\mathrm{cm/s}$$
+
+De bekende waarden invullen in formule \ref{snelheid} geeft:
+$$\mathrm{t}=\frac{2296\:\mathrm{cm}}{12.8\:\mathrm{cm/s}}=179\:\mathrm{s}$$
 
 Aangezien er maar 120 seconden de tijd is om het veld te verkennen, is het haast onmogelijk om daadwerkelijk "de schat" te vinden. Tenzij de servomotoren worden opgevoerd, wat we uiteindelijk voor challenge C ook daadwerkelijk hebben gedaan. Dit hebben we bereikt door de ingangsspanning op de servomotoren te verhogen van 5 V naar 6 V.
 
