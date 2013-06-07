@@ -72,13 +72,13 @@ Als het overdracht proces van één data status is voltooid, wordt de flag flip-
  
 \subsection*{Buffer register met flag flip-flops}
 
- De buffer register zorgt voor een link tussen het UART sub-systeem en het hoofdsysteem.
-Een flag flip-flop houdt bij of de buffer register, vol of leeg is.
+ Het buffer register zorgt voor een link tussen het UART sub-systeem en het hoofdsysteem.
+Een flag flip-flop houdt bij of het buffer register, vol of leeg is.
 
-Als de UART receiver de ontvangen bit doorgeeft, geeft de flag flip-flop weer dat de buffer register gelezen is door het hoofdsysteem en dat die nu opnieuw ingesteld kan worden.
+Als de UART receiver de ontvangen bit doorgeeft, geeft de flag flip-flop weer dat het buffer register gelezen is door het hoofdsysteem en dat die nu opnieuw ingesteld kan worden.
 
-Als voor de UART transmitter de flag flip-flop aangeeft dat de buffer register de juiste data bevat om verzonden te worden, dan zal de UART transmitter op de actieve status van de flip-flop reageren en beginnen met verzenden.
-De data van de buffer register wordt gekopieerd naar de UART transmitter en als deze vervolgens klaar is met het proces zal de flag flip-flop gereset worden, waarna er weer nieuwe data kan worden ontvangen.
+Als voor de UART transmitter de flag flip-flop aangeeft dat het buffer register de juiste data bevat om verzonden te worden, dan zal de UART transmitter op de actieve status van de flip-flop reageren en beginnen met verzenden.
+De data van het buffer register wordt gekopieerd naar de UART transmitter en als deze vervolgens klaar is met het proces zal de flag flip-flop gereset worden, waarna er weer nieuwe data kan worden ontvangen.
 \\
 
 De C-code die voor de communicatie geschreven moest worden, moet er voor zorgen dat er vanuit de C-code gecommuniceerd kan worden met de VHDL-code op de robot.
@@ -87,9 +87,9 @@ Via de 7-segmentdisplay kan er gezien worden wat er vanaf de computer naar de ro
 
 \section{Implementatie}
 Voordat de XBee modules met elkaar kunnen communiceren moeten ze eerst met elkaar worden geconfigureerd, zodat ze dezelfde unieke instellingen hebben.
-Als dit niet wordt gedaan is het mogelijk dat andere XBee modules gaan communiceren met andere modules terwijl dit niet de bedoeling is.
+Als dit niet wordt gedaan is het mogelijk dat XBee modules gaan communiceren met andere modules terwijl dit niet de bedoeling is.
 
-De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheidt kan worden gemaakt tussen de verschillende XBee modules.
+De XBee modules bevatten een aantal instelpunten die ervoor zorgen dat er onderscheid kan worden gemaakt tussen de verschillende XBee modules.
 De belangrijkste hiervan zullen verder uitgelicht worden:
 
 \subsection{Channel settings}
@@ -104,7 +104,7 @@ Door op beide XBee modules de \textit{Pan-ID}  met hetzelfde nummer in te stelle
 \subsection{My-ID}
 Het is mogelijk dat er meerdere XBee modules hetzelfde\textit{ Pan-Id} hebben.
 Er moet daarom ook nog onderscheid kunnen worden gemaakt tussen de XBee modules met hetzelfde \textit{Pan-Id}.
-Dit kan worden gedaan door \textit{My-Id} van de ene XBee modules, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
+Dit kan worden gedaan door \textit{My-Id} van de ene XBee module, in te stellen in \textit{DL} van de andere XBee module, als je dit ook voor de andere XBee module doet, kan er alleen nog maar gecommuniceerd worden tussen deze XBees.
 
 
 Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage \ref{app:communicatie}
@@ -113,13 +113,13 @@ Voor de VHDL-code, de C-code en de instellingen van de XBee module zie bijlage \
 
 We hebben de draadloze verbinding tussen de computer en de robot kunnen testen door te kijken of we ASCII-karakters(elk ASCII-karakter heeft zijn eigen 7-bit code) van de computer naar de robot konden sturen en vervolgens te kijken of deze in de juiste led volgorde op de robot verschenen. De meest rechter led indiceert de eerste bit. Vervolgens hebben we geprobeerd om vanaf de robot naar de computer bits te sturen, waarna er op de computer ASCII-karakters verschenen.
 
-Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref{tab:comProtocol}Door deze bit te verzenden naar de robot en te aanschouwen of deze daadwerkelijk zou gaan vooruitrijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
+Daarna zijn we gaan kijken of we de robot konden laten rijden als we vanaf de computer één bepaalde bit zouden sturen. Hiervoor moesten we eerst in de VHDL-code van de robot aangeven welke bit zou staan voor het vooruit rijden. Zie hiervoor bijlage \ref{tab:comProtocol}. Door deze bit te verzenden naar de robot en te kijken of deze daadwerkelijk vooruit zou gaan rijden, konden we kijken of de draadloze communicatie tussen de XBee module van de computer en de XBee module van de robot goed werkte.
 
 \section{Discussie}
 
 Het draadloos communiceren van de XBee's werkte zeer goed.
 
-Wat wellicht een probleem kan zijn, is dat toevallig mensen dezelfde instellingen hebben gekozen waardoor er tussen verschillende groepen gecommuniceerd wordt, wat zeker niet de bedoeling is.
+Wat wellicht een probleem kan zijn, is dat toevallig andere mensen dezelfde instellingen hebben gekozen waardoor er tussen verschillende groepen gecommuniceerd wordt, wat zeker niet de bedoeling is.
 Dit is echter bij ons niet het geval geweest.
 
 \end{document}
