@@ -33,11 +33,10 @@ Afhankelijk van de kortste route maakt de robot twee verschillende bewegingen na
 De finite-state machine is bijgevoegd in de bijlage (sectie \ref{sec:statemachines}, figuur \ref{fig:fsmMain}) en de VHDL-code in bijlage \ref{appsec:controller.vhdl}.
 
 \section{DebugID}
-Om te zien of de robot alle states goed doorloopt is de DebugID ge\"{i}mplementeerd.
+Om te zien of de robot alle states goed doorloopt is de DebugID geïmplementeerd.
 Iedere state is een nummer toegewezen, dat op het 7-segment display wordt weergegeven.
 Stel dat de robot de verkeerde beweging maakt tijdens het rijden op het wedstrijdveld, dan kan er gekeken worden naar welke state de robot is gegaan tijdens het maken van de verkeerde beweging.
 Dit maakt het oplossen van problemen eenvoudiger en sneller.
-
 
 \section{FSM-states}
 
@@ -48,7 +47,6 @@ De robot zal daardoor vloeiend rechtdoor rijden in plaats van een stutter bewegi
 Er is voor de delay-counter een bepaalde waarde gekozen en zal na iedere opgaande klokflank met 1 verminderen.
 Als de delay-counter dan op 0 komt te staan, wordt er een nieuwe state gevraagd.
 In principe zorgt de delay-state ervoor dat het interval van het vragen van een nieuwe state wordt vergroot.
-
 
 \subsection{Followline-state}
 De main state waar de robot in begint nadat de reset wordt ingedrukt is Followline.
@@ -67,7 +65,7 @@ Als het vragen naar een input aangekomen en goedgekeurd is, dan wacht de robot o
 Gaat deze stap goed, dan volgt de Processnextturn-state, zo niet, dan vraagt de robot weer aan de computer om een input.
 
 \subsection{Processnextturn-state}
-In de Processnextturn-state wordt de ontvangen input ge\"{e}valueerd.
+In de Processnextturn-state wordt de ontvangen input geëvalueerd.
 Afhankelijk van de input gaat de robot naar de volgende states:
 \begin{itemize}
 \item Turnback-state: de robot rijdt achteruit totdat de sensor bij het kruispunt

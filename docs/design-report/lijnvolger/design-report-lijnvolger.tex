@@ -14,7 +14,7 @@
 \section{Eisen}
 De basiseis waaraan de robot moet voldoen is het volgen van een zwarte lijn.
 Het is dan ook van groot belang dat de robot deze taak foutloos uit kan voeren.
-Om dit klaar te spelen zal de geïmplementeerde lijnvolger aan een aantal eisen moeten voldoen.
+Om dit klaar te spelen zal de geïmplementeerde lijnvolger aan een aantal eisen moeten voldoen:
 
 \begin{itemize}
 \item Zwarte lijn detecteren
@@ -30,7 +30,8 @@ Aan de hand van deze uitlezing wordt bepaald hoe de servomotoren aangestuurd wor
 
 \section{Implementatie}
 De schakeling binnen de FPGA is beschreven in VHDL.
-Deze VHDL-code is terug te vinden in de bijlagen, sectie \ref{appsec:motorcontrol.vhdl}.
+Deze VHDL-code is terug te vinden in bijlage \ref{appsec:controller.vhdl}, het gedeelte van deze VHDL-code dat de lijnvolger beschrijft is slechts zeer beknopt en te vinden in de \textit{state} 'followline'. 
+Over states en de overkoepelende controller is meer te vinden in hoofdstuk \ref{ch-controller}.
 Om de robot werkelijk de lijn te laten volgen wordt met behulp van de motorcontroller (Hoofdstuk \ref{ch:servo}) een PWM-signaal doorgezonden naar de servomotoren.
 De duur van deze pulsen wordt bepaald aan de hand van de uitlezing van de sensoren.
 In de VHDL-code van de lijnvolger is dit te zien aan de verschillende combinaties van sensorwaarden die de linker- en rechtermotorsnelheden bepalen.
@@ -45,7 +46,7 @@ Een opvallende bijzaak is wel dat de robot een lichte afwijking heeft, dit terwi
 \newpage
 \section{Discussie}
 De lijnvolger werkt haast perfect op een lichte in één van de servomotoren afwijking na.
-Aangezien de robot deze afwijking moet corrigeren zal dit mankement tijd kosten tijdens de wedstrijd.
+Aangezien de robot deze afwijking moet corrigeren zal dit mankement tijd kosten tijdens de wedstrijd, of dit tijdsverlies significant is, is echter maar zeer de vraag.
 Om dit probleem op te lossen zouden wij het PWM-signaal van de linker servo lichtelijk aanpassen ten opzichte van het PWM-signaal van de rechter servo en zo de wielen synchroon laten draaien.
-Maar aangezien het oplossen van dit probleem tijd kost, welke beter geïnvesteerd kan worden in problemen die belangrijker zijn, hebben wij besloten dit niet te doen.
+Maar aangezien het oplossen van dit probleem tijd kost, welke beter geïnvesteerd kan worden in problemen die belangrijker zijn hebben wij besloten dit niet te doen.
 \end{document}

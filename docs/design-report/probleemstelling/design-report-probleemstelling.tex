@@ -13,7 +13,7 @@
 
 \section{Projectopgave: Mijnen-ontwijkende robot}
 
-Het is de bedoeling dat er tijdens het EPO-2 project “Smart Robot Challenge” een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond.
+Het is de bedoeling dat er tijdens het EPO-2 project ``Smart Robot Challenge'' een autonome robot wordt ontworpen die zijn weg kan vinden over een veld dat bestaat uit zwarte lijnen op een witte ondergrond.
 Vervolgens worden op het veld op nog onbekende plaatsen mijnen geplaatst, die de robot dient te ontwijken.
 Als laatste wordt er nog één mijn toegevoegd, die op dat moment gevonden moet worden en dienst doet als schat.
 Dit alles dient te worden voltooid door middel van zelfgemaakte VHDL en C-codes, die de directe besturing van de robot realiseren.
@@ -34,11 +34,6 @@ Verder zijn er aan de onderkant ook nog lichtgevoelige sensors die de lijn detec
 	\caption{De robot die wij hebben gebruikt}
 	\label{fig:robot}
 \end{figure}
-
-
-
-
-
 
 \subsection{Eigenschappen mijnenveld}
 
@@ -65,68 +60,69 @@ Aan de volgende functionele eisen moet de robot voldoen;
 \begin{itemize}
 
 \item
-De robot moet een lijn kunnen volgen.
-
+De robot moet een lijn kunnen volgen
 
 \item 
-De robot moet een route kunnen volgen.
+De robot moet een route kunnen volgen
 
 \item
-De robot moet een mijn kunnen detecteren, onthouden waar deze ligt en vervolgens de mijn ontwijken.
+De robot moet een mijn kunnen detecteren, onthouden waar deze ligt en vervolgens de mijn ontwijken
 
 \item 
-De robot moet kunnen communiceren met de computer en andersom.
+De robot moet kunnen communiceren met de computer en andersom
 
 \end{itemize}
 
 \newpage
 \section{Randvoorwaarden}
 
-De robot heeft een aantal eisen waaraan voldaan moet worden;
+De robot heeft een aantal eisen waaraan voldaan moet worden:
 
 \begin{itemize}
 
 \item
-De robot moet in een fictieve box passen die niet groter is dan 30 cm x 25 cm x 20 cm.
+De robot moet in een fictieve box passen die niet groter is dan 30 cm x 25 cm x 20 cm
 
 \item
-De robot mag maximaal 1 kg wegen.
+De robot mag maximaal 1 kg wegen
 
 \item
-De aandrijving wordt gerealiseerd met behulp van elektromotoren en een batterij.
-De batterij is de enige aanwezige energiebron op de robot.
+De aandrijving wordt gerealiseerd met behulp van elektromotoren en een batterij
 
 \item
-De robotaansturing kan alleen worden gedaan via de beschikbare Basys2 ontwikkelbord, die bestaat uit;
+De batterij is de enige aanwezige energiebron op de robot
+
+\item
+De robotaansturing kan alleen worden gedaan via de beschikbare Basys2 ontwikkelbord, die bestaat uit:
 
 \begin{itemize}
 
 \item
-één Spartan-3 FPGA chip,
+één Spartan-3 FPGA chip
 
 \item
-twee XBee modules,
+twee XBee modules
 
 \item
-één besturingsprogamma op een laptop dat geschreven is in de programmeertaal C.
+één besturingsprogamma op een laptop dat geschreven is in de programmeertaal C
 
 
 \end{itemize}
 
 \item
-De FPGA-chip kan alleen werken met een VHDL-geschreven code.
+De FPGA-chip kan alleen werken met een VHDL-geschreven code
 
 \item
 Het niet toegestaan om in het besturingsprogramma in te voeren waar de obstakels(mijnen) op het wedstrijdveld liggen 
 
 \item
-De robot moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld.
+De robot moet zo gebouwd zijn dat deze geen schade of markeringen kan aanbrengen aan het wedstrijdveld
 
 \end{itemize}
 
 \section{Plan van aanpak}
 
-Er is door zes personen aan het EPO-2 project “Smart Robot Challenge” gewerkt, dit gebeurde in zaal 1.060 aan de Drebbelweg 5.
+Er is door zes personen aan het EPO-2 project ``Smart Robot Challenge'' gewerk, dit gebeurde in zaal 1.060 aan de Drebbelweg 5.
 Aan de hand van verschillende Just-in-time trainingen worden in de loop van het project de onderdelen voor de robot beter bestudeerd en vervolgens ontworpen en gemaakt.
 Daarnaast zijn er nog tutorials waarin benodigde kennis wordt uitgelegd.
 Een uitgebreid plan van aanpak is te vinden in bijlage \ref{app:pva}.

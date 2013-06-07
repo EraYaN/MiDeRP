@@ -30,7 +30,7 @@ Mocht de robot op een kruispunt staan dan geven de lichtsensoren de bit '000' do
 Verder moet de robot bochten kunnen maken wat te maken heeft met de VHDL-code van de servo-motoren.
 
 \section{Implementatie}
-Onze implementatie van de lijnvolger is te vinden in bijlage \ref{appsec:controller.vhdl}.
+Onze implementatie van de routevolger en de bijbehorende lijnvolger zijn te vinden in bijlage \ref{appsec:controller.vhdl}, als onderdeel van de overkoepelende controller, waar uitgebreid op ingegaan wordt in hoofdstuk \ref{ch:controller}.
 
 \section{Test}
 We hebben een eigen testveld gemaakt, waarop we de robot hebben kunnen testen.
@@ -47,9 +47,7 @@ Nadat de mijnendetector was aangesloten, hebben we mijnen geplaatst op de midden
 
 \section{Discussie}
 
-
-Bij het testen met het detecteren van de mijnen en het vervolgens laten terugrijden van de robot, kwamen we er achter dat de robot stopte nadat hij terug op het vorige kruispunt was. Dit was natuurlijk niet de bedoeling.
-Door goed te kijken naar de VHDL-code, hebben we de fout kunnen vinden en deze weten te verhelpen.
+Het ontwerpen van de routevolger in zijn huidige staat was een moeizaam proces. Zo zijn we bijvoorbeeld tegen het probleem aan gelopen dat de robot zo scherp draaide dat hij de lijn waar hij naar toe moest miste en dus in feite $180\degree$ draaide. Na aanpassingen kwam het voor dat bochten goed gemaakt werden, alleen met een dusdanige zwaai dat eventuele mijnen gemist werden. De uiteindelijke oplossing was om de robot eerst een stuk vooruit te laten rijden door middel van een vertraging en hem daarna om zijn as te laten draaien door de motoren met maximale snelheid in tegengestelde richting te laten draaien. Het resultaat mocht er zijn.
 
 %zijn we er achter gekomen dat de lichtsensoren meestal op het kruispunt terecht kwamen.
 %Dit was natuurlijk niet de bedoeling.
