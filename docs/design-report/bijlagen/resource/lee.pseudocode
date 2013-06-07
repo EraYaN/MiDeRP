@@ -1,0 +1,20 @@
+\\Initialisation
+Select start point, mark with 0;
+i := 0;
+
+\\Wave expansion
+REPEAT
+	Mark all unlabeled neighbors of points marked with i with i+1;
+	i := i+1;
+UNTIL ((target reached) or (no points can be marked))
+
+\\Backtrace
+Go to the target point
+REPEAT
+	go to next node that has a lower mark than the actual node;
+	add this node to path;
+UNTIL (start point reached)
+
+\\Clearance
+Block the path for future wirings;
+Delete all marks;
