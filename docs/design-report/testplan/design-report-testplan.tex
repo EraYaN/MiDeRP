@@ -16,7 +16,7 @@ We hadden vooraf het vermoeden dat de robot onmogelijk binnen 120 seconden het h
 
 \section{Testplan}
 \label{sec:testplan}
-De robot wordt op punt 1 gezet met de sensoren net op de zwarte lijn en hij moet parallel zijn aan de zwarte lijn. Tegelijkertijd wanneer de robot met begint met rijden, wordt ook de counter gestart. 
+De robot wordt op punt 1 gezet met de sensoren net op de zwarte lijn en hij moet parallel zijn aan de zwarte lijn. Tegelijkertijd wanneer de robot begint met rijden, wordt ook de counter gestart. 
 
 Er worden twee routes gereden:
 \begin{itemize}
@@ -24,7 +24,7 @@ Er worden twee routes gereden:
 \item Een koers met een bocht van punt 1 naar 12 via het dichtstbijzijnde kruispunt bij punt 9
 \end{itemize}
 Over het algemeen geven meer metingen een betere schatting van de echte waarde. Een vuistregel voor het aantal metingen is tussen de 4-10 metingen. Om de robot te testen meten wij 5 keer. 
-Bij deze metingen zijn er ook onzekerheden. Deze zitten in de gemeten grootheden en ook in het einduitkomst. Daar enkele stappen worden de onzekerheden berekend.\\ 
+Bij deze metingen zijn er ook onzekerheden. Deze zitten in de gemeten grootheden en ook in de einduitkomst.\\ 
 
 %%EQUATIONS: in testplan of testresultaten
 De gemiddelde waarde van de metingen wordt als volgt berekend:
@@ -145,5 +145,19 @@ $12.2 \: \mathrm{cm/s} \: \pm \: 0.0589 \:\mathrm{cm/s}$ voor de tweede route.
 \newpage
 \section{Vergelijking gewenste en bereikte systeemspecificaties}
 \label{sec:vergelijkingSpecs}
+
+Als er vervolgens gekeken wordt hoe lang de robot er gemiddeld over zou doen om het hele veld af te rijden zouden we uit komen op een tijdsduur van;
+\newline
+
+\begin{equation}
+\frac{De lengte van het te rijden pad}{Gemiddelde snelheid}
+\end{equation}
+
+\begin{equation}
+\frac{23.04}{0.125} = 180 \mathrm{s}
+\end{equation}
+
+Aangezien er maar 120 seconden de tijd is om het veld te verkennen, is het haast onmogelijk om daadwerkelijk "de schat" te vinden. Tenzij de servomotoren worden opgevoerd, wat we uiteindelijk voor challenge C ook daadwerkelijk hebben gedaan. Dit hebben we bereikt door de ingangsspanning op de servomotoren te verhogen van 5 V naar 6 V.
+
 
 \end{document}
