@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass[final]{report}
 \input{../library/preamble}
 \input{../library/style}
 \addbibresource{../library/bibliography.bib}
@@ -14,6 +14,8 @@
 %----DEEL INTRO
 \subimport{versieoverzicht/}{design-report-versieoverzicht}
 \subimport{inleiding/}{design-report-inleiding}
+\newpage
+\setlength{\cftbeforetoctitleskip}{-3em}
 \tableofcontents
 
 \newpage
