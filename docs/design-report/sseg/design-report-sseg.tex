@@ -3,13 +3,13 @@
 \input{../../library/style}
 \addbibresource{../../library/bibliography.bib}
 
-\title{EPO-2: Mid-term Design Report - 7-segment display}
+\title{EPO-2: Mid-term Design Report - 7-segmentendisplay (Debugger)}
 \author{Joris Blom}
 
 \begin{document}
 
-\chapter{7-segmentendisplay}
-\label{ch:sseg}
+\chapter{7-segmentendisplay (Debugger)}
+\label{ch:segg}
 \section{Eisen}
 \label{sec:Eisen}
 Het 7-segmentendisplay moet aan de volgende eisen voldoen: 
@@ -19,16 +19,17 @@ Het 7-segmentendisplay moet aan de volgende eisen voldoen:
 \item Het 7-segmentendisplay moet de state van de zender, ontvanger en het main-FSM kunnen weergeven
 \end{itemize}
 
-\section{Implementatie}
-De 7-segmentendisplays worden gebruikt om de verschillende states van de ontvanger, zender en het main-FSM weer te geven.
-Het meest linkse 7-segmentendisplay wordt niet gebruikt.
-Het 7-segmentendisplay rechts van het midden wordt gebruikt om de state van de zender te weergeven.
-Het display links van het midden wordt gebruikt om de state van de ontvanger te weergeven, en het meest linkse display wordt gebruikt om de state van de main-FSM te weergeven.
+\section{Ontwerp}
+De 7-segmentendisplays worden gebruikt om de verschillende states van de ontvanger, zender en het main-FSM weer te geven. Hierdoor kunnen fouten in de code makkelijker achterhaald worden, omdat op het display te zien is in welke state het fout gaat.
+Het meest linkse 7-segmentendisplay wordt gebruikt om de state van de zender te weergeven.
+Het display rechts van het midden wordt gebruikt om de state van de ontvanger te weergeven, en het de twee linker displays worden gebruikt om de state van de main-FSM te weergeven.
 De punten onder de displays hebben geen functie en staan altijd uit.
+
+Een hexadecimaal getal is gelijk aan 4 bit dus, om 4 verschillende hexadecimale waarden op de displays te kunnen weergeven moet er een 16 bits vector verstuurd worden vanuit de controller naar de displayaansturing.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{7_segment_display-robot.jpg}
+\includegraphics[width=0.5\textwidth]{7_segment_display-robot.jpg}
 
 \caption{7-segmentendisplay-robot}
 \end{figure}
