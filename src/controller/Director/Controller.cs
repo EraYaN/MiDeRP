@@ -58,122 +58,11 @@ namespace MiDeRP
 		#region Robot control
 		private void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
-            if (!_robotControlIsEnabled)
-                return;
-			
-            _receivedByte = e.DataByte.ToStatusByteCode();
+			if (!_robotControlIsEnabled)
+				return;
 
-			if (Data.challenge == Challenge.FindPath)
-			{
-				findPathEvent();
-			}
-			if (Data.challenge == Challenge.FindTreasure)
-			{
-				findTreasureEvent();
-			}
+			_receivedByte = e.DataByte.ToStatusByteCode();
 
-            Data.vis.DrawField();
-        }
-
-		private void findTreasureEvent()
-		{
-            if (_receivedByte == StatusByteCode.Acknowledged)
-            {
-                if (_sentDirectiveIsUnacknowledged)
-                {
-                    if (_done == true)
-                        DisableRobotControl();
-
-                    if (_nextDirective == StatusByteCode.Back)
-                    {
-                        Data.nav.currentPos = new NodeConnection(Data.nav.currentPos.From, true);
-                        _halfway = true;
-                        _continue = false;
-                    }
-                    else
-                    {
-                        _halfway = false;
-                        _robotDirection = _nextAbsoluteDirection;
-                        Data.nav.currentPos = _nextNodeConnection;
-                    }
-
-                    _i++; //Advance to next item in path					
-                    _sentDirectiveIsUnacknowledged = false;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else if (_receivedByte == StatusByteCode.NotAcknowledged)
-            {
-                //Resend directives
-                Data.com.SendByte((byte)_nextDirective);
-            }
-            else if (_sentDirectiveIsUnacknowledged == false)
-            {
-                if (_receivedByte == StatusByteCode.Enquiry)
-                {
-                    if (_i > 0 && !_halfway && !Data.nav.fullPath[_i].FromPoint)
-                        return;
-
-                    getNextDirectiveTreasure();
-                    Data.com.SendByte((byte)_nextDirective);
-
-                    if (_done == true)
-                    {
-                        Data.com.SendByte((byte)StatusByteCode.Done);
-                    }
-
-                    if (_continue == true)
-                        Data.com.SendByte((byte)StatusByteCode.Continue);
-
-                    _sentDirectiveIsUnacknowledged = true;
-                }
-                else if (_receivedByte == StatusByteCode.MineDetected)
-                {
-                    if (_i == 0)
-                        return;
-					if (!treasureSearchList.Remove(Data.nav.currentPos))
-						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
-                    Data.nav.visited.Add(Data.nav.currentPos);
-                    //Detected mine, add to list
-					
-                    Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
-                    recalculatePathTreasure();
-                    Data.com.SendByte((byte)StatusByteCode.Acknowledged);
-                    _halfway = true;
-                }
-                else if (_receivedByte == StatusByteCode.Halfway)
-                {
-                    _halfway = true;
-					if (!treasureSearchList.Remove(Data.nav.currentPos))
-						treasureSearchList.Remove(Data.nav.currentPos.Flipped);
-                    Data.nav.visited.Add(Data.nav.currentPos);
-                    Data.com.SendByte((byte)StatusByteCode.Acknowledged);
-                }
-            }
-            else
-            {
-                //Invalid bytecode or out of sync
-                return;
-            }
-        }
-
-        private void getNextDirectiveTreasure()
-        {
-			getNextDirective();
-        }
-
-        private void recalculatePathTreasure()
-        {
-			_i = 0;
-			Data.nav.currentPos = Data.nav.currentPos.Flipped;
-			Data.nav.findTreasure();
-        }
-
-		private void findPathEvent()
-		{
 			if (_receivedByte == StatusByteCode.Acknowledged)
 			{
 				if (_sentDirectiveIsUnacknowledged)
@@ -216,14 +105,16 @@ namespace MiDeRP
 					getNextDirective();
 					Data.com.SendByte((byte)_nextDirective);
 
-					if (_done == true)
+					if (Data.challenge == Challenge.FindPath)
 					{
-						Data.com.SendByte((byte)StatusByteCode.Done);
-					}
+						if (_done == true)
+							Data.com.SendByte((byte)StatusByteCode.Done);
 
-					if (_continue == true)
-						Data.com.SendByte((byte)StatusByteCode.Continue);
-					_continue = false;
+						if (_continue == true)
+							Data.com.SendByte((byte)StatusByteCode.Continue);
+
+						_continue = false;
+					}
 
 					_sentDirectiveIsUnacknowledged = true;
 				}
@@ -233,13 +124,29 @@ namespace MiDeRP
 						return;
 
 					//Detected mine, add to list
+					if (Data.challenge == Challenge.FindTreasure)
+					{
+						if (!treasureSearchList.Remove(Data.nav.currentPos))
+							treasureSearchList.Remove(Data.nav.currentPos.Flipped);
+						Data.nav.visited.Add(Data.nav.currentPos);
+					}
+
 					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
-					recalculatePath();
+
+					_i = 0;
+					Data.nav.recalculatePath();
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 					_halfway = true;
 				}
 				else if (_receivedByte == StatusByteCode.Halfway)
 				{
+					if (Data.challenge == Challenge.FindTreasure)
+					{
+						if (!treasureSearchList.Remove(Data.nav.currentPos))
+							treasureSearchList.Remove(Data.nav.currentPos.Flipped);
+						Data.nav.visited.Add(Data.nav.currentPos);
+					}
+
 					_halfway = true;
 					Data.com.SendByte((byte)StatusByteCode.Acknowledged);
 				}
@@ -249,51 +156,55 @@ namespace MiDeRP
 				//Invalid bytecode or out of sync
 				return;
 			}
+
+			Data.vis.DrawField();
 		}
 
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
+			if (Data.challenge == Challenge.FindPath)
 			{
-				_nextNodeConnection = Data.nav.fullPath[_i];
+				if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
+				{
+					_nextNodeConnection = Data.nav.fullPath[_i];
+				}
+
+				if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count == 0)
+				{
+					_done = true;
+				}
+				else if (Data.nav.fullPath[_i].FromPoint == true)
+				{
+					//TargetCP visited
+					_nextDirective = StatusByteCode.Turn;
+					_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
+
+					if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
+						Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
+					return;
+				}
 			}
 
-            if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count==0)
-			{
-				_done = true;
-			}
-			else if (Data.nav.fullPath[_i].FromPoint == true)
-			{
-				//TargetCP visited
-				_nextDirective = StatusByteCode.Turn;
-				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
-				//Data.nav.currentPath++;
-				if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
-					Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
-				//Data.nav.currentPath++;
-				return;
-			}
-			
 			if (Data.nav.fullPath[_i].ToPoint == true)
 			{
 				//TargetCP reached
-				if (Data.nav.currentExitCP > (Data.numControlPosts - (Data.N - 2)))
+				if (Data.nav.currentExitCPCoord.X == 0)
 				{
 					//nav.currentExitCP is at left side
 					_nextAbsoluteDirection = Direction.Left;
 				}
-				else if (Data.nav.currentExitCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCPCoord.Y == Data.N - 1)
 				{
 					//nav.currentExitCP is at top side
 					_nextAbsoluteDirection = Direction.Up;
 				}
-				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
+				else if (Data.nav.currentExitCPCoord.X == Data.M - 1)
 				{
 					//nav.currentExitCP is at right side
 					_nextAbsoluteDirection = Direction.Right;
 				}
-				else if (Data.nav.currentExitCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
+				else if (Data.nav.currentExitCPCoord.Y == 0)
 				{
 					//nav.currentExitCP is at bottom side
 					_nextAbsoluteDirection = Direction.Down;
@@ -306,7 +217,7 @@ namespace MiDeRP
 				if ((Data.nav.fullPath.Count - 1) != _i)
 				{
 					_continue = true;
-				} 
+				}
 			}
 			else
 			{
@@ -344,22 +255,22 @@ namespace MiDeRP
 				if (Data.nav.currentPos.FromPoint == true)
 				{
 					//Amount of control posts on horizontal sides is m - 2, on vertical sides n - 2, placing is counterclockwise, starting from bottom left (1)
-					if (Data.entryCP > (Data.numControlPosts - (Data.N - 2)))
+					if (Data.entryCPCoord.X == 0)
 					{
 						//entryCP is at left side
 						_robotDirection = Direction.Right;
 					}
-					else if (Data.entryCP > (Data.numControlPosts - ((Data.N - 2) + (Data.M - 2))))
+					else if (Data.entryCPCoord.Y == Data.N - 1)
 					{
 						//entryCP is at top side
 						_robotDirection = Direction.Down;
 					}
-					else if (Data.entryCP > (Data.numControlPosts - (2 * (Data.N - 2) + (Data.M - 2))))
+					else if (Data.entryCPCoord.X == Data.M - 1)
 					{
 						//entryCP is at right side
 						_robotDirection = Direction.Left;
 					}
-					else if (Data.entryCP > (Data.numControlPosts - (2 * (Data.N - 2) + 2 * (Data.M - 2))))
+					else if (Data.entryCPCoord.Y == 0)
 					{
 						//entryCP is at bottom side
 						_robotDirection = Direction.Up;
@@ -415,13 +326,6 @@ namespace MiDeRP
 			{
 				_nextDirective = StatusByteCode.Forward;
 			}
-		}
-
-		private void recalculatePath()
-		{
-			_i = 0;
-			Data.nav.currentPos = Data.nav.currentPos.Flipped;	
-			Data.nav.makePaths();
 		}
 
 		public void DisableRobotControl()

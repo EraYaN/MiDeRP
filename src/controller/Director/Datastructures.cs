@@ -325,12 +325,19 @@ namespace MiDeRP
         public const uint numNodes = M*N;
         public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
         public static uint entryCP = 1;
-        //public static uint exitCP = (M-2)+(N-2);
 		public static Challenge challenge = Challenge.FindPath;
         static public Visualization vis;
         static public Navigation nav;
         static public SerialInterface com;
 		static public Controller ctr;
+
+		public static Coord entryCPCoord
+		{
+			get
+			{
+				return new Coord(entryCP);
+			}
+		}
 
         public static readonly DependencyProperty MineLocationProperty = DependencyProperty.RegisterAttached(
           "MineLocation",

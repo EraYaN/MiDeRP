@@ -25,6 +25,14 @@ namespace MiDeRP
 			}
 		}
 
+		public Coord currentExitCPCoord
+		{
+			get
+			{
+				return new Coord(currentExitCP);
+			}
+		}
+
 		#region DLL imports
 		/// <summary><c>initNavigation</c> is a method in the navigation.c file. Imported at runtime from the pure C dll navigation.dll.
         /// </summary>
@@ -88,14 +96,14 @@ namespace MiDeRP
 			}
 			else
 			{
-				throw new NotImplementedException();
+				throw new ArgumentException("Invalid challenge...");
 			}
 		}
 
 		public void makePaths()
 		{
 			if (targetCPs.Count < 1)
-				return; //exception maybe?
+				throw new ArgumentOutOfRangeException("Need one or more controlposts");
 
 			paths = new List<NodeConnection>[targetCPs.Count];
 			fullPath.Clear();
@@ -330,6 +338,12 @@ namespace MiDeRP
             Data.db.UpdateProperty("PathLength");
 			return path;
         }
+
+		public void recalculatePath()
+		{
+			Data.nav.currentPos = Data.nav.currentPos.Flipped;
+			Data.nav.makePaths();
+		}
 		#endregion
 
 		public void updateCP(uint id)
