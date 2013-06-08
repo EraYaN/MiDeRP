@@ -117,6 +117,7 @@ namespace MiDeRP
             baudRateComboBox.IsEnabled = true;
 			startRobotButton.IsEnabled = false;
 			challengeComboBox.IsEnabled = true;
+            Data.com.Dispose();
             Data.nav = null;
             Data.com = null;
             Data.vis = null;

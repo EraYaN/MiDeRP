@@ -102,8 +102,15 @@ namespace MiDeRP
 					if (_i > 0 && (!_halfway && _nextDirective != StatusByteCode.Turn) && !Data.nav.fullPath[_i].FromPoint)
 						return;
 
-					getNextDirective();
-					Data.com.SendByte((byte)_nextDirective);
+                    if (Data.nav.fullPath.Count != 0)
+                    {
+                        getNextDirective();
+                        Data.com.SendByte((byte)_nextDirective);
+                    }
+                    else
+                    {
+                        Data.com.SendByte((byte)StatusByteCode.Unknown);
+                    }
 
 					if (Data.challenge == Challenge.FindPath)
 					{
@@ -132,6 +139,7 @@ namespace MiDeRP
 					}
 
 					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
+                    
 
 					_i = 0;
 					Data.nav.recalculatePath();
@@ -158,13 +166,15 @@ namespace MiDeRP
 			}
 
 			Data.vis.DrawField();
+            Data.db.UpdateProperty("MineCount");
+            Data.db.UpdateProperty("CurrentPosText");
 		}
 
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			if (Data.challenge == Challenge.FindPath)
-			{
+			//if (Data.challenge == Challenge.FindPath)
+			//{
 				if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
 				{
 					_nextNodeConnection = Data.nav.fullPath[_i];
@@ -180,11 +190,14 @@ namespace MiDeRP
 					_nextDirective = StatusByteCode.Turn;
 					_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
 
-					if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
-						Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
+                    if (Data.challenge == Challenge.FindPath)
+                    {
+                        if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
+                            Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
+                    }
 					return;
 				}
-			}
+			//}
 
 			if (Data.nav.fullPath[_i].ToPoint == true)
 			{

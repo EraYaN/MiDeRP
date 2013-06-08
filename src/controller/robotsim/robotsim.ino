@@ -42,7 +42,7 @@ void loop()
 						Serial.write(Acknowledged);
 						minehere = false;
 						waiting = false;
-						delay(750);
+						delay(200);
 						Serial.write(Halfway);
 					break;
 					case Stop:
@@ -53,21 +53,21 @@ void loop()
 						waiting = false;
 						Serial.write(Acknowledged);
 						minehere = false;
-						delay(750);
+						delay(200);
 						Serial.write(Halfway);
 					break;
 					case Right:
 						waiting = false;
 						Serial.write(Acknowledged);
 						minehere = false;
-						delay(750);
+						delay(200);
 						Serial.write(Halfway);
 					break;
 					case Turn:
 						waiting = false;
 						Serial.write(Acknowledged);
 						minehere = false;
-						delay(750);
+						delay(200);
 						Serial.write(Halfway);
 					break;
 					case Back:
@@ -92,8 +92,11 @@ void loop()
 			}
 		} else {
 			//maybe a mine
-			if(random(0,100)<15&&!minehere){
+			if(random(0,100)<20&&!minehere){
 				Serial.write(MineDetected);
+				delay(100);
+				Serial.write(Enquiry);
+				waiting = true;
 				minehere = true;
 			} else {
 				if(!waiting){
@@ -103,7 +106,7 @@ void loop()
 			}
 		}
 	}
-	delay(500);
+	delay(200);
 	if(led){
 		digitalWrite(LED_BUILTIN,LOW);
 		led=false;

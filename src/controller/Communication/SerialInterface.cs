@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace MiDeRP
 {
-    public class SerialInterface : ISerial
+    public class SerialInterface : ISerial, IDisposable
     {
         string port;
         int baudrate;
@@ -53,11 +53,25 @@ namespace MiDeRP
             serialPort.PinChanged += serialPort_PinChanged;
             
         }
-        ~SerialInterface()
+        public void Dispose()
         {
-            serialPort.Close();
-            serialPort.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }       
+        
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing) 
+            {
+                // free managed resources
+                if (serialPort != null)
+                {
+                    serialPort.Close();
+                    serialPort.Dispose();
+                }
+            }            
         }
+
         public int OpenPort()
         {
             try
@@ -104,7 +118,8 @@ namespace MiDeRP
         }
         void serialPort_PinChanged(object sender, SerialPinChangedEventArgs e)
         {
- 	        throw new NotImplementedException();
+            serialPort.Close();
+            serialPort.Open();
         }
 
         void serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)

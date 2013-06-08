@@ -119,7 +119,8 @@ namespace MiDeRP
 				{
 					updateCurrentPath(new Coord(targetCPs[i - 1]), new Coord(targetCPs[i]));
 				}
-				fullPath.AddRange(paths[currentPath]);
+                if(paths[currentPath]!=null)
+				    fullPath.AddRange(paths[currentPath]);
 			}
 
 			currentPath = 0;
@@ -180,7 +181,8 @@ namespace MiDeRP
 		{
 			
 			fullPath.Clear();
-			
+            int[] ys = new int[Data.N];
+            int[] xs = new int[Data.M];	
 			paths = new List<NodeConnection>[Data.ctr.treasureSearchList.Count];
             List<Coord> nodes = new List<Coord>();
             List<NodeConnection> visited = new List<NodeConnection>();
@@ -222,9 +224,29 @@ namespace MiDeRP
             currentPath = 0;
             NodeConnection cPos = currentPos;
             Boolean first = true;
-            NodeConnection n;
+            NodeConnection n;           
             while (open.Count()>0)
             {
+                /*if (cPos.To.X == Data.M - 1)
+                {
+                    //top
+                    updateCurrentPath(cPos.To, new Coord(Data.M-1,0));
+                }
+                else if (cPos.To.X == 0)
+                {
+                    //bottom
+                    updateCurrentPath(cPos.To, new Coord(0, 0));
+                }
+                if (cPos.To.Y == Data.N - 1)
+                {
+                    //right
+                    updateCurrentPath(cPos.To, new Coord(0, Data.N - 1));
+                }
+                else if (cPos.To.Y == 0)
+                {
+                    //left
+                    updateCurrentPath(cPos.To, new Coord(0, 0));
+                }*/
                 if (first)
                 {
                     n = open.First();
@@ -247,6 +269,8 @@ namespace MiDeRP
                         {
                             visited.Add(nc);
                         }
+                        if (!open.Remove(nc))
+                            open.Remove(nc.Flipped);
                     }
                     
                     cPos = n;
@@ -336,13 +360,26 @@ namespace MiDeRP
 			}
              //Update UI
             Data.db.UpdateProperty("PathLength");
+            Data.db.UpdateProperty("MineCount");
+            Data.db.UpdateProperty("CurrentPosText");
 			return path;
         }
 
 		public void recalculatePath()
 		{
-			Data.nav.currentPos = Data.nav.currentPos.Flipped;
-			Data.nav.makePaths();
+			currentPos = currentPos.Flipped;
+            if (Data.challenge == Challenge.FindPath)
+            {
+                makePaths();
+            }
+            else if (Data.challenge == Challenge.FindTreasure)
+            {
+                findTreasure();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid challenge...");
+            }			
 		}
 		#endregion
 
