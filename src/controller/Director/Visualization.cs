@@ -34,7 +34,8 @@ namespace MiDeRP
         readonly Brush lineBrush = Brushes.Black;
         readonly Brush noMineBrush = Brushes.Black;
         readonly Brush entryBrush = Brushes.Green;
-        readonly Brush mineBrush = Brushes.Red;
+		readonly Brush mineBrush = Brushes.Red;
+		readonly Brush visitedBrush = Brushes.DodgerBlue;
         readonly Brush pathBrush = Brushes.BlueViolet;
         readonly Brush currentPosBrush = Brushes.ForestGreen;
         readonly Brush exitBrush = Brushes.Blue;
@@ -75,6 +76,10 @@ namespace MiDeRP
                         //mine
                         mine.Fill = mineBrush;
                     }
+					else if (Data.nav != null && (Data.nav.visited.Contains(ml) || Data.nav.visited.Contains(ml.Flipped)))
+					{
+						mine.Fill = visitedBrush;
+					}
                     else
                     {
                         //no mine
