@@ -22,10 +22,34 @@ namespace DesignReporter
 
 
 \begin{document}";
+
+        /// <summary>
+        /// Count the number of lines in the file specified.
+        /// </summary>
+        /// <param name="f">The filename to count lines.</param>
+        /// <returns>The number of lines in the file.</returns>
+        static long CountLinesInFile(string f)
+        {
+            long count = 0;
+            using (StreamReader r = new StreamReader(f))
+            {
+                string line;
+                while (!r.EndOfStream)
+                {
+                    line = r.ReadLine();
+                    line = line.Trim();
+                    if(line!=null&&line!=String.Empty)
+                        count++;
+                }
+            }
+            return count;
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("DesignReporter started.");
 			Console.WriteLine(Directory.GetCurrentDirectory());
+            long hardwareLines = 0;
+            long softwareLines = 0;
             List<FileInfo> files = new List<FileInfo>();
 			files.AddRange(srcPath.GetFiles("*",SearchOption.AllDirectories));
 			files.AddRange(hwPath.GetFiles("*", SearchOption.AllDirectories));
@@ -68,10 +92,24 @@ namespace DesignReporter
 					file.WriteLine(String.Format("\\section{{{2}}}\r\n\\label{{appsec:{2}}}\r\n\\includecode[xaml]{{{1}}}{{{0}}}\r\n", pathescaped, caption, filename));
 
                 }
+                if (ext == ".vhdl" || ext == ".vhd")
+                {
+                    long lines = CountLinesInFile(fi.FullName);
+                    hardwareLines += lines;
+                    Console.WriteLine("Lines: {0} --> file: {1}", lines, fi.Name);
+                }
+                else if (ext == ".cs" || ext == ".xaml" || ext == ".c" || ext == ".h")
+                {
+                    long lines = CountLinesInFile(fi.FullName);
+                    softwareLines += lines;
+                    Console.WriteLine("Lines: {0} --> file: {1}", lines, fi.Name);                    
+                }
+
             }
             file.WriteLine(@"\end{document}");
             file.Close();
 			Console.WriteLine("Done. Press any key to exit.");
+            Console.WriteLine("Hardware Code Lines: {0}\r\nSoftware Code Lines: {1}", hardwareLines, softwareLines);
 			Console.ReadKey();
         }
 
