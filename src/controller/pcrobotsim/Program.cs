@@ -13,6 +13,7 @@ namespace pcrobotsim
 		static string comPort;
 		const int baudRate = 9600;
 		static SerialInterface com;
+		static bool minehere = false;
 
 		public enum StatusByteCode : byte
 		{
@@ -58,6 +59,7 @@ namespace pcrobotsim
 						break;
 					case ConsoleKey.M:
 						com.SendByte((byte)StatusByteCode.MineDetected);
+						minehere = true;
 						break;
 					case ConsoleKey.Escape:
 						return;
@@ -123,8 +125,13 @@ namespace pcrobotsim
 				com.SendByte((byte)nextByte);
 
 			System.Threading.Thread.Sleep(500);
-			com.SendByte((byte)StatusByteCode.Halfway);
-			System.Threading.Thread.Sleep(500);
+			if (!minehere)
+			{
+				com.SendByte((byte)StatusByteCode.Halfway);
+				System.Threading.Thread.Sleep(500);
+			}
+			else
+				minehere = false;
 
 			com.SendByte((byte)StatusByteCode.Enquiry);
 		}

@@ -11,11 +11,15 @@ namespace MiDeRP
     {
         public List<NodeConnection> mines = new List<NodeConnection>();
         public NodeConnection currentPos;
+		public NodeConnection currentMinePos;
+		public bool evadingMine = false;
+		public bool evadingMineWhileCrossing = false;
         public List<NodeConnection> fullPath = new List<NodeConnection>();
 		public List<uint> targetCPs = new List<uint>((int)Data.numControlPosts);
 		public int currentPath = 0;
 		public List<NodeConnection>[] paths;
 		public List<int> visitedYAxes = new List<int>(), visitedXAxes = new List<int>();
+
 	
 		public uint currentExitCP
 		{
@@ -341,36 +345,69 @@ namespace MiDeRP
 			}
 			else if (Data.challenge == Challenge.FindTreasure)
 			{
+				Direction direction;
 				List<NodeConnection> tempPath = new List<NodeConnection>();
 				Coord from = currentPos.From;
 				Coord to = currentPos.To;
 
-				//Determine initial path piece
-				if (Data.ctr.RobotDirection == Direction.Left)
-					from = new Coord(Data.M - 1, currentPos.From.Y);
-				else if (Data.ctr.RobotDirection == Direction.Right)
-					from = new Coord(0, currentPos.From.Y);
-				else if (Data.ctr.RobotDirection == Direction.Up)
-					from = new Coord(currentPos.From.X, 0);
-				else if (Data.ctr.RobotDirection == Direction.Down)
-					from = new Coord(currentPos.From.X, Data.N - 1);
+				if (!evadingMine)
+				{
+					if (paths[currentPath].Count > 1)
+						evadingMineWhileCrossing = true;
+					else
+						evadingMineWhileCrossing = false;
 
-				tempPath.AddRange(getPath(from, currentPos.From));
+					currentMinePos = currentPos;
+					evadingMine = true;
+				}
+
+				if (currentMinePos.From.X == currentMinePos.To.X)
+				{
+					if (currentMinePos.From.Y > currentMinePos.To.Y)
+						direction = Direction.Down;
+					else
+						direction = Direction.Up;
+				}
+				else
+				{
+					if (currentMinePos.From.X > currentMinePos.To.X)
+						direction = Direction.Left;
+					else
+						direction = Direction.Right;
+				}
+
+				if (evadingMineWhileCrossing)
+				{
+					//Determine initial path piece
+					if (direction == Direction.Left)
+						from = new Coord(Data.M - 1, currentMinePos.From.Y);
+					else if (direction == Direction.Right)
+						from = new Coord(0, currentMinePos.From.Y);
+					else if (direction == Direction.Up)
+						from = new Coord(currentMinePos.From.X, 0);
+					else if (direction == Direction.Down)
+						from = new Coord(currentMinePos.From.X, Data.N - 1);
+
+					tempPath.AddRange(getPath(from, currentMinePos.From));
+				}
 
 				//Add mine evasion maneuver
-				tempPath.AddRange(getPath(currentPos.From, currentPos.To));
+				tempPath.AddRange(getPath(currentMinePos.From, currentMinePos.To));
 
-				//Add final path piece
-				if (Data.ctr.RobotDirection == Direction.Left)
-					to = new Coord(0, currentPos.To.Y);
-				else if (Data.ctr.RobotDirection == Direction.Right)
-					to = new Coord(Data.M - 1, currentPos.To.Y);
-				else if (Data.ctr.RobotDirection == Direction.Up)
-					to = new Coord(currentPos.To.X, Data.N - 1);
-				else if (Data.ctr.RobotDirection == Direction.Down)
-					to = new Coord(currentPos.To.X, 0);
+				if (evadingMineWhileCrossing)
+				{
+					//Add final path piece
+					if (direction == Direction.Left)
+						to = new Coord(0, currentMinePos.To.Y);
+					else if (direction == Direction.Right)
+						to = new Coord(Data.M - 1, currentMinePos.To.Y);
+					else if (direction == Direction.Up)
+						to = new Coord(currentMinePos.To.X, Data.N - 1);
+					else if (direction == Direction.Down)
+						to = new Coord(currentMinePos.To.X, 0);
 
-				tempPath.AddRange(getPath(currentPos.To, to));
+					tempPath.AddRange(getPath(currentPos.To, to));
+				}
 
 				//Replace current path segment
 				paths[currentPath] = tempPath;
