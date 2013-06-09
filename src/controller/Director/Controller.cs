@@ -173,31 +173,28 @@ namespace MiDeRP
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
-			//if (Data.challenge == Challenge.FindPath)
-			//{
-				if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
-				{
-					_nextNodeConnection = Data.nav.fullPath[_i];
-				}
+			if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
+			{
+				_nextNodeConnection = Data.nav.fullPath[_i];
+			}
 
-				if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count == 0)
-				{
-					_done = true;
-				}
-				else if (Data.nav.fullPath[_i].FromPoint == true)
-				{
-					//TargetCP visited
-					_nextDirective = StatusByteCode.Turn;
-					_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
+			if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count == 0)
+			{
+				_done = true;
+			}
+			else if (Data.nav.fullPath[_i].FromPoint == true)
+			{
+				//TargetCP visited
+				_nextDirective = StatusByteCode.Turn;
+				_nextAbsoluteDirection = (Direction)(((int)_robotDirection + 2) % 4);
 
-                    if (Data.challenge == Challenge.FindPath)
-                    {
-                        if (Data.nav.targetCPs != null && Data.challenge == Challenge.FindPath)
-                            Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
-                    }
-					return;
+				if (Data.challenge == Challenge.FindPath)
+				{
+					if (Data.nav.targetCPs != null)
+						Data.nav.targetCPs.RemoveAt(Data.nav.currentPath);
 				}
-			//}
+				return;
+			}
 
 			if (Data.nav.fullPath[_i].ToPoint == true)
 			{
