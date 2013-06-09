@@ -99,7 +99,7 @@ namespace MiDeRP
 			{
 				if (_receivedByte == StatusByteCode.Enquiry)
 				{
-					if (_i > 0 && (!_halfway && _nextDirective != StatusByteCode.Turn) && !Data.nav.fullPath[_i].FromPoint)
+					if (_i > 0 && Data.challenge == Challenge.FindPath && (!_halfway && _nextDirective != StatusByteCode.Turn) && !Data.nav.fullPath[_i].FromPoint)
 						return;
 
                     if (Data.nav.fullPath.Count != 0)
@@ -123,6 +123,12 @@ namespace MiDeRP
 						_continue = false;
 					}
 
+					if (Data.challenge == Challenge.FindTreasure)
+					{
+						if (_done == true)
+							DisableRobotControl();
+					}
+
 					_sentDirectiveIsUnacknowledged = true;
 				}
 				else if (_receivedByte == StatusByteCode.MineDetected)
@@ -139,7 +145,6 @@ namespace MiDeRP
 					}
 
 					Data.nav.mines.Add(Data.nav.fullPath[_i - 1]);
-                    
 
 					_i = 0;
 					Data.nav.recalculatePath();
@@ -173,12 +178,26 @@ namespace MiDeRP
 		private void getNextDirective()
 		{
 			//Robot asks for new directions
+
+			if (Data.challenge == Challenge.FindTreasure && _i == Data.nav.fullPath.Count)
+			{
+				if (treasureSearchList.Count == 0)
+				{
+					_done = true;
+					_nextDirective = StatusByteCode.Done;
+					return;
+				}
+
+				_i = 0;
+				Data.nav.getNextAxis();
+			}
+
 			if (Data.nav.fullPath.Count > 0 && Data.nav.fullPath.Count > _i)
 			{
 				_nextNodeConnection = Data.nav.fullPath[_i];
 			}
 
-			if ((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count == 0)
+			if (((Data.nav.fullPath.Count - 1) == _i || Data.nav.fullPath.Count == 0) && Data.challenge != Challenge.FindTreasure)
 			{
 				_done = true;
 			}
@@ -196,6 +215,37 @@ namespace MiDeRP
 				return;
 			}
 
+			getNextDirection();
+
+			if (_robotDirection == Direction.Unknown)
+				GetInitialRobotDirection();
+
+			getNextTurn();
+		}
+
+		private void getNextTurn()
+		{
+			//Determine the robot's next turn
+			if (_nextAbsoluteDirection - _robotDirection == 1 || _nextAbsoluteDirection - _robotDirection == -3)
+			{
+				_nextDirective = StatusByteCode.Right;
+			}
+			else if (_nextAbsoluteDirection - _robotDirection == -1 || _nextAbsoluteDirection - _robotDirection == 3)
+			{
+				_nextDirective = StatusByteCode.Left;
+			}
+			else if (_nextAbsoluteDirection - _robotDirection == 2 || _nextAbsoluteDirection - _robotDirection == -2)
+			{
+				_nextDirective = StatusByteCode.Turn;
+			}
+			else
+			{
+				_nextDirective = StatusByteCode.Forward;
+			}
+		}
+
+		private void getNextDirection()
+		{
 			if (Data.nav.fullPath[_i].ToPoint == true)
 			{
 				//TargetCP reached
@@ -258,86 +308,67 @@ namespace MiDeRP
 					_nextAbsoluteDirection = Direction.Unknown;
 				}
 			}
+		}
 
+		public void GetInitialRobotDirection()
+		{
 			//Find initial direction
-			if (_robotDirection == Direction.Unknown)
+			if (Data.nav.currentPos.FromPoint == true)
 			{
-				if (Data.nav.currentPos.FromPoint == true)
+				if (Data.entryCPCoord.X == 0)
 				{
-					//Amount of control posts on horizontal sides is m - 2, on vertical sides n - 2, placing is counterclockwise, starting from bottom left (1)
-					if (Data.entryCPCoord.X == 0)
-					{
-						//entryCP is at left side
-						_robotDirection = Direction.Right;
-					}
-					else if (Data.entryCPCoord.Y == Data.N - 1)
-					{
-						//entryCP is at top side
-						_robotDirection = Direction.Down;
-					}
-					else if (Data.entryCPCoord.X == Data.M - 1)
-					{
-						//entryCP is at right side
-						_robotDirection = Direction.Left;
-					}
-					else if (Data.entryCPCoord.Y == 0)
-					{
-						//entryCP is at bottom side
-						_robotDirection = Direction.Up;
-					}
-					else
-					{
-						_robotDirection = Direction.Unknown;
-					}
+					//entryCP is at left side
+					_robotDirection = Direction.Right;
 				}
-				else if (Data.nav.currentPos.FromPoint == false && Data.nav.currentPos.ToPoint == false)
+				else if (Data.entryCPCoord.Y == Data.N - 1)
 				{
-					if (Data.nav.currentPos.From.Y > Data.nav.currentPos.To.Y)
-					{
-						_robotDirection = Direction.Down;
-					}
-					else if (Data.nav.currentPos.From.Y < Data.nav.currentPos.To.Y)
-					{
-						_robotDirection = Direction.Up;
-					}
-					else if (Data.nav.currentPos.From.X > Data.nav.currentPos.To.X)
-					{
-						_robotDirection = Direction.Left;
-					}
-					else if (Data.nav.currentPos.From.X > Data.nav.currentPos.To.X)
-					{
-						_robotDirection = Direction.Right;
-					}
-					else
-					{
-						_robotDirection = Direction.Unknown;
-					}
+					//entryCP is at top side
+					_robotDirection = Direction.Down;
+				}
+				else if (Data.entryCPCoord.X == Data.M - 1)
+				{
+					//entryCP is at right side
+					_robotDirection = Direction.Left;
+				}
+				else if (Data.entryCPCoord.Y == 0)
+				{
+					//entryCP is at bottom side
+					_robotDirection = Direction.Up;
 				}
 				else
 				{
 					_robotDirection = Direction.Unknown;
 				}
 			}
-
-			//Determine the robot's next turn
-			if (_nextAbsoluteDirection - _robotDirection == 1 || _nextAbsoluteDirection - _robotDirection == -3)
+			else if (Data.nav.currentPos.FromPoint == false && Data.nav.currentPos.ToPoint == false)
 			{
-				_nextDirective = StatusByteCode.Right;
-			}
-			else if (_nextAbsoluteDirection - _robotDirection == -1 || _nextAbsoluteDirection - _robotDirection == 3)
-			{
-				_nextDirective = StatusByteCode.Left;
-			}
-			else if (_nextAbsoluteDirection - _robotDirection == 2 || _nextAbsoluteDirection - _robotDirection == -2)
-			{
-				_nextDirective = StatusByteCode.Turn;
+				if (Data.nav.currentPos.From.Y > Data.nav.currentPos.To.Y)
+				{
+					_robotDirection = Direction.Down;
+				}
+				else if (Data.nav.currentPos.From.Y < Data.nav.currentPos.To.Y)
+				{
+					_robotDirection = Direction.Up;
+				}
+				else if (Data.nav.currentPos.From.X > Data.nav.currentPos.To.X)
+				{
+					_robotDirection = Direction.Left;
+				}
+				else if (Data.nav.currentPos.From.X > Data.nav.currentPos.To.X)
+				{
+					_robotDirection = Direction.Right;
+				}
+				else
+				{
+					_robotDirection = Direction.Unknown;
+				}
 			}
 			else
 			{
-				_nextDirective = StatusByteCode.Forward;
+				_robotDirection = Direction.Unknown;
 			}
 		}
-
+		
 		public void DisableRobotControl()
 		{
 			_robotControlIsEnabled = false;
