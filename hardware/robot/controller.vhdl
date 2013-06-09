@@ -69,6 +69,7 @@ architecture b of controller is
 	signal rresponse, sresponse : std_logic_vector (1 downto 0) := "00";
 	signal passedminesite : std_logic;
 	signal fastmode : std_logic;
+	signal notafraid : std_logic; --when the robot is not afraid it doesn't care about driving over mines.
 	--signal turnprocessed : std_logic;
 	signal isdone, continue : std_logic;
 begin
@@ -80,6 +81,7 @@ begin
 	dpoint_seg(3 downto 0)<="0000";
 	uart_rw_out<=uart_rw;	
 	fastmode<=sw(0);
+	notafraid<=sw(1);
 	
 	process (clk) is
 		variable next_state : sys_state;
@@ -321,12 +323,22 @@ begin
 				uart_send <= p_mine;
 				next_sending:='1';	
 				if sresponse = "10" then
-					if fastmode = '1' then
-						next_delaycounter:=6600000;
+					if notafraid = '1' then						
+						if fastmode = '1' then
+							next_delaycounter:=13000000;
+						else
+							next_delaycounter:=20000000;
+						end if;
+						next_passedminesite:='1';
+						next_state:=followline;
 					else
-						next_delaycounter:=10000000;
-					end if;
-					next_state:=turnback;	
+						if fastmode = '1' then
+							next_delaycounter:=6600000;
+						else
+							next_delaycounter:=10000000;
+						end if;
+						next_state:=turnback;
+					end if;					
 					next_sending:='0';					
 				end if;
 			elsif state = sendhalf then
