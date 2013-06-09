@@ -54,17 +54,11 @@ namespace MiDeRP
         [DllImport("navigation.dll")]
         static extern int clearMines();
 
-        [DllImport("navigation.dll")]
-        static extern int clearVisited();
-
-        [DllImport("navigation.dll")]
+		[DllImport("navigation.dll")]
         static extern IntPtr extractPath();
 
         [DllImport("navigation.dll")]
         static extern int setMineC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
-
-        [DllImport("navigation.dll")]
-        static extern int setVisitedC(uint X1, uint Y1, uint X2, uint Y2, byte mine);
 		#endregion
 
 		public Navigation()
@@ -129,15 +123,9 @@ namespace MiDeRP
 
 		public void updateCurrentPath(Coord entry, Coord exit)
 		{
-            setMinesInDLL();
-            if (Data.challenge == Challenge.FindTreasure)
-                setVisitedInDLL();
-            int res = updatePath(entry.Id, exit.Id);
-            if (res != 0)
-                return;//throw new Exception();
             try
             {
-                paths[currentPath] = getPath();
+                paths[currentPath] = getPath(entry, exit);
                 Data.vis.DrawField();
             }
             catch (Exception e)
@@ -179,113 +167,91 @@ namespace MiDeRP
 
 		public void findTreasure()
 		{
-			
-			fullPath.Clear();
-            int[] ys = new int[Data.N];
-            int[] xs = new int[Data.M];	
-			paths = new List<NodeConnection>[Data.ctr.treasureSearchList.Count];
-            List<Coord> nodes = new List<Coord>();
             List<NodeConnection> visited = new List<NodeConnection>();
-            List<NodeConnection> open = new List<NodeConnection>();
 
-            foreach (NodeConnection nc in Data.ctr.treasureSearchList)
-            {
-                if (!nodes.Contains(nc.To))
-                {
-                    nodes.Add(nc.To);
-                }
-                if (!nodes.Contains(nc.From))
-                {
-                    nodes.Add(nc.From);
-                }
-            }
-            var queryFarthestNode =
-                from c in Data.ctr.treasureSearchList
-                where !c.IsSame(Data.nav.currentPos) && !visited.Contains(c) && !visited.Contains(c.Flipped)
-                orderby getH(c.To,Data.nav.currentPos.To) descending
-                select c;
-
-            List<NodeConnection> tempVisited = Data.nav.visited;
-			/*for (int i = 0; i < Data.ctr.treasureSearchList.Count; i++)
-			{
-				currentPath = i;
-				if (i == 0)
-				{
-					updateCurrentPath(currentPos.To, Data.ctr.treasureSearchList[i].To);
-				}
-				else
-				{
-					updateCurrentPath(Data.ctr.treasureSearchList[i].To, Data.ctr.treasureSearchList[i].From);
-				}
-				fullPath.AddRange(paths[currentPath]);
-			}*/
-            open.AddRange(queryFarthestNode);
+			Data.ctr.GetInitialRobotDirection();
+			getNextAxis();
             
-            currentPath = 0;
-            NodeConnection cPos = currentPos;
-            Boolean first = true;
-            NodeConnection n;           
-            while (open.Count()>0)
-            {
-                /*if (cPos.To.X == Data.M - 1)
-                {
-                    //top
-                    updateCurrentPath(cPos.To, new Coord(Data.M-1,0));
-                }
-                else if (cPos.To.X == 0)
-                {
-                    //bottom
-                    updateCurrentPath(cPos.To, new Coord(0, 0));
-                }
-                if (cPos.To.Y == Data.N - 1)
-                {
-                    //right
-                    updateCurrentPath(cPos.To, new Coord(0, Data.N - 1));
-                }
-                else if (cPos.To.Y == 0)
-                {
-                    //left
-                    updateCurrentPath(cPos.To, new Coord(0, 0));
-                }*/
-                if (first)
-                {
-                    n = open.First();
-                }
-                else
-                {
-                    n = open.Last();
-                }
-                open.Remove(n);
-                Data.nav.visited = visited;
-                updateCurrentPath(cPos.To, n.To);
-                if (paths[currentPath] != null)
-                {
-                    fullPath.AddRange(paths[currentPath]);
-                    foreach (NodeConnection nc in paths[currentPath])
-                    {
-                        nodes.Remove(nc.To);
-                        nodes.Remove(nc.From);
-                        if (!visited.Contains(nc) && !visited.Contains(nc.Flipped))
-                        {
-                            visited.Add(nc);
-                        }
-                        if (!open.Remove(nc))
-                            open.Remove(nc.Flipped);
-                    }
-                    
-                    cPos = n;
-                    
-                    first = !first;
-                }
-                else
-                {
-                    break;
-                }
-                              
-            }            
-			currentPath = 0;
-            Data.nav.visited = tempVisited;
 			Data.vis.DrawField();
+		}
+
+		public void getNextAxis()
+		{
+			const int notvisitedscore = 10, visitedpenalty = 6, turnpenalty = 20, fullturnpenalty = 24, minepenalty = 999; 
+			int i, score = -999, temp_score, length = 0;
+			Direction nextdir = Direction.Unknown, currentdir;
+			NodeConnection currentnodeconnection = currentPos;
+			Coord to = currentPos.To;
+
+			for (i = 0; i < 4; i++)
+			{
+				currentdir = (Direction)i;
+				temp_score = 0;
+
+				//Add score for longer possible path
+				if (currentdir == Direction.Left)
+					length = (int)currentPos.To.X;
+				else if (currentdir == Direction.Right)
+					length = (int)Data.M - 1 - (int)currentPos.To.X;
+				else if (currentdir == Direction.Up)
+					length = (int)Data.N - 1 - (int)currentPos.To.Y;
+				else if (currentdir == Direction.Down)
+					length = (int)currentPos.To.Y;
+
+				if (length == 0)
+					continue;
+
+				//Subtract score for any mines and visited nodes
+				if (currentdir == Direction.Left)
+					currentnodeconnection = new NodeConnection(new Coord(currentPos.To.X, currentPos.To.Y), new Coord(currentPos.To.X - 1, currentPos.To.Y));
+				else if (currentdir == Direction.Right)
+					currentnodeconnection = new NodeConnection(new Coord(currentPos.To.X, currentPos.To.Y), new Coord(currentPos.To.X + 1, currentPos.To.Y));
+				else if (currentdir == Direction.Up)
+					currentnodeconnection = new NodeConnection(new Coord(currentPos.To.X, currentPos.To.Y ), new Coord(currentPos.To.X , currentPos.To.Y + 1));
+				else if (currentdir == Direction.Down)
+					currentnodeconnection = new NodeConnection(new Coord(currentPos.To.X, currentPos.To.Y), new Coord(currentPos.To.X, currentPos.To.Y - 1));
+
+				if (visited.Contains(currentnodeconnection) || visited.Contains(currentnodeconnection.Flipped))
+					temp_score -= (visitedpenalty * ((int)Data.M - length) + (visited.IndexOf(currentnodeconnection) / 6));
+				if (mines.Contains(currentnodeconnection) || mines.Contains(currentnodeconnection.Flipped))
+					temp_score -= minepenalty;
+				if (!(visited.Contains(currentnodeconnection) || visited.Contains(currentnodeconnection.Flipped)))
+					temp_score += notvisitedscore;
+
+				//Substract for making a turn
+				if (currentdir != Data.ctr.RobotDirection)
+					temp_score -= turnpenalty;
+
+				//Substract for making a full turn
+				if (((int)currentdir + 2) % 4 == (int)Data.ctr.RobotDirection)
+					temp_score -= fullturnpenalty;
+
+				//Is this path better?
+				if (temp_score >= score)
+				{
+					score = temp_score;
+					nextdir = currentdir;
+				}
+			}
+
+			if (nextdir == Direction.Left)
+			{
+				to = new Coord(currentPos.To.X - 1, currentPos.To.Y);
+			}
+			else if (nextdir == Direction.Right)
+			{
+				to = new Coord(currentPos.To.X + 1, currentPos.To.Y);
+			}
+			else if (nextdir == Direction.Up)
+			{
+				to = new Coord(currentPos.To.X, currentPos.To.Y + 1);
+			}
+			else if (nextdir == Direction.Down)
+			{
+				to = new Coord(currentPos.To.X, currentPos.To.Y - 1);
+			}
+			
+			fullPath = getPath(currentPos.To, to);
 		}
 		#endregion
 
@@ -304,27 +270,18 @@ namespace MiDeRP
 			return 0;
 		}
 
-        private int setVisitedInDLL()
+		public List<NodeConnection> getPath(Coord entry, Coord exit)
         {
-            if (clearVisited() != 0)
-            {
-                //error
-                return -1;
-            }
-            foreach (NodeConnection m in visited)
-            {
-                setVisitedC(m.To.X, m.To.Y, m.From.X, m.From.Y, 1);
-            }
-            return 0;
-        }
+			setMinesInDLL();
+			int res = updatePath(entry.Id, exit.Id);
+			if (res != 0)
+				throw new ArgumentException("No path found");
 
-        public List<NodeConnection> getPath()
-        {
        		List<NodeConnection> path = new List<NodeConnection>();
 			uint len = getPathLength();
             IntPtr ptr = Marshal.AllocHGlobal(((int)len+1)*sizeof(int));
             int[] stage1 = new int[len+1];
-            int res = extractPath(ptr);
+            res = extractPath(ptr);
 
 			if (res == 0 && len > 0 && ptr != null)
 			{

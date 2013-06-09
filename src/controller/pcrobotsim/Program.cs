@@ -93,7 +93,6 @@ namespace pcrobotsim
 
 		private static void com_SerialDataEvent(object sender, SerialDataEventArgs e)
 		{
-			StatusByteCode nextByte = new byte();
 			StatusByteCode _receivedByte = (StatusByteCode)e.DataByte;
 
 			if (_receivedByte == 0x00)
@@ -102,38 +101,48 @@ namespace pcrobotsim
 			switch (_receivedByte)
 			{
 				case StatusByteCode.Left:
-					nextByte = StatusByteCode.Acknowledged;
+					com.SendByte((byte)StatusByteCode.Acknowledged);
+					System.Threading.Thread.Sleep(500);
+					if (!minehere)
+					{
+						com.SendByte((byte)StatusByteCode.Halfway);
+						System.Threading.Thread.Sleep(500);
+					}
+					com.SendByte((byte)StatusByteCode.Enquiry);
 					break;
 				case StatusByteCode.Right:
-					nextByte = StatusByteCode.Acknowledged;
+					com.SendByte((byte)StatusByteCode.Acknowledged);
+					System.Threading.Thread.Sleep(500);
+					if (!minehere)
+					{
+						com.SendByte((byte)StatusByteCode.Halfway);
+						System.Threading.Thread.Sleep(500);
+					}
+					com.SendByte((byte)StatusByteCode.Enquiry);
 					break;
 				case StatusByteCode.Forward:
-					nextByte = StatusByteCode.Acknowledged;
+					com.SendByte((byte)StatusByteCode.Acknowledged);
+					System.Threading.Thread.Sleep(500);
+					if (!minehere)
+					{
+						com.SendByte((byte)StatusByteCode.Halfway);
+						System.Threading.Thread.Sleep(500);
+					}
+					com.SendByte((byte)StatusByteCode.Enquiry);
 					break;
 				case StatusByteCode.Turn:
-					nextByte = StatusByteCode.Acknowledged;
+					com.SendByte((byte)StatusByteCode.Acknowledged);
+					System.Threading.Thread.Sleep(500);
+					com.SendByte((byte)StatusByteCode.Enquiry);
 					break;
 				case StatusByteCode.Acknowledged:
 					break;
-				case StatusByteCode.Done:
-					return;
 				default:
-					break;
+					return;
 			}
 
-			if (nextByte != 0x00)
-				com.SendByte((byte)nextByte);
+			minehere = false;
 
-			System.Threading.Thread.Sleep(500);
-			if (!minehere)
-			{
-				com.SendByte((byte)StatusByteCode.Halfway);
-				System.Threading.Thread.Sleep(500);
-			}
-			else
-				minehere = false;
-
-			com.SendByte((byte)StatusByteCode.Enquiry);
 		}
 	}
 }

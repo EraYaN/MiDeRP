@@ -321,7 +321,7 @@ namespace MiDeRP
         public static string ComPort = "COM1";
         public static int BaudRate = 9600;
         public const uint M = 5;
-        public const uint N = 6;
+        public const uint N = 5;
         public const uint numNodes = M*N;
         public const uint numControlPosts = 2 * (M - 2) + 2 * (N - 2);
         public static uint entryCP = 1;

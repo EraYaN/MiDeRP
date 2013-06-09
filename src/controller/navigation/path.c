@@ -88,14 +88,6 @@ int findPath (Node * entryNode, Node * exitNode)
 			}
 			pre_g = current->g + 1;
 
-			if (isVisited (current, neighbor))
-			{
-#ifdef _DEBUG
-				printf( "Neighbor has been visited\n");
-#endif
-				pre_g = pre_g + 4;
-			}
-
 #ifdef _DEBUG
 			printf( "Now checking neighbor node %d\n", neighbor->id);
 #endif
