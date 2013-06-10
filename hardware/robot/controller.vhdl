@@ -122,6 +122,7 @@ begin
 					next_state:=done;
 				elsif continue = '1' then
 					next_passedminesite:='1';
+					next_delaycounter:=1337;
 					next_state:=callforinput;
 				else
 					next_state:=followline;
@@ -206,11 +207,13 @@ begin
 					elsif nextturn = 3 then
 						next_state:=callforinput; --stop (wait for input)
 					elsif nextturn = 4 then
-						if fastmode = '1' then
-							next_delaycounter:=40000000;
-						else
-							next_delaycounter:=100000000;
-						end if;							
+						if (delaycounter > 1337) or (delaycounter < 999) then
+							if fastmode = '1' then
+								next_delaycounter:=40000000;
+							else
+								next_delaycounter:=100000000;
+							end if;	
+						end if;						
 						next_state:=fullturn; --turn
 					elsif nextturn = 5 then
 						next_state:=turnback; --back
