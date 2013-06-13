@@ -168,8 +168,8 @@ namespace MiDeRP
 		public void findTreasure()
 		{
             List<NodeConnection> visited = new List<NodeConnection>();
-
-			Data.ctr.GetInitialRobotDirection();
+			if (Data.ctr.RobotDirection == Direction.Unknown)
+				Data.ctr.GetInitialRobotDirection();
 			getNextAxis();
             
 			Data.vis.DrawField();

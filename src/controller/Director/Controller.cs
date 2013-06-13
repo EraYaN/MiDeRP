@@ -246,7 +246,7 @@ namespace MiDeRP
 
 		private void getNextDirection()
 		{
-			if (Data.nav.fullPath[_i].ToPoint == true)
+			if (Data.nav.fullPath[_i].ToPoint == true && Data.challenge == Challenge.FindPath)
 			{
 				//TargetCP reached
 				if (Data.nav.currentExitCPCoord.X == 0)
